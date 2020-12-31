@@ -1,0 +1,611 @@
+# RISC OS ArtWorks File Format
+
+## Table of contents
+
+* [About](#about)
+* [Header](#header)
+* [Body](#body)
+  * [Tree structure](#tree-structure)
+  * [Record header](#record-header) 
+  * [Nested lists](#nested-lists)
+  * [Record types](#record-types)
+    *  [Type 0x01](#type-0x01-unknown-text)
+    *  [Type 0x02](#type-0x02-path)
+    *  [Type 0x06](#type-0x06-unknown-group)
+    *  [Type 0x0A](#type-0x0a-layer)
+    *  [Type 0x21](#type-0x21-palette)
+    *  [Type 0x22](#type-0x22-unknown)
+    *  [Type 0x23](#type-0x23-file-save-location)  
+    *  [Type 0x24](#type-0x24-stroke-colour)
+    *  [Type 0x25](#type-0x25-stroke-width)
+    *  [Type 0x26](#type-0x26-fill)
+    *  [Type 0x27](#type-0x27-unknown-join-style)
+    *  [Type 0x28](#type-0x28-unknown-end-line-cap)
+    *  [Type 0x29](#type-0x29-unknown-start-line-cap)
+    *  [Type 0x2A](#type-0x2a-unknown)
+    *  [Type 0x2B](#type-0x2b-unknown)
+    *  [Type 0x2C](#type-0x2c-path)
+    *  [Type 0x2D](#type-0x2d-character)
+    *  [Type 0x2F](#type-0x2f-font-name)
+    *  [Type 0x30](#type-0x30-font-size)
+    *  [Type 0x32](#type-0x32-unknown)
+    *  [Type 0x34](#type-0x34-path)
+    *  [Type 0x35](#type-0x35-unknown)
+    *  [Type 0x38](#type-0x38-unknown)
+    *  [Type 0x39](#type-0x39-file-information)   
+    *  [Type 0x3A](#type-0x3a-unknown)
+    *  [Type 0x3B](#type-0x3b-unknown)
+    *  [Type 0x3D](#type-0x3d-unknown)   
+    *  [Type 0x3E](#type-0x3e-unknown)
+    *  [Type 0x3F](#type-0x3f-unknown)
+  * [Coordinate system](#coordinate-system)
+  * [Path data](#path-data)
+  * [UBuf](#ubuf)
+* [References](#references)
+
+## About
+
+This document represents the outcome of an imperfect attempt to decipher the data stored in Artworks files and will 
+therefore contain errors and omissions.
+
+The deciphering process involved !AWViewer and a hex editor. There are therefore two consequences. Firstly, 
+features not present in the available files are not documented here. Secondly, in the absence of a feature list,
+it is hard to interpret the binary words that might represent features or options.
+
+There a general number of observations that can be made about the files
+
+1. Because of the ARM heritage the data is little endian and word aligned.
+1. The files are record based, and some record type numbers seem to coincide with their !Draw equivalents.
+1. The records are stored in a tree/graph structure.
+1. The vector data format is virtually identical to !Draw's.
+1. The visual representation (stroke, cap) information are stored separately from the vectors.
+1. Colours are referenced by an index into a palette of defined colours (0xFFFFFFFF means no colour).
+1. Unlike !Draw, fonts appear to be referenced by name throughout.
+1. Strings are null terminated. However, there's often what looks like garbage after the string
+   to pad it to a word boundary.
+   
+It's not clear how Artworks renders the file. When doing a naive forward traversal of the graph,
+you can encounter background objects after foreground ones.
+
+This document is provided under the MIT Licence and with particular attention drawn to the disclaimer.
+
+## Header
+
+The header has a 16 byte signature followed by more data whose purpose is largely unknown.
+
+|Offset | Length | Content 
+|-------|--------|-------
+|0      | 4      | Top!
+|4      | 4      | 09, 10 (0xA)
+|8      | 8      | TopDraw (null terminated)
+|16     | 4      | Unknown
+|20     | 4      | Absolute offset to start of body
+|24     | 104    | Unknown
+
+## Body
+
+### Tree structure
+
+Starting at offset specified in the header there are a series of doubly-linked list nodes with the following structure
+
+|Offset | Length | Content 
+|-------|--------|-------
+|0      | 4      | Offset to previous
+|4      | 4      | Offset to next
+|8      | varies | Child node data
+
+Note that both offsets are relative to the _start_ of the node.
+An offset of zero means that there is no previous or next entry.
+
+The child nodes themselves are doubly-linked list nodes and have the following structure
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 4      | Offset to next child node
+|4      | 4      | Offset to previous child node
+|8      | varies | Record data
+
+As above, the offsets are relative to the _start_ of the child node.
+An offset of zero means that there is no previous or next entry.
+
+Note that the order of previous and next is reversed!
+
+### Record header
+
+The records, unless noted otherwise, all share a common header.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 4      | Record type (Bits 0-7 type, 8-31 are sometimes set)
+|4      | 4      | Unknown
+|8      | 4      | Bounding Box Min X
+|12     | 4      | Bounding Box Min Y
+|16     | 4      | Bounding Box Max X
+|20     | 4      | Bounding Box Max Y
+
+For objects that have no immediate visual representation, such as the palette, the bounding box
+entries are usually zero.
+
+### Nested lists
+
+The child nodes can themselves have children. When a child does have children, there will be an
+extra 8 bytes at the end of the record containing a pointer to the start of the list of grandchildren.
+
+|Offset | Length | Content
+|-------|--------|-------
+|n - 4  | 4      | Offset to previous list
+|n - 8  | 4      | Offset to next list 
+
+The rule appears to be that a child node can have children if and only if it isn't the last
+element in a list.
+
+Evidence:
+1. Layer records with no children typically appear inside lists by themselves.
+1. Path records in certain files have data after the vectors, and the viable pointers
+   occupy the last 8 bytes of the record. 
+1. Attribute records, such as fills or stroke width, seem to reside as leaves
+   in singleton lists.
+1. Adopting this scheme appears to guarantee that the file is read without leaving
+   a significant number of 8 byte gaps. These 8 byte gaps would indicate 
+   missed pointers at the end of records.
+
+### File traversal
+
+The files can be traversed as follows
+
+```javascript
+function readNodes() {
+    while (true) {
+        const {position, next} = readNodePointer();
+        readChildren();
+        if (next === 0) {
+            break;
+        }
+        setPosition(position + next);
+    }
+}
+
+function readChildren() {
+    while (true) {
+        const {position, next} = readChildPointer();
+        readRecord();
+        if (next !== 0) {
+            this.readGrandChildren(position + next - 8);
+        } else {
+            break;
+        }
+        setPosition(position + next);
+    }
+}
+
+function readGrandChildren(pointerPosition) {
+    const current = getPosition();
+    assert(current <= pointerPosition);
+    setPosition(pointerPosition);
+    const {position, next} = readNodePointer();
+    if (next > 0) {
+        setPosition(position + next);
+        readNodes(callbacks);
+    }
+}
+```
+
+where
+
+1. The `readNodePointer` and `readChildPointer` functions read the appropriate `next`
+   and `previous` values, and returns them along with the position of the pointer in the file.
+1. The `setPosition` function allows one to navigate to a certain point in the file.
+1. The `readRecord` function reads the appropriate record data from the file.
+
+
+### Record types
+
+#### Type 0x01: Unknown, Text
+
+Notes: In the Apple1, Clock2 files unless the linked list entries at the end of these records are 
+processed then the vectors around the textual elements won't be drawn.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown, 2 in Clock2, 0 or 2 in Apple 1
+|28     | 4      | Unknown
+|32     | 4      | Unknown
+|36     | 4      | Unknown, 15 in Clock2, 11 in Apple 1
+|40     | 4      | Unknown, 15 in Clock2, 11 in Apple 1
+|44     | 4      | Unknown, 0
+|48     | 4      | Bounding Rectangle Bottom Left X
+|52     | 4      | Bounding Rectangle Bottom Left Y
+|56     | 4      | Bounding Rectangle Top Left X
+|60     | 4      | Bounding Rectangle Top Left Y
+|64     | 4      | Bounding Rectangle Top Right X
+|68     | 4      | Bounding Rectangle Top Right Y
+|72     | 4      | Bounding Rectangle Bottom Right X
+|76     | 4      | Bounding Rectangle Bottom Right Y
+|80     | 4      | Unknown, 0
+|84     | 4      | Unknown, 0
+|88     | 4      | Unknown, 0
+|92     | 4      | Unknown, 0
+|96     | 4      | Unknown, 0
+|100    | 4      | Unknown, 0
+|104    | 4      | Offset to previous
+|108    | 4      | Offset to next
+
+#### Type 0x02: Path
+
+Note: In certain cases (A5000) there's extra data after the path data.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | varies | [Path data](#path-data)
+|varies | varies | Unknown, sometimes present
+|n - 8  | 4      | Offset to previous
+|n - 4  | 4      | Offset to next
+
+#### Type 0x06: Unknown, Group
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown
+|28     | 4      | Unknown
+|32     | 4      | Unknown
+|36     | 4      | Offset to previous
+|40     | 4      | Offset to next
+
+#### Type 0x0A: Layer
+
+The pointers at the end of the record are optional. Their presence must be inferred from the size of the
+surrounding records.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown, Bit 0 seems to control layer visibility.
+|28     | 32     | Layer name, null terminated. The length stated here is a guess.
+|60     | 4      | Offset to previous
+|64     | 4      | Offset to next
+
+#### Type 0x21: Palette
+
+Note: This record isn't straightforward and will often contain [UBuf](#ubuf) objects before the palette.
+
+For example consider the AABOX file whose palette data starts as 0x191D4.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown (Sometimes UBuf, 55 42 75 66)
+|28     | 4      | Number of palette entries
+|32     | varies | Sequential palette entries
+
+##### Palette entry
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | Name of colour, null terminated, then filled with what looks like garbage
+|28     | 4      | Colour (BGR) usually with bit 29 set.
+|32     | 4      | Unknown
+|36     | 4      | Unknown
+|40     | 4      | Unknown
+|44     | 4      | Unknown
+|48     | 4      | Unknown
+
+#### Type 0x22: Unknown
+
+Purpose of this record isn't known. Maybe an options record? The text `1cm` seems to occur relatively often. 
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | ?      | Unknown
+
+#### Type 0x23: File save location
+
+This record can vary in size.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown
+|28     | varies | File path, null terminated string.
+
+
+#### Type 0x24: Stroke Colour
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Colour Index
+
+#### Type 0x25: Stroke Width
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Stroke Width
+
+#### Type 0x26: Fill
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Fill Type <ol start="0"><li>Flat</li><li>Linear</li><li>Radial</li></ol>
+|28     | 4      | Unknown (0x59b98)
+
+If Fill Type is 0
+
+|Offset | Length | Content
+|-------|--------|-------
+|32     | 4      | Colour Index
+
+If Fill Type is 1 or 2
+
+|Offset | Length | Content
+|-------|--------|-------
+|32     | 4      | Gradient Start X
+|36     | 4      | Gradient Start Y
+|40     | 4      | Gradient End X
+|44     | 4      | Gradient End Y
+|48     | 4      | Start Colour Index
+|52     | 4      | End Colour Index
+
+#### Type 0x27: Unknown, Join Style
+
+Need to confirm this but manipulating a file to values greater than 2 into the join style make the vectors disappear.
+
+The join values are inferred from the Draw file format.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Join Style <ol start="0"><li>Mitre</li><li>Round</li><li>Bevel</li></ol>
+
+#### Type 0x28: Unknown, End line cap
+
+Note: Setting the Cap Style to 3 produced triangular line caps.
+This is in agreement with the Draw file format.
+For values of other than 3 however I was unable to get !AWiewer to produce different cap styles.
+The length of this record might vary since as per !Draw triangle caps require width and length.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol>
+|28     | 4      | Unknown (0x4000200,0)
+
+#### Type 0x29: Unknown, Start line cap
+
+Note: Setting the Cap Style to 3 produced triangular line caps.
+This is in agreement with the Draw file format.
+For values of other than 3 however I was unable to get !AWiewer to produce different cap styles.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Cap Style (0,1,2,3)
+|28     | 4      | Unknown (0x4000200,0)
+
+#### Type 0x2A: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown (0,1)
+
+#### Type 0x2B: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown (0,1)
+
+#### Type 0x2C: Path
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown
+|28     | varies | [Path data](#path-data)
+|n - 8  | 4      | Offset to previous
+|n - 4  | 4      | Offset to next
+
+#### Type 0x2D: Character
+
+Note: These records seem to have the data for individual characters of a string.
+Please refer to the [RISC OS Character Set][risc-os-character-set] for details.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Character code
+|28     | 4      | Unknown, X Coordinate (text base line?)
+|32     | 4      | Unknown, Y Coordinate (text base line?)
+|36     | 4      | Unknown (0xf8f)
+|40     | 4      | Unknown (0)
+
+#### Type 0x2F: Font name
+
+The font name seems to be null terminated, but the amount of data after the font name might be variable.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | n      | Font name, null terminated.
+
+#### Type 0x30: Font size
+
+Going to assume the nominal font sizes are in (1/640) of a printer's point.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Nominal X size of the font
+|28     | 4      | Nominal Y size of the font
+
+#### Type 0x32: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown (0xFFFFFF9C)
+
+#### Type 0x34: Path
+
+**Note:** Bounding Triangle
+
+These 3 points appear to define the rotated bounding box for the object in an anti-clockwise fashion but with the final point missing.
+Another interpretation could be that the points form basis vectors for the paths that follow.
+
+These 3 points might have something to do with radial fills.
+
+**Note:** I'm not sure about the previous and next at the end of this record.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Bounding Triangle Bottom Left X
+|28     | 4      | Bounding Triangle Bottom Left Y
+|32     | 4      | Bounding Triangle Top Left X
+|36     | 4      | Bounding Triangle Top Left Y
+|40     | 4      | Bounding Triangle Top Right X
+|44     | 4      | Bounding Triangle Top Right Y
+|48     | varies | [Path data](#path-data)
+|n - 8  | 4      | Offset to previous
+|n - 4  | 4      | Offset to next
+
+#### Type 0x35: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown (26c)
+|28     | 4      | Bounding Triangle Bottom Left X
+|32     | 4      | Bounding Triangle Bottom Left Y
+|36     | 4      | Bounding Triangle Top Left X
+|40     | 4      | Bounding Triangle Top Left Y
+|44     | 4      | Bounding Triangle Top Right X
+|48     | 4      | Bounding Triangle Top Right Y
+|52     | varies | [Path data](#path-data)
+|n - 8  | 4      | Offset to previous
+|n - 4  | 4      | Offset to next
+
+#### Type 0x38: Unknown
+
+Encountered this record in BOSS3. Unsure if the length of the unknown data is fixed.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | varies | [Path data](#path-data)
+|varies | 68?    | Unknown
+|n - 8  | 4      | Offset to previous
+|n - 4  | 4      | Offset to next
+
+#### Type 0x39: File information
+
+This record can vary in size.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | varies | Information about the file, creation date, serial number. Null terminated string.
+
+#### Type 0x3A: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown, (0)
+|28     | 4      | Unknown, (3)
+|32     | 4      | Unknown, (0x51900)
+|36     | 4      | Unknown, (0x40000006) or (6)
+|40     | 4      | Unknown, (0xC4C3)
+|44     | 4      | Unknown, (0xC4C3)
+|48     | 4      | Unknown, (-1)
+|52     | 4      | Unknown, (-1)
+|56     | 4      | Unknown, (-1)
+|60     | 4      | Unknown, (-1)
+|64     | 4      | Unknown, (-1)
+|68     | 4      | Offset to previous
+|72     | 4      | Offset to next
+
+#### Type 0x3B: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown, (0)
+|28     | 4      | Unknown, (0x10)
+|32     | 4      | Unknown, (-1)
+|36     | 4      | Unknown, (-1)
+|40     | 4      | Unknown, (-1)
+|44     | 4      | Unknown, (-1)
+|48     | 4      | Unknown, (-1)
+|52     | 4      | Unknown, (-1)
+|56     | 4      | Unknown, (-1)
+|60     | 4      | Unknown, (-1)
+
+#### Type 0x3D: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | varies | [Path data](#path-data)
+
+#### Type 0x3E: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown, (-1)
+|28     | 4      | Unknown, (0x40000)
+|32     | 4      | Unknown, (0x40000)
+
+#### Type 0x3F: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown, (-1)
+|28     | 4      | Unknown, (0x40000)
+|32     | 4      | Unknown, (0x40000)
+
+### Coordinate system
+
+The coordinate system places the origin at the bottom left of the page.
+
+### Path data
+
+The path data is _very_ similar to that found in an Acorn !Draw file.
+
+A path element consists of a tag and zero or more points (stored as two 32 bit words as x then y).
+
+A tag is a 32 bit word. The lower 8 bits appear to determine the nature of the data that follows, and
+bits 8-31 appear to contain some kind of flag information.
+
+A path then comprises one or more path elements.
+
+|Tag    | Points | Meaning
+|-------|--------|-------
+|0      | 0      | End path
+|2      | 1      | Move absolute
+|4      | 0      | Unknown, End of sub path
+|5      | 0      | Close sub path
+|6      | 3      | Bezier to absolute
+|8      | 1      | Line to absolute
+
+### UBuf
+
+Unknown. The current guess is that this stands for Undo Buffer. They sometimes appear in the Palette record
+before the colour table.
+
+## References
+
+1. [Draw file format][draw-file-format]
+2. [RISC OS Character Set][risc-os-character-set]
+
+---
+[draw-file-format]: http://www.riscos.com/support/developers/prm/fileformats.html
+[risc-os-character-set]: https://en.wikipedia.org/wiki/RISC_OS_character_set
