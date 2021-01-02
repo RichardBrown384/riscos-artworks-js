@@ -129,7 +129,7 @@ The rule appears to be that a child node can have children if and only if it isn
 element in a list.
 
 Evidence:
-1. Layer records with no children typically appear inside lists by themselves.
+1. Layer records with no children typically appear inside singleton lists.
 1. Path records in certain files have data after the vectors, and the viable pointers
    occupy the last 8 bytes of the record.
 1. Attribute records, such as fills or stroke width, seem to reside as leaves
@@ -147,10 +147,11 @@ function readNodes() {
     while (true) {
         const {position, next} = readNodePointer();
         readChildren();
-        if (next === 0) {
+        if (next !== 0) {
+            setPosition(position + next);
+        } else {
             break;
         }
-        setPosition(position + next);
     }
 }
 
@@ -172,7 +173,7 @@ function readGrandchildren(pointerPosition) {
     assert(current <= pointerPosition);
     setPosition(pointerPosition);
     const {position, next} = readNodePointer();
-    if (next > 0) {
+    if (next !== 0) {
         setPosition(position + next);
         readNodes(callbacks);
     }
@@ -201,6 +202,8 @@ The records, unless noted otherwise, all share a common header.
 
 For objects that have no immediate visual representation, such as the palette, the bounding box
 entries are usually zero.
+
+Finally, bounding box values may be negative.
 
 ### Record types
 
@@ -231,7 +234,7 @@ and there can sometimes be string data present at offset 84 too.
 
 #### Type 0x02: Path
 
-Note: In certain cases (A5000) there's extra data after the path data.
+Note: In certain cases there's extra data after the path data.
 
 |Offset | Length | Content
 |-------|--------|-------
@@ -417,6 +420,7 @@ Please refer to the [RISC OS Character Set][risc-os-character-set] for details.
 |32     | 4      | Unknown, Y Coordinate (text base line?)
 |36     | 4      | Unknown (0xf8f)
 |40     | 4      | Unknown (0)
+|44     | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x2F: Font name
 
@@ -489,7 +493,7 @@ presence of path data.
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
-|24     | 64     | [Path data](#path-data) (5 Moves + 1 End)
+|24     | 64     | [Path data](#path-data) (1 Moves, 4 Lines, End)
 |88     | 68     | Unknown
 |156    | 8      | [Grandchild pointer](#grandchild-nodes)
 
@@ -563,15 +567,16 @@ This record can vary in size.
 
 ### Coordinate system
 
-The coordinate system places the origin at the bottom left of the page.
+The coordinate system places the origin at the bottom left of the page. All coordinates in the file 
+are stored using _signed_ 32-bit integers.
 
 ### Path data
 
 The path data is _very_ similar to that found in an Acorn !Draw file.
 
-A path element consists of a tag and zero or more points (stored as two 32 bit words as x then y).
+A path element consists of a tag and zero or more points (stored as two 32-bit words as x then y).
 
-A tag is a 32 bit word. The lower 8 bits appear to determine the nature of the data that follows, and
+A tag is a 32-bit word. The lower 8 bits appear to determine the nature of the data that follows, and
 bits 8-31 appear to contain some kind of flag information.
 
 A path then comprises one or more path elements.
