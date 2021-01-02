@@ -1,0 +1,21 @@
+{
+  "name": "riscos-artworks",
+  "version": "1.0.0",
+  "description": "Library for loading RISC OS Artworks files",
+  "main": "src/artworks.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/RichardBrown384/riscos-artworks-js.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RichardBrown384/riscos-artworks-js/issues"
+  },
+  "homepage": "https://github.com/RichardBrown384/riscos-artworks-js#readme"
+}
