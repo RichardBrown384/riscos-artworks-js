@@ -6,8 +6,11 @@
 * [Header](#header)
 * [Body](#body)
   * [Tree structure](#tree-structure)
-  * [Record header](#record-header) 
-  * [Nested lists](#nested-lists)
+    * [Nodes](#nodes)
+    * [Child nodes](#child-nodes)
+    * [Grandchild nodes](#grandchild-nodes)
+    * [Traversal](#traversal)
+  * [Record header](#record-header)
   * [Record types](#record-types)
     *  [Type 0x01](#type-0x01-unknown-text)
     *  [Type 0x02](#type-0x02-path)
@@ -15,7 +18,7 @@
     *  [Type 0x0A](#type-0x0a-layer)
     *  [Type 0x21](#type-0x21-palette)
     *  [Type 0x22](#type-0x22-unknown)
-    *  [Type 0x23](#type-0x23-file-save-location)  
+    *  [Type 0x23](#type-0x23-file-save-location)
     *  [Type 0x24](#type-0x24-stroke-colour)
     *  [Type 0x25](#type-0x25-stroke-width)
     *  [Type 0x26](#type-0x26-fill)
@@ -32,10 +35,10 @@
     *  [Type 0x34](#type-0x34-path)
     *  [Type 0x35](#type-0x35-unknown)
     *  [Type 0x38](#type-0x38-unknown)
-    *  [Type 0x39](#type-0x39-file-information)   
+    *  [Type 0x39](#type-0x39-file-information)
     *  [Type 0x3A](#type-0x3a-unknown)
     *  [Type 0x3B](#type-0x3b-unknown)
-    *  [Type 0x3D](#type-0x3d-unknown)   
+    *  [Type 0x3D](#type-0x3d-unknown)
     *  [Type 0x3E](#type-0x3e-unknown)
     *  [Type 0x3F](#type-0x3f-unknown)
   * [Coordinate system](#coordinate-system)
@@ -45,16 +48,16 @@
 
 ## About
 
-This document represents the outcome of an imperfect attempt to decipher the data stored in Artworks files and will 
+This document represents the outcome of an imperfect attempt to decipher the data stored in Artworks files and will
 therefore contain errors and omissions.
 
-The deciphering process involved !AWViewer and a hex editor. There are therefore two consequences. Firstly, 
+The deciphering process involved !AWViewer and a hex editor. There are therefore two consequences. Firstly,
 features not present in the available files are not documented here. Secondly, in the absence of a feature list,
 it is hard to interpret the binary words that might represent features or options.
 
 There a general number of observations that can be made about the files
 
-1. Because of the ARM heritage the data is little endian and word aligned.
+1. Because of the early ARM heritage the data is little endian and word aligned.
 1. The files are record based, and some record type numbers seem to coincide with their !Draw equivalents.
 1. The records are stored in a tree/graph structure.
 1. The vector data format is virtually identical to !Draw's.
@@ -63,39 +66,41 @@ There a general number of observations that can be made about the files
 1. Unlike !Draw, fonts appear to be referenced by name throughout.
 1. Strings are null terminated. However, there's often what looks like garbage after the string
    to pad it to a word boundary.
-   
+
 It's not clear how Artworks renders the file. When doing a naive forward traversal of the graph,
 you can encounter background objects after foreground ones.
-
-This document is provided under the MIT Licence and with particular attention drawn to the disclaimer.
 
 ## Header
 
 The header has a 16 byte signature followed by more data whose purpose is largely unknown.
 
-|Offset | Length | Content 
+|Offset | Length | Content
 |-------|--------|-------
 |0      | 4      | Top!
 |4      | 4      | 09, 10 (0xA)
 |8      | 8      | TopDraw (null terminated)
 |16     | 4      | Unknown
 |20     | 4      | Absolute offset to start of body
-|24     | 104    | Unknown
+|24     | varies | Unknown
 
 ## Body
 
 ### Tree structure
 
+#### Nodes
+
 Starting at offset specified in the header there are a series of doubly-linked list nodes with the following structure
 
-|Offset | Length | Content 
+|Offset | Length | Content
 |-------|--------|-------
 |0      | 4      | Offset to previous
 |4      | 4      | Offset to next
-|8      | varies | Child node data
+|8      | varies | [Child node](#child-nodes) data
 
 Note that both offsets are relative to the _start_ of the node.
 An offset of zero means that there is no previous or next entry.
+
+#### Child nodes
 
 The child nodes themselves are doubly-linked list nodes and have the following structure
 
@@ -103,38 +108,22 @@ The child nodes themselves are doubly-linked list nodes and have the following s
 |-------|--------|-------
 |0      | 4      | Offset to next child node
 |4      | 4      | Offset to previous child node
-|8      | varies | Record data
+|8      | varies | [Record data](#record-header)
 
 As above, the offsets are relative to the _start_ of the child node.
 An offset of zero means that there is no previous or next entry.
 
-Note that the order of previous and next is reversed!
+#### Grandchild nodes
 
-### Record header
-
-The records, unless noted otherwise, all share a common header.
-
-|Offset | Length | Content
-|-------|--------|-------
-|0      | 4      | Record type (Bits 0-7 type, 8-31 are sometimes set)
-|4      | 4      | Unknown
-|8      | 4      | Bounding Box Min X
-|12     | 4      | Bounding Box Min Y
-|16     | 4      | Bounding Box Max X
-|20     | 4      | Bounding Box Max Y
-
-For objects that have no immediate visual representation, such as the palette, the bounding box
-entries are usually zero.
-
-### Nested lists
-
-The child nodes can themselves have children. When a child does have children, there will be an
+The child nodes can also have children. When a child does have children, there will be an
 extra 8 bytes at the end of the record containing a pointer to the start of the list of grandchildren.
 
 |Offset | Length | Content
 |-------|--------|-------
 |n - 4  | 4      | Offset to previous list
-|n - 8  | 4      | Offset to next list 
+|n - 8  | 4      | Offset to next list
+
+The offsets are relative to `n-4`. An offset of zero means that there is no previous or next entry.
 
 The rule appears to be that a child node can have children if and only if it isn't the last
 element in a list.
@@ -142,14 +131,14 @@ element in a list.
 Evidence:
 1. Layer records with no children typically appear inside lists by themselves.
 1. Path records in certain files have data after the vectors, and the viable pointers
-   occupy the last 8 bytes of the record. 
+   occupy the last 8 bytes of the record.
 1. Attribute records, such as fills or stroke width, seem to reside as leaves
    in singleton lists.
 1. Adopting this scheme appears to guarantee that the file is read without leaving
-   a significant number of 8 byte gaps. These 8 byte gaps would indicate 
+   a significant number of 8 byte gaps. These 8 byte gaps would indicate
    missed pointers at the end of records.
 
-### File traversal
+#### Traversal
 
 The files can be traversed as follows
 
@@ -170,7 +159,7 @@ function readChildren() {
         const {position, next} = readChildPointer();
         readRecord();
         if (next !== 0) {
-            this.readGrandChildren(position + next - 8);
+            this.readGrandchildren(position + next - 8);
         } else {
             break;
         }
@@ -178,7 +167,7 @@ function readChildren() {
     }
 }
 
-function readGrandChildren(pointerPosition) {
+function readGrandchildren(pointerPosition) {
     const current = getPosition();
     assert(current <= pointerPosition);
     setPosition(pointerPosition);
@@ -193,27 +182,42 @@ function readGrandChildren(pointerPosition) {
 where
 
 1. The `readNodePointer` and `readChildPointer` functions read the appropriate `next`
-   and `previous` values, and returns them along with the position of the pointer in the file.
+   and `previous` values, and return them along with the position of the pointer in the file.
 1. The `setPosition` function allows one to navigate to a certain point in the file.
 1. The `readRecord` function reads the appropriate record data from the file.
 
+### Record header
+
+The records, unless noted otherwise, all share a common header.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 4      | Record type (Bits 0-7 type, 8-31 are sometimes set)
+|4      | 4      | Unknown
+|8      | 4      | Bounding Box Min X
+|12     | 4      | Bounding Box Min Y
+|16     | 4      | Bounding Box Max X
+|20     | 4      | Bounding Box Max Y
+
+For objects that have no immediate visual representation, such as the palette, the bounding box
+entries are usually zero.
 
 ### Record types
 
 #### Type 0x01: Unknown, Text
 
-Notes: In the Apple1, Clock2 files unless the linked list entries at the end of these records are 
-processed then the vectors around the textual elements won't be drawn.
+Notes: After the bounding rectangle there are a number of trailing zeros. The number of zeros can vary,
+and there can sometimes be string data present at offset 84 too.
 
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
-|24     | 4      | Unknown, 2 in Clock2, 0 or 2 in Apple 1
+|24     | 4      | Unknown
 |28     | 4      | Unknown
 |32     | 4      | Unknown
-|36     | 4      | Unknown, 15 in Clock2, 11 in Apple 1
-|40     | 4      | Unknown, 15 in Clock2, 11 in Apple 1
-|44     | 4      | Unknown, 0
+|36     | 4      | Unknown
+|40     | 4      | Unknown
+|44     | 4      | Unknown
 |48     | 4      | Bounding Rectangle Bottom Left X
 |52     | 4      | Bounding Rectangle Bottom Left Y
 |56     | 4      | Bounding Rectangle Top Left X
@@ -222,14 +226,8 @@ processed then the vectors around the textual elements won't be drawn.
 |68     | 4      | Bounding Rectangle Top Right Y
 |72     | 4      | Bounding Rectangle Bottom Right X
 |76     | 4      | Bounding Rectangle Bottom Right Y
-|80     | 4      | Unknown, 0
-|84     | 4      | Unknown, 0
-|88     | 4      | Unknown, 0
-|92     | 4      | Unknown, 0
-|96     | 4      | Unknown, 0
-|100    | 4      | Unknown, 0
-|104    | 4      | Offset to previous
-|108    | 4      | Offset to next
+|80     | Varies | Unknown
+|n - 8  | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x02: Path
 
@@ -240,8 +238,7 @@ Note: In certain cases (A5000) there's extra data after the path data.
 |0      | 24     | [Record header](#record-header)
 |24     | varies | [Path data](#path-data)
 |varies | varies | Unknown, sometimes present
-|n - 8  | 4      | Offset to previous
-|n - 4  | 4      | Offset to next
+|n - 8  | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x06: Unknown, Group
 
@@ -251,27 +248,24 @@ Note: In certain cases (A5000) there's extra data after the path data.
 |24     | 4      | Unknown
 |28     | 4      | Unknown
 |32     | 4      | Unknown
-|36     | 4      | Offset to previous
-|40     | 4      | Offset to next
+|36     | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x0A: Layer
 
-The pointers at the end of the record are optional. Their presence must be inferred from the size of the
-surrounding records.
 
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
 |24     | 4      | Unknown, Bit 0 seems to control layer visibility.
 |28     | 32     | Layer name, null terminated. The length stated here is a guess.
-|60     | 4      | Offset to previous
-|64     | 4      | Offset to next
+|60     | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x21: Palette
 
 Note: This record isn't straightforward and will often contain [UBuf](#ubuf) objects before the palette.
 
-For example consider the AABOX file whose palette data starts as 0x191D4.
+There might be a limit to the number of palette entries. Bit 31 is sometimes set and 
+this would result in a nonsensical number of colours.
 
 |Offset | Length | Content
 |-------|--------|-------
@@ -294,7 +288,7 @@ For example consider the AABOX file whose palette data starts as 0x191D4.
 
 #### Type 0x22: Unknown
 
-Purpose of this record isn't known. Maybe an options record? The text `1cm` seems to occur relatively often. 
+Purpose of this record isn't known. Maybe an options record? The text `1cm` seems to occur relatively often.
 
 |Offset | Length | Content
 |-------|--------|-------
@@ -399,7 +393,7 @@ For values of other than 3 however I was unable to get !AWiewer to produce diffe
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
-|24     | 4      | Unknown (0,1)
+|24     | 4      | Unknown (0,1,2,3,4,5,6,0xFFFFFFFF)
 
 #### Type 0x2C: Path
 
@@ -408,8 +402,7 @@ For values of other than 3 however I was unable to get !AWiewer to produce diffe
 |0      | 24     | [Record header](#record-header)
 |24     | 4      | Unknown
 |28     | varies | [Path data](#path-data)
-|n - 8  | 4      | Offset to previous
-|n - 4  | 4      | Offset to next
+|n - 8  | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x2D: Character
 
@@ -460,8 +453,6 @@ Another interpretation could be that the points form basis vectors for the paths
 
 These 3 points might have something to do with radial fills.
 
-**Note:** I'm not sure about the previous and next at the end of this record.
-
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
@@ -472,8 +463,7 @@ These 3 points might have something to do with radial fills.
 |40     | 4      | Bounding Triangle Top Right X
 |44     | 4      | Bounding Triangle Top Right Y
 |48     | varies | [Path data](#path-data)
-|n - 8  | 4      | Offset to previous
-|n - 4  | 4      | Offset to next
+|n - 8  | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x35: Unknown
 
@@ -488,20 +478,20 @@ These 3 points might have something to do with radial fills.
 |44     | 4      | Bounding Triangle Top Right X
 |48     | 4      | Bounding Triangle Top Right Y
 |52     | varies | [Path data](#path-data)
-|n - 8  | 4      | Offset to previous
-|n - 4  | 4      | Offset to next
+|n - 8  | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x38: Unknown
 
-Encountered this record in BOSS3. Unsure if the length of the unknown data is fixed.
+This record appears to be a fixed 156 bytes in length. However, there is one instance of the record
+being at the end of a list and with no path data. It isn't known how to correctly determine the
+presence of path data.
 
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
-|24     | varies | [Path data](#path-data)
-|varies | 68?    | Unknown
-|n - 8  | 4      | Offset to previous
-|n - 4  | 4      | Offset to next
+|24     | 64     | [Path data](#path-data) (5 Moves + 1 End)
+|88     | 68     | Unknown
+|156    | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x39: File information
 
@@ -528,8 +518,7 @@ This record can vary in size.
 |56     | 4      | Unknown, (-1)
 |60     | 4      | Unknown, (-1)
 |64     | 4      | Unknown, (-1)
-|68     | 4      | Offset to previous
-|72     | 4      | Offset to next
+|68     | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x3B: Unknown
 
