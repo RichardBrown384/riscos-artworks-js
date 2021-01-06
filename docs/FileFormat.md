@@ -282,12 +282,12 @@ this would result in a nonsensical number of colours.
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | Name of colour, null terminated, then filled with what looks like garbage
-|28     | 4      | Colour (BGR) usually with bit 29 set.
+|24     | 4      | Colour (BGR) usually with bit 29 set.
+|28     | 4      | Unknown
 |32     | 4      | Unknown
 |36     | 4      | Unknown
 |40     | 4      | Unknown
 |44     | 4      | Unknown
-|48     | 4      | Unknown
 
 #### Type 0x22: Unknown
 

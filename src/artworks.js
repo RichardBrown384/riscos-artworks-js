@@ -259,11 +259,11 @@ class ArtworksFile {
             colours.push({
                 name: this.readStringFully(24),
                 colour: this.readInt(),
+                unknown28: this.readInt(),
                 unknown32: this.readInt(),
                 unknown36: this.readInt(),
                 unknown40: this.readInt(),
                 unknown44: this.readInt(),
-                unknown48: this.readInt()
             });
         }
         populateRecord({
@@ -673,7 +673,7 @@ class ArtworksFile {
         const stack = [];
 
         const checkStack = () => {
-            this.check(stack.length !== 0 , 'empty stack');
+            this.check(stack.length !== 0, 'empty stack');
         }
 
         const startRecord = (data) => {
