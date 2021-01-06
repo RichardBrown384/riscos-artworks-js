@@ -16,7 +16,7 @@
     *  [Type 0x02](#type-0x02-path)
     *  [Type 0x06](#type-0x06-unknown-group)
     *  [Type 0x0A](#type-0x0a-layer)
-    *  [Type 0x21](#type-0x21-palette)
+    *  [Type 0x21](#type-0x21-work-area)
     *  [Type 0x22](#type-0x22-unknown)
     *  [Type 0x23](#type-0x23-file-save-location)
     *  [Type 0x24](#type-0x24-stroke-colour)
@@ -43,6 +43,7 @@
     *  [Type 0x3F](#type-0x3f-unknown)
   * [Coordinate system](#coordinate-system)
   * [Path data](#path-data)
+  * [Palette](#palette)  
   * [UBuf](#ubuf)
 * [References](#references)
 
@@ -77,11 +78,15 @@ The header has a 16 byte signature followed by more data whose purpose is largel
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 4      | Top!
-|4      | 4      | 09, 10 (0xA)
+|4      | 4      | Unknown (version?) 9, 10
 |8      | 8      | TopDraw (null terminated)
 |16     | 4      | Unknown
 |20     | 4      | Absolute offset to start of body
-|24     | varies | Unknown
+|24     | 16     | Unknown
+|40     | 4      | Absolute offset to start of [Undo Buffer](#ubuf), -1 if absent
+|44     | 16     | Unknown
+|60     | 4      | Absolute offset to start of [Palette](#palette)
+|64     | varies | Unknown
 
 ## Body
 
@@ -255,7 +260,6 @@ Note: In certain cases there's extra data after the path data.
 
 #### Type 0x0A: Layer
 
-
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
@@ -263,31 +267,18 @@ Note: In certain cases there's extra data after the path data.
 |28     | 32     | Layer name, null terminated. The length stated here is a guess.
 |60     | 8      | [Grandchild pointer](#grandchild-nodes)
 
-#### Type 0x21: Palette
+#### Type 0x21: Work Area
 
-Note: This record isn't straightforward and will often contain [UBuf](#ubuf) objects before the palette.
-
-There might be a limit to the number of palette entries. Bit 31 is sometimes set and 
-this would result in a nonsensical number of colours.
+This record is thought to always occur at the end of the file. The record will always contain
+the file's [Palette](#palette) information, but may also contain other information such as the 
+[Undo Buffer](#ubuf). The locations of these objects within the record is determined by absolute
+offsets specified in the file's [header](#header).
 
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
-|24     | 4      | Unknown (Sometimes UBuf, 55 42 75 66)
-|28     | 4      | Number of palette entries
-|32     | varies | Sequential palette entries
-
-##### Palette entry
-
-|Offset | Length | Content
-|-------|--------|-------
-|0      | 24     | Name of colour, null terminated, then filled with what looks like garbage
-|28     | 4      | Colour (BGR) usually with bit 29 set.
-|32     | 4      | Unknown
-|36     | 4      | Unknown
-|40     | 4      | Unknown
-|44     | 4      | Unknown
-|48     | 4      | Unknown
+|varies | varies | [Ubuf record](#ubuf) (optional)
+|varies | varies | [Palette record](#palette)
 
 #### Type 0x22: Unknown
 
@@ -307,7 +298,6 @@ This record can vary in size.
 |0      | 24     | [Record header](#record-header)
 |24     | 4      | Unknown
 |28     | varies | File path, null terminated string.
-
 
 #### Type 0x24: Stroke Colour
 
@@ -590,10 +580,68 @@ A path then comprises one or more path elements.
 |6      | 3      | Bezier to absolute
 |8      | 1      | Line to absolute
 
+### Palette
+
+Contains the indexed palette for the file. *NB* the number of entries sometimes might have bit 31 set. 
+
+#### Palette header
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 4      | Number of palette entries
+|4      | 4      | Unknown, usually less than the number of palette entries
+|8      | varies | Sequential palette entries
+
+#### Palette entry
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | Name of colour, null terminated, then filled with what looks like garbage
+|24     | 4      | Colour (BGR) usually with bit 29 set.
+|28     | 4      | Unknown
+|32     | 4      | Unknown
+|36     | 4      | Unknown
+|40     | 4      | Unknown
+|44     | 4      | Unknown
+
 ### UBuf
 
-Unknown. The current guess is that this stands for Undo Buffer. They sometimes appear in the Palette record
-before the colour table.
+A UBuf section looks as if it comprises a header followed by a list of undo actions followed by a list of redo actions.
+
+The undo list starts with a `<Nothing>` action, and the redo list ends with one.
+
+There doesn't appear to be any reliable information as to the length of the redo list.
+
+In one case, `AFFY,d94`, the redo list is corrupted, and the size of the sole entry isn't an integer multiple of 4.
+
+#### UBuf header
+
+Offsets 8 and 12 seem to semi-reliably point to the last and first entries of the undo and redo lists respectively.
+
+In the one case where offset 12 seems to point to garbage, `AFFY,d94`, offset 16 is not in agreement with offset 12 (which is usually is).
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 4      | UBuf
+|4      | 4      | Unknown, (0 or rarely 8)
+|8      | 4      | Unknown, offset to last [undo entry](#undo-entry)
+|12     | 4      | Unknown, offset to first [redo entry](#undo-entry)
+|16     | 4      | Unknown, when there is more than one undo entry the offset to the last entry, otherwise 0.
+|20     | 4      | Unknown, when there is more than one undo entry the offset to the end of the data, otherwise 0
+|24     | 4      | Unknown, sometimes less than offset 20
+|28     | 4      | Unknown, (65536 or 8192, but not _always_ a power of two)
+|32     | 4      | Unknown
+
+#### Undo entry
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 4      | Size of previous entry
+|4      | 4      | Size of this entry
+|8      | 4      | Unknown, some indications that this might be the entry type
+|12     | 4      | Unknown
+|16     | 4      | Unknown
+|20     | 16     | Name of entry (move, paste, make shapes, etc)
 
 ## References
 
