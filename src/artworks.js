@@ -218,6 +218,27 @@ class ArtworksFile {
         return path;
     }
 
+    readHeader() {
+        this.checkAlignment('misaligned header');
+        return {
+            identifier: this.readStringFully(4),
+            version: this.readInt(),
+            program: this.readStringFully(8),
+            unknown16: this.readInt(),
+            bodyPosition: this.readInt(),
+            unknown24: this.readInt(),
+            unknown28: this.readInt(),
+            unknown32: this.readInt(),
+            unknown36: this.readInt(),
+            ubufPosition: this.readSignedInt(),
+            unknown44: this.readInt(),
+            unknown48: this.readInt(),
+            unknown52: this.readInt(),
+            unknown56: this.readInt(),
+            palettePosition: this.readSignedInt()
+        };
+    }
+
     readPaletteEntry() {
         this.checkAlignment('misaligned palette entry');
         return {
@@ -715,28 +736,12 @@ class ArtworksFile {
             unsupported.push(record);
         }
 
-        this.setPosition(0);
-
         try {
-            const header = {
-                identifier: this.readStringFully(4),
-                version: this.readInt(),
-                program: this.readStringFully(8),
-                unknown16: this.readInt(),
-                bodyPosition: this.readInt(),
-                unknown24: this.readInt(),
-                unknown28: this.readInt(),
-                unknown32: this.readInt(),
-                unknown36: this.readInt(),
-                ubufPosition: this.readSignedInt(),
-                unknown44: this.readInt(),
-                unknown48: this.readInt(),
-                unknown52: this.readInt(),
-                unknown56: this.readInt(),
-                palettePosition: this.readSignedInt()
-            };
+            this.setPosition(0);
+            const header = this.readHeader();
 
             const {bodyPosition, palettePosition} = header;
+
             this.setPosition(bodyPosition);
             this.readNodes({
                 startRecord,
@@ -744,6 +749,7 @@ class ArtworksFile {
                 populateRecord,
                 unsupportedRecord
             });
+
             this.setPosition(palettePosition);
             const palette = this.readPalette();
             return {

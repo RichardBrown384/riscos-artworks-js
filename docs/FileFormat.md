@@ -321,13 +321,13 @@ This record can vary in size.
 |24     | 4      | Fill Type <ol start="0"><li>Flat</li><li>Linear</li><li>Radial</li></ol>
 |28     | 4      | Unknown (0x59b98)
 
-If Fill Type is 0
+If Fill Type is flat
 
 |Offset | Length | Content
 |-------|--------|-------
 |32     | 4      | Colour Index
 
-If Fill Type is 1 or 2
+If Fill Type is linear or radial
 
 |Offset | Length | Content
 |-------|--------|-------
@@ -371,7 +371,7 @@ For values of other than 3 however I was unable to get !AWiewer to produce diffe
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
-|24     | 4      | Cap Style (0,1,2,3)
+|24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol>
 |28     | 4      | Unknown (0x4000200,0)
 
 #### Type 0x2A: Unknown
