@@ -2,7 +2,7 @@ const RECORD_TEXT = 0x01;
 const RECORD_PATH = 0x02;
 const RECORD_GROUP = 0x06;
 const RECORD_LAYER = 0x0A;
-const RECORD_PALETTE = 0x21;
+const RECORD_WORK_AREA = 0x21;
 const RECORD_22 = 0x22;
 const RECORD_SAVE_LOCATION = 0x23;
 const RECORD_STROKE_COLOUR = 0x24;
@@ -93,8 +93,8 @@ class ArtworksFile {
         this.check(false, message, data);
     }
 
-    checkAlignment(message) {
-        this.check(this.getPosition() % 4 === 0, message);
+    checkAlignment(message, data = {}) {
+        this.check(this.getPosition() % 4 === 0, message, data);
     }
 
     readByte() {
@@ -218,6 +218,33 @@ class ArtworksFile {
         return path;
     }
 
+    readPaletteEntry() {
+        this.checkAlignment('misaligned palette entry');
+        return {
+            name: this.readStringFully(24),
+            colour: this.readInt(),
+            unknown28: this.readInt(),
+            unknown32: this.readInt(),
+            unknown36: this.readInt(),
+            unknown40: this.readInt(),
+            unknown44: this.readInt()
+        }
+    }
+
+    readPalette() {
+        this.checkAlignment('misaligned palette');
+        const colours = [];
+        const count = this.readInt() & 0x7FFFFFFF;
+        const unknown4 = this.readInt() & 0x7FFFFFFF;
+        for (let n = 0; n < count; n++) {
+            colours.push(this.readPaletteEntry());
+        }
+        return {
+            unknown4,
+            colours
+        };
+    }
+
     readRecordText({populateRecord}) {
         populateRecord({
             unknown24: this.readInt(),
@@ -251,25 +278,7 @@ class ArtworksFile {
         });
     }
 
-    readRecordPalette({populateRecord}) {
-        const unknown24 = this.readInt();
-        const colours = [];
-        const count = this.readInt() & 0x7FFFFFFF;
-        for (let n = 0; n < count; n++) {
-            colours.push({
-                name: this.readStringFully(24),
-                colour: this.readInt(),
-                unknown28: this.readInt(),
-                unknown32: this.readInt(),
-                unknown36: this.readInt(),
-                unknown40: this.readInt(),
-                unknown44: this.readInt(),
-            });
-        }
-        populateRecord({
-            unknown24,
-            colours
-        });
+    readRecordWorkArea() {
     }
 
     readRecord22() {
@@ -471,7 +480,9 @@ class ArtworksFile {
     }
 
     readRecord(callbacks, {next}) {
-        const checkLast = (message) => { this.check(next === 0, message);}
+        const checkLast = (message) => {
+            this.check(next === 0, message);
+        };
         const {populateRecord, unsupportedRecord} = callbacks;
         const type = this.readInt();
         const unknown4 = this.readInt();
@@ -490,9 +501,9 @@ class ArtworksFile {
             case RECORD_LAYER:
                 this.readRecordLayer(callbacks);
                 break;
-            case RECORD_PALETTE:
-                checkLast('records after palette');
-                this.readRecordPalette(callbacks);
+            case RECORD_WORK_AREA:
+                checkLast('records after work area');
+                this.readRecordWorkArea(callbacks);
                 break;
             case RECORD_22:
                 checkLast('records after record 22');
@@ -712,10 +723,20 @@ class ArtworksFile {
                 version: this.readInt(),
                 program: this.readStringFully(8),
                 unknown16: this.readInt(),
-                bodyPosition: this.readInt()
+                bodyPosition: this.readInt(),
+                unknown24: this.readInt(),
+                unknown28: this.readInt(),
+                unknown32: this.readInt(),
+                unknown36: this.readInt(),
+                ubufPosition: this.readSignedInt(),
+                unknown44: this.readInt(),
+                unknown48: this.readInt(),
+                unknown52: this.readInt(),
+                unknown56: this.readInt(),
+                palettePosition: this.readSignedInt()
             };
 
-            const {bodyPosition} = header;
+            const {bodyPosition, palettePosition} = header;
             this.setPosition(bodyPosition);
             this.readNodes({
                 startRecord,
@@ -723,9 +744,12 @@ class ArtworksFile {
                 populateRecord,
                 unsupportedRecord
             });
+            this.setPosition(palettePosition);
+            const palette = this.readPalette();
             return {
                 header,
                 records,
+                palette,
                 unsupported,
                 unreadRanges: this.getUnreadRanges()
             };
@@ -747,7 +771,7 @@ module.exports = {
     RECORD_PATH,
     RECORD_GROUP,
     RECORD_LAYER,
-    RECORD_PALETTE,
+    RECORD_WORK_AREA,
     RECORD_22,
     RECORD_SAVE_LOCATION,
     RECORD_STROKE_COLOUR,
