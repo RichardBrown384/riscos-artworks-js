@@ -44,11 +44,10 @@ class ArtworksError extends Error {
 }
 
 class ArtworksFile {
-    constructor(buffer, length) {
-        this.buffer = buffer;
-        this.length = length;
+    constructor(buffer) {
+        this.view = new DataView(buffer);
+        this.length = buffer.byteLength;
         this.position = 0;
-        this.reads = new Set();
     }
 
     getLength() {
@@ -61,26 +60,6 @@ class ArtworksFile {
 
     setPosition(v) {
         this.position = v;
-    }
-
-    getUnreadRanges() {
-        const result = [];
-        let start = 0;
-        for (let i = 1; i < this.length + 1; i++) {
-            const previous = this.reads.has(i - 1);
-            const current = this.reads.has(i) || (i === this.length);
-            if (previous !== current) {
-                if (current) {
-                    result.push({
-                        range: [start, i],
-                        length: i - start
-                    });
-                } else {
-                    start = i;
-                }
-            }
-        }
-        return result;
     }
 
     check(condition, message, data = {}) {
@@ -97,11 +76,14 @@ class ArtworksFile {
         this.check(this.getPosition() % 4 === 0, message, data);
     }
 
-    readByte() {
+    checkPositionAndSize(n) {
         this.check(this.position >= 0, 'reading off the start of a file');
-        this.check(this.position < this.length, 'reading off the end of the file');
-        this.reads.add(this.position);
-        const b = this.buffer[this.position];
+        this.check(this.position <= this.length - n, 'reading off the end of the file');
+    }
+
+    readByte() {
+        this.checkPositionAndSize(1);
+        const b = this.view.getUint8(this.position);
         this.position = this.position + 1;
         return b;
     }
@@ -114,17 +96,20 @@ class ArtworksFile {
         return result;
     }
 
-    readInt() {
+    readUint() {
         this.checkAlignment('misaligned int');
-        const x = this.readByte();
-        const y = this.readByte();
-        const z = this.readByte();
-        const w = this.readByte();
-        return x + (y * 0x100) + (z * 0x10000) + (w * 0x1000000);
+        this.checkPositionAndSize(4);
+        const v = this.view.getUint32(this.position, true);
+        this.position = this.position + 4;
+        return v;
     }
 
-    readSignedInt() {
-        return this.readInt() | 0;
+    readInt() {
+        this.checkAlignment('misaligned int');
+        this.checkPositionAndSize(4);
+        const v = this.view.getInt32(this.position, true);
+        this.position = this.position + 4;
+        return v;
     }
 
     readStringFully(n) {
@@ -156,17 +141,17 @@ class ArtworksFile {
 
     readPoint() {
         this.checkAlignment('misaligned point');
-        const x = this.readSignedInt();
-        const y = this.readSignedInt();
+        const x = this.readInt();
+        const y = this.readInt();
         return {x, y};
     }
 
     readBoundingBox() {
         this.checkAlignment('misaligned bounding box');
-        const minX = this.readSignedInt();
-        const minY = this.readSignedInt();
-        const maxX = this.readSignedInt();
-        const maxY = this.readSignedInt();
+        const minX = this.readInt();
+        const minY = this.readInt();
+        const maxX = this.readInt();
+        const maxY = this.readInt();
         return {minX, minY, maxX, maxY};
     }
 
@@ -183,7 +168,7 @@ class ArtworksFile {
         this.checkAlignment('misaligned path');
         const path = [];
         while (true) {
-            const tag = this.readInt();
+            const tag = this.readUint();
             const maskedTag = tag & 0xFF;
             if (maskedTag === 0) {
                 break;
@@ -218,24 +203,45 @@ class ArtworksFile {
         return path;
     }
 
+    readHeader() {
+        this.checkAlignment('misaligned header');
+        return {
+            identifier: this.readStringFully(4),
+            version: this.readUint(),
+            program: this.readStringFully(8),
+            unknown16: this.readUint(),
+            bodyPosition: this.readUint(),
+            unknown24: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint(),
+            unknown36: this.readUint(),
+            ubufPosition: this.readInt(),
+            unknown44: this.readUint(),
+            unknown48: this.readUint(),
+            unknown52: this.readUint(),
+            unknown56: this.readUint(),
+            palettePosition: this.readInt()
+        };
+    }
+
     readPaletteEntry() {
         this.checkAlignment('misaligned palette entry');
         return {
             name: this.readStringFully(24),
-            colour: this.readInt(),
-            unknown28: this.readInt(),
-            unknown32: this.readInt(),
-            unknown36: this.readInt(),
-            unknown40: this.readInt(),
-            unknown44: this.readInt()
+            colour: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint(),
+            unknown36: this.readUint(),
+            unknown40: this.readUint(),
+            unknown44: this.readUint()
         }
     }
 
     readPalette() {
         this.checkAlignment('misaligned palette');
         const colours = [];
-        const count = this.readInt() & 0x7FFFFFFF;
-        const unknown4 = this.readInt() & 0x7FFFFFFF;
+        const count = this.readUint() & 0x7FFFFFFF;
+        const unknown4 = this.readUint() & 0x7FFFFFFF;
         for (let n = 0; n < count; n++) {
             colours.push(this.readPaletteEntry());
         }
@@ -247,12 +253,12 @@ class ArtworksFile {
 
     readRecordText({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
-            unknown28: this.readInt(),
-            unknown32: this.readInt(),
-            unknown36: this.readInt(),
-            unknown40: this.readInt(),
-            unknown44: this.readInt(),
+            unknown24: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint(),
+            unknown36: this.readUint(),
+            unknown40: this.readUint(),
+            unknown44: this.readUint(),
             rectangle: this.readPolyline(4),
         });
     }
@@ -265,15 +271,15 @@ class ArtworksFile {
 
     readRecordGroup({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
-            unknown28: this.readInt(),
-            unknown32: this.readInt()
+            unknown24: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint()
         });
     }
 
     readRecordLayer({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
+            unknown24: this.readUint(),
             name: this.readStringFully(32)
         });
     }
@@ -286,44 +292,44 @@ class ArtworksFile {
 
     readRecordSaveLocation({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
+            unknown24: this.readUint(),
             saveLocation: this.readString()
         });
     }
 
     readRecordStrokeColour({populateRecord}) {
         populateRecord({
-            strokeColour: this.readInt()
+            strokeColour: this.readUint()
         });
     }
 
     readRecordStrokeWidth({populateRecord}) {
         populateRecord({
-            strokeWidth: this.readInt()
+            strokeWidth: this.readUint()
         });
     }
 
     readRecordFillColour({populateRecord}) {
-        const fillType = this.readInt();
+        const fillType = this.readUint();
         populateRecord({
             fillType,
-            unknown28: this.readInt()
+            unknown28: this.readUint()
         });
         if (fillType === FILL_FLAT) {
             populateRecord({
-                colour: this.readInt()
+                colour: this.readUint()
             });
         } else if (fillType === FILL_LINEAR) {
             populateRecord({
                 gradientLine: this.readPolyline(2),
-                startColour: this.readInt(),
-                endColour: this.readInt()
+                startColour: this.readUint(),
+                endColour: this.readUint()
             });
         } else if (fillType === FILL_RADIAL) {
             populateRecord({
                 gradientLine: this.readPolyline(2),
-                startColour: this.readInt(),
-                endColour: this.readInt()
+                startColour: this.readUint(),
+                endColour: this.readUint()
             });
         } else {
             this.fail('unsupported fill type', fillType);
@@ -332,50 +338,50 @@ class ArtworksFile {
 
     readRecordJoinStyle({populateRecord}) {
         populateRecord({
-            joinStyle: this.readInt()
+            joinStyle: this.readUint()
         });
     }
 
     readRecordLineCapEnd({populateRecord}) {
         populateRecord({
-            capStyle: this.readInt(),
-            unknown28: this.readInt()
+            capStyle: this.readUint(),
+            unknown28: this.readUint()
         });
     }
 
     readRecordLineCapStart({populateRecord}) {
         populateRecord({
-            capStyle: this.readInt(),
-            unknown28: this.readInt()
+            capStyle: this.readUint(),
+            unknown28: this.readUint()
         });
     }
 
     readRecord2A({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt()
+            unknown24: this.readUint()
         });
     }
 
     readRecord2B({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt()
+            unknown24: this.readUint()
         });
     }
 
     readRecord2C({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
+            unknown24: this.readUint(),
             path: this.readPath()
         });
     }
 
     readRecordCharacter({populateRecord}) {
         populateRecord({
-            characterCode: this.readInt(),
-            unknown28: this.readInt(),
-            unknown32: this.readInt(),
-            unknown36: this.readInt(),
-            unknown40: this.readInt()
+            characterCode: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint(),
+            unknown36: this.readUint(),
+            unknown40: this.readUint()
         });
     }
 
@@ -387,14 +393,14 @@ class ArtworksFile {
 
     readRecordFontSize({populateRecord}) {
         populateRecord({
-            xSize: this.readInt(),
-            ySize: this.readInt()
+            xSize: this.readUint(),
+            ySize: this.readUint()
         });
     }
 
     readRecord32({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
+            unknown24: this.readUint(),
         });
     }
 
@@ -407,7 +413,7 @@ class ArtworksFile {
 
     readRecord35({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
+            unknown24: this.readUint(),
             triangle: this.readPolyline(3),
             path: this.readPath()
         });
@@ -428,32 +434,32 @@ class ArtworksFile {
 
     readRecord3A({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
-            unknown28: this.readInt(),
-            unknown32: this.readInt(),
-            unknown36: this.readInt(),
-            unknown40: this.readInt(),
-            unknown44: this.readInt(),
-            unknown48: this.readInt(),
-            unknown52: this.readInt(),
-            unknown56: this.readInt(),
-            unknown60: this.readInt(),
-            unknown64: this.readInt()
+            unknown24: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint(),
+            unknown36: this.readUint(),
+            unknown40: this.readUint(),
+            unknown44: this.readUint(),
+            unknown48: this.readUint(),
+            unknown52: this.readUint(),
+            unknown56: this.readUint(),
+            unknown60: this.readUint(),
+            unknown64: this.readUint()
         });
     }
 
     readRecord3B({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
-            unknown28: this.readInt(),
-            unknown32: this.readInt(),
-            unknown36: this.readInt(),
-            unknown40: this.readInt(),
-            unknown44: this.readInt(),
-            unknown48: this.readInt(),
-            unknown52: this.readInt(),
-            unknown56: this.readInt(),
-            unknown60: this.readInt(),
+            unknown24: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint(),
+            unknown36: this.readUint(),
+            unknown40: this.readUint(),
+            unknown44: this.readUint(),
+            unknown48: this.readUint(),
+            unknown52: this.readUint(),
+            unknown56: this.readUint(),
+            unknown60: this.readUint(),
         });
     }
 
@@ -465,17 +471,17 @@ class ArtworksFile {
 
     readRecord3E({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
-            unknown28: this.readInt(),
-            unknown32: this.readInt()
+            unknown24: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint()
         });
     }
 
     readRecord3F({populateRecord}) {
         populateRecord({
-            unknown24: this.readInt(),
-            unknown28: this.readInt(),
-            unknown32: this.readInt()
+            unknown24: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint()
         });
     }
 
@@ -484,8 +490,8 @@ class ArtworksFile {
             this.check(next === 0, message);
         };
         const {populateRecord, unsupportedRecord} = callbacks;
-        const type = this.readInt();
-        const unknown4 = this.readInt();
+        const type = this.readUint();
+        const unknown4 = this.readUint();
         const boundingBox = this.readBoundingBox();
         populateRecord({type, boundingBox, unknown4});
         switch (type & 0xFF) {
@@ -610,8 +616,8 @@ class ArtworksFile {
 
     readNodePointer() {
         const position = this.getPosition();
-        const previous = this.readSignedInt();
-        const next = this.readSignedInt();
+        const previous = this.readInt();
+        const next = this.readInt();
         const pointer = {position, previous, next};
         this.checkPointer(pointer);
         return pointer;
@@ -619,8 +625,8 @@ class ArtworksFile {
 
     readChildPointer() {
         const position = this.getPosition();
-        const next = this.readSignedInt();
-        const previous = this.readSignedInt();
+        const next = this.readInt();
+        const previous = this.readInt();
         const pointer = {position, previous, next};
         this.checkPointer(pointer);
         return pointer;
@@ -715,28 +721,12 @@ class ArtworksFile {
             unsupported.push(record);
         }
 
-        this.setPosition(0);
-
         try {
-            const header = {
-                identifier: this.readStringFully(4),
-                version: this.readInt(),
-                program: this.readStringFully(8),
-                unknown16: this.readInt(),
-                bodyPosition: this.readInt(),
-                unknown24: this.readInt(),
-                unknown28: this.readInt(),
-                unknown32: this.readInt(),
-                unknown36: this.readInt(),
-                ubufPosition: this.readSignedInt(),
-                unknown44: this.readInt(),
-                unknown48: this.readInt(),
-                unknown52: this.readInt(),
-                unknown56: this.readInt(),
-                palettePosition: this.readSignedInt()
-            };
+            this.setPosition(0);
+            const header = this.readHeader();
 
             const {bodyPosition, palettePosition} = header;
+
             this.setPosition(bodyPosition);
             this.readNodes({
                 startRecord,
@@ -744,14 +734,14 @@ class ArtworksFile {
                 populateRecord,
                 unsupportedRecord
             });
+
             this.setPosition(palettePosition);
             const palette = this.readPalette();
             return {
                 header,
                 records,
                 palette,
-                unsupported,
-                unreadRanges: this.getUnreadRanges()
+                unsupported
             };
         } catch (error) {
             return {
@@ -760,10 +750,6 @@ class ArtworksFile {
             }
         }
     }
-}
-
-function load(buffer, length) {
-    return new ArtworksFile(buffer, length).load();
 }
 
 module.exports = {
@@ -802,6 +788,8 @@ module.exports = {
     FILL_RADIAL,
 
     Artworks: {
-        load
+        load: function (buffer) {
+            return new ArtworksFile(Uint8Array.from(buffer).buffer).load();
+        }
     }
 }
