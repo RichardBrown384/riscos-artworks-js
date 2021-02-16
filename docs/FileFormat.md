@@ -180,7 +180,7 @@ function readGrandchildren(pointerPosition) {
     const {position, next} = readNodePointer();
     if (next !== 0) {
         setPosition(position + next);
-        readNodes(callbacks);
+        readNodes();
     }
 }
 ```
