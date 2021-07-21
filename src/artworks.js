@@ -14,6 +14,7 @@ const RECORD_LINE_CAP_END = 0x29;
 const RECORD_2A = 0x2A;
 const RECORD_2B = 0x2B;
 const RECORD_2C = 0x2C;
+const RECORD_2E = 0x2E;
 const RECORD_CHARACTER = 0x2D;
 const RECORD_FONT_NAME = 0x2F;
 const RECORD_FONT_SIZE = 0x30;
@@ -375,6 +376,16 @@ class ArtworksFile {
         });
     }
 
+    readRecord2E({populateRecord}) {
+        populateRecord({
+            unknown24: this.readUint(),
+            unknown28: this.readStringFully(8),
+            unknown36: this.readStringFully(24),
+            unknown60: this.readInt(),
+            unknown64: this.readInt()
+        });
+    }
+
     readRecordCharacter({populateRecord}) {
         populateRecord({
             characterCode: this.readUint(),
@@ -553,6 +564,9 @@ class ArtworksFile {
                 break;
             case RECORD_2C:
                 this.readRecord2C(callbacks);
+                break;
+            case RECORD_2E:
+                this.readRecord2E(callbacks);
                 break;
             case RECORD_CHARACTER:
                 this.readRecordCharacter(callbacks);
@@ -769,6 +783,7 @@ module.exports = {
     RECORD_2A,
     RECORD_2B,
     RECORD_2C,
+    RECORD_2E,
     RECORD_CHARACTER,
     RECORD_FONT_NAME,
     RECORD_FONT_SIZE,

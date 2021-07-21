@@ -29,6 +29,7 @@
     *  [Type 0x2B](#type-0x2b-unknown)
     *  [Type 0x2C](#type-0x2c-path)
     *  [Type 0x2D](#type-0x2d-character)
+    *  [Type 0x2E](#type-0x2e-unknown)   
     *  [Type 0x2F](#type-0x2f-font-name)
     *  [Type 0x30](#type-0x30-font-size)
     *  [Type 0x32](#type-0x32-unknown)
@@ -411,6 +412,20 @@ Please refer to the [RISC OS Character Set][risc-os-character-set] for details.
 |36     | 4      | Unknown (0xf8f)
 |40     | 4      | Unknown (0)
 |44     | 8      | [Grandchild pointer](#grandchild-nodes)
+
+#### Type 0x2E: Unknown
+
+The purpose of this record is unknown. Offsets 28 and 36 usually comprise two strings but this isn't always the case.
+Sometimes the strings offsets 8 and 36 are `selectio` and `n` respectively. The latter has trailing garbage.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown (17)
+|28     | 8      | String, null terminated ('group', 'selectio')
+|36     | 24     | String, null terminated ('Black', 'n' followed by garbage)
+|60     | 4      | Unknown (-76)
+|64     | 4      | Unknown
 
 #### Type 0x2F: Font name
 
