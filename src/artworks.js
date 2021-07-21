@@ -28,6 +28,7 @@ const RECORD_3B = 0x3B;
 const RECORD_3D = 0x3D;
 const RECORD_3E = 0x3E;
 const RECORD_3F = 0x3F;
+const RECORD_42 = 0x42;
 
 const FILL_FLAT = 0;
 const FILL_LINEAR = 1;
@@ -496,6 +497,9 @@ class ArtworksFile {
         });
     }
 
+    readRecord42() {
+    }
+
     readRecord(callbacks, {next}) {
         const checkLast = (message) => {
             this.check(next === 0, message);
@@ -566,6 +570,7 @@ class ArtworksFile {
                 this.readRecord2C(callbacks);
                 break;
             case RECORD_2E:
+                checkLast('records after record 2e');
                 this.readRecord2E(callbacks);
                 break;
             case RECORD_CHARACTER:
@@ -614,6 +619,9 @@ class ArtworksFile {
             case RECORD_3F:
                 checkLast('records after record 3f');
                 this.readRecord3F(callbacks);
+                break;
+            case RECORD_42:
+                this.readRecord42(callbacks);
                 break;
             default:
                 unsupportedRecord();
@@ -797,6 +805,7 @@ module.exports = {
     RECORD_3D,
     RECORD_3E,
     RECORD_3F,
+    RECORD_42,
 
     FILL_FLAT,
     FILL_LINEAR,

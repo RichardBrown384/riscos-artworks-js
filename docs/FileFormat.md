@@ -42,6 +42,7 @@
     *  [Type 0x3D](#type-0x3d-unknown)
     *  [Type 0x3E](#type-0x3e-unknown)
     *  [Type 0x3F](#type-0x3f-unknown)
+    *  [Type 0x42](#type-0x42-unknown)
   * [Coordinate system](#coordinate-system)
   * [Path data](#path-data)
   * [Palette](#palette)  
@@ -569,6 +570,13 @@ This record can vary in size.
 |24     | 4      | Unknown, (-1)
 |28     | 4      | Unknown, (0x40000)
 |32     | 4      | Unknown, (0x40000)
+
+#### Type 0x42: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 8      | [Grandchild pointer](#grandchild-nodes)
 
 ### Coordinate system
 
