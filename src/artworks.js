@@ -1,3 +1,4 @@
+const RECORD_00 = 0x00;
 const RECORD_TEXT = 0x01;
 const RECORD_PATH = 0x02;
 const RECORD_GROUP = 0x06;
@@ -254,6 +255,9 @@ class ArtworksFile {
             unknown4,
             colours
         };
+    }
+
+    readRecord00() {
     }
 
     readRecordText({populateRecord}) {
@@ -539,6 +543,9 @@ class ArtworksFile {
         const boundingBox = this.readBoundingBox();
         populateRecord({type, boundingBox, unknown4});
         switch (type & 0xFF) {
+            case RECORD_00:
+                this.readRecord00(callbacks);
+                break;
             case RECORD_TEXT:
                 this.readRecordText(callbacks);
                 break;
@@ -813,6 +820,7 @@ class ArtworksFile {
 }
 
 module.exports = {
+    RECORD_00,
     RECORD_TEXT,
     RECORD_PATH,
     RECORD_GROUP,
