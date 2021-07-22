@@ -32,6 +32,7 @@
     *  [Type 0x2E](#type-0x2e-unknown)   
     *  [Type 0x2F](#type-0x2f-font-name)
     *  [Type 0x30](#type-0x30-font-size)
+    *  [Type 0x31](#type-0x31-unknown)
     *  [Type 0x32](#type-0x32-unknown)
     *  [Type 0x34](#type-0x34-path)
     *  [Type 0x35](#type-0x35-unknown)
@@ -417,7 +418,7 @@ Please refer to the [RISC OS Character Set][risc-os-character-set] for details.
 #### Type 0x2E: Unknown
 
 The purpose of this record is unknown. Offsets 28 and 36 usually comprise two strings but this isn't always the case.
-Sometimes the strings offsets 8 and 36 are `selectio` and `n` respectively. The latter has trailing garbage.
+Sometimes the strings offsets 8 and 36 are `selectio` and `n` respectively.
 
 |Offset | Length | Content
 |-------|--------|-------
@@ -425,8 +426,6 @@ Sometimes the strings offsets 8 and 36 are `selectio` and `n` respectively. The 
 |24     | 4      | Unknown (17)
 |28     | 8      | String, null terminated ('group', 'selectio')
 |36     | 24     | String, null terminated ('Black', 'n' followed by garbage)
-|60     | 4      | Unknown (-76)
-|64     | 4      | Unknown
 
 #### Type 0x2F: Font name
 
@@ -446,6 +445,18 @@ Going to assume the nominal font sizes are in (1/640) of a printer's point.
 |0      | 24     | [Record header](#record-header)
 |24     | 4      | Nominal X size of the font
 |28     | 4      | Nominal Y size of the font
+
+#### Type 0x31: Unknown
+
+This record seems to appear as a sibling to records of [Type 0x01](#type-0x01-unknown-text).
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown (50)
+|28     | 4      | Unknown (0)
+|32     | 4      | Unknown (50)
+|36     | 4      | Unknown (0)
 
 #### Type 0x32: Unknown
 
@@ -572,6 +583,8 @@ This record can vary in size.
 |32     | 4      | Unknown, (0x40000)
 
 #### Type 0x42: Unknown
+
+This record seems to appear as a sibling to records of [Type 0x37](#type-0x37-unknown).
 
 |Offset | Length | Content
 |-------|--------|-------
