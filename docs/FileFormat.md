@@ -12,6 +12,7 @@
     * [Traversal](#traversal)
   * [Record header](#record-header)
   * [Record types](#record-types)
+    *  [Type 0x00](#type-0x00-unknown)
     *  [Type 0x01](#type-0x01-unknown-text)
     *  [Type 0x02](#type-0x02-path)
     *  [Type 0x06](#type-0x06-unknown-group)
@@ -216,6 +217,15 @@ entries are usually zero.
 Finally, bounding box values may be negative.
 
 ### Record types
+
+#### Type 0x00: Unknown
+
+This record appears to be always 124 bytes long and filled with zeros.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 100    | Unknown (0)
 
 #### Type 0x01: Unknown, Text
 
