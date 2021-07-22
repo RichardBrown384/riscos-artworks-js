@@ -18,6 +18,7 @@ const RECORD_2E = 0x2E;
 const RECORD_CHARACTER = 0x2D;
 const RECORD_FONT_NAME = 0x2F;
 const RECORD_FONT_SIZE = 0x30;
+const RECORD_31 = 0x31;
 const RECORD_32 = 0x32;
 const RECORD_34 = 0x34;
 const RECORD_35 = 0x35;
@@ -410,9 +411,18 @@ class ArtworksFile {
         });
     }
 
-    readRecord32({populateRecord}) {
+    readRecord31({populateRecord}) {
         populateRecord({
             unknown24: this.readUint(),
+            unknown28: this.readUint(),
+            unknown32: this.readUint(),
+            unknown36: this.readUint()
+        });
+    }
+
+    readRecord32({populateRecord}) {
+        populateRecord({
+            unknown24: this.readUint()
         });
     }
 
@@ -583,6 +593,9 @@ class ArtworksFile {
             case RECORD_FONT_SIZE:
                 checkLast('records after font size');
                 this.readRecordFontSize(callbacks);
+                break;
+            case RECORD_31:
+                this.readRecord31(callbacks);
                 break;
             case RECORD_32:
                 checkLast('records after record 32');
@@ -795,6 +808,7 @@ module.exports = {
     RECORD_CHARACTER,
     RECORD_FONT_NAME,
     RECORD_FONT_SIZE,
+    RECORD_31,
     RECORD_32,
     RECORD_34,
     RECORD_35,
