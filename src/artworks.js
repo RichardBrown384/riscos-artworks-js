@@ -23,6 +23,7 @@ const RECORD_32 = 0x32;
 const RECORD_33 = 0x33;
 const RECORD_34 = 0x34;
 const RECORD_35 = 0x35;
+const RECORD_37 = 0x37;
 const RECORD_38 = 0x38;
 const RECORD_FILE_INFO = 0x39;
 const RECORD_3A = 0x3A;
@@ -453,6 +454,12 @@ class ArtworksFile {
         });
     }
 
+    readRecord37({populateRecord}) {
+        populateRecord({
+            path: this.readPath()
+        });
+    }
+
     readRecord38({populateRecord}) {
         populateRecord({
             path: this.readPath(),
@@ -621,6 +628,9 @@ class ArtworksFile {
                 break;
             case RECORD_35:
                 this.readRecord35(callbacks);
+                break;
+            case RECORD_37:
+                this.readRecord37(callbacks);
                 break;
             case RECORD_38:
                 this.readRecord38(callbacks);
@@ -828,6 +838,7 @@ module.exports = {
     RECORD_33,
     RECORD_34,
     RECORD_35,
+    RECORD_37,
     RECORD_38,
     RECORD_FILE_INFO,
     RECORD_3A,
