@@ -20,6 +20,7 @@ const RECORD_FONT_NAME = 0x2F;
 const RECORD_FONT_SIZE = 0x30;
 const RECORD_31 = 0x31;
 const RECORD_32 = 0x32;
+const RECORD_33 = 0x33;
 const RECORD_34 = 0x34;
 const RECORD_35 = 0x35;
 const RECORD_38 = 0x38;
@@ -426,6 +427,17 @@ class ArtworksFile {
         });
     }
 
+    readRecord33({populateRecord}) {
+        populateRecord({
+            unknown24: this.readInt(),
+            unknown28: this.readInt(),
+            unknown32: this.readInt(),
+            unknown36: this.readInt(),
+            unknown40: this.readInt(),
+            unknown44: this.readInt()
+        });
+    }
+
     readRecord34({populateRecord}) {
         populateRecord({
             triangle: this.readPolyline(3),
@@ -600,6 +612,9 @@ class ArtworksFile {
             case RECORD_32:
                 checkLast('records after record 32');
                 this.readRecord32(callbacks);
+                break;
+            case RECORD_33:
+                this.readRecord33(callbacks);
                 break;
             case RECORD_34:
                 this.readRecord34(callbacks);
@@ -810,6 +825,7 @@ module.exports = {
     RECORD_FONT_SIZE,
     RECORD_31,
     RECORD_32,
+    RECORD_33,
     RECORD_34,
     RECORD_35,
     RECORD_38,

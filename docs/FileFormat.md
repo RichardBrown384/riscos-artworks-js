@@ -34,6 +34,7 @@
     *  [Type 0x30](#type-0x30-font-size)
     *  [Type 0x31](#type-0x31-unknown)
     *  [Type 0x32](#type-0x32-unknown)
+    *  [Type 0x33](#type-0x33-unknown)
     *  [Type 0x34](#type-0x34-path)
     *  [Type 0x35](#type-0x35-unknown)
     *  [Type 0x38](#type-0x38-unknown)
@@ -464,6 +465,23 @@ This record seems to appear as a sibling to records of [Type 0x01](#type-0x01-un
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
 |24     | 4      | Unknown (0xFFFFFF9C)
+
+#### Type 0x33: Unknown
+
+This record seems to represent some sort of matrix transformation stored in 16.16 fixed point format.
+Often, the values at offsets 24 and 36 are equal, and the value at offset 32 is the value at offset 28 negated.
+These rows (or columns) will then have a magnitude of one, and it's possible to infer that this might represent a
+rotation matrix.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown
+|28     | 4      | Unknown
+|32     | 4      | Unknown
+|36     | 4      | Unknown
+|40     | 4      | Unknown (0)
+|36     | 4      | Unknown (0)
 
 #### Type 0x34: Path
 
