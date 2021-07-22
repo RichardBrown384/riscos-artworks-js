@@ -37,6 +37,7 @@
     *  [Type 0x33](#type-0x33-unknown)
     *  [Type 0x34](#type-0x34-path)
     *  [Type 0x35](#type-0x35-unknown)
+    *  [Type 0x37](#type-0x37-unknown)
     *  [Type 0x38](#type-0x38-unknown)
     *  [Type 0x39](#type-0x39-file-information)
     *  [Type 0x3A](#type-0x3a-unknown)
@@ -517,6 +518,16 @@ These 3 points might have something to do with radial fills.
 |44     | 4      | Bounding Triangle Top Right X
 |48     | 4      | Bounding Triangle Top Right Y
 |52     | varies | [Path data](#path-data)
+|n - 8  | 8      | [Grandchild pointer](#grandchild-nodes)
+
+#### Type 0x37: Unknown
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | varies | [Path data](#path-data)
+|varies | varies | Unknown
+|n - 24 | 16     | Bounding Box
 |n - 8  | 8      | [Grandchild pointer](#grandchild-nodes)
 
 #### Type 0x38: Unknown
