@@ -1,6 +1,7 @@
 const RECORD_00 = 0x00;
 const RECORD_TEXT = 0x01;
 const RECORD_PATH = 0x02;
+const RECORD_SPRITE = 0x05;
 const RECORD_GROUP = 0x06;
 const RECORD_LAYER = 0x0A;
 const RECORD_WORK_AREA = 0x21;
@@ -43,7 +44,7 @@ const STRING_LENGTH_LIMIT = 2048;
 class ArtworksError extends Error {
     constructor(message, position, data) {
         super(message);
-        this.name = "ArtworksError";
+        this.name = 'ArtworksError';
         this.position = position;
         this.data = data;
     }
@@ -84,7 +85,7 @@ class ArtworksFile {
 
     checkPositionAndSize(n) {
         this.check(this.position >= 0, 'reading off the start of a file');
-        this.check(this.position <= this.length - n, 'reading off the end of the file');
+        this.check(this.position <= this.getLength() - n, 'reading off the end of the file');
     }
 
     readByte() {
@@ -103,7 +104,7 @@ class ArtworksFile {
     }
 
     readUint() {
-        this.checkAlignment('misaligned int');
+        this.checkAlignment('misaligned uint');
         this.checkPositionAndSize(4);
         const v = this.view.getUint32(this.position, true);
         this.position = this.position + 4;
@@ -222,7 +223,7 @@ class ArtworksFile {
             unknown32: this.readUint(),
             unknown36: this.readUint(),
             ubufPosition: this.readInt(),
-            unknown44: this.readUint(),
+            spriteAreaPosition: this.readInt(),
             unknown48: this.readUint(),
             unknown52: this.readUint(),
             unknown56: this.readUint(),
@@ -276,6 +277,35 @@ class ArtworksFile {
         populateRecord({
             path: this.readPath()
         });
+    }
+
+    readRecordSprite({populateRecord}) {
+        populateRecord({
+            unknown24: this.readUint(),
+            name: this.readStringFully(12),
+            unknown40: this.readUint(),
+            unknown44: this.readUint(),
+            unknown48: this.readInt(),
+            unknown52: this.readInt(),
+            unknown56: this.readInt(),
+            unknown60: this.readInt(),
+            unknown64: this.readInt(),
+            unknown68: this.readInt(),
+            unknown72: this.readUint(),
+            unknown76: this.readUint(),
+            unknown80: this.readUint(),
+            unknown84: this.readUint(),
+            unknown88: this.readUint(),
+            unknown92: this.readUint(),
+            unknown96: this.readUint(),
+            unknown100: this.readUint()
+        });
+        const palette = [];
+        const count = this.readUint();
+        for (let n = 0; n < count; n++) {
+            palette.push(this.readUint());
+        }
+        populateRecord({palette});
     }
 
     readRecordGroup({populateRecord}) {
@@ -552,6 +582,10 @@ class ArtworksFile {
             case RECORD_PATH:
                 this.readRecordPath(callbacks);
                 break;
+            case RECORD_SPRITE:
+                checkLast('records after sprite');
+                this.readRecordSprite(callbacks);
+                break;
             case RECORD_GROUP:
                 this.readRecordGroup(callbacks);
                 break;
@@ -823,6 +857,7 @@ module.exports = {
     RECORD_00,
     RECORD_TEXT,
     RECORD_PATH,
+    RECORD_SPRITE,
     RECORD_GROUP,
     RECORD_LAYER,
     RECORD_WORK_AREA,

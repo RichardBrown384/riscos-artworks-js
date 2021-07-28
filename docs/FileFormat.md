@@ -15,6 +15,7 @@
     *  [Type 0x00](#type-0x00-unknown)
     *  [Type 0x01](#type-0x01-unknown-text)
     *  [Type 0x02](#type-0x02-path)
+    *  [Type 0x05](#type-0x05-sprite)
     *  [Type 0x06](#type-0x06-unknown-group)
     *  [Type 0x0A](#type-0x0a-layer)
     *  [Type 0x21](#type-0x21-work-area)
@@ -264,6 +265,44 @@ Note: In certain cases there's extra data after the path data.
 |varies | varies | Unknown, sometimes present
 |n - 8  | 8      | [Grandchild pointer](#grandchild-nodes)
 
+#### Type 0x05: Sprite
+
+Sprites appear to be referenced by name into the [Sprite area][sprite-area-format].
+
+The unknown coordinates seem to agree with the bounding box.
+There appears to be a transformation matrix defined after the coordinates in 16.16 format.
+The palette defined in this record seems to take precedence over the one defined with the sprite.
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 24     | [Record header](#record-header)
+|24     | 4      | Unknown
+|28     | 12     | Sprite name
+|40     | 4      | Unknown
+|44     | 4      | Unknown
+|48     | 4      | Unknown X-Coordinate 1
+|52     | 4      | Unknown Y-Coordinate 1
+|56     | 4      | Unknown X-Coordinate 2
+|60     | 4      | Unknown Y-Coordinate 2
+|64     | 4      | Unknown X-Coordinate 3
+|68     | 4      | Unknown Y-Coordinate 3
+|72     | 4      | Unknown Matrix Element (65536)
+|76     | 4      | Unknown Matrix Element (0)
+|80     | 4      | Unknown Matrix Element (0)
+|84     | 4      | Unknown Matrix Element (65536)
+|88     | 4      | Unknown Matrix Element (X translation?)
+|92     | 4      | Unknown Matrix Element (Y translation?)
+|96     | 4      | Unknown
+|100    | 4      | Sprite Mode
+|104    | 4      | Number of sprite palette entries
+|108    | varies | Sequential sprite palette entries
+
+#### Sprite palette entry
+
+|Offset | Length | Content
+|-------|--------|-------
+|0      | 4      | Colour (BGR) usually with bit 29 set
+
 #### Type 0x06: Unknown, Group
 
 |Offset | Length | Content
@@ -294,6 +333,7 @@ offsets specified in the file's [header](#header).
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
 |varies | varies | [Ubuf record](#ubuf) (optional)
+|varies | varies | [Sprite area][sprite-area-format] (optional)
 |varies | varies | [Palette record](#palette)
 
 #### Type 0x22: Unknown
@@ -673,7 +713,7 @@ Contains the indexed palette for the file. *NB* the number of entries sometimes 
 |Offset | Length | Content
 |-------|--------|-------
 |0      | 24     | Name of colour, null terminated, then filled with what looks like garbage
-|24     | 4      | Colour (BGR) usually with bit 29 set.
+|24     | 4      | Colour (BGR) usually with bit 29 set
 |28     | 4      | Unknown
 |32     | 4      | Unknown
 |36     | 4      | Unknown
