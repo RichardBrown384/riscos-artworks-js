@@ -90,7 +90,8 @@ The header has a 16 byte signature followed by more data whose purpose is largel
 |20     | 4      | Absolute offset to start of body
 |24     | 16     | Unknown
 |40     | 4      | Absolute offset to start of [Undo Buffer](#ubuf), -1 if absent
-|44     | 16     | Unknown
+|44     | 4      | Absolute offset to start of [Sprite Area][sprite-area-format], -1 if absent
+|48     | 12     | Unknown
 |60     | 4      | Absolute offset to start of [Palette](#palette)
 |64     | varies | Unknown
 
@@ -721,8 +722,10 @@ In the one case where offset 12 seems to point to garbage, `AFFY,d94`, offset 16
 ## References
 
 1. [Draw file format][draw-file-format]
-2. [RISC OS Character Set][risc-os-character-set]
+1. [Sprite area format][sprite-area-format]
+1. [RISC OS Character Set][risc-os-character-set]
 
 ---
 [draw-file-format]: http://www.riscos.com/support/developers/prm/fileformats.html
+[sprite-area-format]: http://www.riscos.com/support/developers/prm/sprites.html
 [risc-os-character-set]: https://en.wikipedia.org/wiki/RISC_OS_character_set
