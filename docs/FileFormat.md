@@ -50,7 +50,8 @@
     *  [Type 0x42](#type-0x42-unknown)
   * [Coordinate system](#coordinate-system)
   * [Path data](#path-data)
-  * [Palette](#palette)  
+  * [Palette](#palette)
+  * [Sprite Area](#sprite-area)
   * [UBuf](#ubuf)
 * [References](#references)
 
@@ -267,7 +268,7 @@ Note: In certain cases there's extra data after the path data.
 
 #### Type 0x05: Sprite
 
-Sprites appear to be referenced by name into the [Sprite area][sprite-area-format].
+Sprites appear to be referenced by name into the [Sprite Area][sprite-area-format].
 
 The unknown coordinates seem to agree with the bounding box.
 There appears to be a transformation matrix defined after the coordinates in 16.16 format.
@@ -333,7 +334,7 @@ offsets specified in the file's [header](#header).
 |-------|--------|-------
 |0      | 24     | [Record header](#record-header)
 |varies | varies | [Ubuf record](#ubuf) (optional)
-|varies | varies | [Sprite area][sprite-area-format] (optional)
+|varies | varies | [Sprite Area][sprite-area-format] (optional)
 |varies | varies | [Palette record](#palette)
 
 #### Type 0x22: Unknown
@@ -537,7 +538,7 @@ rotation matrix.
 
 #### Type 0x34: Path
 
-**Note:** Bounding Triangle
+Note: Bounding Triangle
 
 These 3 points appear to define the rotated bounding box for the object in an anti-clockwise fashion but with the final point missing.
 Another interpretation could be that the points form basis vectors for the paths that follow.
@@ -720,15 +721,20 @@ Contains the indexed palette for the file. *NB* the number of entries sometimes 
 |40     | 4      | Unknown
 |44     | 4      | Unknown
 
+### Sprite Area
+
+Note: You can't rely on the first word of the [Sprite Area][sprite-area-format] to be able to compute its size.
+Some files, for example `WORLDPEACE,d94`, have nonsensical values.
+
 ### UBuf
 
 A UBuf section looks as if it comprises a header followed by a list of undo actions followed by a list of redo actions.
 
-The undo list starts with a `<Nothing>` action, and the redo list ends with one.
+The undo-list starts with a `<Nothing>` action, and the redo-list ends with one.
 
-There doesn't appear to be any reliable information as to the length of the redo list.
+There doesn't appear to be any reliable information as to the length of the redo-list.
 
-In one case, `AFFY,d94`, the redo list is corrupted, and the size of the sole entry isn't an integer multiple of 4.
+In one case, `AFFY,d94`, the redo-list is corrupted, and the size of the sole entry isn't an integer multiple of 4.
 
 #### UBuf header
 
