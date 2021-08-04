@@ -6,7 +6,7 @@ RISC OS [Artworks][artworks-wikipedia] files.
 ## Installation
 
 ```bash
-npm install git@github.com:RichardBrown384/riscos-artworks-js.git
+npm install git+https://github.com/RichardBrown384/riscos-artworks-js.git
 ```
 
 ## Project status
