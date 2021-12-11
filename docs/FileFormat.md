@@ -174,7 +174,7 @@ function readChildren() {
         const {position, next} = readChildPointer();
         readRecord();
         if (next !== 0) {
-            this.readGrandchildren(position + next - 8);
+            readGrandchildren(position + next - 8);
         } else {
             break;
         }
