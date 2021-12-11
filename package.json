@@ -7,6 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
+    "lint": "npx eslint src",
+    "lint:fix": "npx eslint src --fix"
   },
   "repository": {
     "type": "git",
@@ -17,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/RichardBrown384/riscos-artworks-js/issues"
   },
-  "homepage": "https://github.com/RichardBrown384/riscos-artworks-js#readme"
+  "homepage": "https://github.com/RichardBrown384/riscos-artworks-js#readme",
+  "devDependencies": {
+    "eslint": "^8.4.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3"
+  }
 }
