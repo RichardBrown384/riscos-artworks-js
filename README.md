@@ -1,6 +1,6 @@
 # riscos-artworks-js
 
-Javascript library and file format [documentation](docs/FileFormat.md) for Computer Concepts era 
+Javascript library and file format [documentation](docs/README.md) for Computer Concepts era 
 RISC OS [Artworks][artworks-wikipedia] files.
 
 ## Installation
