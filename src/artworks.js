@@ -16,7 +16,7 @@ const RECORD_JOIN_STYLE = 0x27;
 const RECORD_LINE_CAP_END = 0x28;
 const RECORD_LINE_CAP_START = 0x29;
 const RECORD_WINDING_RULE = 0x2A;
-const RECORD_2B = 0x2B;
+const RECORD_DASH_PATTERN = 0x2B;
 const RECORD_2C = 0x2C;
 const RECORD_2E = 0x2E;
 const RECORD_CHARACTER = 0x2D;
@@ -420,10 +420,24 @@ class ArtworksFile {
     });
   }
 
-  readRecord2B({ populateRecord }) {
+  readRecordDashPattern({ populateRecord }) {
+    const pattern = this.readUint();
     populateRecord({
-      unknown24: this.readUint(),
+      pattern,
     });
+    if (pattern !== 0) {
+      const offset = this.readUint();
+      const count = this.readUint();
+      const array = [];
+      for (let i = 0; i < count; i += 1) {
+        array.push(this.readUint());
+      }
+      populateRecord({
+        offset,
+        count,
+        array,
+      });
+    }
   }
 
   readRecord2C({ populateRecord }) {
@@ -652,9 +666,9 @@ class ArtworksFile {
         checkLast('records after winding rule');
         this.readRecordWindingRule(callbacks);
         break;
-      case RECORD_2B:
-        checkLast('records after record 2b');
-        this.readRecord2B(callbacks);
+      case RECORD_DASH_PATTERN:
+        checkLast('records after record dash pattern');
+        this.readRecordDashPattern(callbacks);
         break;
       case RECORD_2C:
         this.readRecord2C(callbacks);
@@ -891,7 +905,7 @@ module.exports = {
   RECORD_LINE_CAP_START,
   RECORD_LINE_CAP_END,
   RECORD_WINDING_RULE,
-  RECORD_2B,
+  RECORD_DASH_PATTERN,
   RECORD_2C,
   RECORD_2E,
   RECORD_CHARACTER,
