@@ -143,6 +143,21 @@ function readPaletteEntry(view) {
   };
 }
 
+function readPalette(view) {
+  view.checkAlignment('misaligned palette');
+  const count = view.readUint() & 0x7FFFFFFF;
+  const unknown4 = view.readUint() & 0x7FFFFFFF;
+  const colours = [];
+  for (let n = 0; n < count; n += 1) {
+    colours.push(readPaletteEntry(view));
+  }
+  return {
+    count,
+    unknown4,
+    colours,
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -257,20 +272,6 @@ class ArtworksFile {
       unknown52: this.readUint(),
       unknown56: this.readUint(),
       palettePosition: this.readInt(),
-    };
-  }
-
-  readPalette() {
-    this.checkAlignment('misaligned palette');
-    const colours = [];
-    const count = this.readUint() & 0x7FFFFFFF;
-    const unknown4 = this.readUint() & 0x7FFFFFFF;
-    for (let n = 0; n < count; n += 1) {
-      colours.push(readPaletteEntry(this));
-    }
-    return {
-      unknown4,
-      colours,
     };
   }
 
@@ -872,7 +873,7 @@ class ArtworksFile {
       });
 
       this.setPosition(palettePosition);
-      const palette = this.readPalette();
+      const palette = readPalette(this);
       return {
         header,
         records,
