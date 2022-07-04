@@ -28,7 +28,7 @@
     *  [Type 0x28 - End Line Cap](#type-0x28-end-line-cap) 
     *  [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
     *  [Type 0x2A - Winding Rule](#type-0x2a-winding-rule)
-    *  [Type 0x2B](#type-0x2b-unknown)
+    *  [Type 0x2B](#type-0x2b-dash-pattern)
     *  [Type 0x2C](#type-0x2c-path)
     *  [Type 0x2D](#type-0x2d-character)
     *  [Type 0x2E](#type-0x2e-unknown)   
@@ -422,7 +422,7 @@ Setting the cap style to a value not in the enumeration will result in !AWViewer
 | 24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol> |
 | 28     | 4      | [Triangle Cap Width and Length](#triangle-cap-width-and-length)                            |
 
-#### Triangle Cap Width and Length
+##### Triangle Cap Width and Length
 
 This field is ignored for other cap types.
 
@@ -459,12 +459,35 @@ Setting the winding rule to a value not in the enumeration will result in !AWVie
 | 0      | 24     | [Record header](#record-header)                                    |
 | 24     | 4      | Winding Rule <ol start="0"><li>Non-zero</li><li>Even-odd</li></ol> |
 
-#### Type 0x2B: Unknown
+#### Type 0x2B: Dash Pattern
 
-| Offset | Length | Content                            |
-|--------|--------|------------------------------------|
-| 0      | 24     | [Record header](#record-header)    |
-| 24     | 4      | Unknown (0,1,2,3,4,5,6,0xFFFFFFFF) |
+The dash pattern structure is similar to that of !Draw.
+
+When an Artworks file doesn't specify a dash pattern then !AWViewer defaults to no pattern and draws solid paths.
+
+There are some doubts about Dash Pattern Index. One interpretation is that it forms an index into a dash palette.
+A negative index could mean that a bespoke dash pattern follows. However, positive values also have subsequent dash patterns.
+Perhaps, !Artworks has a palette of dash patterns but for rendering purposes the pattern is specified in the record.
+
+| Offset | Length | Content                                                                                                                     |
+|--------|--------|-----------------------------------------------------------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                                                                             |
+| 24     | 4      | Dash Pattern Index <ul><li>-1 - Dash pattern follows</li><li>0 - No dash</li><li>Otherwise - Dash pattern follows</li></ul> |
+
+If Dash Pattern Index is non-zero
+
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 28     | 4      | Dash pattern offset             |
+| 32     | 4      | Number of dash elements         |
+| 36     | varies | [Dash Elements](#dash-elements) |
+
+##### Dash Elements
+
+| Offset | Length | Content                        |
+|--------|--------|--------------------------------|
+| 0      | 4      | Length of dash pattern element |
+
 
 #### Type 0x2C: Path
 
