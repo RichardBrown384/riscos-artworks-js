@@ -73,7 +73,7 @@ function readPoint(view) {
 }
 
 function readBoundingBox(view) {
-  this.checkAlignment('misaligned bounding box');
+  view.checkAlignment('misaligned bounding box');
   return {
     minX: view.readInt(),
     minY: view.readInt(),
@@ -83,12 +83,51 @@ function readBoundingBox(view) {
 }
 
 function readPolyline(view, n) {
-  this.checkAlignment('misaligned polyline');
+  view.checkAlignment('misaligned polyline');
   const points = [];
   for (let i = 0; i < n; i += 1) {
     points.push(readPoint(view));
   }
   return points;
+}
+
+function readPath(view) {
+  view.checkAlignment('misaligned path');
+  const path = [];
+  for (; ;) {
+    const tag = view.readUint();
+    const maskedTag = tag & 0xFF;
+    if (maskedTag === 0) {
+      break;
+    } else if (maskedTag === 2) {
+      const p0 = readPoint(view);
+      path.push({
+        tag: 'M',
+        points: [p0],
+      });
+    } else if (maskedTag === 4) {
+      // skip
+    } else if (maskedTag === 5) {
+      path.push({ tag: 'Z' });
+    } else if (maskedTag === 6) {
+      const p0 = readPoint(view);
+      const p1 = readPoint(view);
+      const p2 = readPoint(view);
+      path.push({
+        tag: 'C',
+        points: [p0, p1, p2],
+      });
+    } else if (maskedTag === 8) {
+      const p0 = readPoint(view);
+      path.push({
+        tag: 'L',
+        points: [p0],
+      });
+    } else {
+      view.fail('unsupported path tag', { tag: tag.toString(16) });
+    }
+  }
+  return path;
 }
 
 class ArtworksFile {
@@ -186,44 +225,6 @@ class ArtworksFile {
     }
     return String.fromCharCode(...chars);
   }
-  readPath() {
-    this.checkAlignment('misaligned path');
-    const path = [];
-    for (;;) {
-      const tag = this.readUint();
-      const maskedTag = tag & 0xFF;
-      if (maskedTag === 0) {
-        break;
-      } else if (maskedTag === 2) {
-        const p0 = readPoint(this);
-        path.push({
-          tag: 'M',
-          points: [p0],
-        });
-      } else if (maskedTag === 4) {
-        // skip
-      } else if (maskedTag === 5) {
-        path.push({ tag: 'Z' });
-      } else if (maskedTag === 6) {
-        const p0 = readPoint(this);
-        const p1 = readPoint(this);
-        const p2 = readPoint(this);
-        path.push({
-          tag: 'C',
-          points: [p0, p1, p2],
-        });
-      } else if (maskedTag === 8) {
-        const p0 = readPoint(this);
-        path.push({
-          tag: 'L',
-          points: [p0],
-        });
-      } else {
-        this.fail('unsupported path tag', { tag: tag.toString(16) });
-      }
-    }
-    return path;
-  }
 
   readHeader() {
     this.checkAlignment('misaligned header');
@@ -291,7 +292,7 @@ class ArtworksFile {
 
   readRecordPath({ populateRecord }) {
     populateRecord({
-      path: this.readPath(),
+      path: readPath(this),
     });
   }
 
@@ -442,7 +443,7 @@ class ArtworksFile {
   readRecord2C({ populateRecord }) {
     populateRecord({
       unknown24: this.readUint(),
-      path: this.readPath(),
+      path: readPath(this),
     });
   }
 
@@ -508,7 +509,7 @@ class ArtworksFile {
   readRecord34({ populateRecord }) {
     populateRecord({
       triangle: readPolyline(this, 3),
-      path: this.readPath(),
+      path: readPath(this),
     });
   }
 
@@ -516,19 +517,19 @@ class ArtworksFile {
     populateRecord({
       unknown24: this.readUint(),
       triangle: readPolyline(this, 3),
-      path: this.readPath(),
+      path: readPath(this),
     });
   }
 
   readRecord37({ populateRecord }) {
     populateRecord({
-      path: this.readPath(),
+      path: readPath(this),
     });
   }
 
   readRecord38({ populateRecord }) {
     populateRecord({
-      path: this.readPath(),
+      path: readPath(this),
       unknownTrailer: this.readBytes(68),
     });
   }
@@ -572,7 +573,7 @@ class ArtworksFile {
 
   readRecord3D({ populateRecord }) {
     populateRecord({
-      path: this.readPath(),
+      path: readPath(this),
     });
   }
 
