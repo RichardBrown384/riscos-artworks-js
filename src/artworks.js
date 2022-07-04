@@ -66,9 +66,20 @@ class ArtworksError extends Error {
 
 function readPoint(view) {
   view.checkAlignment('misaligned point');
-  const x = view.readInt();
-  const y = view.readInt();
-  return { x, y };
+  return {
+    x: view.readInt(),
+    y: view.readInt(),
+  };
+}
+
+function readBoundingBox(view) {
+  this.checkAlignment('misaligned bounding box');
+  return {
+    minX: view.readInt(),
+    minY: view.readInt(),
+    maxX: view.readInt(),
+    maxY: view.readInt(),
+  };
 }
 
 class ArtworksFile {
@@ -165,17 +176,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readBoundingBox() {
-    this.checkAlignment('misaligned bounding box');
-    const minX = this.readInt();
-    const minY = this.readInt();
-    const maxX = this.readInt();
-    const maxY = this.readInt();
-    return {
-      minX, minY, maxX, maxY,
-    };
   }
 
   readPolyline(n) {
@@ -604,7 +604,7 @@ class ArtworksFile {
     const { populateRecord, unsupportedRecord } = callbacks;
     const type = this.readUint();
     const unknown4 = this.readUint();
-    const boundingBox = this.readBoundingBox();
+    const boundingBox = readBoundingBox(this);
     populateRecord({ type, boundingBox, unknown4 });
     switch (type & 0xFF) {
       case RECORD_00:
