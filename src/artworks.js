@@ -64,6 +64,13 @@ class ArtworksError extends Error {
   }
 }
 
+function readPoint(view) {
+  view.checkAlignment('misaligned point');
+  const x = view.readInt();
+  const y = view.readInt();
+  return { x, y };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -160,13 +167,6 @@ class ArtworksFile {
     return String.fromCharCode(...chars);
   }
 
-  readPoint() {
-    this.checkAlignment('misaligned point');
-    const x = this.readInt();
-    const y = this.readInt();
-    return { x, y };
-  }
-
   readBoundingBox() {
     this.checkAlignment('misaligned bounding box');
     const minX = this.readInt();
@@ -182,7 +182,7 @@ class ArtworksFile {
     this.checkAlignment('misaligned polyline');
     const points = [];
     for (let i = 0; i < n; i += 1) {
-      points.push(this.readPoint());
+      points.push(readPoint(this));
     }
     return points;
   }
@@ -196,7 +196,7 @@ class ArtworksFile {
       if (maskedTag === 0) {
         break;
       } else if (maskedTag === 2) {
-        const p0 = this.readPoint();
+        const p0 = readPoint(this);
         path.push({
           tag: 'M',
           points: [p0],
@@ -206,15 +206,15 @@ class ArtworksFile {
       } else if (maskedTag === 5) {
         path.push({ tag: 'Z' });
       } else if (maskedTag === 6) {
-        const p0 = this.readPoint();
-        const p1 = this.readPoint();
-        const p2 = this.readPoint();
+        const p0 = readPoint(this);
+        const p1 = readPoint(this);
+        const p2 = readPoint(this);
         path.push({
           tag: 'C',
           points: [p0, p1, p2],
         });
       } else if (maskedTag === 8) {
-        const p0 = this.readPoint();
+        const p0 = readPoint(this);
         path.push({
           tag: 'L',
           points: [p0],
