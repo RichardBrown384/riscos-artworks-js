@@ -27,7 +27,7 @@
     *  [Type 0x27 - Join Style](#type-0x27-join-style)
     *  [Type 0x28 - End Line Cap](#type-0x28-end-line-cap) 
     *  [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
-    *  [Type 0x2A](#type-0x2a-unknown)
+    *  [Type 0x2A - Winding Rule](#type-0x2a-winding-rule)
     *  [Type 0x2B](#type-0x2b-unknown)
     *  [Type 0x2C](#type-0x2c-path)
     *  [Type 0x2D](#type-0x2d-character)
@@ -424,7 +424,7 @@ Setting the cap style to a value not in the enumeration will result in !AWViewer
 
 #### Triangle Cap Width and Length
 
-This field is ignored for other cap types
+This field is ignored for other cap types.
 
 | Bits    | Content                                              |
 |---------|------------------------------------------------------|
@@ -445,12 +445,19 @@ Setting the cap style to a value not in the enumeration will result in !AWViewer
 | 24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol> |
 | 28     | 4      | [Triangle Cap Width and Length](#triangle-cap-width-and-length)                            |
 
-#### Type 0x2A: Unknown
+#### Type 0x2A: Winding Rule
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Unknown (0,1)                   |
+The cap style enumeration coincides exactly with that of !Draw.
+
+When an Artworks file doesn't specify a winding rule then !AWViewer defaults to even-odd.
+
+Setting the winding rule to a value not in the enumeration will result in !AWViewer not rendering paths.
+
+
+| Offset | Length | Content                                                            |
+|--------|--------|--------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                    |
+| 24     | 4      | Winding Rule <ol start="0"><li>Non-zero</li><li>Even-odd</li></ol> |
 
 #### Type 0x2B: Unknown
 

@@ -15,7 +15,7 @@ const RECORD_FILL_COLOUR = 0x26;
 const RECORD_JOIN_STYLE = 0x27;
 const RECORD_LINE_CAP_END = 0x28;
 const RECORD_LINE_CAP_START = 0x29;
-const RECORD_2A = 0x2A;
+const RECORD_WINDING_RULE = 0x2A;
 const RECORD_2B = 0x2B;
 const RECORD_2C = 0x2C;
 const RECORD_2E = 0x2E;
@@ -49,6 +49,9 @@ const CAP_BUTT = 0;
 const CAP_ROUND = 1;
 const CAP_SQUARE = 2;
 const CAP_TRIANGLE = 3;
+
+const WINDING_RULE_NON_ZERO = 0;
+const WINDING_RULE_EVEN_ODD = 1;
 
 const STRING_LENGTH_LIMIT = 2048;
 
@@ -411,9 +414,9 @@ class ArtworksFile {
     });
   }
 
-  readRecord2A({ populateRecord }) {
+  readRecordWindingRule({ populateRecord }) {
     populateRecord({
-      unknown24: this.readUint(),
+      windingRule: this.readUint(),
     });
   }
 
@@ -645,9 +648,9 @@ class ArtworksFile {
         checkLast('records after start line cap');
         this.readRecordLineCapStart(callbacks);
         break;
-      case RECORD_2A:
-        checkLast('records after record 2a');
-        this.readRecord2A(callbacks);
+      case RECORD_WINDING_RULE:
+        checkLast('records after winding rule');
+        this.readRecordWindingRule(callbacks);
         break;
       case RECORD_2B:
         checkLast('records after record 2b');
@@ -887,7 +890,7 @@ module.exports = {
   RECORD_JOIN_STYLE,
   RECORD_LINE_CAP_START,
   RECORD_LINE_CAP_END,
-  RECORD_2A,
+  RECORD_WINDING_RULE,
   RECORD_2B,
   RECORD_2C,
   RECORD_2E,
@@ -921,6 +924,9 @@ module.exports = {
   CAP_ROUND,
   CAP_SQUARE,
   CAP_TRIANGLE,
+
+  WINDING_RULE_NON_ZERO,
+  WINDING_RULE_EVEN_ODD,
 
   Artworks: {
     load(buffer) {
