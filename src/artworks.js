@@ -158,6 +158,27 @@ function readPalette(view) {
   };
 }
 
+function readHeader(view) {
+  view.checkAlignment('misaligned header');
+  return {
+    identifier: view.readStringFully(4),
+    version: view.readUint(),
+    program: view.readStringFully(8),
+    unknown16: view.readUint(),
+    bodyPosition: view.readUint(),
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    ubufPosition: view.readInt(),
+    spriteAreaPosition: view.readInt(),
+    unknown48: view.readUint(),
+    unknown52: view.readUint(),
+    unknown56: view.readUint(),
+    palettePosition: view.readInt(),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -252,27 +273,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readHeader() {
-    this.checkAlignment('misaligned header');
-    return {
-      identifier: this.readStringFully(4),
-      version: this.readUint(),
-      program: this.readStringFully(8),
-      unknown16: this.readUint(),
-      bodyPosition: this.readUint(),
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      ubufPosition: this.readInt(),
-      spriteAreaPosition: this.readInt(),
-      unknown48: this.readUint(),
-      unknown52: this.readUint(),
-      unknown56: this.readUint(),
-      palettePosition: this.readInt(),
-    };
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -860,7 +860,7 @@ class ArtworksFile {
 
     try {
       this.setPosition(0);
-      const header = this.readHeader();
+      const header = readHeader(this);
 
       const { bodyPosition, palettePosition } = header;
 
