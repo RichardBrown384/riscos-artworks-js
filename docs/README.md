@@ -14,16 +14,16 @@
   * [Record types](#record-types)
     *  [Type 0x00](#type-0x00-unknown)
     *  [Type 0x01](#type-0x01-unknown-text)
-    *  [Type 0x02](#type-0x02-path)
-    *  [Type 0x05](#type-0x05-sprite)
+    *  [Type 0x02 - Path](#type-0x02-path)
+    *  [Type 0x05 - Sprite](#type-0x05-sprite)
     *  [Type 0x06](#type-0x06-unknown-group)
-    *  [Type 0x0A](#type-0x0a-layer)
-    *  [Type 0x21](#type-0x21-work-area)
+    *  [Type 0x0A - Layer](#type-0x0a-layer)
+    *  [Type 0x21 - Work Area](#type-0x21-work-area)
     *  [Type 0x22](#type-0x22-unknown)
     *  [Type 0x23](#type-0x23-file-save-location)
     *  [Type 0x24](#type-0x24-stroke-colour)
     *  [Type 0x25](#type-0x25-stroke-width)
-    *  [Type 0x26](#type-0x26-fill)
+    *  [Type 0x26 - Fill](#type-0x26-fill)
     *  [Type 0x27 - Join Style](#type-0x27-join-style)
     *  [Type 0x28 - End Line Cap](#type-0x28-end-line-cap) 
     *  [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
@@ -372,6 +372,8 @@ This record can vary in size.
 
 #### Type 0x26: Fill
 
+When an Artworks file doesn't specify a fill then !AWViewer will crash with a data transfer abort.
+
 | Offset | Length | Content                                                                  |
 |--------|--------|--------------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                          |
@@ -467,7 +469,7 @@ When an Artworks file doesn't specify a dash pattern then !AWViewer defaults to 
 
 There are some doubts about Dash Pattern Index. One interpretation is that it forms an index into a dash palette.
 A negative index could mean that a bespoke dash pattern follows. However, positive values also have subsequent dash patterns.
-Perhaps, !Artworks has a palette of dash patterns but for rendering purposes the pattern is specified in the record.
+Maybe there is a palette of dash patterns within !Artworks but for rendering purposes the pattern is specified inline in the record.
 
 | Offset | Length | Content                                                                                                                     |
 |--------|--------|-----------------------------------------------------------------------------------------------------------------------------|
