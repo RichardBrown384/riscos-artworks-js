@@ -130,6 +130,19 @@ function readPath(view) {
   return path;
 }
 
+function readPaletteEntry(view) {
+  view.checkAlignment('misaligned palette entry');
+  return {
+    name: view.readStringFully(24),
+    colour: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -247,26 +260,13 @@ class ArtworksFile {
     };
   }
 
-  readPaletteEntry() {
-    this.checkAlignment('misaligned palette entry');
-    return {
-      name: this.readStringFully(24),
-      colour: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-    };
-  }
-
   readPalette() {
     this.checkAlignment('misaligned palette');
     const colours = [];
     const count = this.readUint() & 0x7FFFFFFF;
     const unknown4 = this.readUint() & 0x7FFFFFFF;
     for (let n = 0; n < count; n += 1) {
-      colours.push(this.readPaletteEntry());
+      colours.push(readPaletteEntry(this));
     }
     return {
       unknown4,
