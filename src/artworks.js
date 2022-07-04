@@ -41,6 +41,10 @@ const FILL_FLAT = 0;
 const FILL_LINEAR = 1;
 const FILL_RADIAL = 2;
 
+const JOIN_MITRE = 0;
+const JOIN_ROUND = 1;
+const JOIN_BEVEL = 2;
+
 const CAP_BUTT = 0;
 const CAP_ROUND = 1;
 const CAP_SQUARE = 2;
@@ -908,6 +912,10 @@ module.exports = {
   FILL_FLAT,
   FILL_LINEAR,
   FILL_RADIAL,
+
+  JOIN_MITRE,
+  JOIN_ROUND,
+  JOIN_BEVEL,
 
   CAP_BUTT,
   CAP_ROUND,
