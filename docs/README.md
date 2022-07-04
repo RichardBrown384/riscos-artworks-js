@@ -28,7 +28,7 @@
     *  [Type 0x28 - End Line Cap](#type-0x28-end-line-cap) 
     *  [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
     *  [Type 0x2A - Winding Rule](#type-0x2a-winding-rule)
-    *  [Type 0x2B](#type-0x2b-dash-pattern)
+    *  [Type 0x2B - Dash Pattern](#type-0x2b-dash-pattern)
     *  [Type 0x2C](#type-0x2c-path)
     *  [Type 0x2D](#type-0x2d-character)
     *  [Type 0x2E](#type-0x2e-unknown)   
