@@ -82,6 +82,15 @@ function readBoundingBox(view) {
   };
 }
 
+function readPolyline(view, n) {
+  this.checkAlignment('misaligned polyline');
+  const points = [];
+  for (let i = 0; i < n; i += 1) {
+    points.push(readPoint(view));
+  }
+  return points;
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -177,16 +186,6 @@ class ArtworksFile {
     }
     return String.fromCharCode(...chars);
   }
-
-  readPolyline(n) {
-    this.checkAlignment('misaligned polyline');
-    const points = [];
-    for (let i = 0; i < n; i += 1) {
-      points.push(readPoint(this));
-    }
-    return points;
-  }
-
   readPath() {
     this.checkAlignment('misaligned path');
     const path = [];
@@ -286,7 +285,7 @@ class ArtworksFile {
       unknown36: this.readUint(),
       unknown40: this.readUint(),
       unknown44: this.readUint(),
-      rectangle: this.readPolyline(4),
+      rectangle: readPolyline(this, 4),
     });
   }
 
@@ -379,13 +378,13 @@ class ArtworksFile {
       });
     } else if (fillType === FILL_LINEAR) {
       populateRecord({
-        gradientLine: this.readPolyline(2),
+        gradientLine: readPolyline(this, 2),
         startColour: this.readUint(),
         endColour: this.readUint(),
       });
     } else if (fillType === FILL_RADIAL) {
       populateRecord({
-        gradientLine: this.readPolyline(2),
+        gradientLine: readPolyline(this, 2),
         startColour: this.readUint(),
         endColour: this.readUint(),
       });
@@ -508,7 +507,7 @@ class ArtworksFile {
 
   readRecord34({ populateRecord }) {
     populateRecord({
-      triangle: this.readPolyline(3),
+      triangle: readPolyline(this, 3),
       path: this.readPath(),
     });
   }
@@ -516,7 +515,7 @@ class ArtworksFile {
   readRecord35({ populateRecord }) {
     populateRecord({
       unknown24: this.readUint(),
-      triangle: this.readPolyline(3),
+      triangle: readPolyline(this, 3),
       path: this.readPath(),
     });
   }
