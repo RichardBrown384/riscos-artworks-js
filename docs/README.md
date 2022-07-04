@@ -24,7 +24,7 @@
     *  [Type 0x24](#type-0x24-stroke-colour)
     *  [Type 0x25](#type-0x25-stroke-width)
     *  [Type 0x26](#type-0x26-fill)
-    *  [Type 0x27](#type-0x27-unknown-join-style)
+    *  [Type 0x27 - Join Style](#type-0x27-join-style)
     *  [Type 0x28 - End Line Cap](#type-0x28-end-line-cap) 
     *  [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
     *  [Type 0x2A](#type-0x2a-unknown)
@@ -274,29 +274,29 @@ The unknown coordinates seem to agree with the bounding box.
 There appears to be a transformation matrix defined after the coordinates in 16.16 format.
 The palette defined in this record seems to take precedence over the one defined with the sprite.
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | 4      | Unknown                                 |
-| 28     | 12     | Sprite name                             |
-| 40     | 4      | Unknown                                 |
-| 44     | 4      | Unknown                                 |
-| 48     | 4      | Unknown X-Coordinate 1                  |
-| 52     | 4      | Unknown Y-Coordinate 1                  |
-| 56     | 4      | Unknown X-Coordinate 2                  |
-| 60     | 4      | Unknown Y-Coordinate 2                  |
-| 64     | 4      | Unknown X-Coordinate 3                  |
-| 68     | 4      | Unknown Y-Coordinate 3                  |
-| 72     | 4      | Unknown Matrix Element (65536)          |
-| 76     | 4      | Unknown Matrix Element (0)              |
-| 80     | 4      | Unknown Matrix Element (0)              |
-| 84     | 4      | Unknown Matrix Element (65536)          |
-| 88     | 4      | Unknown Matrix Element (X translation?) |
-| 92     | 4      | Unknown Matrix Element (Y translation?) |
-| 96     | 4      | Unknown                                 |
-| 100    | 4      | Sprite Mode                             |
-| 104    | 4      | Number of sprite palette entries        |
-| 108    | varies | Sequential sprite palette entries       |
+| Offset | Length | Content                                                    |
+|--------|--------|------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                            |
+| 24     | 4      | Unknown                                                    |
+| 28     | 12     | Sprite name                                                |
+| 40     | 4      | Unknown                                                    |
+| 44     | 4      | Unknown                                                    |
+| 48     | 4      | Unknown X-Coordinate 1                                     |
+| 52     | 4      | Unknown Y-Coordinate 1                                     |
+| 56     | 4      | Unknown X-Coordinate 2                                     |
+| 60     | 4      | Unknown Y-Coordinate 2                                     |
+| 64     | 4      | Unknown X-Coordinate 3                                     |
+| 68     | 4      | Unknown Y-Coordinate 3                                     |
+| 72     | 4      | Unknown Matrix Element (65536)                             |
+| 76     | 4      | Unknown Matrix Element (0)                                 |
+| 80     | 4      | Unknown Matrix Element (0)                                 |
+| 84     | 4      | Unknown Matrix Element (65536)                             |
+| 88     | 4      | Unknown Matrix Element (X translation?)                    |
+| 92     | 4      | Unknown Matrix Element (Y translation?)                    |
+| 96     | 4      | Unknown                                                    |
+| 100    | 4      | Sprite Mode                                                |
+| 104    | 4      | Number of sprite palette entries                           |
+| 108    | varies | Sequential [sprite palette entries](#sprite-palette-entry) |
 
 #### Sprite palette entry
 
@@ -395,11 +395,13 @@ If Fill Type is linear or radial
 | 48     | 4      | Start Colour Index |
 | 52     | 4      | End Colour Index   |
 
-#### Type 0x27: Unknown, Join Style
+#### Type 0x27: Join Style
 
-Need to confirm this but manipulating a file to values greater than 2 into the join style make the vectors disappear.
+The Join Style enumeration coincides exactly with that of !Draw.
 
-The join values are inferred from the Draw file format.
+When an Artworks file doesn't specify a join style then !AWViewer defaults to bevelled joins.
+
+Setting the join style to a value not in the enumeration will result in !AWViewer not rendering paths.
 
 | Offset | Length | Content                                                                  |
 |--------|--------|--------------------------------------------------------------------------|
@@ -408,42 +410,40 @@ The join values are inferred from the Draw file format.
 
 #### Type 0x28: End line cap
 
-The Cap Style enumeration coincides exactly with that of !Draw. When the Artworks file doesn't specify
-an end line cap then !AWViewer defaults to end butt caps.
+The Cap Style enumeration coincides exactly with that of !Draw.
+
+When an Artworks file doesn't specify an end line cap then !AWViewer defaults to end butt caps.
 
 Setting the cap style to a value not in the enumeration will result in !AWViewer not rendering paths.
-
-The lower sixteen bits of the triangle cap width and length field specify width of a triangle cap.
-A value of 0x80 gives the same width as the line width.
-
-The upper sixteen bits of the triangle cap width and length field specify length of a triangle cap.
-A value of 0x80 gives the same length as the line width.
-
 
 | Offset | Length | Content                                                                                    |
 |--------|--------|--------------------------------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                                            |
 | 24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol> |
-| 28     | 4      | Triangle Cap Width and Length                                                              |
+| 28     | 4      | [Triangle Cap Width and Length](#triangle-cap-width-and-length)                            |
+
+#### Triangle Cap Width and Length
+
+This field is ignored for other cap types
+
+| Bits    | Content                                              |
+|---------|------------------------------------------------------|
+| 0...15  | Triangle Cap Width (0x80 corresponds to line width)  |
+| 16...31 | Triangle Cap Height (0x80 corresponds to line width) |
 
 #### Type 0x29: Start line cap
 
-The cap style enumeration coincides exactly with that of !Draw. When the Artworks file doesn't specify
-a start line cap then !AWViewer defaults to start butt caps.
+The cap style enumeration coincides exactly with that of !Draw.
+
+When an Artworks file doesn't specify a start line cap then !AWViewer defaults to start butt caps.
 
 Setting the cap style to a value not in the enumeration will result in !AWViewer not rendering paths.
-
-The lower sixteen bits of the triangle cap width and length field specify width of a triangle cap.
-A value of 0x80 gives the same width as the line width.
-
-The upper sixteen bits of the triangle cap width and length field specify length of a triangle cap.
-A value of 0x80 gives the same length as the line width.
 
 | Offset | Length | Content                                                                                    |
 |--------|--------|--------------------------------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                                            |
 | 24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol> |
-| 28     | 4      | Triangle Cap Width and Length                                                              |
+| 28     | 4      | [Triangle Cap Width and Length](#triangle-cap-width-and-length)                            |
 
 #### Type 0x2A: Unknown
 
