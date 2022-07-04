@@ -13,8 +13,8 @@ const RECORD_STROKE_COLOUR = 0x24;
 const RECORD_STROKE_WIDTH = 0x25;
 const RECORD_FILL_COLOUR = 0x26;
 const RECORD_JOIN_STYLE = 0x27;
-const RECORD_LINE_CAP_START = 0x28;
-const RECORD_LINE_CAP_END = 0x29;
+const RECORD_LINE_CAP_END = 0x28;
+const RECORD_LINE_CAP_START = 0x29;
 const RECORD_2A = 0x2A;
 const RECORD_2B = 0x2B;
 const RECORD_2C = 0x2C;
@@ -40,6 +40,11 @@ const RECORD_42 = 0x42;
 const FILL_FLAT = 0;
 const FILL_LINEAR = 1;
 const FILL_RADIAL = 2;
+
+const CAP_BUTT = 0;
+const CAP_ROUND = 1;
+const CAP_SQUARE = 2;
+const CAP_TRIANGLE = 3;
 
 const STRING_LENGTH_LIMIT = 2048;
 
@@ -391,14 +396,14 @@ class ArtworksFile {
   readRecordLineCapEnd({ populateRecord }) {
     populateRecord({
       capStyle: this.readUint(),
-      unknown28: this.readUint(),
+      capTriangle: this.readUint(),
     });
   }
 
   readRecordLineCapStart({ populateRecord }) {
     populateRecord({
       capStyle: this.readUint(),
-      unknown28: this.readUint(),
+      capTriangle: this.readUint(),
     });
   }
 
@@ -903,6 +908,11 @@ module.exports = {
   FILL_FLAT,
   FILL_LINEAR,
   FILL_RADIAL,
+
+  CAP_BUTT,
+  CAP_ROUND,
+  CAP_SQUARE,
+  CAP_TRIANGLE,
 
   Artworks: {
     load(buffer) {

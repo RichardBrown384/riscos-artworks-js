@@ -25,8 +25,8 @@
     *  [Type 0x25](#type-0x25-stroke-width)
     *  [Type 0x26](#type-0x26-fill)
     *  [Type 0x27](#type-0x27-unknown-join-style)
-    *  [Type 0x28](#type-0x28-unknown-end-line-cap)
-    *  [Type 0x29](#type-0x29-unknown-start-line-cap)
+    *  [Type 0x28 - End Line Cap](#type-0x28-end-line-cap) 
+    *  [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
     *  [Type 0x2A](#type-0x2a-unknown)
     *  [Type 0x2B](#type-0x2b-unknown)
     *  [Type 0x2C](#type-0x2c-path)
@@ -406,30 +406,44 @@ The join values are inferred from the Draw file format.
 | 0      | 24     | [Record header](#record-header)                                          |
 | 24     | 4      | Join Style <ol start="0"><li>Mitre</li><li>Round</li><li>Bevel</li></ol> |
 
-#### Type 0x28: Unknown, End line cap
+#### Type 0x28: End line cap
 
-Note: Setting the Cap Style to 3 produced triangular line caps.
-This is in agreement with the Draw file format.
-For values of other than 3 however I was unable to get !AWiewer to produce different cap styles.
-The length of this record might vary since as per !Draw triangle caps require width and length.
+The Cap Style enumeration coincides exactly with that of !Draw. When the Artworks file doesn't specify
+an end line cap then !AWViewer defaults to end butt caps.
 
-| Offset | Length | Content                                                                                    |
-|--------|--------|--------------------------------------------------------------------------------------------|
-| 0      | 24     | [Record header](#record-header)                                                            |
-| 24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol> |
-| 28     | 4      | Unknown (0x4000200,0)                                                                      |
+Setting the cap style to a value not in the enumeration will result in !AWViewer not rendering paths.
 
-#### Type 0x29: Unknown, Start line cap
+The lower sixteen bits of the triangle cap width and length field specify width of a triangle cap.
+A value of 0x80 gives the same width as the line width.
 
-Note: Setting the Cap Style to 3 produced triangular line caps.
-This is in agreement with the Draw file format.
-For values of other than 3 however I was unable to get !AWiewer to produce different cap styles.
+The upper sixteen bits of the triangle cap width and length field specify length of a triangle cap.
+A value of 0x80 gives the same length as the line width.
+
 
 | Offset | Length | Content                                                                                    |
 |--------|--------|--------------------------------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                                            |
 | 24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol> |
-| 28     | 4      | Unknown (0x4000200,0)                                                                      |
+| 28     | 4      | Triangle Cap Width and Length                                                              |
+
+#### Type 0x29: Start line cap
+
+The cap style enumeration coincides exactly with that of !Draw. When the Artworks file doesn't specify
+a start line cap then !AWViewer defaults to start butt caps.
+
+Setting the cap style to a value not in the enumeration will result in !AWViewer not rendering paths.
+
+The lower sixteen bits of the triangle cap width and length field specify width of a triangle cap.
+A value of 0x80 gives the same width as the line width.
+
+The upper sixteen bits of the triangle cap width and length field specify length of a triangle cap.
+A value of 0x80 gives the same length as the line width.
+
+| Offset | Length | Content                                                                                    |
+|--------|--------|--------------------------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                                            |
+| 24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol> |
+| 28     | 4      | Triangle Cap Width and Length                                                              |
 
 #### Type 0x2A: Unknown
 
