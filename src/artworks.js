@@ -102,17 +102,17 @@ function readPathElement(view) {
   const tag = view.readUint();
   const maskedTag = tag & 0xFF;
   if (maskedTag === TAG_END || maskedTag === TAG_UNKNOWN || maskedTag === TAG_CLOSE_SUB_PATH) {
-    return { tag };
+    return { maskedTag, tag };
   }
   if (maskedTag === TAG_MOVE || maskedTag === TAG_LINE) {
     const p0 = readPoint(view);
-    return { tag, points: [p0] };
+    return { maskedTag, tag, points: [p0] };
   }
   if (maskedTag === TAG_BEZIER) {
     const p0 = readPoint(view);
     const p1 = readPoint(view);
     const p2 = readPoint(view);
-    return { tag, points: [p0, p1, p2] };
+    return { maskedTag, tag, points: [p0, p1, p2] };
   }
   view.fail('unsupported path tag', { tag: tag.toString(16) });
   return {};
@@ -122,10 +122,9 @@ function readPath(view) {
   view.checkAlignment('misaligned path');
   const path = [];
   for (; ;) {
-    const element = readPathElement(view);
+    const { maskedTag, ...element } = readPathElement(view);
     path.push(element);
-    const { tag } = element;
-    if (tag === TAG_END) {
+    if (maskedTag === TAG_END) {
       break;
     }
   }
