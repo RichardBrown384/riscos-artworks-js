@@ -264,6 +264,18 @@ function readRecordSaveLocation(view) {
   };
 }
 
+function readRecordStrokeColour(view) {
+  return {
+    strokeColour: view.readUint(),
+  };
+}
+
+function readRecordStrokeWidth(view) {
+  return {
+    strokeWidth: view.readUint(),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -358,18 +370,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecordStrokeColour({ populateRecord }) {
-    populateRecord({
-      strokeColour: this.readUint(),
-    });
-  }
-
-  readRecordStrokeWidth({ populateRecord }) {
-    populateRecord({
-      strokeWidth: this.readUint(),
-    });
   }
 
   readRecordFillColour({ populateRecord }) {
@@ -645,11 +645,11 @@ class ArtworksFile {
         break;
       case RECORD_STROKE_COLOUR:
         checkLast('records after stroke colour');
-        this.readRecordStrokeColour(callbacks);
+        populateRecord(readRecordStrokeColour(this));
         break;
       case RECORD_STROKE_WIDTH:
         checkLast('records after stroke width');
-        this.readRecordStrokeWidth(callbacks);
+        populateRecord(readRecordStrokeWidth(this));
         break;
       case RECORD_FILL_COLOUR:
         checkLast('records after fill colour');
