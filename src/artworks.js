@@ -64,6 +64,448 @@ class ArtworksError extends Error {
   }
 }
 
+function readPoint(view) {
+  view.checkAlignment('misaligned point');
+  return {
+    x: view.readInt(),
+    y: view.readInt(),
+  };
+}
+
+function readBoundingBox(view) {
+  view.checkAlignment('misaligned bounding box');
+  return {
+    minX: view.readInt(),
+    minY: view.readInt(),
+    maxX: view.readInt(),
+    maxY: view.readInt(),
+  };
+}
+
+function readPolyline(view, n) {
+  view.checkAlignment('misaligned polyline');
+  const points = [];
+  for (let i = 0; i < n; i += 1) {
+    points.push(readPoint(view));
+  }
+  return points;
+}
+
+function readPath(view) {
+  view.checkAlignment('misaligned path');
+  const path = [];
+  for (; ;) {
+    const tag = view.readUint();
+    const maskedTag = tag & 0xFF;
+    if (maskedTag === 0) {
+      break;
+    } else if (maskedTag === 2) {
+      const p0 = readPoint(view);
+      path.push({
+        tag: 'M',
+        points: [p0],
+      });
+    } else if (maskedTag === 4) {
+      // skip
+    } else if (maskedTag === 5) {
+      path.push({ tag: 'Z' });
+    } else if (maskedTag === 6) {
+      const p0 = readPoint(view);
+      const p1 = readPoint(view);
+      const p2 = readPoint(view);
+      path.push({
+        tag: 'C',
+        points: [p0, p1, p2],
+      });
+    } else if (maskedTag === 8) {
+      const p0 = readPoint(view);
+      path.push({
+        tag: 'L',
+        points: [p0],
+      });
+    } else {
+      view.fail('unsupported path tag', { tag: tag.toString(16) });
+    }
+  }
+  return path;
+}
+
+function readPaletteEntry(view) {
+  view.checkAlignment('misaligned palette entry');
+  return {
+    name: view.readStringFully(24),
+    colour: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+  };
+}
+
+function readPalette(view) {
+  view.checkAlignment('misaligned palette');
+  const count = view.readUint() & 0x7FFFFFFF;
+  const unknown4 = view.readUint() & 0x7FFFFFFF;
+  const colours = [];
+  for (let n = 0; n < count; n += 1) {
+    colours.push(readPaletteEntry(view));
+  }
+  return {
+    count,
+    unknown4,
+    colours,
+  };
+}
+
+function readHeader(view) {
+  view.checkAlignment('misaligned header');
+  return {
+    identifier: view.readStringFully(4),
+    version: view.readUint(),
+    program: view.readStringFully(8),
+    unknown16: view.readUint(),
+    bodyPosition: view.readUint(),
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    ubufPosition: view.readInt(),
+    spriteAreaPosition: view.readInt(),
+    unknown48: view.readUint(),
+    unknown52: view.readUint(),
+    unknown56: view.readUint(),
+    palettePosition: view.readInt(),
+  };
+}
+
+function readRecord00() {
+  return {};
+}
+
+function readRecordText(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+    rectangle: readPolyline(view, 4),
+  };
+}
+
+function readRecordPath(view) {
+  return {
+    path: readPath(view),
+  };
+}
+
+function readSpritePalette(view) {
+  const palette = [];
+  const count = view.readUint();
+  for (let n = 0; n < count; n += 1) {
+    palette.push(view.readUint());
+  }
+  return palette;
+}
+
+function readRecordSprite(view) {
+  return {
+    unknown24: view.readUint(),
+    name: view.readStringFully(12),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+    unknown48: view.readInt(),
+    unknown52: view.readInt(),
+    unknown56: view.readInt(),
+    unknown60: view.readInt(),
+    unknown64: view.readInt(),
+    unknown68: view.readInt(),
+    unknown72: view.readUint(),
+    unknown76: view.readUint(),
+    unknown80: view.readUint(),
+    unknown84: view.readUint(),
+    unknown88: view.readUint(),
+    unknown92: view.readUint(),
+    unknown96: view.readUint(),
+    unknown100: view.readUint(),
+    palette: readSpritePalette(view),
+  };
+}
+
+function readRecordGroup(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+  };
+}
+
+function readRecordLayer(view) {
+  return {
+    unknown24: view.readUint(),
+    name: view.readStringFully(32),
+  };
+}
+
+function readRecordWorkArea() {
+  return {};
+}
+
+function readRecord22() {
+  return {};
+}
+
+function readRecordSaveLocation(view) {
+  return {
+    unknown24: view.readUint(),
+    saveLocation: view.readString(),
+  };
+}
+
+function readRecordStrokeColour(view) {
+  return {
+    strokeColour: view.readUint(),
+  };
+}
+
+function readRecordStrokeWidth(view) {
+  return {
+    strokeWidth: view.readUint(),
+  };
+}
+
+function readFillGradient(view, fillType) {
+  if (fillType === FILL_FLAT) {
+    return {
+      colour: view.readUint(),
+    };
+  }
+  if (fillType === FILL_LINEAR || fillType === FILL_RADIAL) {
+    return {
+      gradientLine: readPolyline(view, 2),
+      startColour: view.readUint(),
+      endColour: view.readUint(),
+    };
+  }
+  view.fail('unsupported fill type', fillType);
+  return {};
+}
+
+function readRecordFillColour(view) {
+  const fillType = view.readUint();
+  return {
+    fillType,
+    unknown28: view.readUint(),
+    ...readFillGradient(view, fillType),
+  };
+}
+
+function readRecordJoinStyle(view) {
+  return {
+    joinStyle: view.readUint(),
+  };
+}
+
+function readRecordLineCapEnd(view) {
+  return {
+    capStyle: view.readUint(),
+    capTriangle: view.readUint(),
+  };
+}
+
+function readRecordLineCapStart(view) {
+  return {
+    capStyle: view.readUint(),
+    capTriangle: view.readUint(),
+  };
+}
+
+function readRecordWindingRule(view) {
+  return {
+    windingRule: view.readUint(),
+  };
+}
+
+function readDashPattern(view, pattern) {
+  if (pattern === 0) {
+    return {};
+  }
+  const offset = view.readUint();
+  const count = view.readUint();
+  const array = [];
+  for (let i = 0; i < count; i += 1) {
+    array.push(view.readUint());
+  }
+  return { offset, count, array };
+}
+
+function readRecordDashPattern(view) {
+  const pattern = view.readUint();
+  return {
+    pattern,
+    ...readDashPattern(view, pattern),
+  };
+}
+
+function readRecord2C(view) {
+  return {
+    unknown24: view.readUint(),
+    path: readPath(view),
+  };
+}
+
+function readRecord2E(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readStringFully(8),
+    unknown36: view.readStringFully(24),
+    unknown60: view.readInt(),
+    unknown64: view.readInt(),
+  };
+}
+
+function readRecordCharacter(view) {
+  return {
+    characterCode: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+  };
+}
+
+function readRecordFontName(view) {
+  return {
+    fontName: view.readString(),
+  };
+}
+
+function readRecordFontSize(view) {
+  return {
+    xSize: view.readUint(),
+    ySize: view.readUint(),
+  };
+}
+
+function readRecord31(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+  };
+}
+
+function readRecord32(view) {
+  return {
+    unknown24: view.readUint(),
+  };
+}
+
+function readRecord33(view) {
+  return {
+    unknown24: view.readInt(),
+    unknown28: view.readInt(),
+    unknown32: view.readInt(),
+    unknown36: view.readInt(),
+    unknown40: view.readInt(),
+    unknown44: view.readInt(),
+  };
+}
+
+function readRecord34(view) {
+  return {
+    triangle: readPolyline(view, 3),
+    path: readPath(view),
+  };
+}
+
+function readRecord35(view) {
+  return {
+    unknown24: view.readUint(),
+    triangle: readPolyline(view, 3),
+    path: readPath(view),
+  };
+}
+
+function readRecord37(view) {
+  return {
+    path: readPath(view),
+  };
+}
+
+function readRecord38(view) {
+  return {
+    path: readPath(view),
+    unknownTrailer: view.readBytes(68),
+  };
+}
+
+function readRecordFileInfo(view) {
+  return {
+    fileInfo: view.readString(),
+  };
+}
+
+function readRecord3A(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+    unknown48: view.readUint(),
+    unknown52: view.readUint(),
+    unknown56: view.readUint(),
+    unknown60: view.readUint(),
+    unknown64: view.readUint(),
+  };
+}
+
+function readRecord3B(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+    unknown48: view.readUint(),
+    unknown52: view.readUint(),
+    unknown56: view.readUint(),
+    unknown60: view.readUint(),
+  };
+}
+
+function readRecord3D(view) {
+  return {
+    path: readPath(view),
+  };
+}
+
+function readRecord3E(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+  };
+}
+
+function readRecord3F(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+  };
+}
+
+function readRecord42() {
+  return {};
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -160,443 +602,6 @@ class ArtworksFile {
     return String.fromCharCode(...chars);
   }
 
-  readPoint() {
-    this.checkAlignment('misaligned point');
-    const x = this.readInt();
-    const y = this.readInt();
-    return { x, y };
-  }
-
-  readBoundingBox() {
-    this.checkAlignment('misaligned bounding box');
-    const minX = this.readInt();
-    const minY = this.readInt();
-    const maxX = this.readInt();
-    const maxY = this.readInt();
-    return {
-      minX, minY, maxX, maxY,
-    };
-  }
-
-  readPolyline(n) {
-    this.checkAlignment('misaligned polyline');
-    const points = [];
-    for (let i = 0; i < n; i += 1) {
-      points.push(this.readPoint());
-    }
-    return points;
-  }
-
-  readPath() {
-    this.checkAlignment('misaligned path');
-    const path = [];
-    for (;;) {
-      const tag = this.readUint();
-      const maskedTag = tag & 0xFF;
-      if (maskedTag === 0) {
-        break;
-      } else if (maskedTag === 2) {
-        const p0 = this.readPoint();
-        path.push({
-          tag: 'M',
-          points: [p0],
-        });
-      } else if (maskedTag === 4) {
-        // skip
-      } else if (maskedTag === 5) {
-        path.push({ tag: 'Z' });
-      } else if (maskedTag === 6) {
-        const p0 = this.readPoint();
-        const p1 = this.readPoint();
-        const p2 = this.readPoint();
-        path.push({
-          tag: 'C',
-          points: [p0, p1, p2],
-        });
-      } else if (maskedTag === 8) {
-        const p0 = this.readPoint();
-        path.push({
-          tag: 'L',
-          points: [p0],
-        });
-      } else {
-        this.fail('unsupported path tag', { tag: tag.toString(16) });
-      }
-    }
-    return path;
-  }
-
-  readHeader() {
-    this.checkAlignment('misaligned header');
-    return {
-      identifier: this.readStringFully(4),
-      version: this.readUint(),
-      program: this.readStringFully(8),
-      unknown16: this.readUint(),
-      bodyPosition: this.readUint(),
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      ubufPosition: this.readInt(),
-      spriteAreaPosition: this.readInt(),
-      unknown48: this.readUint(),
-      unknown52: this.readUint(),
-      unknown56: this.readUint(),
-      palettePosition: this.readInt(),
-    };
-  }
-
-  readPaletteEntry() {
-    this.checkAlignment('misaligned palette entry');
-    return {
-      name: this.readStringFully(24),
-      colour: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-    };
-  }
-
-  readPalette() {
-    this.checkAlignment('misaligned palette');
-    const colours = [];
-    const count = this.readUint() & 0x7FFFFFFF;
-    const unknown4 = this.readUint() & 0x7FFFFFFF;
-    for (let n = 0; n < count; n += 1) {
-      colours.push(this.readPaletteEntry());
-    }
-    return {
-      unknown4,
-      colours,
-    };
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  readRecord00() {
-  }
-
-  readRecordText({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-      rectangle: this.readPolyline(4),
-    });
-  }
-
-  readRecordPath({ populateRecord }) {
-    populateRecord({
-      path: this.readPath(),
-    });
-  }
-
-  readRecordSprite({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      name: this.readStringFully(12),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-      unknown48: this.readInt(),
-      unknown52: this.readInt(),
-      unknown56: this.readInt(),
-      unknown60: this.readInt(),
-      unknown64: this.readInt(),
-      unknown68: this.readInt(),
-      unknown72: this.readUint(),
-      unknown76: this.readUint(),
-      unknown80: this.readUint(),
-      unknown84: this.readUint(),
-      unknown88: this.readUint(),
-      unknown92: this.readUint(),
-      unknown96: this.readUint(),
-      unknown100: this.readUint(),
-    });
-    const palette = [];
-    const count = this.readUint();
-    for (let n = 0; n < count; n += 1) {
-      palette.push(this.readUint());
-    }
-    populateRecord({ palette });
-  }
-
-  readRecordGroup({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-    });
-  }
-
-  readRecordLayer({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      name: this.readStringFully(32),
-    });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  readRecordWorkArea() {
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  readRecord22() {
-  }
-
-  readRecordSaveLocation({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      saveLocation: this.readString(),
-    });
-  }
-
-  readRecordStrokeColour({ populateRecord }) {
-    populateRecord({
-      strokeColour: this.readUint(),
-    });
-  }
-
-  readRecordStrokeWidth({ populateRecord }) {
-    populateRecord({
-      strokeWidth: this.readUint(),
-    });
-  }
-
-  readRecordFillColour({ populateRecord }) {
-    const fillType = this.readUint();
-    populateRecord({
-      fillType,
-      unknown28: this.readUint(),
-    });
-    if (fillType === FILL_FLAT) {
-      populateRecord({
-        colour: this.readUint(),
-      });
-    } else if (fillType === FILL_LINEAR) {
-      populateRecord({
-        gradientLine: this.readPolyline(2),
-        startColour: this.readUint(),
-        endColour: this.readUint(),
-      });
-    } else if (fillType === FILL_RADIAL) {
-      populateRecord({
-        gradientLine: this.readPolyline(2),
-        startColour: this.readUint(),
-        endColour: this.readUint(),
-      });
-    } else {
-      this.fail('unsupported fill type', fillType);
-    }
-  }
-
-  readRecordJoinStyle({ populateRecord }) {
-    populateRecord({
-      joinStyle: this.readUint(),
-    });
-  }
-
-  readRecordLineCapEnd({ populateRecord }) {
-    populateRecord({
-      capStyle: this.readUint(),
-      capTriangle: this.readUint(),
-    });
-  }
-
-  readRecordLineCapStart({ populateRecord }) {
-    populateRecord({
-      capStyle: this.readUint(),
-      capTriangle: this.readUint(),
-    });
-  }
-
-  readRecordWindingRule({ populateRecord }) {
-    populateRecord({
-      windingRule: this.readUint(),
-    });
-  }
-
-  readRecordDashPattern({ populateRecord }) {
-    const pattern = this.readUint();
-    populateRecord({
-      pattern,
-    });
-    if (pattern !== 0) {
-      const offset = this.readUint();
-      const count = this.readUint();
-      const array = [];
-      for (let i = 0; i < count; i += 1) {
-        array.push(this.readUint());
-      }
-      populateRecord({
-        offset,
-        count,
-        array,
-      });
-    }
-  }
-
-  readRecord2C({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      path: this.readPath(),
-    });
-  }
-
-  readRecord2E({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readStringFully(8),
-      unknown36: this.readStringFully(24),
-      unknown60: this.readInt(),
-      unknown64: this.readInt(),
-    });
-  }
-
-  readRecordCharacter({ populateRecord }) {
-    populateRecord({
-      characterCode: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-    });
-  }
-
-  readRecordFontName({ populateRecord }) {
-    populateRecord({
-      fontName: this.readString(),
-    });
-  }
-
-  readRecordFontSize({ populateRecord }) {
-    populateRecord({
-      xSize: this.readUint(),
-      ySize: this.readUint(),
-    });
-  }
-
-  readRecord31({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-    });
-  }
-
-  readRecord32({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-    });
-  }
-
-  readRecord33({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readInt(),
-      unknown28: this.readInt(),
-      unknown32: this.readInt(),
-      unknown36: this.readInt(),
-      unknown40: this.readInt(),
-      unknown44: this.readInt(),
-    });
-  }
-
-  readRecord34({ populateRecord }) {
-    populateRecord({
-      triangle: this.readPolyline(3),
-      path: this.readPath(),
-    });
-  }
-
-  readRecord35({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      triangle: this.readPolyline(3),
-      path: this.readPath(),
-    });
-  }
-
-  readRecord37({ populateRecord }) {
-    populateRecord({
-      path: this.readPath(),
-    });
-  }
-
-  readRecord38({ populateRecord }) {
-    populateRecord({
-      path: this.readPath(),
-      unknownTrailer: this.readBytes(68),
-    });
-  }
-
-  readRecordFileInfo({ populateRecord }) {
-    populateRecord({
-      fileInfo: this.readString(),
-    });
-  }
-
-  readRecord3A({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-      unknown48: this.readUint(),
-      unknown52: this.readUint(),
-      unknown56: this.readUint(),
-      unknown60: this.readUint(),
-      unknown64: this.readUint(),
-    });
-  }
-
-  readRecord3B({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-      unknown48: this.readUint(),
-      unknown52: this.readUint(),
-      unknown56: this.readUint(),
-      unknown60: this.readUint(),
-    });
-  }
-
-  readRecord3D({ populateRecord }) {
-    populateRecord({
-      path: this.readPath(),
-    });
-  }
-
-  readRecord3E({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-    });
-  }
-
-  readRecord3F({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-    });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  readRecord42() {
-  }
-
   readRecord(callbacks, { next }) {
     const checkLast = (message) => {
       this.check(next === 0, message);
@@ -604,137 +609,137 @@ class ArtworksFile {
     const { populateRecord, unsupportedRecord } = callbacks;
     const type = this.readUint();
     const unknown4 = this.readUint();
-    const boundingBox = this.readBoundingBox();
-    populateRecord({ type, boundingBox, unknown4 });
+    const boundingBox = readBoundingBox(this);
+    populateRecord({ type, unknown4, boundingBox });
     switch (type & 0xFF) {
       case RECORD_00:
-        this.readRecord00(callbacks);
+        populateRecord(readRecord00(this));
         break;
       case RECORD_TEXT:
-        this.readRecordText(callbacks);
+        populateRecord(readRecordText(this));
         break;
       case RECORD_PATH:
-        this.readRecordPath(callbacks);
+        populateRecord(readRecordPath(this));
         break;
       case RECORD_SPRITE:
         checkLast('records after sprite');
-        this.readRecordSprite(callbacks);
+        populateRecord(readRecordSprite(this));
         break;
       case RECORD_GROUP:
-        this.readRecordGroup(callbacks);
+        populateRecord(readRecordGroup(this));
         break;
       case RECORD_LAYER:
-        this.readRecordLayer(callbacks);
+        populateRecord(readRecordLayer(this));
         break;
       case RECORD_WORK_AREA:
         checkLast('records after work area');
-        this.readRecordWorkArea(callbacks);
+        populateRecord(readRecordWorkArea(this));
         break;
       case RECORD_22:
         checkLast('records after record 22');
-        this.readRecord22(callbacks);
+        populateRecord(readRecord22(this));
         break;
       case RECORD_SAVE_LOCATION:
         checkLast('records after save location');
-        this.readRecordSaveLocation(callbacks);
+        populateRecord(readRecordSaveLocation(this));
         break;
       case RECORD_STROKE_COLOUR:
         checkLast('records after stroke colour');
-        this.readRecordStrokeColour(callbacks);
+        populateRecord(readRecordStrokeColour(this));
         break;
       case RECORD_STROKE_WIDTH:
         checkLast('records after stroke width');
-        this.readRecordStrokeWidth(callbacks);
+        populateRecord(readRecordStrokeWidth(this));
         break;
       case RECORD_FILL_COLOUR:
         checkLast('records after fill colour');
-        this.readRecordFillColour(callbacks);
+        populateRecord(readRecordFillColour(this));
         break;
       case RECORD_JOIN_STYLE:
         checkLast('records after join style');
-        this.readRecordJoinStyle(callbacks);
+        populateRecord(readRecordJoinStyle(this));
         break;
       case RECORD_LINE_CAP_END:
         checkLast('records after end line cap');
-        this.readRecordLineCapEnd(callbacks);
+        populateRecord(readRecordLineCapEnd(this));
         break;
       case RECORD_LINE_CAP_START:
         checkLast('records after start line cap');
-        this.readRecordLineCapStart(callbacks);
+        populateRecord(readRecordLineCapStart(this));
         break;
       case RECORD_WINDING_RULE:
         checkLast('records after winding rule');
-        this.readRecordWindingRule(callbacks);
+        populateRecord(readRecordWindingRule(this));
         break;
       case RECORD_DASH_PATTERN:
         checkLast('records after record dash pattern');
-        this.readRecordDashPattern(callbacks);
+        populateRecord(readRecordDashPattern(this));
         break;
       case RECORD_2C:
-        this.readRecord2C(callbacks);
+        populateRecord(readRecord2C(this));
         break;
       case RECORD_2E:
         checkLast('records after record 2e');
-        this.readRecord2E(callbacks);
+        populateRecord(readRecord2E(this));
         break;
       case RECORD_CHARACTER:
-        this.readRecordCharacter(callbacks);
+        populateRecord(readRecordCharacter(this));
         break;
       case RECORD_FONT_NAME:
         checkLast('records after font name');
-        this.readRecordFontName(callbacks);
+        populateRecord(readRecordFontName(this));
         break;
       case RECORD_FONT_SIZE:
         checkLast('records after font size');
-        this.readRecordFontSize(callbacks);
+        populateRecord(readRecordFontSize(this));
         break;
       case RECORD_31:
-        this.readRecord31(callbacks);
+        populateRecord(readRecord31(this));
         break;
       case RECORD_32:
         checkLast('records after record 32');
-        this.readRecord32(callbacks);
+        populateRecord(readRecord32(this));
         break;
       case RECORD_33:
-        this.readRecord33(callbacks);
+        populateRecord(readRecord33(this));
         break;
       case RECORD_34:
-        this.readRecord34(callbacks);
+        populateRecord(readRecord34(this));
         break;
       case RECORD_35:
-        this.readRecord35(callbacks);
+        populateRecord(readRecord35(this));
         break;
       case RECORD_37:
-        this.readRecord37(callbacks);
+        populateRecord(readRecord37(this));
         break;
       case RECORD_38:
-        this.readRecord38(callbacks);
+        populateRecord(readRecord38(this));
         break;
       case RECORD_FILE_INFO:
         checkLast('records after file info');
-        this.readRecordFileInfo(callbacks);
+        populateRecord(readRecordFileInfo(this));
         break;
       case RECORD_3A:
-        this.readRecord3A(callbacks);
+        populateRecord(readRecord3A(this));
         break;
       case RECORD_3B:
         checkLast('records after record 3b');
-        this.readRecord3B(callbacks);
+        populateRecord(readRecord3B(this));
         break;
       case RECORD_3D:
         checkLast('records after 3d');
-        this.readRecord3D(callbacks);
+        populateRecord(readRecord3D(this));
         break;
       case RECORD_3E:
         checkLast('records after record 3e');
-        this.readRecord3E(callbacks);
+        populateRecord(readRecord3E(this));
         break;
       case RECORD_3F:
         checkLast('records after record 3f');
-        this.readRecord3F(callbacks);
+        populateRecord(readRecord3F(this));
         break;
       case RECORD_42:
-        this.readRecord42(callbacks);
+        populateRecord(readRecord42());
         break;
       default:
         unsupportedRecord();
@@ -859,7 +864,7 @@ class ArtworksFile {
 
     try {
       this.setPosition(0);
-      const header = this.readHeader();
+      const header = readHeader(this);
 
       const { bodyPosition, palettePosition } = header;
 
@@ -872,7 +877,7 @@ class ArtworksFile {
       });
 
       this.setPosition(palettePosition);
-      const palette = this.readPalette();
+      const palette = readPalette(this);
       return {
         header,
         records,
