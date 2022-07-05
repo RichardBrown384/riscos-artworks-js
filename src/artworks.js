@@ -253,6 +253,10 @@ function readRecordWorkArea() {
   return {};
 }
 
+function readRecord22() {
+  return {};
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -347,10 +351,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  readRecord22() {
   }
 
   readRecordSaveLocation({ populateRecord }) {
@@ -637,7 +637,7 @@ class ArtworksFile {
         break;
       case RECORD_22:
         checkLast('records after record 22');
-        this.readRecord22(callbacks);
+        populateRecord(readRecord22(this));
         break;
       case RECORD_SAVE_LOCATION:
         checkLast('records after save location');
