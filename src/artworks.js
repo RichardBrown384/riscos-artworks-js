@@ -195,6 +195,12 @@ function readRecordText(view) {
   };
 }
 
+function readRecordPath(view) {
+  return {
+    path: readPath(view),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -290,26 +296,6 @@ class ArtworksFile {
     }
     return String.fromCharCode(...chars);
   }
-
-  // eslint-disable-next-line class-methods-use-this
-  readRecordText({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-      rectangle: readPolyline(this, 4),
-    });
-  }
-
-  readRecordPath({ populateRecord }) {
-    populateRecord({
-      path: readPath(this),
-    });
-  }
-
   readRecordSprite({ populateRecord }) {
     populateRecord({
       unknown24: this.readUint(),
@@ -622,13 +608,13 @@ class ArtworksFile {
     populateRecord({ type, boundingBox, unknown4 });
     switch (type & 0xFF) {
       case RECORD_00:
-        populateRecord(...readRecord00(this));
+        populateRecord(readRecord00(this));
         break;
       case RECORD_TEXT:
-        this.readRecordText(callbacks);
+        populateRecord(readRecordText(this));
         break;
       case RECORD_PATH:
-        this.readRecordPath(callbacks);
+        populateRecord(readRecordPath(this));
         break;
       case RECORD_SPRITE:
         checkLast('records after sprite');
