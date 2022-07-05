@@ -328,6 +328,27 @@ function readRecordWindingRule(view) {
   };
 }
 
+function readDashPattern(view, pattern) {
+  if (pattern === 0) {
+    return {};
+  }
+  const offset = view.readUint();
+  const count = view.readUint();
+  const array = [];
+  for (let i = 0; i < count; i += 1) {
+    array.push(view.readUint());
+  }
+  return { offset, count, array };
+}
+
+function readRecordDashPattern(view) {
+  const pattern = view.readUint();
+  return {
+    pattern,
+    ...readDashPattern(view, pattern),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -422,26 +443,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecordDashPattern({ populateRecord }) {
-    const pattern = this.readUint();
-    populateRecord({
-      pattern,
-    });
-    if (pattern !== 0) {
-      const offset = this.readUint();
-      const count = this.readUint();
-      const array = [];
-      for (let i = 0; i < count; i += 1) {
-        array.push(this.readUint());
-      }
-      populateRecord({
-        offset,
-        count,
-        array,
-      });
-    }
   }
 
   readRecord2C({ populateRecord }) {
@@ -672,7 +673,7 @@ class ArtworksFile {
         break;
       case RECORD_DASH_PATTERN:
         checkLast('records after record dash pattern');
-        this.readRecordDashPattern(callbacks);
+        populateRecord(readRecordDashPattern(this));
         break;
       case RECORD_2C:
         this.readRecord2C(callbacks);
