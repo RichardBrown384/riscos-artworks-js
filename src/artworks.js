@@ -242,6 +242,13 @@ function readRecordGroup(view) {
   };
 }
 
+function readRecordLayer(view) {
+  return {
+    unknown24: view.readUint(),
+    name: view.readStringFully(32),
+  };
+}
+
 function readRecordWorkArea() {
   return {};
 }
@@ -340,13 +347,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecordLayer({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      name: this.readStringFully(32),
-    });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -629,7 +629,7 @@ class ArtworksFile {
         populateRecord(readRecordGroup(this));
         break;
       case RECORD_LAYER:
-        this.readRecordLayer(callbacks);
+        populateRecord(readRecordLayer(this));
         break;
       case RECORD_WORK_AREA:
         checkLast('records after work area');
