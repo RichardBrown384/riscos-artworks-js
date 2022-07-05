@@ -356,6 +356,16 @@ function readRecord2C(view) {
   };
 }
 
+function readRecord2E(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readStringFully(8),
+    unknown36: view.readStringFully(24),
+    unknown60: view.readInt(),
+    unknown64: view.readInt(),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -450,16 +460,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecord2E({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readStringFully(8),
-      unknown36: this.readStringFully(24),
-      unknown60: this.readInt(),
-      unknown64: this.readInt(),
-    });
   }
 
   readRecordCharacter({ populateRecord }) {
@@ -680,7 +680,7 @@ class ArtworksFile {
         break;
       case RECORD_2E:
         checkLast('records after record 2e');
-        this.readRecord2E(callbacks);
+        populateRecord(readRecord2E(this));
         break;
       case RECORD_CHARACTER:
         this.readRecordCharacter(callbacks);
