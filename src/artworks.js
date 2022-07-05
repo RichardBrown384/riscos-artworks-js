@@ -949,6 +949,13 @@ module.exports = {
   WINDING_RULE_NON_ZERO,
   WINDING_RULE_EVEN_ODD,
 
+  TAG_END,
+  TAG_MOVE,
+  TAG_UNKNOWN,
+  TAG_CLOSE_SUB_PATH,
+  TAG_BEZIER,
+  TAG_LINE,
+
   Artworks: {
     load(buffer) {
       return new ArtworksFile(Uint8Array.from(buffer).buffer).load();
