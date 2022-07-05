@@ -366,6 +366,16 @@ function readRecord2E(view) {
   };
 }
 
+function readRecordCharacter(view) {
+  return {
+    characterCode: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -460,16 +470,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecordCharacter({ populateRecord }) {
-    populateRecord({
-      characterCode: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-    });
   }
 
   readRecordFontName({ populateRecord }) {
@@ -683,7 +683,7 @@ class ArtworksFile {
         populateRecord(readRecord2E(this));
         break;
       case RECORD_CHARACTER:
-        this.readRecordCharacter(callbacks);
+        populateRecord(readRecordCharacter(this));
         break;
       case RECORD_FONT_NAME:
         checkLast('records after font name');
