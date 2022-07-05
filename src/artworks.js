@@ -201,6 +201,39 @@ function readRecordPath(view) {
   };
 }
 
+function readSpritePalette(view) {
+  const palette = [];
+  const count = view.readUint();
+  for (let n = 0; n < count; n += 1) {
+    palette.push(view.readUint());
+  }
+  return palette;
+}
+
+function readRecordSprite(view) {
+  return {
+    unknown24: view.readUint(),
+    name: view.readStringFully(12),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+    unknown48: view.readInt(),
+    unknown52: view.readInt(),
+    unknown56: view.readInt(),
+    unknown60: view.readInt(),
+    unknown64: view.readInt(),
+    unknown68: view.readInt(),
+    unknown72: view.readUint(),
+    unknown76: view.readUint(),
+    unknown80: view.readUint(),
+    unknown84: view.readUint(),
+    unknown88: view.readUint(),
+    unknown92: view.readUint(),
+    unknown96: view.readUint(),
+    unknown100: view.readUint(),
+    palette: readSpritePalette(view),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -295,34 +328,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-  readRecordSprite({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      name: this.readStringFully(12),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-      unknown48: this.readInt(),
-      unknown52: this.readInt(),
-      unknown56: this.readInt(),
-      unknown60: this.readInt(),
-      unknown64: this.readInt(),
-      unknown68: this.readInt(),
-      unknown72: this.readUint(),
-      unknown76: this.readUint(),
-      unknown80: this.readUint(),
-      unknown84: this.readUint(),
-      unknown88: this.readUint(),
-      unknown92: this.readUint(),
-      unknown96: this.readUint(),
-      unknown100: this.readUint(),
-    });
-    const palette = [];
-    const count = this.readUint();
-    for (let n = 0; n < count; n += 1) {
-      palette.push(this.readUint());
-    }
-    populateRecord({ palette });
   }
 
   readRecordGroup({ populateRecord }) {
@@ -618,7 +623,7 @@ class ArtworksFile {
         break;
       case RECORD_SPRITE:
         checkLast('records after sprite');
-        this.readRecordSprite(callbacks);
+        populateRecord(readRecordSprite(this));
         break;
       case RECORD_GROUP:
         this.readRecordGroup(callbacks);
