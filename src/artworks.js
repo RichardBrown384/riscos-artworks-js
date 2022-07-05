@@ -53,6 +53,13 @@ const CAP_TRIANGLE = 3;
 const WINDING_RULE_NON_ZERO = 0;
 const WINDING_RULE_EVEN_ODD = 1;
 
+const TAG_END = 0;
+const TAG_MOVE = 2;
+const TAG_UNKNOWN = 4;
+const TAG_CLOSE_SUB_PATH = 5;
+const TAG_BEZIER = 6;
+const TAG_LINE = 8;
+
 const STRING_LENGTH_LIMIT = 2048;
 
 class ArtworksError extends Error {
@@ -91,40 +98,35 @@ function readPolyline(view, n) {
   return points;
 }
 
+function readPathElement(view) {
+  const tag = view.readUint();
+  const maskedTag = tag & 0xFF;
+  if (maskedTag === TAG_END || maskedTag === TAG_UNKNOWN || maskedTag === TAG_CLOSE_SUB_PATH) {
+    return { tag };
+  }
+  if (maskedTag === TAG_MOVE || maskedTag === TAG_LINE) {
+    const p0 = readPoint(view);
+    return { tag, points: [p0] };
+  }
+  if (maskedTag === TAG_BEZIER) {
+    const p0 = readPoint(view);
+    const p1 = readPoint(view);
+    const p2 = readPoint(view);
+    return { tag, points: [p0, p1, p2] };
+  }
+  view.fail('unsupported path tag', { tag: tag.toString(16) });
+  return {};
+}
+
 function readPath(view) {
   view.checkAlignment('misaligned path');
   const path = [];
   for (; ;) {
-    const tag = view.readUint();
-    const maskedTag = tag & 0xFF;
-    if (maskedTag === 0) {
+    const element = readPathElement(view);
+    path.push(element);
+    const { tag } = element;
+    if (tag === TAG_END) {
       break;
-    } else if (maskedTag === 2) {
-      const p0 = readPoint(view);
-      path.push({
-        tag: 'M',
-        points: [p0],
-      });
-    } else if (maskedTag === 4) {
-      // skip
-    } else if (maskedTag === 5) {
-      path.push({ tag: 'Z' });
-    } else if (maskedTag === 6) {
-      const p0 = readPoint(view);
-      const p1 = readPoint(view);
-      const p2 = readPoint(view);
-      path.push({
-        tag: 'C',
-        points: [p0, p1, p2],
-      });
-    } else if (maskedTag === 8) {
-      const p0 = readPoint(view);
-      path.push({
-        tag: 'L',
-        points: [p0],
-      });
-    } else {
-      view.fail('unsupported path tag', { tag: tag.toString(16) });
     }
   }
   return path;
