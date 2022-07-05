@@ -730,7 +730,7 @@ The path data is _very_ similar to that found in an Acorn !Draw file.
 A path element consists of a tag and zero or more points (stored as two 32-bit words as x then y).
 
 A tag is a 32-bit word. The lower 8 bits appear to determine the nature of the data that follows, and
-bits 8-31 appear to contain some kind of flag information.
+bits 8-31 contain flags that control rendering.
 
 A path then comprises one or more path elements.
 
@@ -742,6 +742,10 @@ A path then comprises one or more path elements.
 | 5   | 0      | Close sub path           |
 | 6   | 3      | Bezier to absolute       |
 | 8   | 1      | Line to absolute         |
+
+For moves (tag 2), bit 31 of the tag appears to influence if the path or sub-path is rendered.
+If bit 31 is set, then the path (or sub-path) is rendered in all of !AWViewer's WYSIWIG modes.
+If bit 31 is clear, then the path (or sub-path) is only rendered in !AWViewer's Outline mode.
 
 ### Palette
 
