@@ -710,7 +710,7 @@ class ArtworksFile {
   }
 
   readRecordBody(callbacks, header, checkLast) {
-    const { unsupportedRecord, populateRecord } = callbacks;
+    const { populateRecord, unsupportedRecord } = callbacks;
     try {
       populateRecord(readRecordBody(this, header, checkLast));
     } catch (e) {
