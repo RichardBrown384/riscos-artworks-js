@@ -302,6 +302,32 @@ function readRecordFillColour(view) {
   };
 }
 
+function readRecordJoinStyle(view) {
+  return {
+    joinStyle: view.readUint(),
+  };
+}
+
+function readRecordLineCapEnd(view) {
+  return {
+    capStyle: view.readUint(),
+    capTriangle: view.readUint(),
+  };
+}
+
+function readRecordLineCapStart(view) {
+  return {
+    capStyle: view.readUint(),
+    capTriangle: view.readUint(),
+  };
+}
+
+function readRecordWindingRule(view) {
+  return {
+    windingRule: view.readUint(),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -396,32 +422,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecordJoinStyle({ populateRecord }) {
-    populateRecord({
-      joinStyle: this.readUint(),
-    });
-  }
-
-  readRecordLineCapEnd({ populateRecord }) {
-    populateRecord({
-      capStyle: this.readUint(),
-      capTriangle: this.readUint(),
-    });
-  }
-
-  readRecordLineCapStart({ populateRecord }) {
-    populateRecord({
-      capStyle: this.readUint(),
-      capTriangle: this.readUint(),
-    });
-  }
-
-  readRecordWindingRule({ populateRecord }) {
-    populateRecord({
-      windingRule: this.readUint(),
-    });
   }
 
   readRecordDashPattern({ populateRecord }) {
@@ -656,19 +656,19 @@ class ArtworksFile {
         break;
       case RECORD_JOIN_STYLE:
         checkLast('records after join style');
-        this.readRecordJoinStyle(callbacks);
+        populateRecord(readRecordJoinStyle(this));
         break;
       case RECORD_LINE_CAP_END:
         checkLast('records after end line cap');
-        this.readRecordLineCapEnd(callbacks);
+        populateRecord(readRecordLineCapEnd(this));
         break;
       case RECORD_LINE_CAP_START:
         checkLast('records after start line cap');
-        this.readRecordLineCapStart(callbacks);
+        populateRecord(readRecordLineCapStart(this));
         break;
       case RECORD_WINDING_RULE:
         checkLast('records after winding rule');
-        this.readRecordWindingRule(callbacks);
+        populateRecord(readRecordWindingRule(this));
         break;
       case RECORD_DASH_PATTERN:
         checkLast('records after record dash pattern');
