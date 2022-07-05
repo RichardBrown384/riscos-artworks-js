@@ -349,6 +349,13 @@ function readRecordDashPattern(view) {
   };
 }
 
+function readRecord2C(view) {
+  return {
+    unknown24: view.readUint(),
+    path: readPath(view),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -443,13 +450,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecord2C({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      path: readPath(this),
-    });
   }
 
   readRecord2E({ populateRecord }) {
@@ -676,7 +676,7 @@ class ArtworksFile {
         populateRecord(readRecordDashPattern(this));
         break;
       case RECORD_2C:
-        this.readRecord2C(callbacks);
+        populateRecord(readRecord2C(this));
         break;
       case RECORD_2E:
         checkLast('records after record 2e');
