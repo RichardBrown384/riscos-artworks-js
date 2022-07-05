@@ -158,10 +158,6 @@ function readPalette(view) {
   };
 }
 
-function readRecord00() {
-  return {};
-}
-
 function readHeader(view) {
   view.checkAlignment('misaligned header');
   return {
@@ -180,6 +176,22 @@ function readHeader(view) {
     unknown52: view.readUint(),
     unknown56: view.readUint(),
     palettePosition: view.readInt(),
+  };
+}
+
+function readRecord00() {
+  return {};
+}
+
+function readRecordText(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+    rectangle: readPolyline(view, 4),
   };
 }
 
