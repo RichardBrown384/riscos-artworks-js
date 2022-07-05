@@ -242,6 +242,10 @@ function readRecordGroup(view) {
   };
 }
 
+function readRecordWorkArea() {
+  return {};
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -343,10 +347,6 @@ class ArtworksFile {
       unknown24: this.readUint(),
       name: this.readStringFully(32),
     });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  readRecordWorkArea() {
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -633,7 +633,7 @@ class ArtworksFile {
         break;
       case RECORD_WORK_AREA:
         checkLast('records after work area');
-        this.readRecordWorkArea(callbacks);
+        populateRecord(readRecordWorkArea(this));
         break;
       case RECORD_22:
         checkLast('records after record 22');
