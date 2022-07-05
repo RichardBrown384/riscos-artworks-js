@@ -158,6 +158,10 @@ function readPalette(view) {
   };
 }
 
+function readRecord00() {
+  return {};
+}
+
 function readHeader(view) {
   view.checkAlignment('misaligned header');
   return {
@@ -276,9 +280,6 @@ class ArtworksFile {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  readRecord00() {
-  }
-
   readRecordText({ populateRecord }) {
     populateRecord({
       unknown24: this.readUint(),
@@ -609,7 +610,7 @@ class ArtworksFile {
     populateRecord({ type, boundingBox, unknown4 });
     switch (type & 0xFF) {
       case RECORD_00:
-        this.readRecord00(callbacks);
+        populateRecord(...readRecord00(this));
         break;
       case RECORD_TEXT:
         this.readRecordText(callbacks);
