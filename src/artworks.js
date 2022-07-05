@@ -276,6 +276,32 @@ function readRecordStrokeWidth(view) {
   };
 }
 
+function readFillGradient(view, fillType) {
+  if (fillType === FILL_FLAT) {
+    return {
+      colour: view.readUint(),
+    };
+  }
+  if (fillType === FILL_LINEAR || fillType === FILL_RADIAL) {
+    return {
+      gradientLine: readPolyline(view, 2),
+      startColour: view.readUint(),
+      endColour: view.readUint(),
+    };
+  }
+  view.fail('unsupported fill type', fillType);
+  return {};
+}
+
+function readRecordFillColour(view) {
+  const fillType = view.readUint();
+  return {
+    fillType,
+    unknown28: view.readUint(),
+    ...readFillGradient(view, fillType),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -370,33 +396,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecordFillColour({ populateRecord }) {
-    const fillType = this.readUint();
-    populateRecord({
-      fillType,
-      unknown28: this.readUint(),
-    });
-    if (fillType === FILL_FLAT) {
-      populateRecord({
-        colour: this.readUint(),
-      });
-    } else if (fillType === FILL_LINEAR) {
-      populateRecord({
-        gradientLine: readPolyline(this, 2),
-        startColour: this.readUint(),
-        endColour: this.readUint(),
-      });
-    } else if (fillType === FILL_RADIAL) {
-      populateRecord({
-        gradientLine: readPolyline(this, 2),
-        startColour: this.readUint(),
-        endColour: this.readUint(),
-      });
-    } else {
-      this.fail('unsupported fill type', fillType);
-    }
   }
 
   readRecordJoinStyle({ populateRecord }) {
@@ -653,7 +652,7 @@ class ArtworksFile {
         break;
       case RECORD_FILL_COLOUR:
         checkLast('records after fill colour');
-        this.readRecordFillColour(callbacks);
+        populateRecord(readRecordFillColour(this));
         break;
       case RECORD_JOIN_STYLE:
         checkLast('records after join style');
