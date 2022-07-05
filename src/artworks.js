@@ -234,6 +234,14 @@ function readRecordSprite(view) {
   };
 }
 
+function readRecordGroup(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -328,14 +336,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecordGroup({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-    });
   }
 
   readRecordLayer({ populateRecord }) {
@@ -626,7 +626,7 @@ class ArtworksFile {
         populateRecord(readRecordSprite(this));
         break;
       case RECORD_GROUP:
-        this.readRecordGroup(callbacks);
+        populateRecord(readRecordGroup(this));
         break;
       case RECORD_LAYER:
         this.readRecordLayer(callbacks);
