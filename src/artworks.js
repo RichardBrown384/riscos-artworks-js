@@ -62,7 +62,14 @@ const TAG_LINE = 8;
 
 const STRING_LENGTH_LIMIT = 2048;
 
-class ArtworksError extends Error {}
+class ArtworksError extends Error {
+  constructor(position, data, ...options) {
+    super(...options);
+    this.name = 'ArtworksError';
+    this.position = position;
+    this.data = data;
+  }
+}
 class UnsupportedRecordError extends Error {}
 
 function readPoint(view) {
@@ -627,12 +634,7 @@ class ArtworksFile {
 
   check(condition, message, data = {}) {
     if (!condition) {
-      throw new ArtworksError(message, {
-        cause: {
-          position: this.getPosition(),
-          data,
-        },
-      });
+      throw new ArtworksError(this.getPosition(), data, message);
     }
   }
 
