@@ -443,6 +443,12 @@ function readRecord38(view) {
   };
 }
 
+function readRecordFileInfo(view) {
+  return {
+    fileInfo: view.readString(),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -539,12 +545,6 @@ class ArtworksFile {
     return String.fromCharCode(...chars);
   }
 
-  readRecordFileInfo({ populateRecord }) {
-    populateRecord({
-      fileInfo: this.readString(),
-    });
-  }
-
   readRecord3A({ populateRecord }) {
     populateRecord({
       unknown24: this.readUint(),
@@ -610,7 +610,7 @@ class ArtworksFile {
     const type = this.readUint();
     const unknown4 = this.readUint();
     const boundingBox = readBoundingBox(this);
-    populateRecord({ type, boundingBox, unknown4 });
+    populateRecord({ type, unknown4, boundingBox });
     switch (type & 0xFF) {
       case RECORD_00:
         populateRecord(readRecord00(this));
@@ -717,7 +717,7 @@ class ArtworksFile {
         break;
       case RECORD_FILE_INFO:
         checkLast('records after file info');
-        this.readRecordFileInfo(callbacks);
+        populateRecord(readRecordFileInfo(this));
         break;
       case RECORD_3A:
         this.readRecord3A(callbacks);
