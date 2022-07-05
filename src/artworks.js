@@ -449,6 +449,63 @@ function readRecordFileInfo(view) {
   };
 }
 
+function readRecord3A(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+    unknown48: view.readUint(),
+    unknown52: view.readUint(),
+    unknown56: view.readUint(),
+    unknown60: view.readUint(),
+    unknown64: view.readUint(),
+  };
+}
+
+function readRecord3B(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+    unknown40: view.readUint(),
+    unknown44: view.readUint(),
+    unknown48: view.readUint(),
+    unknown52: view.readUint(),
+    unknown56: view.readUint(),
+    unknown60: view.readUint(),
+  };
+}
+
+function readRecord3D(view) {
+  return {
+    path: readPath(view),
+  };
+}
+
+function readRecord3E(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+  };
+}
+
+function readRecord3F(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+  };
+}
+
+function readRecord42() {
+  return {};
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -543,63 +600,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecord3A({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-      unknown48: this.readUint(),
-      unknown52: this.readUint(),
-      unknown56: this.readUint(),
-      unknown60: this.readUint(),
-      unknown64: this.readUint(),
-    });
-  }
-
-  readRecord3B({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-      unknown40: this.readUint(),
-      unknown44: this.readUint(),
-      unknown48: this.readUint(),
-      unknown52: this.readUint(),
-      unknown56: this.readUint(),
-      unknown60: this.readUint(),
-    });
-  }
-
-  readRecord3D({ populateRecord }) {
-    populateRecord({
-      path: readPath(this),
-    });
-  }
-
-  readRecord3E({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-    });
-  }
-
-  readRecord3F({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-    });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  readRecord42() {
   }
 
   readRecord(callbacks, { next }) {
@@ -720,26 +720,26 @@ class ArtworksFile {
         populateRecord(readRecordFileInfo(this));
         break;
       case RECORD_3A:
-        this.readRecord3A(callbacks);
+        populateRecord(readRecord3A(this));
         break;
       case RECORD_3B:
         checkLast('records after record 3b');
-        this.readRecord3B(callbacks);
+        populateRecord(readRecord3B(this));
         break;
       case RECORD_3D:
         checkLast('records after 3d');
-        this.readRecord3D(callbacks);
+        populateRecord(readRecord3D(this));
         break;
       case RECORD_3E:
         checkLast('records after record 3e');
-        this.readRecord3E(callbacks);
+        populateRecord(readRecord3E(this));
         break;
       case RECORD_3F:
         checkLast('records after record 3f');
-        this.readRecord3F(callbacks);
+        populateRecord(readRecord3F(this));
         break;
       case RECORD_42:
-        this.readRecord42(callbacks);
+        populateRecord(readRecord42());
         break;
       default:
         unsupportedRecord();
