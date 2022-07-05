@@ -382,6 +382,13 @@ function readRecordFontName(view) {
   };
 }
 
+function readRecordFontSize(view) {
+  return {
+    xSize: view.readUint(),
+    ySize: view.readUint(),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -476,13 +483,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecordFontSize({ populateRecord }) {
-    populateRecord({
-      xSize: this.readUint(),
-      ySize: this.readUint(),
-    });
   }
 
   readRecord31({ populateRecord }) {
@@ -691,7 +691,7 @@ class ArtworksFile {
         break;
       case RECORD_FONT_SIZE:
         checkLast('records after font size');
-        this.readRecordFontSize(callbacks);
+        populateRecord(readRecordFontSize(this));
         break;
       case RECORD_31:
         this.readRecord31(callbacks);
