@@ -389,6 +389,60 @@ function readRecordFontSize(view) {
   };
 }
 
+function readRecord31(view) {
+  return {
+    unknown24: view.readUint(),
+    unknown28: view.readUint(),
+    unknown32: view.readUint(),
+    unknown36: view.readUint(),
+  };
+}
+
+function readRecord32(view) {
+  return {
+    unknown24: view.readUint(),
+  };
+}
+
+function readRecord33(view) {
+  return {
+    unknown24: view.readInt(),
+    unknown28: view.readInt(),
+    unknown32: view.readInt(),
+    unknown36: view.readInt(),
+    unknown40: view.readInt(),
+    unknown44: view.readInt(),
+  };
+}
+
+function readRecord34(view) {
+  return {
+    triangle: readPolyline(view, 3),
+    path: readPath(view),
+  };
+}
+
+function readRecord35(view) {
+  return {
+    unknown24: view.readUint(),
+    triangle: readPolyline(view, 3),
+    path: readPath(view),
+  };
+}
+
+function readRecord37(view) {
+  return {
+    path: readPath(view),
+  };
+}
+
+function readRecord38(view) {
+  return {
+    path: readPath(view),
+    unknownTrailer: view.readBytes(68),
+  };
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -483,60 +537,6 @@ class ArtworksFile {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
-  }
-
-  readRecord31({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      unknown28: this.readUint(),
-      unknown32: this.readUint(),
-      unknown36: this.readUint(),
-    });
-  }
-
-  readRecord32({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-    });
-  }
-
-  readRecord33({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readInt(),
-      unknown28: this.readInt(),
-      unknown32: this.readInt(),
-      unknown36: this.readInt(),
-      unknown40: this.readInt(),
-      unknown44: this.readInt(),
-    });
-  }
-
-  readRecord34({ populateRecord }) {
-    populateRecord({
-      triangle: readPolyline(this, 3),
-      path: readPath(this),
-    });
-  }
-
-  readRecord35({ populateRecord }) {
-    populateRecord({
-      unknown24: this.readUint(),
-      triangle: readPolyline(this, 3),
-      path: readPath(this),
-    });
-  }
-
-  readRecord37({ populateRecord }) {
-    populateRecord({
-      path: readPath(this),
-    });
-  }
-
-  readRecord38({ populateRecord }) {
-    populateRecord({
-      path: readPath(this),
-      unknownTrailer: this.readBytes(68),
-    });
   }
 
   readRecordFileInfo({ populateRecord }) {
@@ -694,26 +694,26 @@ class ArtworksFile {
         populateRecord(readRecordFontSize(this));
         break;
       case RECORD_31:
-        this.readRecord31(callbacks);
+        populateRecord(readRecord31(this));
         break;
       case RECORD_32:
         checkLast('records after record 32');
-        this.readRecord32(callbacks);
+        populateRecord(readRecord32(this));
         break;
       case RECORD_33:
-        this.readRecord33(callbacks);
+        populateRecord(readRecord33(this));
         break;
       case RECORD_34:
-        this.readRecord34(callbacks);
+        populateRecord(readRecord34(this));
         break;
       case RECORD_35:
-        this.readRecord35(callbacks);
+        populateRecord(readRecord35(this));
         break;
       case RECORD_37:
-        this.readRecord37(callbacks);
+        populateRecord(readRecord37(this));
         break;
       case RECORD_38:
-        this.readRecord38(callbacks);
+        populateRecord(readRecord38(this));
         break;
       case RECORD_FILE_INFO:
         checkLast('records after file info');
