@@ -319,7 +319,7 @@ The palette defined in this record seems to take precedence over the one defined
 | Offset | Length | Content                                                         |
 |--------|--------|-----------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                 |
-| 24     | 4      | Unknown, Bit 0 seems to control layer visibility.               |
+| 24     | 4      | Unknown. Bits 3 and 0 must be set for the layer to be visible   |
 | 28     | 32     | Layer name, null terminated. The length stated here is a guess. |
 | 60     | 8      | [Grandchild pointer](#grandchild-nodes)                         |
 
