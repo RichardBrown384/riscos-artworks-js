@@ -89,7 +89,7 @@ The header has a 16 byte signature followed by more data whose purpose is largel
 | 4      | 4      | Unknown (version?) 9, 10                                                    |
 | 8      | 8      | TopDraw (null terminated)                                                   |
 | 16     | 4      | Unknown                                                                     |
-| 20     | 4      | Absolute offset to start of body                                            |
+| 20     | 4      | Absolute offset to start of [Body](#body)                                   |
 | 24     | 16     | Unknown                                                                     |
 | 40     | 4      | Absolute offset to start of [Undo Buffer](#ubuf), -1 if absent              |
 | 44     | 4      | Absolute offset to start of [Sprite Area][sprite-area-format], -1 if absent |
@@ -232,8 +232,8 @@ This record appears to be always 124 bytes long and filled with zeros.
 
 #### Type 0x01: Unknown, Text
 
-Notes: After the bounding rectangle there are a number of trailing zeros. The number of zeros can vary,
-and there can sometimes be string data present at offset 84 too.
+Notes: After the bounding rectangle there are a number of trailing zeros.
+The number of zeros can vary, and there can sometimes be string data present at offset 84 too.
 
 | Offset | Length | Content                                 |
 |--------|--------|-----------------------------------------|
@@ -316,12 +316,12 @@ The palette defined in this record seems to take precedence over the one defined
 
 #### Type 0x0A: Layer
 
-| Offset | Length | Content                                                         |
-|--------|--------|-----------------------------------------------------------------|
-| 0      | 24     | [Record header](#record-header)                                 |
-| 24     | 4      | Unknown. Bits 3 and 0 must be set for the layer to be visible   |
-| 28     | 32     | Layer name, null terminated. The length stated here is a guess. |
-| 60     | 8      | [Grandchild pointer](#grandchild-nodes)                         |
+| Offset | Length | Content                                                                                        |
+|--------|--------|------------------------------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                                                |
+| 24     | 4      | Unknown. Bit 3 is usually set and both bits 3 and 0 must be set for the layer to be visible.   |
+| 28     | 32     | Layer name, null terminated. The length stated here is a guess.                                |
+| 60     | 8      | [Grandchild pointer](#grandchild-nodes)                                                        |
 
 #### Type 0x21: Work Area
 
@@ -430,8 +430,8 @@ This field is ignored for other cap types.
 
 | Bits    | Content                                              |
 |---------|------------------------------------------------------|
-| 0...15  | Triangle Cap Width (0x80 corresponds to line width)  |
-| 16...31 | Triangle Cap Height (0x80 corresponds to line width) |
+| 0-15    | Triangle Cap Width (0x80 corresponds to line width)  |
+| 16-31   | Triangle Cap Height (0x80 corresponds to line width) |
 
 #### Type 0x29: Start line cap
 
@@ -489,7 +489,6 @@ If Dash Pattern Index is non-zero
 | Offset | Length | Content                        |
 |--------|--------|--------------------------------|
 | 0      | 4      | Length of dash pattern element |
-
 
 #### Type 0x2C: Path
 
