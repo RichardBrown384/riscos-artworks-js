@@ -449,7 +449,7 @@ Setting the cap style to a value not in the enumeration will result in !AWViewer
 
 #### Type 0x2A: Winding Rule
 
-The cap style enumeration coincides exactly with that of !Draw.
+The winding rule enumeration coincides exactly with that of !Draw.
 
 When an Artworks file doesn't specify a winding rule then !AWViewer defaults to even-odd.
 
