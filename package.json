@@ -7,8 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "lint": "npx eslint src",
-    "lint:fix": "npx eslint src --fix"
+    "lint": "npx eslint src scripts",
+    "lint:fix": "npx eslint src scripts --fix",
+    "trawl": "node scripts/trawler.js"
   },
   "repository": {
     "type": "git",
