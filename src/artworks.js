@@ -651,7 +651,7 @@ function readRecordBody(view, header, checkLast) {
   }
 }
 
-class ArtworksFile {
+class ArtworksView {
   constructor(buffer) {
     this.view = new DataView(buffer);
     this.length = buffer.byteLength;
@@ -745,140 +745,136 @@ class ArtworksFile {
     }
     return String.fromCharCode(...chars);
   }
+}
 
-  readRecordBody(callbacks, header, checkLast) {
-    const { populateRecord, unsupportedRecord } = callbacks;
+class Reader {
+  constructor(view) {
+    this.view = view;
+    this.unsupported = [];
+    this.records = [];
+    this.stack = [];
+  }
+
+  checkStack() {
+    this.view.check(this.stack.length !== 0, 'empty stack');
+  }
+
+  startRecord(data) {
+    this.stack.push({ ...data, children: [] });
+  }
+
+  populateRecord(data) {
+    this.checkStack();
+    const { children, ...oldData } = this.stack.pop();
+    this.stack.push({ ...oldData, ...data, children });
+  }
+
+  finishRecord() {
+    this.checkStack();
+    if (this.stack.length > 1) {
+      const child = this.stack.pop();
+      const parent = this.stack.pop();
+      parent.children.push(child);
+      this.stack.push(parent);
+    } else {
+      this.records.push(this.stack.pop());
+    }
+  }
+
+  unsupportedRecord() {
+    this.checkStack();
+    const record = this.stack[this.stack.length - 1];
+    this.unsupported.push(record);
+  }
+
+  readRecordBody(header, checkLast) {
     try {
-      populateRecord(readRecordBody(this, header, checkLast));
+      this.populateRecord(readRecordBody(this.view, header, checkLast));
     } catch (e) {
       if (e instanceof UnsupportedRecordError) {
-        unsupportedRecord();
+        this.unsupportedRecord();
       } else {
         throw e;
       }
     }
   }
 
-  readNodes(callbacks) {
-    const { startRecord, finishRecord } = callbacks;
+  readNodes() {
     for (;;) {
-      const pointer = readNodePointer(this);
+      const pointer = readNodePointer(this.view);
       const { position, next } = pointer;
-      startRecord({ pointer });
-      this.readChildren(callbacks);
-      finishRecord();
+      this.startRecord({ pointer });
+      this.readChildren();
+      this.finishRecord();
       if (next === 0) {
         break;
       }
-      this.setPosition(position + next);
+      this.view.setPosition(position + next);
     }
   }
 
-  readChildren(callbacks) {
-    const { startRecord, finishRecord } = callbacks;
+  readChildren() {
     for (;;) {
-      const pointer = readChildPointer(this);
-      const header = readRecordHeader(this);
+      const pointer = readChildPointer(this.view);
+      const header = readRecordHeader(this.view);
       const { position, next } = pointer;
       const checkLast = (message) => {
-        this.check(next === 0, message);
+        this.view.check(next === 0, message);
       };
-      startRecord({ pointer, ...header });
-      this.readRecordBody(callbacks, header, checkLast);
+      this.startRecord({ pointer, ...header });
+      this.readRecordBody(header, checkLast);
       if (next !== 0) {
-        this.readGrandchildren(callbacks, position + next - 8);
+        this.readGrandchildren(position + next - 8);
       }
-      finishRecord();
+      this.finishRecord();
       if (next === 0) {
         break;
       }
-      this.setPosition(position + next);
+      this.view.setPosition(position + next);
     }
   }
 
-  readGrandchildren(callbacks, pointerPosition) {
-    const { populateRecord } = callbacks;
-    const current = this.getPosition();
-    this.check(
+  readGrandchildren(pointerPosition) {
+    const current = this.view.getPosition();
+    this.view.check(
       current <= pointerPosition,
       'insufficient space for grandchild pointer',
       { current, pointerPosition },
     );
-    this.setPosition(pointerPosition);
-    const pointer = readNodePointer(this);
+    this.view.setPosition(pointerPosition);
+    const pointer = readNodePointer(this.view);
     const { position, next } = pointer;
     if (next > 0) {
-      populateRecord({
+      this.populateRecord({
         childPointer: pointer,
       });
-      this.setPosition(position + next);
-      this.readNodes(callbacks);
+      this.view.setPosition(position + next);
+      this.readNodes();
     }
   }
 
-  load() {
-    const unsupported = [];
-    const records = [];
-    const stack = [];
-
-    const checkStack = () => {
-      this.check(stack.length !== 0, 'empty stack');
-    };
-
-    const startRecord = (data) => {
-      stack.push({ ...data, children: [] });
-    };
-
-    const populateRecord = (data) => {
-      checkStack();
-      const { children, ...oldData } = stack.pop();
-      stack.push({ ...oldData, ...data, children });
-    };
-
-    const finishRecord = () => {
-      checkStack();
-      if (stack.length > 1) {
-        const child = stack.pop();
-        const parent = stack.pop();
-        parent.children.push(child);
-        stack.push(parent);
-      } else {
-        records.push(stack.pop());
-      }
-    };
-
-    const unsupportedRecord = () => {
-      checkStack();
-      const record = stack[stack.length - 1];
-      unsupported.push(record);
-    };
-
+  read() {
     try {
-      this.setPosition(0);
-      const header = readHeader(this);
+      this.view.setPosition(0);
+      const header = readHeader(this.view);
 
       const { bodyPosition, palettePosition } = header;
 
-      this.setPosition(bodyPosition);
-      this.readNodes({
-        startRecord,
-        finishRecord,
-        populateRecord,
-        unsupportedRecord,
-      });
+      this.view.setPosition(bodyPosition);
+      this.readNodes();
 
-      this.setPosition(palettePosition);
-      const palette = readPalette(this);
+      this.view.setPosition(palettePosition);
+      const palette = readPalette(this.view);
       return {
         header,
-        records,
+        records: this.records,
         palette,
-        unsupported,
+        unsupported: this.unsupported,
       };
     } catch (error) {
       return {
         error,
-        recordStack: stack,
+        stack: this.stack,
       };
     }
   }
@@ -947,7 +943,10 @@ module.exports = {
 
   Artworks: {
     load(buffer) {
-      return new ArtworksFile(Uint8Array.from(buffer).buffer).load();
+      const buf = Uint8Array.from(buffer).buffer;
+      const view = new ArtworksView(buf);
+      const reader = new Reader(view);
+      return reader.read();
     },
   },
 };
