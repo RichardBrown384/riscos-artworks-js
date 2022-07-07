@@ -656,6 +656,10 @@ class ArtworksFile {
     this.view = new DataView(buffer);
     this.length = buffer.byteLength;
     this.position = 0;
+    // TODO temporary, so we can split to the two classes
+    this.unsupported = [];
+    this.records = [];
+    this.stack = [];
   }
 
   getLength() {
@@ -746,27 +750,58 @@ class ArtworksFile {
     return String.fromCharCode(...chars);
   }
 
-  readRecordBody(callbacks, header, checkLast) {
-    const { populateRecord, unsupportedRecord } = callbacks;
+  // TODO temporaries
+  checkStack() {
+    this.check(this.stack.length !== 0, 'empty stack');
+  }
+
+  startRecord(data) {
+    this.stack.push({ ...data, children: [] });
+  }
+
+  populateRecord(data) {
+    this.checkStack();
+    const { children, ...oldData } = this.stack.pop();
+    this.stack.push({ ...oldData, ...data, children });
+  }
+
+  finishRecord() {
+    this.checkStack();
+    if (this.stack.length > 1) {
+      const child = this.stack.pop();
+      const parent = this.stack.pop();
+      parent.children.push(child);
+      this.stack.push(parent);
+    } else {
+      this.records.push(this.stack.pop());
+    }
+  }
+
+  unsupportedRecord() {
+    this.checkStack();
+    const record = this.stack[this.stack.length - 1];
+    this.unsupported.push(record);
+  }
+
+  readRecordBody(header, checkLast) {
     try {
-      populateRecord(readRecordBody(this, header, checkLast));
+      this.populateRecord(readRecordBody(this, header, checkLast));
     } catch (e) {
       if (e instanceof UnsupportedRecordError) {
-        unsupportedRecord();
+        this.unsupportedRecord();
       } else {
         throw e;
       }
     }
   }
 
-  readNodes(callbacks) {
-    const { startRecord, finishRecord } = callbacks;
+  readNodes() {
     for (;;) {
       const pointer = readNodePointer(this);
       const { position, next } = pointer;
-      startRecord({ pointer });
-      this.readChildren(callbacks);
-      finishRecord();
+      this.startRecord({ pointer });
+      this.readChildren();
+      this.finishRecord();
       if (next === 0) {
         break;
       }
@@ -774,8 +809,7 @@ class ArtworksFile {
     }
   }
 
-  readChildren(callbacks) {
-    const { startRecord, finishRecord } = callbacks;
+  readChildren() {
     for (;;) {
       const pointer = readChildPointer(this);
       const header = readRecordHeader(this);
@@ -783,12 +817,12 @@ class ArtworksFile {
       const checkLast = (message) => {
         this.check(next === 0, message);
       };
-      startRecord({ pointer, ...header });
-      this.readRecordBody(callbacks, header, checkLast);
+      this.startRecord({ pointer, ...header });
+      this.readRecordBody(header, checkLast);
       if (next !== 0) {
-        this.readGrandchildren(callbacks, position + next - 8);
+        this.readGrandchildren(position + next - 8);
       }
-      finishRecord();
+      this.finishRecord();
       if (next === 0) {
         break;
       }
@@ -796,8 +830,7 @@ class ArtworksFile {
     }
   }
 
-  readGrandchildren(callbacks, pointerPosition) {
-    const { populateRecord } = callbacks;
+  readGrandchildren(pointerPosition) {
     const current = this.getPosition();
     this.check(
       current <= pointerPosition,
@@ -808,51 +841,15 @@ class ArtworksFile {
     const pointer = readNodePointer(this);
     const { position, next } = pointer;
     if (next > 0) {
-      populateRecord({
+      this.populateRecord({
         childPointer: pointer,
       });
       this.setPosition(position + next);
-      this.readNodes(callbacks);
+      this.readNodes();
     }
   }
 
   load() {
-    const unsupported = [];
-    const records = [];
-    const stack = [];
-
-    const checkStack = () => {
-      this.check(stack.length !== 0, 'empty stack');
-    };
-
-    const startRecord = (data) => {
-      stack.push({ ...data, children: [] });
-    };
-
-    const populateRecord = (data) => {
-      checkStack();
-      const { children, ...oldData } = stack.pop();
-      stack.push({ ...oldData, ...data, children });
-    };
-
-    const finishRecord = () => {
-      checkStack();
-      if (stack.length > 1) {
-        const child = stack.pop();
-        const parent = stack.pop();
-        parent.children.push(child);
-        stack.push(parent);
-      } else {
-        records.push(stack.pop());
-      }
-    };
-
-    const unsupportedRecord = () => {
-      checkStack();
-      const record = stack[stack.length - 1];
-      unsupported.push(record);
-    };
-
     try {
       this.setPosition(0);
       const header = readHeader(this);
@@ -860,25 +857,20 @@ class ArtworksFile {
       const { bodyPosition, palettePosition } = header;
 
       this.setPosition(bodyPosition);
-      this.readNodes({
-        startRecord,
-        finishRecord,
-        populateRecord,
-        unsupportedRecord,
-      });
+      this.readNodes();
 
       this.setPosition(palettePosition);
       const palette = readPalette(this);
       return {
         header,
-        records,
+        records: this.records,
         palette,
-        unsupported,
+        unsupported: this.unsupported,
       };
     } catch (error) {
       return {
         error,
-        recordStack: stack,
+        recordStack: this.stack,
       };
     }
   }
