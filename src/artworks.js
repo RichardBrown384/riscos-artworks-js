@@ -181,6 +181,24 @@ function readHeader(view) {
   };
 }
 
+function readNodePointer(view) {
+  const position = view.getPosition();
+  const previous = view.readInt32();
+  const next = view.readInt32();
+  const pointer = { position, previous, next };
+  view.checkPointer(pointer);
+  return pointer;
+}
+
+function readChildPointer(view) {
+  const position = view.getPosition();
+  const next = view.readInt32();
+  const previous = view.readInt32();
+  const pointer = { position, previous, next };
+  view.checkPointer(pointer);
+  return pointer;
+}
+
 function readRecord00() {
   return {};
 }
@@ -525,7 +543,11 @@ function readRecord42() {
 }
 
 function readRecordHeader(view) {
-  return { type: view.readUint32(), unknown4: view.readUint32(), boundingBox: readBoundingBox(view) };
+  return {
+    type: view.readUint32(),
+    unknown4: view.readUint32(),
+    boundingBox: readBoundingBox(view),
+  };
 }
 
 function readRecordBody(view, header, checkLast) {
@@ -667,6 +689,13 @@ class ArtworksFile {
     this.check(this.position <= this.getLength() - n, 'reading off the end of the file');
   }
 
+  checkPointer(pointer) {
+    const { position, previous, next } = pointer;
+    this.check(previous <= 0, 'positive previous pointer', pointer);
+    this.check(next >= 0, 'negative next pointer', pointer);
+    this.check(position + next < this.getLength(), 'next pointer would overrun', pointer);
+  }
+
   readUint8() {
     this.checkPositionAndSize(1);
     const b = this.view.getUint8(this.position);
@@ -730,35 +759,10 @@ class ArtworksFile {
     }
   }
 
-  checkPointer(pointer) {
-    const { position, previous, next } = pointer;
-    this.check(previous <= 0, 'positive previous pointer', pointer);
-    this.check(next >= 0, 'negative next pointer', pointer);
-    this.check(position + next < this.getLength(), 'next pointer would overrun', pointer);
-  }
-
-  readNodePointer() {
-    const position = this.getPosition();
-    const previous = this.readInt32();
-    const next = this.readInt32();
-    const pointer = { position, previous, next };
-    this.checkPointer(pointer);
-    return pointer;
-  }
-
-  readChildPointer() {
-    const position = this.getPosition();
-    const next = this.readInt32();
-    const previous = this.readInt32();
-    const pointer = { position, previous, next };
-    this.checkPointer(pointer);
-    return pointer;
-  }
-
   readNodes(callbacks) {
     const { startRecord, finishRecord } = callbacks;
     for (;;) {
-      const pointer = this.readNodePointer();
+      const pointer = readNodePointer(this);
       const { position, next } = pointer;
       startRecord({ pointer });
       this.readChildren(callbacks);
@@ -773,7 +777,7 @@ class ArtworksFile {
   readChildren(callbacks) {
     const { startRecord, finishRecord } = callbacks;
     for (;;) {
-      const pointer = this.readChildPointer();
+      const pointer = readChildPointer(this);
       const header = readRecordHeader(this);
       const { position, next } = pointer;
       const checkLast = (message) => {
@@ -801,7 +805,7 @@ class ArtworksFile {
       { current, pointerPosition },
     );
     this.setPosition(pointerPosition);
-    const pointer = this.readNodePointer();
+    const pointer = readNodePointer(this);
     const { position, next } = pointer;
     if (next > 0) {
       populateRecord({
