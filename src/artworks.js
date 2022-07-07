@@ -651,15 +651,11 @@ function readRecordBody(view, header, checkLast) {
   }
 }
 
-class ArtworksFile {
+class ArtworksView {
   constructor(buffer) {
     this.view = new DataView(buffer);
     this.length = buffer.byteLength;
     this.position = 0;
-    // TODO temporary, so we can split to the two classes
-    this.unsupported = [];
-    this.records = [];
-    this.stack = [];
   }
 
   getLength() {
@@ -749,10 +745,18 @@ class ArtworksFile {
     }
     return String.fromCharCode(...chars);
   }
+}
 
-  // TODO temporaries
+class Reader {
+  constructor(view) {
+    this.view = view;
+    this.unsupported = [];
+    this.records = [];
+    this.stack = [];
+  }
+
   checkStack() {
-    this.check(this.stack.length !== 0, 'empty stack');
+    this.view.check(this.stack.length !== 0, 'empty stack');
   }
 
   startRecord(data) {
@@ -785,7 +789,7 @@ class ArtworksFile {
 
   readRecordBody(header, checkLast) {
     try {
-      this.populateRecord(readRecordBody(this, header, checkLast));
+      this.populateRecord(readRecordBody(this.view, header, checkLast));
     } catch (e) {
       if (e instanceof UnsupportedRecordError) {
         this.unsupportedRecord();
@@ -797,7 +801,7 @@ class ArtworksFile {
 
   readNodes() {
     for (;;) {
-      const pointer = readNodePointer(this);
+      const pointer = readNodePointer(this.view);
       const { position, next } = pointer;
       this.startRecord({ pointer });
       this.readChildren();
@@ -805,17 +809,17 @@ class ArtworksFile {
       if (next === 0) {
         break;
       }
-      this.setPosition(position + next);
+      this.view.setPosition(position + next);
     }
   }
 
   readChildren() {
     for (;;) {
-      const pointer = readChildPointer(this);
-      const header = readRecordHeader(this);
+      const pointer = readChildPointer(this.view);
+      const header = readRecordHeader(this.view);
       const { position, next } = pointer;
       const checkLast = (message) => {
-        this.check(next === 0, message);
+        this.view.check(next === 0, message);
       };
       this.startRecord({ pointer, ...header });
       this.readRecordBody(header, checkLast);
@@ -826,41 +830,41 @@ class ArtworksFile {
       if (next === 0) {
         break;
       }
-      this.setPosition(position + next);
+      this.view.setPosition(position + next);
     }
   }
 
   readGrandchildren(pointerPosition) {
-    const current = this.getPosition();
-    this.check(
+    const current = this.view.getPosition();
+    this.view.check(
       current <= pointerPosition,
       'insufficient space for grandchild pointer',
       { current, pointerPosition },
     );
-    this.setPosition(pointerPosition);
-    const pointer = readNodePointer(this);
+    this.view.setPosition(pointerPosition);
+    const pointer = readNodePointer(this.view);
     const { position, next } = pointer;
     if (next > 0) {
       this.populateRecord({
         childPointer: pointer,
       });
-      this.setPosition(position + next);
+      this.view.setPosition(position + next);
       this.readNodes();
     }
   }
 
-  load() {
+  read() {
     try {
-      this.setPosition(0);
-      const header = readHeader(this);
+      this.view.setPosition(0);
+      const header = readHeader(this.view);
 
       const { bodyPosition, palettePosition } = header;
 
-      this.setPosition(bodyPosition);
+      this.view.setPosition(bodyPosition);
       this.readNodes();
 
-      this.setPosition(palettePosition);
-      const palette = readPalette(this);
+      this.view.setPosition(palettePosition);
+      const palette = readPalette(this.view);
       return {
         header,
         records: this.records,
@@ -870,7 +874,7 @@ class ArtworksFile {
     } catch (error) {
       return {
         error,
-        recordStack: this.stack,
+        stack: this.stack,
       };
     }
   }
@@ -939,7 +943,10 @@ module.exports = {
 
   Artworks: {
     load(buffer) {
-      return new ArtworksFile(Uint8Array.from(buffer).buffer).load();
+      const buf = Uint8Array.from(buffer).buffer;
+      const view = new ArtworksView(buf);
+      const reader = new Reader(view);
+      return reader.read();
     },
   },
 };
