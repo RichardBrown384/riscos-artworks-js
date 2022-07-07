@@ -63,13 +63,14 @@ const TAG_LINE = 8;
 const STRING_LENGTH_LIMIT = 2048;
 
 class ArtworksError extends Error {
-  constructor(message, position, data) {
-    super(message);
+  constructor(position, data, ...options) {
+    super(...options);
     this.name = 'ArtworksError';
     this.position = position;
     this.data = data;
   }
 }
+class UnsupportedRecordError extends Error {}
 
 function readPoint(view) {
   view.checkAlignment('misaligned point');
@@ -507,6 +508,111 @@ function readRecord42() {
   return {};
 }
 
+function readRecordHeader(view) {
+  return { type: view.readUint(), unknown4: view.readUint(), boundingBox: readBoundingBox(view) };
+}
+
+function readRecordBody(view, header, checkLast) {
+  const { type } = header;
+  switch (type & 0xFF) {
+    case RECORD_00:
+      return readRecord00(view);
+    case RECORD_TEXT:
+      return readRecordText(view);
+    case RECORD_PATH:
+      return readRecordPath(view);
+    case RECORD_SPRITE:
+      checkLast('records after sprite');
+      return readRecordSprite(view);
+    case RECORD_GROUP:
+      return readRecordGroup(view);
+    case RECORD_LAYER:
+      return readRecordLayer(view);
+    case RECORD_WORK_AREA:
+      checkLast('records after work area');
+      return readRecordWorkArea(view);
+    case RECORD_22:
+      checkLast('records after record 22');
+      return readRecord22(view);
+    case RECORD_SAVE_LOCATION:
+      checkLast('records after save location');
+      return readRecordSaveLocation(view);
+    case RECORD_STROKE_COLOUR:
+      checkLast('records after stroke colour');
+      return readRecordStrokeColour(view);
+    case RECORD_STROKE_WIDTH:
+      checkLast('records after stroke width');
+      return readRecordStrokeWidth(view);
+    case RECORD_FILL_COLOUR:
+      checkLast('records after fill colour');
+      return readRecordFillColour(view);
+    case RECORD_JOIN_STYLE:
+      checkLast('records after join style');
+      return readRecordJoinStyle(view);
+    case RECORD_LINE_CAP_END:
+      checkLast('records after end line cap');
+      return readRecordLineCapEnd(view);
+    case RECORD_LINE_CAP_START:
+      checkLast('records after start line cap');
+      return readRecordLineCapStart(view);
+    case RECORD_WINDING_RULE:
+      checkLast('records after winding rule');
+      return readRecordWindingRule(view);
+    case RECORD_DASH_PATTERN:
+      checkLast('records after record dash pattern');
+      return readRecordDashPattern(view);
+    case RECORD_2C:
+      return readRecord2C(view);
+    case RECORD_2E:
+      checkLast('records after record 2e');
+      return readRecord2E(view);
+    case RECORD_CHARACTER:
+      return readRecordCharacter(view);
+    case RECORD_FONT_NAME:
+      checkLast('records after font name');
+      return readRecordFontName(view);
+    case RECORD_FONT_SIZE:
+      checkLast('records after font size');
+      return readRecordFontSize(view);
+    case RECORD_31:
+      return readRecord31(view);
+    case RECORD_32:
+      checkLast('records after record 32');
+      return readRecord32(view);
+    case RECORD_33:
+      return readRecord33(view);
+    case RECORD_34:
+      return readRecord34(view);
+    case RECORD_35:
+      return readRecord35(view);
+    case RECORD_37:
+      return readRecord37(view);
+    case RECORD_38:
+      return readRecord38(view);
+    case RECORD_FILE_INFO:
+      checkLast('records after file info');
+      return readRecordFileInfo(view);
+    case RECORD_3A:
+      return readRecord3A(view);
+    case RECORD_3B:
+      checkLast('records after record 3b');
+      return readRecord3B(view);
+    case RECORD_3D:
+      checkLast('records after 3d');
+      return readRecord3D(view);
+    case RECORD_3E:
+      checkLast('records after record 3e');
+      return readRecord3E(view);
+    case RECORD_3F:
+      checkLast('records after record 3f');
+      return readRecord3F(view);
+    case RECORD_42:
+      return readRecord42();
+    default:
+      throw new UnsupportedRecordError();
+  }
+}
+
 class ArtworksFile {
   constructor(buffer) {
     this.view = new DataView(buffer);
@@ -528,7 +634,7 @@ class ArtworksFile {
 
   check(condition, message, data = {}) {
     if (!condition) {
-      throw new ArtworksError(message, this.getPosition(), data);
+      throw new ArtworksError(this.getPosition(), data, message);
     }
   }
 
@@ -603,148 +709,16 @@ class ArtworksFile {
     return String.fromCharCode(...chars);
   }
 
-  readRecord(callbacks, { next }) {
-    const checkLast = (message) => {
-      this.check(next === 0, message);
-    };
+  readRecordBody(callbacks, header, checkLast) {
     const { populateRecord, unsupportedRecord } = callbacks;
-    const type = this.readUint();
-    const unknown4 = this.readUint();
-    const boundingBox = readBoundingBox(this);
-    populateRecord({ type, unknown4, boundingBox });
-    switch (type & 0xFF) {
-      case RECORD_00:
-        populateRecord(readRecord00(this));
-        break;
-      case RECORD_TEXT:
-        populateRecord(readRecordText(this));
-        break;
-      case RECORD_PATH:
-        populateRecord(readRecordPath(this));
-        break;
-      case RECORD_SPRITE:
-        checkLast('records after sprite');
-        populateRecord(readRecordSprite(this));
-        break;
-      case RECORD_GROUP:
-        populateRecord(readRecordGroup(this));
-        break;
-      case RECORD_LAYER:
-        populateRecord(readRecordLayer(this));
-        break;
-      case RECORD_WORK_AREA:
-        checkLast('records after work area');
-        populateRecord(readRecordWorkArea(this));
-        break;
-      case RECORD_22:
-        checkLast('records after record 22');
-        populateRecord(readRecord22(this));
-        break;
-      case RECORD_SAVE_LOCATION:
-        checkLast('records after save location');
-        populateRecord(readRecordSaveLocation(this));
-        break;
-      case RECORD_STROKE_COLOUR:
-        checkLast('records after stroke colour');
-        populateRecord(readRecordStrokeColour(this));
-        break;
-      case RECORD_STROKE_WIDTH:
-        checkLast('records after stroke width');
-        populateRecord(readRecordStrokeWidth(this));
-        break;
-      case RECORD_FILL_COLOUR:
-        checkLast('records after fill colour');
-        populateRecord(readRecordFillColour(this));
-        break;
-      case RECORD_JOIN_STYLE:
-        checkLast('records after join style');
-        populateRecord(readRecordJoinStyle(this));
-        break;
-      case RECORD_LINE_CAP_END:
-        checkLast('records after end line cap');
-        populateRecord(readRecordLineCapEnd(this));
-        break;
-      case RECORD_LINE_CAP_START:
-        checkLast('records after start line cap');
-        populateRecord(readRecordLineCapStart(this));
-        break;
-      case RECORD_WINDING_RULE:
-        checkLast('records after winding rule');
-        populateRecord(readRecordWindingRule(this));
-        break;
-      case RECORD_DASH_PATTERN:
-        checkLast('records after record dash pattern');
-        populateRecord(readRecordDashPattern(this));
-        break;
-      case RECORD_2C:
-        populateRecord(readRecord2C(this));
-        break;
-      case RECORD_2E:
-        checkLast('records after record 2e');
-        populateRecord(readRecord2E(this));
-        break;
-      case RECORD_CHARACTER:
-        populateRecord(readRecordCharacter(this));
-        break;
-      case RECORD_FONT_NAME:
-        checkLast('records after font name');
-        populateRecord(readRecordFontName(this));
-        break;
-      case RECORD_FONT_SIZE:
-        checkLast('records after font size');
-        populateRecord(readRecordFontSize(this));
-        break;
-      case RECORD_31:
-        populateRecord(readRecord31(this));
-        break;
-      case RECORD_32:
-        checkLast('records after record 32');
-        populateRecord(readRecord32(this));
-        break;
-      case RECORD_33:
-        populateRecord(readRecord33(this));
-        break;
-      case RECORD_34:
-        populateRecord(readRecord34(this));
-        break;
-      case RECORD_35:
-        populateRecord(readRecord35(this));
-        break;
-      case RECORD_37:
-        populateRecord(readRecord37(this));
-        break;
-      case RECORD_38:
-        populateRecord(readRecord38(this));
-        break;
-      case RECORD_FILE_INFO:
-        checkLast('records after file info');
-        populateRecord(readRecordFileInfo(this));
-        break;
-      case RECORD_3A:
-        populateRecord(readRecord3A(this));
-        break;
-      case RECORD_3B:
-        checkLast('records after record 3b');
-        populateRecord(readRecord3B(this));
-        break;
-      case RECORD_3D:
-        checkLast('records after 3d');
-        populateRecord(readRecord3D(this));
-        break;
-      case RECORD_3E:
-        checkLast('records after record 3e');
-        populateRecord(readRecord3E(this));
-        break;
-      case RECORD_3F:
-        checkLast('records after record 3f');
-        populateRecord(readRecord3F(this));
-        break;
-      case RECORD_42:
-        populateRecord(readRecord42());
-        break;
-      default:
+    try {
+      populateRecord(readRecordBody(this, header, checkLast));
+    } catch (e) {
+      if (e instanceof UnsupportedRecordError) {
         unsupportedRecord();
-        break;
+      } else {
+        throw e;
+      }
     }
   }
 
@@ -792,9 +766,13 @@ class ArtworksFile {
     const { startRecord, finishRecord } = callbacks;
     for (;;) {
       const pointer = this.readChildPointer();
+      const header = readRecordHeader(this);
       const { position, next } = pointer;
-      startRecord({ pointer });
-      this.readRecord(callbacks, pointer);
+      const checkLast = (message) => {
+        this.check(next === 0, message);
+      };
+      startRecord({ pointer, ...header });
+      this.readRecordBody(callbacks, header, checkLast);
       if (next !== 0) {
         this.readGrandchildren(callbacks, position + next - 8);
       }
