@@ -75,18 +75,18 @@ class UnsupportedRecordError extends Error {}
 function readPoint(view) {
   view.checkAlignment('misaligned point');
   return {
-    x: view.readInt(),
-    y: view.readInt(),
+    x: view.readInt32(),
+    y: view.readInt32(),
   };
 }
 
 function readBoundingBox(view) {
   view.checkAlignment('misaligned bounding box');
   return {
-    minX: view.readInt(),
-    minY: view.readInt(),
-    maxX: view.readInt(),
-    maxY: view.readInt(),
+    minX: view.readInt32(),
+    minY: view.readInt32(),
+    maxX: view.readInt32(),
+    maxY: view.readInt32(),
   };
 }
 
@@ -100,7 +100,7 @@ function readPolyline(view, n) {
 }
 
 function readPathElement(view) {
-  const tag = view.readUint();
+  const tag = view.readUint32();
   const maskedTag = tag & 0xFF;
   if (maskedTag === TAG_END || maskedTag === TAG_UNKNOWN || maskedTag === TAG_CLOSE_SUB_PATH) {
     return { maskedTag, tag };
@@ -136,19 +136,19 @@ function readPaletteEntry(view) {
   view.checkAlignment('misaligned palette entry');
   return {
     name: view.readStringFully(24),
-    colour: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
-    unknown36: view.readUint(),
-    unknown40: view.readUint(),
-    unknown44: view.readUint(),
+    colour: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
+    unknown36: view.readUint32(),
+    unknown40: view.readUint32(),
+    unknown44: view.readUint32(),
   };
 }
 
 function readPalette(view) {
   view.checkAlignment('misaligned palette');
-  const count = view.readUint() & 0x7FFFFFFF;
-  const unknown4 = view.readUint() & 0x7FFFFFFF;
+  const count = view.readUint32() & 0x7FFFFFFF;
+  const unknown4 = view.readUint32() & 0x7FFFFFFF;
   const colours = [];
   for (let n = 0; n < count; n += 1) {
     colours.push(readPaletteEntry(view));
@@ -164,20 +164,20 @@ function readHeader(view) {
   view.checkAlignment('misaligned header');
   return {
     identifier: view.readStringFully(4),
-    version: view.readUint(),
+    version: view.readUint32(),
     program: view.readStringFully(8),
-    unknown16: view.readUint(),
-    bodyPosition: view.readUint(),
-    unknown24: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
-    unknown36: view.readUint(),
-    ubufPosition: view.readInt(),
-    spriteAreaPosition: view.readInt(),
-    unknown48: view.readUint(),
-    unknown52: view.readUint(),
-    unknown56: view.readUint(),
-    palettePosition: view.readInt(),
+    unknown16: view.readUint32(),
+    bodyPosition: view.readUint32(),
+    unknown24: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
+    unknown36: view.readUint32(),
+    ubufPosition: view.readInt32(),
+    spriteAreaPosition: view.readInt32(),
+    unknown48: view.readUint32(),
+    unknown52: view.readUint32(),
+    unknown56: view.readUint32(),
+    palettePosition: view.readInt32(),
   };
 }
 
@@ -187,12 +187,12 @@ function readRecord00() {
 
 function readRecordText(view) {
   return {
-    unknown24: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
-    unknown36: view.readUint(),
-    unknown40: view.readUint(),
-    unknown44: view.readUint(),
+    unknown24: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
+    unknown36: view.readUint32(),
+    unknown40: view.readUint32(),
+    unknown44: view.readUint32(),
     rectangle: readPolyline(view, 4),
   };
 }
@@ -205,48 +205,48 @@ function readRecordPath(view) {
 
 function readSpritePalette(view) {
   const palette = [];
-  const count = view.readUint();
+  const count = view.readUint32();
   for (let n = 0; n < count; n += 1) {
-    palette.push(view.readUint());
+    palette.push(view.readUint32());
   }
   return palette;
 }
 
 function readRecordSprite(view) {
   return {
-    unknown24: view.readUint(),
+    unknown24: view.readUint32(),
     name: view.readStringFully(12),
-    unknown40: view.readUint(),
-    unknown44: view.readUint(),
-    unknown48: view.readInt(),
-    unknown52: view.readInt(),
-    unknown56: view.readInt(),
-    unknown60: view.readInt(),
-    unknown64: view.readInt(),
-    unknown68: view.readInt(),
-    unknown72: view.readUint(),
-    unknown76: view.readUint(),
-    unknown80: view.readUint(),
-    unknown84: view.readUint(),
-    unknown88: view.readUint(),
-    unknown92: view.readUint(),
-    unknown96: view.readUint(),
-    unknown100: view.readUint(),
+    unknown40: view.readUint32(),
+    unknown44: view.readUint32(),
+    unknown48: view.readInt32(),
+    unknown52: view.readInt32(),
+    unknown56: view.readInt32(),
+    unknown60: view.readInt32(),
+    unknown64: view.readInt32(),
+    unknown68: view.readInt32(),
+    unknown72: view.readUint32(),
+    unknown76: view.readUint32(),
+    unknown80: view.readUint32(),
+    unknown84: view.readUint32(),
+    unknown88: view.readUint32(),
+    unknown92: view.readUint32(),
+    unknown96: view.readUint32(),
+    unknown100: view.readUint32(),
     palette: readSpritePalette(view),
   };
 }
 
 function readRecordGroup(view) {
   return {
-    unknown24: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
+    unknown24: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
   };
 }
 
 function readRecordLayer(view) {
   return {
-    unknown24: view.readUint(),
+    unknown24: view.readUint32(),
     name: view.readStringFully(32),
   };
 }
@@ -261,34 +261,34 @@ function readRecord22() {
 
 function readRecordSaveLocation(view) {
   return {
-    unknown24: view.readUint(),
+    unknown24: view.readUint32(),
     saveLocation: view.readString(),
   };
 }
 
 function readRecordStrokeColour(view) {
   return {
-    strokeColour: view.readUint(),
+    strokeColour: view.readUint32(),
   };
 }
 
 function readRecordStrokeWidth(view) {
   return {
-    strokeWidth: view.readUint(),
+    strokeWidth: view.readUint32(),
   };
 }
 
 function readFillGradient(view, fillType) {
   if (fillType === FILL_FLAT) {
     return {
-      colour: view.readUint(),
+      colour: view.readUint32(),
     };
   }
   if (fillType === FILL_LINEAR || fillType === FILL_RADIAL) {
     return {
       gradientLine: readPolyline(view, 2),
-      startColour: view.readUint(),
-      endColour: view.readUint(),
+      startColour: view.readUint32(),
+      endColour: view.readUint32(),
     };
   }
   view.fail('unsupported fill type', fillType);
@@ -296,37 +296,37 @@ function readFillGradient(view, fillType) {
 }
 
 function readRecordFillColour(view) {
-  const fillType = view.readUint();
+  const fillType = view.readUint32();
   return {
     fillType,
-    unknown28: view.readUint(),
+    unknown28: view.readUint32(),
     ...readFillGradient(view, fillType),
   };
 }
 
 function readRecordJoinStyle(view) {
   return {
-    joinStyle: view.readUint(),
+    joinStyle: view.readUint32(),
   };
 }
 
 function readRecordLineCapEnd(view) {
   return {
-    capStyle: view.readUint(),
-    capTriangle: view.readUint(),
+    capStyle: view.readUint32(),
+    capTriangle: view.readUint32(),
   };
 }
 
 function readRecordLineCapStart(view) {
   return {
-    capStyle: view.readUint(),
-    capTriangle: view.readUint(),
+    capStyle: view.readUint32(),
+    capTriangle: view.readUint32(),
   };
 }
 
 function readRecordWindingRule(view) {
   return {
-    windingRule: view.readUint(),
+    windingRule: view.readUint32(),
   };
 }
 
@@ -334,17 +334,17 @@ function readDashPattern(view, pattern) {
   if (pattern === 0) {
     return {};
   }
-  const offset = view.readUint();
-  const count = view.readUint();
+  const offset = view.readUint32();
+  const count = view.readUint32();
   const array = [];
   for (let i = 0; i < count; i += 1) {
-    array.push(view.readUint());
+    array.push(view.readUint32());
   }
   return { offset, count, array };
 }
 
 function readRecordDashPattern(view) {
-  const pattern = view.readUint();
+  const pattern = view.readUint32();
   return {
     pattern,
     ...readDashPattern(view, pattern),
@@ -353,28 +353,28 @@ function readRecordDashPattern(view) {
 
 function readRecord2C(view) {
   return {
-    unknown24: view.readUint(),
+    unknown24: view.readUint32(),
     path: readPath(view),
   };
 }
 
 function readRecord2E(view) {
   return {
-    unknown24: view.readUint(),
+    unknown24: view.readUint32(),
     unknown28: view.readStringFully(8),
     unknown36: view.readStringFully(24),
-    unknown60: view.readInt(),
-    unknown64: view.readInt(),
+    unknown60: view.readInt32(),
+    unknown64: view.readInt32(),
   };
 }
 
 function readRecordCharacter(view) {
   return {
-    characterCode: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
-    unknown36: view.readUint(),
-    unknown40: view.readUint(),
+    characterCode: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
+    unknown36: view.readUint32(),
+    unknown40: view.readUint32(),
   };
 }
 
@@ -386,34 +386,34 @@ function readRecordFontName(view) {
 
 function readRecordFontSize(view) {
   return {
-    xSize: view.readUint(),
-    ySize: view.readUint(),
+    xSize: view.readUint32(),
+    ySize: view.readUint32(),
   };
 }
 
 function readRecord31(view) {
   return {
-    unknown24: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
-    unknown36: view.readUint(),
+    unknown24: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
+    unknown36: view.readUint32(),
   };
 }
 
 function readRecord32(view) {
   return {
-    unknown24: view.readUint(),
+    unknown24: view.readUint32(),
   };
 }
 
 function readRecord33(view) {
   return {
-    unknown24: view.readInt(),
-    unknown28: view.readInt(),
-    unknown32: view.readInt(),
-    unknown36: view.readInt(),
-    unknown40: view.readInt(),
-    unknown44: view.readInt(),
+    unknown24: view.readInt32(),
+    unknown28: view.readInt32(),
+    unknown32: view.readInt32(),
+    unknown36: view.readInt32(),
+    unknown40: view.readInt32(),
+    unknown44: view.readInt32(),
   };
 }
 
@@ -426,7 +426,7 @@ function readRecord34(view) {
 
 function readRecord35(view) {
   return {
-    unknown24: view.readUint(),
+    unknown24: view.readUint32(),
     triangle: readPolyline(view, 3),
     path: readPath(view),
   };
@@ -441,7 +441,23 @@ function readRecord37(view) {
 function readRecord38(view) {
   return {
     path: readPath(view),
-    unknownTrailer: view.readBytes(68),
+    unknown88: view.readUint32(),
+    unknown92: view.readUint32(),
+    unknown96: view.readUint32(),
+    unknown100: view.readUint32(),
+    unknown104: view.readUint32(),
+    unknown108: view.readUint32(),
+    unknown112: view.readUint32(),
+    unknown116: view.readUint32(),
+    unknown120: view.readUint32(),
+    unknown124: view.readUint32(),
+    unknown128: view.readUint32(),
+    unknown132: view.readUint32(),
+    unknown136: view.readUint32(),
+    unknown140: view.readUint32(),
+    unknown144: view.readUint32(),
+    unknown148: view.readUint32(),
+    unknown152: view.readUint32(),
   };
 }
 
@@ -453,32 +469,32 @@ function readRecordFileInfo(view) {
 
 function readRecord3A(view) {
   return {
-    unknown24: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
-    unknown36: view.readUint(),
-    unknown40: view.readUint(),
-    unknown44: view.readUint(),
-    unknown48: view.readUint(),
-    unknown52: view.readUint(),
-    unknown56: view.readUint(),
-    unknown60: view.readUint(),
-    unknown64: view.readUint(),
+    unknown24: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
+    unknown36: view.readUint32(),
+    unknown40: view.readUint32(),
+    unknown44: view.readUint32(),
+    unknown48: view.readUint32(),
+    unknown52: view.readUint32(),
+    unknown56: view.readUint32(),
+    unknown60: view.readUint32(),
+    unknown64: view.readUint32(),
   };
 }
 
 function readRecord3B(view) {
   return {
-    unknown24: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
-    unknown36: view.readUint(),
-    unknown40: view.readUint(),
-    unknown44: view.readUint(),
-    unknown48: view.readUint(),
-    unknown52: view.readUint(),
-    unknown56: view.readUint(),
-    unknown60: view.readUint(),
+    unknown24: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
+    unknown36: view.readUint32(),
+    unknown40: view.readUint32(),
+    unknown44: view.readUint32(),
+    unknown48: view.readUint32(),
+    unknown52: view.readUint32(),
+    unknown56: view.readUint32(),
+    unknown60: view.readUint32(),
   };
 }
 
@@ -490,17 +506,17 @@ function readRecord3D(view) {
 
 function readRecord3E(view) {
   return {
-    unknown24: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
+    unknown24: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
   };
 }
 
 function readRecord3F(view) {
   return {
-    unknown24: view.readUint(),
-    unknown28: view.readUint(),
-    unknown32: view.readUint(),
+    unknown24: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
   };
 }
 
@@ -509,7 +525,7 @@ function readRecord42() {
 }
 
 function readRecordHeader(view) {
-  return { type: view.readUint(), unknown4: view.readUint(), boundingBox: readBoundingBox(view) };
+  return { type: view.readUint32(), unknown4: view.readUint32(), boundingBox: readBoundingBox(view) };
 }
 
 function readRecordBody(view, header, checkLast) {
@@ -651,22 +667,14 @@ class ArtworksFile {
     this.check(this.position <= this.getLength() - n, 'reading off the end of the file');
   }
 
-  readByte() {
+  readUint8() {
     this.checkPositionAndSize(1);
     const b = this.view.getUint8(this.position);
     this.position += 1;
     return b;
   }
 
-  readBytes(n) {
-    const result = [];
-    for (let i = 0; i < n; i += 1) {
-      result.push(this.readByte());
-    }
-    return result;
-  }
-
-  readUint() {
+  readUint32() {
     this.checkAlignment('misaligned uint');
     this.checkPositionAndSize(4);
     const v = this.view.getUint32(this.position, true);
@@ -674,7 +682,7 @@ class ArtworksFile {
     return v;
   }
 
-  readInt() {
+  readInt32() {
     this.checkAlignment('misaligned int');
     this.checkPositionAndSize(4);
     const v = this.view.getInt32(this.position, true);
@@ -686,7 +694,7 @@ class ArtworksFile {
     this.checkAlignment('misaligned string');
     const chars = [];
     for (let i = 0, terminated = false; i < n; i = 1 + i) {
-      const c = this.readByte();
+      const c = this.readUint8();
       if (c === 0) {
         terminated = true;
       } else if (!terminated) {
@@ -700,7 +708,7 @@ class ArtworksFile {
     this.checkAlignment('misaligned string');
     const chars = [];
     for (let i = 0; i < n; i = 1 + i) {
-      const c = this.readByte();
+      const c = this.readUint8();
       if (c === 0) {
         break;
       }
@@ -731,8 +739,8 @@ class ArtworksFile {
 
   readNodePointer() {
     const position = this.getPosition();
-    const previous = this.readInt();
-    const next = this.readInt();
+    const previous = this.readInt32();
+    const next = this.readInt32();
     const pointer = { position, previous, next };
     this.checkPointer(pointer);
     return pointer;
@@ -740,8 +748,8 @@ class ArtworksFile {
 
   readChildPointer() {
     const position = this.getPosition();
-    const next = this.readInt();
-    const previous = this.readInt();
+    const next = this.readInt32();
+    const previous = this.readInt32();
     const pointer = { position, previous, next };
     this.checkPointer(pointer);
     return pointer;
