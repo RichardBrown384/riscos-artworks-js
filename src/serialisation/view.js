@@ -7,6 +7,7 @@ class ArtworksView {
     this.view = new DataView(buffer);
     this.length = buffer.byteLength;
     this.position = 0;
+    this.stack = [];
   }
 
   getLength() {
@@ -19,6 +20,15 @@ class ArtworksView {
 
   setPosition(v) {
     this.position = v;
+  }
+
+  push(p) {
+    this.stack.push(this.position);
+    this.position = p;
+  }
+
+  pop() {
+    this.position = this.stack.pop();
   }
 
   check(condition, message, data = {}) {
@@ -45,6 +55,7 @@ class ArtworksView {
     this.check(previous <= 0, 'positive previous pointer', pointer);
     this.check(next >= 0, 'negative next pointer', pointer);
     this.check(position + next < this.getLength(), 'next pointer would overrun', pointer);
+    this.check(position - previous >= 0, 'previous pointer would underrun', pointer);
   }
 
   readUint8() {
@@ -52,6 +63,18 @@ class ArtworksView {
     const b = this.view.getUint8(this.position);
     this.position += 1;
     return b;
+  }
+
+  writeUint8(v) {
+    this.checkPositionAndSize(1);
+    this.view.setUint8(this.position, v);
+    this.position += 1;
+  }
+
+  writeUint8At(position, v) {
+    this.push(position);
+    this.writeUint8(v);
+    this.pop();
   }
 
   readUint32() {
@@ -62,12 +85,36 @@ class ArtworksView {
     return v;
   }
 
+  writeUint32(v) {
+    this.checkPositionAndSize(4);
+    this.view.setUint32(this.position, v, true);
+    this.position += 4;
+  }
+
+  writeUint32At(position, v) {
+    this.push(position);
+    this.writeUint32(v);
+    this.pop();
+  }
+
   readInt32() {
     this.checkAlignment('misaligned int');
     this.checkPositionAndSize(4);
     const v = this.view.getInt32(this.position, true);
     this.position += 4;
     return v;
+  }
+
+  writeInt32(v) {
+    this.checkPositionAndSize(4);
+    this.view.setInt32(this.position, v, true);
+    this.position += 4;
+  }
+
+  writeInt32At(position, v) {
+    this.push(position);
+    this.writeInt32(v);
+    this.pop();
   }
 
   readStringFully(n) {
@@ -95,6 +142,23 @@ class ArtworksView {
       chars.push(c);
     }
     return String.fromCharCode(...chars);
+  }
+
+  writeString(string, length) {
+    this.check(string.length <= length, 'not enough space to write the string');
+    this.checkAlignment();
+    this.push(this.position);
+    for (let i = 0; i < string.length; i += 1) {
+      this.writeUint8(string.charCodeAt(i));
+    }
+    this.pop();
+    this.position += length;
+  }
+
+  writeStringAt(position, string, length) {
+    this.push(position);
+    this.writeString(string, length);
+    this.pop();
   }
 }
 

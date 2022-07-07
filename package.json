@@ -7,9 +7,10 @@
     "doc": "docs"
   },
   "scripts": {
-    "lint": "npx eslint src scripts",
-    "lint:fix": "npx eslint src scripts --fix",
-    "trawl": "node scripts/trawler.js"
+    "lint": "npx eslint scripts src",
+    "lint:fix": "npx eslint scripts src --fix",
+    "create:examples": "node scripts/create-examples.js",
+    "trawl:files": "node scripts/trawler.js"
   },
   "repository": {
     "type": "git",

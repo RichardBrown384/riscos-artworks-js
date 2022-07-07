@@ -1,3 +1,11 @@
+module.exports.FILE_OFFSET_IDENTIFIER = 0x00;
+module.exports.FILE_OFFSET_VERSION = 0x04;
+module.exports.FILE_OFFSET_PROGRAM = 0x08;
+module.exports.FILE_OFFSET_BODY_OFFSET = 0x14;
+module.exports.FILE_OFFSET_UNDO_OFFSET = 0x28;
+module.exports.FILE_OFFSET_SPRITE_AREA_OFFSET = 0x2C;
+module.exports.FILE_OFFSET_PALETTE_OFFSET = 0x3C;
+
 module.exports.RECORD_00 = 0x00;
 module.exports.RECORD_TEXT = 0x01;
 module.exports.RECORD_PATH = 0x02;
@@ -57,3 +65,11 @@ module.exports.TAG_UNKNOWN = 4;
 module.exports.TAG_CLOSE_SUB_PATH = 5;
 module.exports.TAG_BEZIER = 6;
 module.exports.TAG_LINE = 8;
+
+module.exports.TAG_BIT_31 = 0x80000000;
+
+module.exports.UNKNOWN_4_BIT_0 = 0x01;
+module.exports.UNKNOWN_4_BIT_1 = 0x02;
+
+module.exports.LAYER_UNKNOWN_24_BIT_0 = 0x01;
+module.exports.LAYER_UNKNOWN_24_BIT_3 = 0x08;

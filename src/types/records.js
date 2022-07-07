@@ -7,8 +7,32 @@ const Constants = require('../constants');
 const {
   readPolyline,
   readPath,
+  writePath,
   readBoundingBox,
+  writeBoundingBox,
+  writePalette, writePolyline,
 } = require('./primitives');
+
+function createRecordHeader(type, unknown4, boundingBox) {
+  return { type, unknown4, boundingBox };
+}
+
+function readRecordHeader(view) {
+  view.checkAlignment('misaligned record header');
+  return {
+    type: view.readUint32(),
+    unknown4: view.readUint32(),
+    boundingBox: readBoundingBox(view),
+  };
+}
+
+function writeRecordHeader(view, header) {
+  view.checkAlignment('misaligned record header');
+  const { type, unknown4, boundingBox } = header;
+  view.writeUint32(type);
+  view.writeUint32(unknown4);
+  writeBoundingBox(view, boundingBox);
+}
 
 function readRecord00() {
   return {};
@@ -26,10 +50,20 @@ function readRecordText(view) {
   };
 }
 
+function createRecordPath(path) {
+  return {
+    path,
+  };
+}
+
 function readRecordPath(view) {
   return {
     path: readPath(view),
   };
+}
+
+function writeRecordPath(view, { path }) {
+  writePath(view, path);
 }
 
 function readSpritePalette(view) {
@@ -73,6 +107,14 @@ function readRecordGroup(view) {
   };
 }
 
+// TODO unknown24 should be 0x9 or 0x8
+function createRecordLayer(unknown24, name) {
+  return {
+    unknown24,
+    name,
+  };
+}
+
 function readRecordLayer(view) {
   return {
     unknown24: view.readUint32(),
@@ -80,8 +122,25 @@ function readRecordLayer(view) {
   };
 }
 
+function writeRecordLayer(view, record) {
+  const { unknown24, name } = record;
+  view.writeUint32(unknown24);
+  view.writeString(name, 32);
+}
+
+function createRecordWorkArea(palette) {
+  return {
+    palette,
+  };
+}
+
 function readRecordWorkArea() {
   return {};
+}
+
+function writeRecordWorkArea(view, { palette }) {
+  view.writeInt32At(Constants.FILE_OFFSET_PALETTE_OFFSET, view.getPosition());
+  writePalette(view, palette);
 }
 
 function readRecord22() {
@@ -95,16 +154,40 @@ function readRecordSaveLocation(view) {
   };
 }
 
+function createRecordStrokeColour(strokeColour) {
+  return { strokeColour };
+}
+
 function readRecordStrokeColour(view) {
   return {
     strokeColour: view.readUint32(),
   };
 }
 
+function writeRecordStrokeColour(view, { strokeColour }) {
+  view.writeUint32(strokeColour);
+}
+
+function createRecordStrokeWidth(strokeWidth) {
+  return { strokeWidth };
+}
+
 function readRecordStrokeWidth(view) {
   return {
     strokeWidth: view.readUint32(),
   };
+}
+
+function writeRecordStrokeWidth(view, { strokeWidth }) {
+  view.writeUint32(strokeWidth);
+}
+
+function createFillGradientFlat(colour) {
+  return { colour };
+}
+
+function createFillGradientShaded(gradientLine, startColour, endColour) {
+  return { gradientLine, startColour, endColour };
 }
 
 function readFillGradient(view, fillType) {
@@ -124,6 +207,26 @@ function readFillGradient(view, fillType) {
   return {};
 }
 
+function writeFillGradient(view, fillType, gradient) {
+  if (fillType === Constants.FILL_FLAT) {
+    view.writeUint32(gradient.colour);
+  } else if (fillType === Constants.FILL_LINEAR || fillType === Constants.FILL_RADIAL) {
+    writePolyline(view, gradient.gradientLine);
+    view.writeUint32(gradient.startColour);
+    view.writeUint32(gradient.endColour);
+  } else {
+    view.fail('unsupported fill type', fillType);
+  }
+}
+
+function createRecordFillColour(fillType, unknown28, gradient) {
+  return {
+    fillType,
+    unknown28,
+    ...gradient,
+  };
+}
+
 function readRecordFillColour(view) {
   const fillType = view.readUint32();
   return {
@@ -133,10 +236,28 @@ function readRecordFillColour(view) {
   };
 }
 
+function writeRecordFillColour(view, { fillType, unknown28, ...gradient }) {
+  view.writeUint32(fillType);
+  view.writeUint32(unknown28);
+  writeFillGradient(view, fillType, gradient);
+}
+
+function createRecordJoinStyle(joinStyle) {
+  return { joinStyle };
+}
+
 function readRecordJoinStyle(view) {
   return {
     joinStyle: view.readUint32(),
   };
+}
+
+function writeRecordJoinStyle(view, { joinStyle }) {
+  view.writeUint32(joinStyle);
+}
+
+function createRecordLineCapEnd(capStyle, capTriangle) {
+  return { capStyle, capTriangle };
 }
 
 function readRecordLineCapEnd(view) {
@@ -146,11 +267,29 @@ function readRecordLineCapEnd(view) {
   };
 }
 
+function writeRecordLineCapEnd(view, { capStyle, capTriangle }) {
+  view.writeUint32(capStyle);
+  view.writeUint32(capTriangle);
+}
+
+function createRecordLineCapStart(capStyle, capTriangle) {
+  return { capStyle, capTriangle };
+}
+
 function readRecordLineCapStart(view) {
   return {
     capStyle: view.readUint32(),
     capTriangle: view.readUint32(),
   };
+}
+
+function writeRecordLineCapStart(view, { capStyle, capTriangle }) {
+  view.writeUint32(capStyle);
+  view.writeUint32(capTriangle);
+}
+
+function createRecordWindingRule(windingRule) {
+  return { windingRule };
 }
 
 function readRecordWindingRule(view) {
@@ -159,25 +298,63 @@ function readRecordWindingRule(view) {
   };
 }
 
-function readDashPattern(view, pattern) {
-  if (pattern === 0) {
-    return {};
-  }
+function writeRecordWindingRule(view, { windingRule }) {
+  view.writeUint32(windingRule);
+}
+
+function createDashPattern(offset, elements) {
+  return {
+    offset,
+    count: elements.length,
+    elements,
+  };
+}
+
+function readDashPattern(view) {
   const offset = view.readUint32();
   const count = view.readUint32();
-  const array = [];
+  const elements = [];
   for (let i = 0; i < count; i += 1) {
-    array.push(view.readUint32());
+    elements.push(view.readUint32());
   }
-  return { offset, count, array };
+  return { offset, count, elements };
+}
+
+function writeDashPattern(view, { offset, count, elements }) {
+  view.check(count === elements.length, 'length of dash pattern array doesn\'t agree with the count');
+  view.writeUint32(offset);
+  view.writeUint32(count);
+  for (let i = 0; i < count; i += 1) {
+    view.writeUint32(elements[i]);
+  }
+}
+
+function createRecordDashPatternEmpty() {
+  return { pattern: 0 };
+}
+
+function createRecordDashPattern(offset, elements) {
+  return {
+    pattern: -1,
+    ...createDashPattern(offset, elements),
+  };
 }
 
 function readRecordDashPattern(view) {
-  const pattern = view.readUint32();
+  const pattern = view.readInt32();
   return {
     pattern,
-    ...readDashPattern(view, pattern),
+    ...(pattern !== 0 && readDashPattern(view, pattern)),
   };
+}
+
+function writeRecordDashPattern(view, record) {
+  const { pattern } = record;
+  view.writeInt32(pattern);
+  if (pattern === 0) {
+    return;
+  }
+  writeDashPattern(view, record);
 }
 
 function readRecord2C(view) {
@@ -353,12 +530,8 @@ function readRecord42() {
   return {};
 }
 
-function readRecordHeader(view) {
-  return {
-    type: view.readUint32(),
-    unknown4: view.readUint32(),
-    boundingBox: readBoundingBox(view),
-  };
+function getUnsupportedRecordErrorMessage(type) {
+  return `unsupported record ${type}, (0x${type.toString(16)})`;
 }
 
 function readRecordBody(view, header, checkLast) {
@@ -458,31 +631,121 @@ function readRecordBody(view, header, checkLast) {
     case Constants.RECORD_42:
       return readRecord42();
     default:
-      throw new UnsupportedRecordError();
+      throw new UnsupportedRecordError(getUnsupportedRecordErrorMessage(type));
+  }
+}
+
+function writeRecordBody(view, record) {
+  const { type } = record;
+  switch (type) {
+    case Constants.RECORD_PATH:
+      writeRecordPath(view, record);
+      break;
+    case Constants.RECORD_LAYER:
+      writeRecordLayer(view, record);
+      break;
+    case Constants.RECORD_WORK_AREA:
+      writeRecordWorkArea(view, record);
+      break;
+    case Constants.RECORD_STROKE_COLOUR:
+      writeRecordStrokeColour(view, record);
+      break;
+    case Constants.RECORD_STROKE_WIDTH:
+      writeRecordStrokeWidth(view, record);
+      break;
+    case Constants.RECORD_FILL_COLOUR:
+      writeRecordFillColour(view, record);
+      break;
+    case Constants.RECORD_JOIN_STYLE:
+      writeRecordJoinStyle(view, record);
+      break;
+    case Constants.RECORD_LINE_CAP_END:
+      writeRecordLineCapEnd(view, record);
+      break;
+    case Constants.RECORD_LINE_CAP_START:
+      writeRecordLineCapStart(view, record);
+      break;
+    case Constants.RECORD_WINDING_RULE:
+      writeRecordWindingRule(view, record);
+      break;
+    case Constants.RECORD_DASH_PATTERN:
+      writeRecordDashPattern(view, record);
+      break;
+    default:
+      throw new UnsupportedRecordError(getUnsupportedRecordErrorMessage(type));
   }
 }
 
 module.exports = {
+
+  createRecordHeader,
+  readRecordHeader,
+  writeRecordHeader,
+
   readRecord00,
   readRecordText,
+
+  createRecordPath,
   readRecordPath,
+  writeRecordPath,
+
   readSpritePalette,
   readRecordSprite,
   readRecordGroup,
+
+  createRecordLayer,
   readRecordLayer,
+  writeRecordLayer,
+
+  createRecordWorkArea,
   readRecordWorkArea,
+  writeRecordWorkArea,
+
   readRecord22,
   readRecordSaveLocation,
+
+  createRecordStrokeColour,
   readRecordStrokeColour,
+  writeRecordStrokeColour,
+
+  createRecordStrokeWidth,
   readRecordStrokeWidth,
+  writeRecordStrokeWidth,
+
+  createFillGradientFlat,
+  createFillGradientShaded,
   readFillGradient,
+  writeFillGradient,
+
+  createRecordFillColour,
   readRecordFillColour,
+  writeRecordFillColour,
+
+  createRecordJoinStyle,
   readRecordJoinStyle,
+  writeRecordJoinStyle,
+
+  createRecordLineCapEnd,
   readRecordLineCapEnd,
+  writeRecordLineCapEnd,
+
+  createRecordLineCapStart,
   readRecordLineCapStart,
+  writeRecordLineCapStart,
+
+  createRecordWindingRule,
   readRecordWindingRule,
+  writeRecordWindingRule,
+
+  createDashPattern,
   readDashPattern,
+  writeDashPattern,
+
+  createRecordDashPatternEmpty,
+  createRecordDashPattern,
   readRecordDashPattern,
+  writeRecordDashPattern,
+
   readRecord2C,
   readRecord2E,
   readRecordCharacter,
@@ -502,6 +765,7 @@ module.exports = {
   readRecord3E,
   readRecord3F,
   readRecord42,
-  readRecordHeader,
+
   readRecordBody,
+  writeRecordBody,
 };

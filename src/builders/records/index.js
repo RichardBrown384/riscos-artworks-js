@@ -1,0 +1,13 @@
+module.exports.RecordDashPatternEmpty = require('./dash-pattern-empty');
+module.exports.RecordDashPattern = require('./dash-pattern');
+module.exports.RecordFillColourFlat = require('./fill-colour-flat');
+module.exports.RecordFillColourGradient = require('./fill-colour-gradient');
+module.exports.RecordJoinStyle = require('./join-style');
+module.exports.RecordLayer = require('./layer');
+module.exports.RecordLineCapEnd = require('./line-cap-end');
+module.exports.RecordLineCapStart = require('./line-cap-start');
+module.exports.RecordPath = require('./path');
+module.exports.RecordStrokeColour = require('./stroke-colour');
+module.exports.RecordStrokeWidth = require('./stroke-width');
+module.exports.RecordWindingRule = require('./winding-rule');
+module.exports.RecordWorkArea = require('./work-area');

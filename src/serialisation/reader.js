@@ -52,15 +52,29 @@ class ArtworksReader {
     this.unsupported.push(record);
   }
 
-  readRecordBody(header, checkLast) {
+  read() {
     try {
-      this.populateRecord(readRecordBody(this.view, header, checkLast));
-    } catch (e) {
-      if (e instanceof UnsupportedRecordError) {
-        this.unsupportedRecord();
-      } else {
-        throw e;
-      }
+      this.view.setPosition(0);
+      const header = readHeader(this.view);
+
+      const { bodyPosition, palettePosition } = header;
+
+      this.view.setPosition(bodyPosition);
+      this.readNodes();
+
+      this.view.setPosition(palettePosition);
+      const palette = readPalette(this.view);
+      return {
+        header,
+        records: this.records,
+        palette,
+        unsupported: this.unsupported,
+      };
+    } catch (error) {
+      return {
+        error,
+        stack: this.stack,
+      };
     }
   }
 
@@ -99,6 +113,18 @@ class ArtworksReader {
     }
   }
 
+  readRecordBody(header, checkLast) {
+    try {
+      this.populateRecord(readRecordBody(this.view, header, checkLast));
+    } catch (e) {
+      if (e instanceof UnsupportedRecordError) {
+        this.unsupportedRecord();
+      } else {
+        throw e;
+      }
+    }
+  }
+
   readGrandchildren(pointerPosition) {
     const current = this.view.getPosition();
     this.view.check(
@@ -115,32 +141,6 @@ class ArtworksReader {
       });
       this.view.setPosition(position + next);
       this.readNodes();
-    }
-  }
-
-  read() {
-    try {
-      this.view.setPosition(0);
-      const header = readHeader(this.view);
-
-      const { bodyPosition, palettePosition } = header;
-
-      this.view.setPosition(bodyPosition);
-      this.readNodes();
-
-      this.view.setPosition(palettePosition);
-      const palette = readPalette(this.view);
-      return {
-        header,
-        records: this.records,
-        palette,
-        unsupported: this.unsupported,
-      };
-    } catch (error) {
-      return {
-        error,
-        stack: this.stack,
-      };
     }
   }
 }
