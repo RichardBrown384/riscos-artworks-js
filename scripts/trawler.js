@@ -28,7 +28,7 @@ function processDirectory(directory) {
   const unsupportedRecordsByTypeAndFile = {};
 
   const files = getFilesRecursively(directory)
-      .filter(x => x.toLowerCase().endsWith('d94'));
+    .filter((x) => x.toLowerCase().endsWith('d94'));
 
   for (let i = 0; i < files.length; i += 1) {
     const file = files[i];
