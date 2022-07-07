@@ -1,64 +1,5 @@
-/* eslint-disable no-bitwise, max-classes-per-file */
-
-const RECORD_00 = 0x00;
-const RECORD_TEXT = 0x01;
-const RECORD_PATH = 0x02;
-const RECORD_SPRITE = 0x05;
-const RECORD_GROUP = 0x06;
-const RECORD_LAYER = 0x0A;
-const RECORD_WORK_AREA = 0x21;
-const RECORD_22 = 0x22;
-const RECORD_SAVE_LOCATION = 0x23;
-const RECORD_STROKE_COLOUR = 0x24;
-const RECORD_STROKE_WIDTH = 0x25;
-const RECORD_FILL_COLOUR = 0x26;
-const RECORD_JOIN_STYLE = 0x27;
-const RECORD_LINE_CAP_END = 0x28;
-const RECORD_LINE_CAP_START = 0x29;
-const RECORD_WINDING_RULE = 0x2A;
-const RECORD_DASH_PATTERN = 0x2B;
-const RECORD_2C = 0x2C;
-const RECORD_2E = 0x2E;
-const RECORD_CHARACTER = 0x2D;
-const RECORD_FONT_NAME = 0x2F;
-const RECORD_FONT_SIZE = 0x30;
-const RECORD_31 = 0x31;
-const RECORD_32 = 0x32;
-const RECORD_33 = 0x33;
-const RECORD_34 = 0x34;
-const RECORD_35 = 0x35;
-const RECORD_37 = 0x37;
-const RECORD_38 = 0x38;
-const RECORD_FILE_INFO = 0x39;
-const RECORD_3A = 0x3A;
-const RECORD_3B = 0x3B;
-const RECORD_3D = 0x3D;
-const RECORD_3E = 0x3E;
-const RECORD_3F = 0x3F;
-const RECORD_42 = 0x42;
-
-const FILL_FLAT = 0;
-const FILL_LINEAR = 1;
-const FILL_RADIAL = 2;
-
-const JOIN_MITRE = 0;
-const JOIN_ROUND = 1;
-const JOIN_BEVEL = 2;
-
-const CAP_BUTT = 0;
-const CAP_ROUND = 1;
-const CAP_SQUARE = 2;
-const CAP_TRIANGLE = 3;
-
-const WINDING_RULE_NON_ZERO = 0;
-const WINDING_RULE_EVEN_ODD = 1;
-
-const TAG_END = 0;
-const TAG_MOVE = 2;
-const TAG_UNKNOWN = 4;
-const TAG_CLOSE_SUB_PATH = 5;
-const TAG_BEZIER = 6;
-const TAG_LINE = 8;
+/* eslint-disable no-bitwise */
+const Constants = require('./constants');
 
 const STRING_LENGTH_LIMIT = 2048;
 
@@ -102,14 +43,16 @@ function readPolyline(view, n) {
 function readPathElement(view) {
   const tag = view.readUint32();
   const maskedTag = tag & 0xFF;
-  if (maskedTag === TAG_END || maskedTag === TAG_UNKNOWN || maskedTag === TAG_CLOSE_SUB_PATH) {
+  if (maskedTag === Constants.TAG_END
+      || maskedTag === Constants.TAG_UNKNOWN
+      || maskedTag === Constants.TAG_CLOSE_SUB_PATH) {
     return { maskedTag, tag };
   }
-  if (maskedTag === TAG_MOVE || maskedTag === TAG_LINE) {
+  if (maskedTag === Constants.TAG_MOVE || maskedTag === Constants.TAG_LINE) {
     const p0 = readPoint(view);
     return { maskedTag, tag, points: [p0] };
   }
-  if (maskedTag === TAG_BEZIER) {
+  if (maskedTag === Constants.TAG_BEZIER) {
     const p0 = readPoint(view);
     const p1 = readPoint(view);
     const p2 = readPoint(view);
@@ -125,7 +68,7 @@ function readPath(view) {
   for (; ;) {
     const { maskedTag, ...element } = readPathElement(view);
     path.push(element);
-    if (maskedTag === TAG_END) {
+    if (maskedTag === Constants.TAG_END) {
       break;
     }
   }
@@ -297,12 +240,12 @@ function readRecordStrokeWidth(view) {
 }
 
 function readFillGradient(view, fillType) {
-  if (fillType === FILL_FLAT) {
+  if (fillType === Constants.FILL_FLAT) {
     return {
       colour: view.readUint32(),
     };
   }
-  if (fillType === FILL_LINEAR || fillType === FILL_RADIAL) {
+  if (fillType === Constants.FILL_LINEAR || fillType === Constants.FILL_RADIAL) {
     return {
       gradientLine: readPolyline(view, 2),
       startColour: view.readUint32(),
@@ -553,98 +496,98 @@ function readRecordHeader(view) {
 function readRecordBody(view, header, checkLast) {
   const { type } = header;
   switch (type & 0xFF) {
-    case RECORD_00:
+    case Constants.RECORD_00:
       return readRecord00(view);
-    case RECORD_TEXT:
+    case Constants.RECORD_TEXT:
       return readRecordText(view);
-    case RECORD_PATH:
+    case Constants.RECORD_PATH:
       return readRecordPath(view);
-    case RECORD_SPRITE:
+    case Constants.RECORD_SPRITE:
       checkLast('records after sprite');
       return readRecordSprite(view);
-    case RECORD_GROUP:
+    case Constants.RECORD_GROUP:
       return readRecordGroup(view);
-    case RECORD_LAYER:
+    case Constants.RECORD_LAYER:
       return readRecordLayer(view);
-    case RECORD_WORK_AREA:
+    case Constants.RECORD_WORK_AREA:
       checkLast('records after work area');
       return readRecordWorkArea(view);
-    case RECORD_22:
+    case Constants.RECORD_22:
       checkLast('records after record 22');
       return readRecord22(view);
-    case RECORD_SAVE_LOCATION:
+    case Constants.RECORD_SAVE_LOCATION:
       checkLast('records after save location');
       return readRecordSaveLocation(view);
-    case RECORD_STROKE_COLOUR:
+    case Constants.RECORD_STROKE_COLOUR:
       checkLast('records after stroke colour');
       return readRecordStrokeColour(view);
-    case RECORD_STROKE_WIDTH:
+    case Constants.RECORD_STROKE_WIDTH:
       checkLast('records after stroke width');
       return readRecordStrokeWidth(view);
-    case RECORD_FILL_COLOUR:
+    case Constants.RECORD_FILL_COLOUR:
       checkLast('records after fill colour');
       return readRecordFillColour(view);
-    case RECORD_JOIN_STYLE:
+    case Constants.RECORD_JOIN_STYLE:
       checkLast('records after join style');
       return readRecordJoinStyle(view);
-    case RECORD_LINE_CAP_END:
+    case Constants.RECORD_LINE_CAP_END:
       checkLast('records after end line cap');
       return readRecordLineCapEnd(view);
-    case RECORD_LINE_CAP_START:
+    case Constants.RECORD_LINE_CAP_START:
       checkLast('records after start line cap');
       return readRecordLineCapStart(view);
-    case RECORD_WINDING_RULE:
+    case Constants.RECORD_WINDING_RULE:
       checkLast('records after winding rule');
       return readRecordWindingRule(view);
-    case RECORD_DASH_PATTERN:
+    case Constants.RECORD_DASH_PATTERN:
       checkLast('records after record dash pattern');
       return readRecordDashPattern(view);
-    case RECORD_2C:
+    case Constants.RECORD_2C:
       return readRecord2C(view);
-    case RECORD_2E:
+    case Constants.RECORD_2E:
       checkLast('records after record 2e');
       return readRecord2E(view);
-    case RECORD_CHARACTER:
+    case Constants.RECORD_CHARACTER:
       return readRecordCharacter(view);
-    case RECORD_FONT_NAME:
+    case Constants.RECORD_FONT_NAME:
       checkLast('records after font name');
       return readRecordFontName(view);
-    case RECORD_FONT_SIZE:
+    case Constants.RECORD_FONT_SIZE:
       checkLast('records after font size');
       return readRecordFontSize(view);
-    case RECORD_31:
+    case Constants.RECORD_31:
       return readRecord31(view);
-    case RECORD_32:
+    case Constants.RECORD_32:
       checkLast('records after record 32');
       return readRecord32(view);
-    case RECORD_33:
+    case Constants.RECORD_33:
       return readRecord33(view);
-    case RECORD_34:
+    case Constants.RECORD_34:
       return readRecord34(view);
-    case RECORD_35:
+    case Constants.RECORD_35:
       return readRecord35(view);
-    case RECORD_37:
+    case Constants.RECORD_37:
       return readRecord37(view);
-    case RECORD_38:
+    case Constants.RECORD_38:
       return readRecord38(view);
-    case RECORD_FILE_INFO:
+    case Constants.RECORD_FILE_INFO:
       checkLast('records after file info');
       return readRecordFileInfo(view);
-    case RECORD_3A:
+    case Constants.RECORD_3A:
       return readRecord3A(view);
-    case RECORD_3B:
+    case Constants.RECORD_3B:
       checkLast('records after record 3b');
       return readRecord3B(view);
-    case RECORD_3D:
+    case Constants.RECORD_3D:
       checkLast('records after 3d');
       return readRecord3D(view);
-    case RECORD_3E:
+    case Constants.RECORD_3E:
       checkLast('records after record 3e');
       return readRecord3E(view);
-    case RECORD_3F:
+    case Constants.RECORD_3F:
       checkLast('records after record 3f');
       return readRecord3F(view);
-    case RECORD_42:
+    case Constants.RECORD_42:
       return readRecord42();
     default:
       throw new UnsupportedRecordError();
@@ -881,66 +824,6 @@ class Reader {
 }
 
 module.exports = {
-  RECORD_00,
-  RECORD_TEXT,
-  RECORD_PATH,
-  RECORD_SPRITE,
-  RECORD_GROUP,
-  RECORD_LAYER,
-  RECORD_WORK_AREA,
-  RECORD_22,
-  RECORD_SAVE_LOCATION,
-  RECORD_STROKE_COLOUR,
-  RECORD_STROKE_WIDTH,
-  RECORD_FILL_COLOUR,
-  RECORD_JOIN_STYLE,
-  RECORD_LINE_CAP_START,
-  RECORD_LINE_CAP_END,
-  RECORD_WINDING_RULE,
-  RECORD_DASH_PATTERN,
-  RECORD_2C,
-  RECORD_2E,
-  RECORD_CHARACTER,
-  RECORD_FONT_NAME,
-  RECORD_FONT_SIZE,
-  RECORD_31,
-  RECORD_32,
-  RECORD_33,
-  RECORD_34,
-  RECORD_35,
-  RECORD_37,
-  RECORD_38,
-  RECORD_FILE_INFO,
-  RECORD_3A,
-  RECORD_3B,
-  RECORD_3D,
-  RECORD_3E,
-  RECORD_3F,
-  RECORD_42,
-
-  FILL_FLAT,
-  FILL_LINEAR,
-  FILL_RADIAL,
-
-  JOIN_MITRE,
-  JOIN_ROUND,
-  JOIN_BEVEL,
-
-  CAP_BUTT,
-  CAP_ROUND,
-  CAP_SQUARE,
-  CAP_TRIANGLE,
-
-  WINDING_RULE_NON_ZERO,
-  WINDING_RULE_EVEN_ODD,
-
-  TAG_END,
-  TAG_MOVE,
-  TAG_UNKNOWN,
-  TAG_CLOSE_SUB_PATH,
-  TAG_BEZIER,
-  TAG_LINE,
-
   Artworks: {
     load(buffer) {
       const buf = Uint8Array.from(buffer).buffer;
