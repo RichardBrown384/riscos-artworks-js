@@ -221,8 +221,8 @@ However, in simple cases, the following seems to apply.
 |--------|--------------------------------------------------------------------------|
 | 0      | If set then style records (fills and so on) are used, otherwise ignored. |
 | 1      | If set then path records are used, otherwise ignored.                    |
-| 2..7   | Unknown, perhaps a counter or index, some files have sequential values.  |
-| 8..15  | Unknown                                                                  |
+| 2..7   | Unknown                                                                  |
+| 8..15  | Unknown, perhaps a counter or index, some files have sequential values.  |
 | 16..31 | Unknown                                                                  |
 
 For objects that have no immediate visual representation, such as the palette, the bounding box

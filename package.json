@@ -9,8 +9,8 @@
   "scripts": {
     "lint": "npx eslint examples scripts src",
     "lint:fix": "npx eslint examples scripts src --fix",
-    "create:examples": "node scripts/create-examples.js",
-    "trawl:files": "node scripts/trawler.js"
+    "examples": "node scripts/examples.js",
+    "trawl": "node scripts/trawler.js"
   },
   "repository": {
     "type": "git",

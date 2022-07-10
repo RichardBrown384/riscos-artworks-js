@@ -53,6 +53,12 @@ const PATH_PENTAGRAM = createRecordPathFromPathWithPadding(
   10_000,
 );
 
+const LAYER_BACKGROUND = RecordLayer
+  .builder()
+  .unknown24(LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3)
+  .name('Background')
+  .build();
+
 const LAYER_FOREGROUND = RecordLayer
   .builder()
   .unknown24(LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3)
@@ -85,7 +91,7 @@ module.exports = {
   PATH_TRIANGLE,
   PATH_OPEN_INVERTED_V,
   PATH_PENTAGRAM,
-
+  LAYER_BACKGROUND,
   LAYER_FOREGROUND,
   WORK_AREA,
   STROKE_COLOUR_RED,
