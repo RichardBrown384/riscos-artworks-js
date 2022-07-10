@@ -148,8 +148,8 @@ function readRecord22() {
 
 function readRecordSaveLocation(view) {
   return {
-    unknown24: view.readUint32(),
-    saveLocation: view.readString(),
+    fileType: view.readUint32(),
+    filePath: view.readString(),
   };
 }
 

@@ -353,7 +353,7 @@ This record can vary in size.
 | Offset | Length | Content                            |
 |--------|--------|------------------------------------|
 | 0      | 24     | [Record header](#record-header)    |
-| 24     | 4      | Unknown                            |
+| 24     | 4      | File type (0xd94)                  |
 | 28     | varies | File path, null terminated string. |
 
 #### Type 0x24: Stroke Colour
