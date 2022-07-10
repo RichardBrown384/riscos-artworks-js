@@ -19,7 +19,7 @@ function loadExamples(directory) {
 
 (function main() {
   const directory = process.argv[2] || './examples-output';
-  const examples = loadExamples('./scripts/examples/simple');
+  const examples = loadExamples('./examples/simple');
   for (let i = 0; i < examples.length; i += 1) {
     const { moduleFilename, artworks } = examples[i];
     const filename = path.join(

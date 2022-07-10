@@ -7,8 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "lint": "npx eslint scripts src",
-    "lint:fix": "npx eslint scripts src --fix",
+    "lint": "npx eslint examples scripts src",
+    "lint:fix": "npx eslint examples scripts src --fix",
     "create:examples": "node scripts/create-examples.js",
     "trawl:files": "node scripts/trawler.js"
   },
