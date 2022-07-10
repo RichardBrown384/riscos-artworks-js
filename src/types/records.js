@@ -107,7 +107,6 @@ function readRecordGroup(view) {
   };
 }
 
-// TODO unknown24 should be 0x9 or 0x8
 function createRecordLayer(unknown24, name) {
   return {
     unknown24,

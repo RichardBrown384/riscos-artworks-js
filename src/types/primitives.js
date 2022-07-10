@@ -166,7 +166,7 @@ function createPalette(entries) {
   return {
     count: entries.length,
     unknown4: entries.length,
-    colours: entries, // TODO create issue to rename
+    colours: entries,
   };
 }
 
