@@ -214,6 +214,17 @@ The records, unless noted otherwise, all share a common header.
 | 16     | 4      | Bounding Box Max X                                  |
 | 20     | 4      | Bounding Box Max Y                                  |
 
+The function of the integer at offset 4 is not very well understood.
+However, in simple cases, the following seems to apply.
+
+| Bit(s) | Content                                                                  |
+|--------|--------------------------------------------------------------------------|
+| 0      | If set then style records (fills and so on) are used, otherwise ignored. |
+| 1      | If set then path records are used, otherwise ignored.                    |
+| 2..7   | Unknown, perhaps a counter or index, some files have sequential values.  |
+| 8..15  | Unknown                                                                  |
+| 16..31 | Unknown                                                                  |
+
 For objects that have no immediate visual representation, such as the palette, the bounding box
 entries are usually zero.
 
