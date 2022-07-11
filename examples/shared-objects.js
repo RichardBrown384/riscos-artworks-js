@@ -1,6 +1,7 @@
 const {
   Builders: {
     BoundingBox,
+    Polyline,
 
     RecordPath,
     RecordLayer,
@@ -8,7 +9,10 @@ const {
     RecordStrokeColour,
     RecordStrokeWidth,
     RecordFillColourFlat,
+    RecordFillColourGradient,
   },
+
+  FILL_LINEAR,
   UNKNOWN_4_BIT_0,
   UNKNOWN_4_BIT_1,
 
@@ -22,6 +26,7 @@ const {
   DEFAULT_PALETTE_INDEX_BLACK_30_PERCENT,
   DEFAULT_PALETTE_INDEX_RED,
   DEFAULT_PALETTE_INDEX_BLUE,
+  DEFAULT_PALETTE_INDEX_YELLOW,
 } = require('./default-palette');
 
 const {
@@ -77,6 +82,17 @@ const FILL_FLAT_RED = RecordFillColourFlat.of(
   DEFAULT_PALETTE_INDEX_RED,
 );
 
+const FILL_LINEAR_YELLOW_RED = RecordFillColourGradient.builder()
+  .unknown4(UNKNOWN_4_BIT_0)
+  .type(FILL_LINEAR)
+  .gradientLine(Polyline.builder()
+    .push(0, 0)
+    .push(150_000, 150_000)
+    .build())
+  .startColour(DEFAULT_PALETTE_INDEX_YELLOW)
+  .endColour(DEFAULT_PALETTE_INDEX_RED)
+  .build();
+
 const FILL_FLAT_TRANSPARENT = RecordFillColourFlat.of(
   UNKNOWN_4_BIT_0,
   PALETTE_INDEX_TRANSPARENT,
@@ -100,6 +116,8 @@ module.exports = {
   FILL_FLAT_RED,
   FILL_FLAT_TRANSPARENT,
   FILL_FLAT_BLACK_30,
+
+  FILL_LINEAR_YELLOW_RED,
 
   createRecordPathFromPathWithPadding,
 };
