@@ -1,9 +1,9 @@
 /*
-Example: 102-triangle-override-fill-flat-black-30
+Example: 102-when-a-fill-occurs-after-a-path-then-it-is-used
 
 Purpose:
-To demonstrate that if a style attribute appears after a path record
-then that overrides preceding the preceding attribute.
+To demonstrate that if a style attribute appears after a path
+then that overrides the preceding attribute.
 
 !AWViewer renders a 30% black triangle, not red.
  */

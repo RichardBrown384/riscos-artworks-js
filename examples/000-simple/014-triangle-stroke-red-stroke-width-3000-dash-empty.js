@@ -1,5 +1,5 @@
 /*
-Example: 014-triangle-stroke-red-stroke-width-3000-dash-empty.js
+Example: 014-triangle-stroke-red-stroke-width-3000-dash-empty
 
 Purpose:
 To demonstrate that an empty dash pattern does nothing

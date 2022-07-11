@@ -1,10 +1,10 @@
 /*
-Example: 101-triangle-last-fill-black-30
+Example: 101-when-two-fills-occur-before-a-path-then-the-second-is-used
 
 Purpose:
 
-To demonstrate that, in the absence of paths, the last style attribute to appear
-is the attribute to be applied.
+To demonstrate that when two fills occur before a path then the path is shaded
+using the second colour.
 
 !AWViewer should render a 30% black triangle, not red.
  */
