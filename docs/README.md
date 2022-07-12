@@ -3,6 +3,7 @@
 ## Table of contents
 
 * [About](#about)
+* [General Observations](#general-observations)
 * [Header](#header)
 * [Body](#body)
   * [Tree structure](#tree-structure)
@@ -20,9 +21,9 @@
     *  [Type 0x0A - Layer](#type-0x0a-layer)
     *  [Type 0x21 - Work Area](#type-0x21-work-area)
     *  [Type 0x22](#type-0x22-unknown)
-    *  [Type 0x23](#type-0x23-file-save-location)
-    *  [Type 0x24](#type-0x24-stroke-colour)
-    *  [Type 0x25](#type-0x25-stroke-width)
+    *  [Type 0x23 - File Save Location](#type-0x23-file-save-location)
+    *  [Type 0x24 - Stroke Colour](#type-0x24-stroke-colour)
+    *  [Type 0x25 - Stroke Width](#type-0x25-stroke-width)
     *  [Type 0x26 - Fill](#type-0x26-fill)
     *  [Type 0x27 - Join Style](#type-0x27-join-style)
     *  [Type 0x28 - End Line Cap](#type-0x28-end-line-cap) 
@@ -45,24 +46,32 @@
     *  [Type 0x3A](#type-0x3a-unknown)
     *  [Type 0x3B](#type-0x3b-unknown)
     *  [Type 0x3D](#type-0x3d-unknown)
-    *  [Type 0x3E](#type-0x3e-unknown)
-    *  [Type 0x3F](#type-0x3f-unknown)
+    *  [Type 0x3E - Start Marker](#type-0x3e-line-start-marker)
+    *  [Type 0x3F - End Marker](#type-0x3f-line-end-marker)
     *  [Type 0x42](#type-0x42-unknown)
   * [Coordinate system](#coordinate-system)
   * [Path data](#path-data)
   * [Palette](#palette)
   * [Sprite Area](#sprite-area)
   * [UBuf](#ubuf)
+* [Rendering](#rendering)
 * [References](#references)
 
 ## About
 
-This document represents the outcome of an imperfect attempt to decipher the data stored in Artworks files and will
+This document represents the outcome of an imperfect attempt to decipher the data stored in ArtWorks files and will
 therefore contain errors and omissions.
 
-The deciphering process involved !AWViewer and a hex editor. There are therefore two consequences. Firstly,
-features not present in the available files are not documented here. Secondly, in the absence of a feature list,
-it is hard to interpret the binary words that might represent features or options.
+The initial deciphering process involved manipulating ArtWorks files with a hex editor and opening them in !AWViewer.
+There are therefore two consequences.
+Firstly, features not present in the available files (those found on ArtWorks ClipArt CD1) are not documented here.
+Secondly, in the absence of a feature list, it is hard to interpret the binary words that might represent
+features or options.
+
+Since being able to write ArtWorks files, the process has included programmatically creating small handcrafted files
+to either confirm existing statements or to infer the purpose of certain record types in a controlled environment.
+
+## General Observations
 
 There a general number of observations that can be made about the files
 
@@ -71,13 +80,10 @@ There a general number of observations that can be made about the files
 1. The records are stored in a tree/graph structure.
 1. The vector data format is virtually identical to !Draw's.
 1. The visual representation (stroke, cap) information are stored separately from the vectors.
-1. Colours are referenced by an index into a palette of defined colours (0xFFFFFFFF means no colour).
+1. Colours are referenced by an index into a palette of defined colours (0xFFFFFFFF or -1 means no colour).
 1. Unlike !Draw, fonts appear to be referenced by name throughout.
 1. Strings are null terminated. However, there's often what looks like garbage after the string
    to pad it to a word boundary.
-
-It's not clear how Artworks renders the file. When doing a naive forward traversal of the graph,
-you can encounter background objects after foreground ones.
 
 ## Header
 
@@ -338,7 +344,7 @@ The palette defined in this record seems to take precedence over the one defined
 
 This record is thought to always occur at the end of the file. The record will always contain
 the file's [Palette](#palette) information, but may also contain other information such as the 
-[Undo Buffer](#ubuf). The locations of these objects within the record is determined by absolute
+[Undo Buffer](#ubuf). The object locations within this record are determined by absolute
 offsets specified in the file's [header](#header).
 
 | Offset | Length | Content                                      |
@@ -369,21 +375,21 @@ This record can vary in size.
 
 #### Type 0x24: Stroke Colour
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Colour Index                    |
+| Offset | Length | Content                             |
+|--------|--------|-------------------------------------|
+| 0      | 24     | [Record header](#record-header)     |
+| 24     | 4      | Colour Index (-1 means transparent) |
 
 #### Type 0x25: Stroke Width
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Stroke Width                    |
+| Offset | Length | Content                           |
+|--------|--------|-----------------------------------|
+| 0      | 24     | [Record header](#record-header)   |
+| 24     | 4      | Stroke Width (-1 means no stroke) |
 
 #### Type 0x26: Fill
 
-When an Artworks file doesn't specify a fill then !AWViewer will crash with a data transfer abort.
+When an ArtWorks file doesn't specify a fill then !AWViewer will crash with a data transfer abort.
 
 | Offset | Length | Content                                                                  |
 |--------|--------|--------------------------------------------------------------------------|
@@ -412,7 +418,7 @@ If Fill Type is linear or radial
 
 The Join Style enumeration coincides exactly with that of !Draw.
 
-When an Artworks file doesn't specify a join style then !AWViewer defaults to bevelled joins.
+When an ArtWorks file doesn't specify a join style then !AWViewer defaults to bevelled joins.
 
 Setting the join style to a value not in the enumeration will result in !AWViewer not rendering paths.
 
@@ -425,7 +431,7 @@ Setting the join style to a value not in the enumeration will result in !AWViewe
 
 The Cap Style enumeration coincides exactly with that of !Draw.
 
-When an Artworks file doesn't specify an end line cap then !AWViewer defaults to end butt caps.
+When an ArtWorks file doesn't specify an end line cap then !AWViewer defaults to end butt caps.
 
 Setting the cap style to a value not in the enumeration will result in !AWViewer not rendering paths.
 
@@ -448,7 +454,7 @@ This field is ignored for other cap types.
 
 The cap style enumeration coincides exactly with that of !Draw.
 
-When an Artworks file doesn't specify a start line cap then !AWViewer defaults to start butt caps.
+When an ArtWorks file doesn't specify a start line cap then !AWViewer defaults to start butt caps.
 
 Setting the cap style to a value not in the enumeration will result in !AWViewer not rendering paths.
 
@@ -462,7 +468,7 @@ Setting the cap style to a value not in the enumeration will result in !AWViewer
 
 The winding rule enumeration coincides exactly with that of !Draw.
 
-When an Artworks file doesn't specify a winding rule then !AWViewer defaults to even-odd.
+When an ArtWorks file doesn't specify a winding rule then !AWViewer defaults to even-odd.
 
 Setting the winding rule to a value not in the enumeration will result in !AWViewer not rendering paths.
 
@@ -476,11 +482,11 @@ Setting the winding rule to a value not in the enumeration will result in !AWVie
 
 The dash pattern structure is similar to that of !Draw.
 
-When an Artworks file doesn't specify a dash pattern then !AWViewer defaults to no pattern and draws solid paths.
+When an ArtWorks file doesn't specify a dash pattern then !AWViewer defaults to no pattern and draws solid paths.
 
 There are some doubts about Dash Pattern Index. One interpretation is that it forms an index into a dash palette.
 A negative index could mean that a bespoke dash pattern follows. However, positive values also have subsequent dash patterns.
-Maybe there is a palette of dash patterns within !Artworks but for rendering purposes the pattern is specified inline in the record.
+Maybe there is a palette of dash patterns within ArtWorks but for rendering purposes the pattern is specified inline in the record.
 
 | Offset | Length | Content                                                                                                                     |
 |--------|--------|-----------------------------------------------------------------------------------------------------------------------------|
@@ -701,23 +707,35 @@ This record can vary in size.
 | 0      | 24     | [Record header](#record-header) |
 | 24     | varies | [Path data](#path-data)         |
 
-#### Type 0x3E: Unknown
+#### Type 0x3E: Line Start Marker
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Unknown, (-1)                   |
-| 28     | 4      | Unknown, (0x40000)              |
-| 32     | 4      | Unknown, (0x40000)              |
+When an ArtWorks file doesn't specify a line start marker then !AWViewer defaults to none.
 
-#### Type 0x3F: Unknown
+Setting the marker style to a value not in the enumeration will result in !AWViewer becoming unstable.
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Unknown, (-1)                   |
-| 28     | 4      | Unknown, (0x40000)              |
-| 32     | 4      | Unknown, (0x40000)              |
+Line start caps are still drawn when markers are in use.
+
+| Offset | Length | Content                                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                                                                      |
+| 24     | 4      | Marker Style <ol start="-1"><li>None</li><li>Triangle</li><li>Arrow head</li><li>Circle</li><li>Arrow tail</li></ol> |
+| 28     | 4      | Marker Width (0x10000 corresponds to line width)                                                                     |
+| 32     | 4      | Marker Height (0x10000 corresponds to line width)                                                                    |
+
+#### Type 0x3F: Line End Marker
+
+When an ArtWorks file doesn't specify a line end marker then !AWViewer defaults to none.
+
+Setting the marker style to a value not in the enumeration will result in !AWViewer becoming unstable.
+
+Line end caps are still drawn when markers are in use.
+
+| Offset | Length | Content                                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                                                                      |
+| 24     | 4      | Marker Style <ol start="-1"><li>None</li><li>Triangle</li><li>Arrow head</li><li>Circle</li><li>Arrow tail</li></ol> |
+| 28     | 4      | Marker Width (0x10000 corresponds to line width)                                                                     |
+| 32     | 4      | Marker Height (0x10000 corresponds to line width)                                                                    |
 
 #### Type 0x42: Unknown
 
@@ -825,6 +843,11 @@ In the one case where offset 12 seems to point to garbage, `AFFY,d94`, offset 16
 | 12     | 4      | Unknown                                                     |
 | 16     | 4      | Unknown                                                     |
 | 20     | 16     | Name of entry (move, paste, make shapes, etc)               |
+
+## Rendering
+
+It's not clear how ArtWorks renders the file. When doing a naive forward traversal of the graph,
+you can encounter background objects after foreground ones.
 
 ## References
 

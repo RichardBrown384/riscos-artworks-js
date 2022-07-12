@@ -39,8 +39,8 @@ module.exports.RECORD_FILE_INFO = 0x39;
 module.exports.RECORD_3A = 0x3A;
 module.exports.RECORD_3B = 0x3B;
 module.exports.RECORD_3D = 0x3D;
-module.exports.RECORD_3E = 0x3E;
-module.exports.RECORD_3F = 0x3F;
+module.exports.RECORD_3E_MARKER_START = 0x3E;
+module.exports.RECORD_3F_MARKER_END = 0x3F;
 module.exports.RECORD_42 = 0x42;
 
 module.exports.FILL_FLAT = 0;
@@ -58,6 +58,12 @@ module.exports.CAP_TRIANGLE = 3;
 
 module.exports.WINDING_RULE_NON_ZERO = 0;
 module.exports.WINDING_RULE_EVEN_ODD = 1;
+
+module.exports.MARKER_NONE = -1;
+module.exports.MARKER_TRIANGLE = 0;
+module.exports.MARKER_ARROW_HEAD = 1;
+module.exports.MARKER_CIRCLE = 2;
+module.exports.MARKER_ARROW_TAIL = 3;
 
 module.exports.TAG_END = 0;
 module.exports.TAG_MOVE = 2;

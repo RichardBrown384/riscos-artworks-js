@@ -1,5 +1,5 @@
 /*
-Example: 031-pentagram-fill-radial-red-yellow.js
+Example: 031-pentagram-fill-radial-red-yellow
 
 Purpose:
 To demonstrate the radial gradient fills !AWViewer
