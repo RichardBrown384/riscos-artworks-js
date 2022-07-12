@@ -13,6 +13,7 @@ const {
   },
 
   FILL_LINEAR,
+  FILL_RADIAL,
   UNKNOWN_4_BIT_0,
   UNKNOWN_4_BIT_1,
 
@@ -93,6 +94,17 @@ const FILL_LINEAR_YELLOW_RED = RecordFillColourGradient.builder()
   .endColour(DEFAULT_PALETTE_INDEX_RED)
   .build();
 
+const FILL_RADIAL_RED_YELLOW = RecordFillColourGradient.builder()
+  .unknown4(UNKNOWN_4_BIT_0)
+  .type(FILL_RADIAL)
+  .gradientLine(Polyline.builder()
+    .push(100_000, 100_000)
+    .push(100_00, 150_000)
+    .build())
+  .startColour(DEFAULT_PALETTE_INDEX_RED)
+  .endColour(DEFAULT_PALETTE_INDEX_YELLOW)
+  .build();
+
 const FILL_FLAT_TRANSPARENT = RecordFillColourFlat.of(
   UNKNOWN_4_BIT_0,
   PALETTE_INDEX_TRANSPARENT,
@@ -118,6 +130,7 @@ module.exports = {
   FILL_FLAT_BLACK_30,
 
   FILL_LINEAR_YELLOW_RED,
+  FILL_RADIAL_RED_YELLOW,
 
   createRecordPathFromPathWithPadding,
 };
