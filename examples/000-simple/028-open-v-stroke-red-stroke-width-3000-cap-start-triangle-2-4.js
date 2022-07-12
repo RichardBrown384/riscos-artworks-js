@@ -1,8 +1,8 @@
 /*
-Example: 022-triangle-stroke-red-stroke-width-3000-cap-end-square
+Example: 028-open-v-stroke-red-stroke-width-3000-cap-start-open-v-2-4
 
 Purpose:
-To demonstrate square end caps.
+To demonstrate triangle start caps (width 2x stroke width, height 4x)
 
 NB: We use an inverted V here so that it's possible to compare, in particular,
 the butt and square caps with the opposite end without the need of another reference contour.
@@ -16,9 +16,9 @@ const {
     Lists,
     List,
 
-    RecordLineCapEnd,
+    RecordLineCapStart,
   },
-  CAP_SQUARE,
+  CAP_TRIANGLE,
   UNKNOWN_4_BIT_0,
 } = require('../../src/artworks');
 
@@ -31,7 +31,11 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-const END_CAP = RecordLineCapEnd.of(UNKNOWN_4_BIT_0, CAP_SQUARE);
+const END_CAP = RecordLineCapStart.of(
+  UNKNOWN_4_BIT_0,
+  CAP_TRIANGLE,
+  RecordLineCapStart.capTriangle(2 * 128, 4 * 128),
+);
 
 module.exports = Artworks.builder()
   .lists(
