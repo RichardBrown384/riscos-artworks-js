@@ -1,7 +1,7 @@
 # riscos-artworks-js
 
 Javascript library and file format [documentation](docs/README.md) for Computer Concepts era 
-RISC OS [Artworks][artworks-wikipedia] files.
+RISC OS [ArtWorks][artworks-wikipedia] files.
 
 ## Installation
 
@@ -17,7 +17,7 @@ such as testing.
 
 A work-in-progress online viewer is hosted [here](http://richardbrown384.github.io/riscos-artworks-react).
 
-![The Artworks Apple](./media/apple4.svg)
+![The ArtWorks Apple](./media/apple4.svg)
 
 ---
 [artworks-wikipedia]: https://en.wikipedia.org/wiki/ArtWorks

@@ -509,20 +509,48 @@ function readRecord3D(view) {
   };
 }
 
-function readRecord3E(view) {
+function createRecordMarkerStart(markerStyle, markerWidth, markerHeight) {
   return {
-    unknown24: view.readUint32(),
-    unknown28: view.readUint32(),
-    unknown32: view.readUint32(),
+    markerStyle,
+    markerWidth,
+    markerHeight,
   };
 }
 
-function readRecord3F(view) {
+function readRecordMarkerStart(view) {
   return {
-    unknown24: view.readUint32(),
-    unknown28: view.readUint32(),
-    unknown32: view.readUint32(),
+    markerStyle: view.readInt32(),
+    markerWidth: view.readUint32(),
+    markerHeight: view.readUint32(),
   };
+}
+
+function writeRecordMarkerStart(view, { markerStyle, markerWidth, markerHeight }) {
+  view.writeInt32(markerStyle);
+  view.writeUint32(markerWidth);
+  view.writeUint32(markerHeight);
+}
+
+function createRecordMarkerEnd(markerStyle, markerWidth, markerHeight) {
+  return {
+    markerStyle,
+    markerWidth,
+    markerHeight,
+  };
+}
+
+function readRecordMarkerEnd(view) {
+  return {
+    markerStyle: view.readInt32(),
+    markerWidth: view.readUint32(),
+    markerHeight: view.readUint32(),
+  };
+}
+
+function writeRecordMarkerEnd(view, { markerStyle, markerWidth, markerHeight }) {
+  view.writeInt32(markerStyle);
+  view.writeUint32(markerWidth);
+  view.writeUint32(markerHeight);
 }
 
 function readRecord42() {
@@ -621,12 +649,12 @@ function readRecordBody(view, header, checkLast) {
     case Constants.RECORD_3D:
       checkLast('types after 3d');
       return readRecord3D(view);
-    case Constants.RECORD_3E:
-      checkLast('types after record 3e');
-      return readRecord3E(view);
-    case Constants.RECORD_3F:
-      checkLast('types after record 3f');
-      return readRecord3F(view);
+    case Constants.RECORD_3E_MARKER_START:
+      checkLast('types after record marker start');
+      return readRecordMarkerStart(view);
+    case Constants.RECORD_3F_MARKER_END:
+      checkLast('types after record marker end');
+      return readRecordMarkerEnd(view);
     case Constants.RECORD_42:
       return readRecord42();
     default:
@@ -669,6 +697,12 @@ function writeRecordBody(view, record) {
       break;
     case Constants.RECORD_DASH_PATTERN:
       writeRecordDashPattern(view, record);
+      break;
+    case Constants.RECORD_3E_MARKER_START:
+      writeRecordMarkerStart(view, record);
+      break;
+    case Constants.RECORD_3F_MARKER_END:
+      writeRecordMarkerStart(view, record);
       break;
     default:
       throw new UnsupportedRecordError(getUnsupportedRecordErrorMessage(type));
@@ -761,8 +795,15 @@ module.exports = {
   readRecord3A,
   readRecord3B,
   readRecord3D,
-  readRecord3E,
-  readRecord3F,
+
+  createRecordMarkerStart,
+  readRecordMarkerStart,
+  writeRecordMarkerStart,
+
+  createRecordMarkerEnd,
+  readRecordMarkerEnd,
+  writeRecordMarkerEnd,
+
   readRecord42,
 
   readRecordBody,
