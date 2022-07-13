@@ -6,11 +6,13 @@ const Constants = require('../constants');
 
 const {
   readPolyline,
+  writePolyline,
   readPath,
   writePath,
   readBoundingBox,
   writeBoundingBox,
-  writePalette, writePolyline,
+  writePalette,
+  readPalette,
 } = require('./primitives');
 
 function createRecordHeader(type, unknown4, boundingBox) {
@@ -133,8 +135,17 @@ function createRecordWorkArea(palette) {
   };
 }
 
-function readRecordWorkArea() {
-  return {};
+function readRecordWorkArea(view) {
+  const paletteOffset = view.readInt32At(Constants.FILE_OFFSET_PALETTE_OFFSET);
+  if (paletteOffset < 0) {
+    return {};
+  }
+  view.push(paletteOffset);
+  const palette = readPalette(view);
+  view.pop();
+  return {
+    palette,
+  };
 }
 
 function writeRecordWorkArea(view, { palette }) {

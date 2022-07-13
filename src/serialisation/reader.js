@@ -4,7 +4,6 @@ const {
   readNodePointer,
   readChildPointer,
   readHeader,
-  readPalette,
 } = require('../types/primitives');
 
 const {
@@ -57,13 +56,15 @@ class ArtworksReader {
       this.view.setPosition(0);
       const header = readHeader(this.view);
 
-      const { bodyPosition, palettePosition } = header;
+      const { bodyPosition } = header;
 
       this.view.setPosition(bodyPosition);
       this.readNodes();
 
-      this.view.setPosition(palettePosition);
-      const palette = readPalette(this.view);
+      const {
+        children: [{ palette = {} }],
+      } = this.records.at(-1);
+
       return {
         header,
         records: this.records,

@@ -86,6 +86,7 @@ class ArtworksView {
   }
 
   writeUint32(v) {
+    this.checkAlignment('misaligned uint');
     this.checkPositionAndSize(4);
     this.view.setUint32(this.position, v, true);
     this.position += 4;
@@ -105,7 +106,15 @@ class ArtworksView {
     return v;
   }
 
+  readInt32At(position) {
+    this.push(position);
+    const v = this.readInt32();
+    this.pop();
+    return v;
+  }
+
   writeInt32(v) {
+    this.checkAlignment('misaligned int');
     this.checkPositionAndSize(4);
     this.view.setInt32(this.position, v, true);
     this.position += 4;
