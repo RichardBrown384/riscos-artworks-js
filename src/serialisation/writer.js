@@ -40,7 +40,7 @@ class ArtworksWriter {
     for (let i = 0; i < children.length; i += 1) {
       const start = this.view.getPosition();
       this.view.setPosition(start + 8);
-      this.writeChildren(children[i]);
+      this.writeChildren(children[i].children);
       const end = this.view.getPosition();
       const next = (i < children.length - 1) ? end - start : 0;
       writeNodePointer(this.view, createNodePointer(start, previous, next));

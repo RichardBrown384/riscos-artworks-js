@@ -10,7 +10,9 @@
     "lint": "npx eslint examples scripts src",
     "lint:fix": "npx eslint examples scripts src --fix",
     "examples": "node scripts/examples.js",
-    "trawl": "node scripts/trawler.js"
+    "trawl": "node scripts/trawler.js",
+    "unpack": "node scripts/unpack.js",
+    "pack": "node scripts/pack.js"
   },
   "repository": {
     "type": "git",
