@@ -16,7 +16,7 @@ class Lists {
   }
 
   push(list) {
-    this.lists.push(list);
+    this.lists.push({ children: list });
     return this;
   }
 
