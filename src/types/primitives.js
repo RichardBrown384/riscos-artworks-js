@@ -220,11 +220,11 @@ function readHeader(view) {
   };
 }
 
-function createNodePointer(position, previous, next) {
+function createListsPointer(position, previous, next) {
   return { position, previous, next };
 }
 
-function readNodePointer(view) {
+function readListsPointer(view) {
   const position = view.getPosition();
   const previous = view.readInt32();
   const next = view.readInt32();
@@ -233,18 +233,38 @@ function readNodePointer(view) {
   return pointer;
 }
 
-function writeNodePointer(view, pointer) {
+function writeListsPointer(view, pointer) {
   view.checkPointer(pointer);
   const { position, previous, next } = pointer;
   view.writeInt32At(position, previous);
   view.writeInt32At(position + 4, next);
 }
 
-function createChildPointer(position, previous, next) {
+function createListPointer(position, previous, next) {
   return { position, previous, next };
 }
 
-function readChildPointer(view) {
+function readListPointer(view) {
+  const position = view.getPosition();
+  const previous = view.readInt32();
+  const next = view.readInt32();
+  const pointer = { position, previous, next };
+  view.checkPointer(pointer);
+  return pointer;
+}
+
+function writeListPointer(view, pointer) {
+  view.checkPointer(pointer);
+  const { position, previous, next } = pointer;
+  view.writeInt32At(position, previous);
+  view.writeInt32At(position + 4, next);
+}
+
+function createRecordPointer(position, previous, next) {
+  return { position, previous, next };
+}
+
+function readRecordPointer(view) {
   const position = view.getPosition();
   const next = view.readInt32();
   const previous = view.readInt32();
@@ -253,7 +273,7 @@ function readChildPointer(view) {
   return pointer;
 }
 
-function writeChildPointer(view, pointer) {
+function writeRecordPointer(view, pointer) {
   view.checkPointer(pointer);
   const { position, previous, next } = pointer;
   view.writeInt32At(position, next);
@@ -292,11 +312,15 @@ module.exports = {
   createHeader,
   readHeader,
 
-  createNodePointer,
-  readNodePointer,
-  writeNodePointer,
+  createListsPointer,
+  readListsPointer,
+  writeListsPointer,
 
-  createChildPointer,
-  readChildPointer,
-  writeChildPointer,
+  createListPointer,
+  readListPointer,
+  writeListPointer,
+
+  createRecordPointer,
+  readRecordPointer,
+  writeRecordPointer,
 };

@@ -6,54 +6,54 @@
 * [General Observations](#general-observations)
 * [Header](#header)
 * [Body](#body)
-  * [Tree structure](#tree-structure)
-    * [Nodes](#nodes)
-    * [Child nodes](#child-nodes)
-    * [Grandchild nodes](#grandchild-nodes)
-    * [Traversal](#traversal)
-  * [Record header](#record-header)
-  * [Record types](#record-types)
-    *  [Type 0x00](#type-0x00-unknown)
-    *  [Type 0x01](#type-0x01-unknown-text)
-    *  [Type 0x02 - Path](#type-0x02-path)
-    *  [Type 0x05 - Sprite](#type-0x05-sprite)
-    *  [Type 0x06](#type-0x06-unknown-group)
-    *  [Type 0x0A - Layer](#type-0x0a-layer)
-    *  [Type 0x21 - Work Area](#type-0x21-work-area)
-    *  [Type 0x22](#type-0x22-unknown)
-    *  [Type 0x23 - File Save Location](#type-0x23-file-save-location)
-    *  [Type 0x24 - Stroke Colour](#type-0x24-stroke-colour)
-    *  [Type 0x25 - Stroke Width](#type-0x25-stroke-width)
-    *  [Type 0x26 - Fill](#type-0x26-fill)
-    *  [Type 0x27 - Join Style](#type-0x27-join-style)
-    *  [Type 0x28 - End Line Cap](#type-0x28-end-line-cap) 
-    *  [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
-    *  [Type 0x2A - Winding Rule](#type-0x2a-winding-rule)
-    *  [Type 0x2B - Dash Pattern](#type-0x2b-dash-pattern)
-    *  [Type 0x2C](#type-0x2c-path)
-    *  [Type 0x2D](#type-0x2d-character)
-    *  [Type 0x2E](#type-0x2e-unknown)   
-    *  [Type 0x2F](#type-0x2f-font-name)
-    *  [Type 0x30](#type-0x30-font-size)
-    *  [Type 0x31](#type-0x31-unknown)
-    *  [Type 0x32](#type-0x32-unknown)
-    *  [Type 0x33](#type-0x33-unknown)
-    *  [Type 0x34](#type-0x34-path)
-    *  [Type 0x35](#type-0x35-unknown)
-    *  [Type 0x37](#type-0x37-unknown)
-    *  [Type 0x38](#type-0x38-unknown)
-    *  [Type 0x39](#type-0x39-file-information)
-    *  [Type 0x3A](#type-0x3a-unknown)
-    *  [Type 0x3B](#type-0x3b-unknown)
-    *  [Type 0x3D](#type-0x3d-unknown)
-    *  [Type 0x3E - Start Marker](#type-0x3e-line-start-marker)
-    *  [Type 0x3F - End Marker](#type-0x3f-line-end-marker)
-    *  [Type 0x42](#type-0x42-unknown)
-  * [Coordinate system](#coordinate-system)
-  * [Path data](#path-data)
-  * [Palette](#palette)
-  * [Sprite Area](#sprite-area)
-  * [UBuf](#ubuf)
+    * [Body structure](#body-structure)
+        * [Lists](#lists)
+        * [List](#list)
+        * [Sublists](#sublists)
+        * [Traversal](#traversal)
+    * [Record header](#record-header)
+    * [Record types](#record-types)
+        * [Type 0x00](#type-0x00-unknown)
+        * [Type 0x01](#type-0x01-unknown-text)
+        * [Type 0x02 - Path](#type-0x02-path)
+        * [Type 0x05 - Sprite](#type-0x05-sprite)
+        * [Type 0x06](#type-0x06-unknown-group)
+        * [Type 0x0A - Layer](#type-0x0a-layer)
+        * [Type 0x21 - Work Area](#type-0x21-work-area)
+        * [Type 0x22](#type-0x22-unknown)
+        * [Type 0x23 - File Save Location](#type-0x23-file-save-location)
+        * [Type 0x24 - Stroke Colour](#type-0x24-stroke-colour)
+        * [Type 0x25 - Stroke Width](#type-0x25-stroke-width)
+        * [Type 0x26 - Fill](#type-0x26-fill)
+        * [Type 0x27 - Join Style](#type-0x27-join-style)
+        * [Type 0x28 - End Line Cap](#type-0x28-end-line-cap)
+        * [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
+        * [Type 0x2A - Winding Rule](#type-0x2a-winding-rule)
+        * [Type 0x2B - Dash Pattern](#type-0x2b-dash-pattern)
+        * [Type 0x2C](#type-0x2c-path)
+        * [Type 0x2D](#type-0x2d-character)
+        * [Type 0x2E](#type-0x2e-unknown)
+        * [Type 0x2F](#type-0x2f-font-name)
+        * [Type 0x30](#type-0x30-font-size)
+        * [Type 0x31](#type-0x31-unknown)
+        * [Type 0x32](#type-0x32-unknown)
+        * [Type 0x33](#type-0x33-unknown)
+        * [Type 0x34](#type-0x34-path)
+        * [Type 0x35](#type-0x35-unknown)
+        * [Type 0x37](#type-0x37-unknown)
+        * [Type 0x38](#type-0x38-unknown)
+        * [Type 0x39](#type-0x39-file-information)
+        * [Type 0x3A](#type-0x3a-unknown)
+        * [Type 0x3B](#type-0x3b-unknown)
+        * [Type 0x3D](#type-0x3d-unknown)
+        * [Type 0x3E - Start Marker](#type-0x3e-line-start-marker)
+        * [Type 0x3F - End Marker](#type-0x3f-line-end-marker)
+        * [Type 0x42](#type-0x42-unknown)
+    * [Coordinate system](#coordinate-system)
+    * [Path data](#path-data)
+    * [Palette](#palette)
+    * [Sprite Area](#sprite-area)
+    * [UBuf](#ubuf)
 * [Rendering](#rendering)
 * [References](#references)
 
@@ -105,51 +105,74 @@ The header has a 16 byte signature followed by more data whose purpose is largel
 
 ## Body
 
-### Tree structure
+The body comprises a list of lists of records. If one were to describe the format of the body in a typed
+language like Java or C# then the body would look like
 
-#### Nodes
+```java
+class ArtWorks {
+    private List<List<ArtWorksRecord>> body;
+}
+```
+
+ArtWorksRecords, depending on the type of record, can themselves have their own list of lists of records.
+
+````java
+class ArtworksRecord {
+    private List<List<ArtWorksRecord>> subLists;
+}
+````
+
+### Body structure
+
+#### Lists
 
 Starting at offset specified in the header there are a series of doubly-linked list nodes with the following structure
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 4      | Offset to previous              |
-| 4      | 4      | Offset to next                  |
-| 8      | varies | [Child node](#child-nodes) data |
+| Offset | Length | Content                 |
+|--------|--------|-------------------------|
+| 0      | 4      | Offset to previous list |
+| 4      | 4      | Offset to next list     |
+| 8      | varies | [List](#list) data      |
 
 Note that both offsets are relative to the _start_ of the node.
 An offset of zero means that there is no previous or next entry.
 
-#### Child nodes
+We refer to these structures as list pointer, since they are pointing to list objects.
 
-The child nodes themselves are doubly-linked list nodes and have the following structure
+#### List
+
+The lists themselves are doubly-linked list nodes and have the following structure
 
 | Offset | Length | Content                       |
 |--------|--------|-------------------------------|
-| 0      | 4      | Offset to next child node     |
-| 4      | 4      | Offset to previous child node |
+| 0      | 4      | Offset to next record         |
+| 4      | 4      | Offset to previous record     |
 | 8      | varies | [Record data](#record-header) |
 
 As above, the offsets are relative to the _start_ of the child node.
 An offset of zero means that there is no previous or next entry.
 
-#### Grandchild nodes
+We refer to these structures as record pointers, since they are pointing to record objects.
 
-The child nodes can also have children. When a child does have children, there will be an
-extra 8 bytes at the end of the record containing a pointer to the start of the list of grandchildren.
+#### Sublists
 
-| Offset | Length | Content                 |
-|--------|--------|-------------------------|
-| n - 4  | 4      | Offset to previous list |
-| n - 8  | 4      | Offset to next list     |
+Records can also have lists of lists, we call these sublists. When a record has a sublist, there will be an
+extra 8 bytes at the end of the record containing a pointer to the start of the list of lists.
 
-The offsets are relative to `n-4`. An offset of zero means that there is no previous or next entry.
+| Offset | Length | Content                    |
+|--------|--------|----------------------------|
+| n - 8  | 4      | Offset to previous sublist |
+| n - 4  | 4      | Offset to next sublist     |
 
-The rule appears to be that a child node can have children if and only if it isn't the last
-element in a list.
+The offsets are relative to `n-8`. An offset of zero means that there is no previous or next entry.
+
+We refer to these structures as lists pointers, since they are pointing to lists of lists.
+
+The rule appears to be that a record can have a sublist if and only if it isn't the last record in a list.
 
 Evidence:
-1. Layer records with no children typically appear inside singleton lists.
+
+1. Layer records with no sublists typically appear inside singleton lists.
 1. Path records in certain files have data after the vectors, and the viable pointers
    occupy the last 8 bytes of the record.
 1. Attribute records, such as fills or stroke width, seem to reside as leaves
@@ -158,15 +181,39 @@ Evidence:
    a significant number of 8 byte gaps. These 8 byte gaps would indicate
    missed pointers at the end of records.
 
+##### First previous pointers
+
+There appear to be a couple of rules for the first previous pointer in either a list of lists
+or a list of records.
+
+For lists of lists, the first previous pointer points back to the location of the
+lists pointer within the record that they descended from.
+The top level list of lists within a file does not descend from a record,
+and in this case the first previous pointer will be zero.
+
+For example, a path might have a list of lists containing attributes as singleton lists.
+The first previous pointer of the list of lists then points back to the pointer occupying
+the last 8 bytes of the path record, the lists pointer.
+
+For lists of records, the first previous pointer points back to the location of the record
+that it descends from. The top level singleton records within a file aren't descended from
+a record, and in this case the first previous pointer will be zero.
+
+For example, a Stroke Width record's previous pointer would point back to
+the Path record it's descended from. In turn, the Path record's previous pointer
+would then point back to the Layer it's descended from.
+
+If these pointers aren't set correctly then !AWViewer won't draw anything.
+
 #### Traversal
 
 The files can be traversed as follows
 
 ```javascript
-function readNodes() {
+function readLists() {
     while (true) {
-        const {position, next} = readNodePointer();
-        readChildren();
+        const {position, next} = readListPointer();
+        readList();
         if (next !== 0) {
             setPosition(position + next);
         } else {
@@ -175,12 +222,12 @@ function readNodes() {
     }
 }
 
-function readChildren() {
+function readList() {
     while (true) {
-        const {position, next} = readChildPointer();
+        const {position, next} = readRecordPointer();
         readRecord();
         if (next !== 0) {
-            readGrandchildren(position + next - 8);
+            readSubLists(position + next - 8);
         } else {
             break;
         }
@@ -188,14 +235,14 @@ function readChildren() {
     }
 }
 
-function readGrandchildren(pointerPosition) {
+function readSubLists(subListPointerPosition) {
     const current = getPosition();
-    assert(current <= pointerPosition);
-    setPosition(pointerPosition);
-    const {position, next} = readNodePointer();
+    assert(current <= subListPointerPosition);
+    setPosition(subListPointerPosition);
+    const {position, next} = readListsPointer();
     if (next !== 0) {
         setPosition(position + next);
-        readNodes();
+        readLists();
     }
 }
 ```
@@ -252,25 +299,25 @@ This record appears to be always 124 bytes long and filled with zeros.
 Notes: After the bounding rectangle there are a number of trailing zeros.
 The number of zeros can vary, and there can sometimes be string data present at offset 84 too.
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | 4      | Unknown                                 |
-| 28     | 4      | Unknown                                 |
-| 32     | 4      | Unknown                                 |
-| 36     | 4      | Unknown                                 |
-| 40     | 4      | Unknown                                 |
-| 44     | 4      | Unknown                                 |
-| 48     | 4      | Bounding Rectangle Bottom Left X        |
-| 52     | 4      | Bounding Rectangle Bottom Left Y        |
-| 56     | 4      | Bounding Rectangle Top Left X           |
-| 60     | 4      | Bounding Rectangle Top Left Y           |
-| 64     | 4      | Bounding Rectangle Top Right X          |
-| 68     | 4      | Bounding Rectangle Top Right Y          |
-| 72     | 4      | Bounding Rectangle Bottom Right X       |
-| 76     | 4      | Bounding Rectangle Bottom Right Y       |
-| 80     | Varies | Unknown                                 |
-| n - 8  | 8      | [Grandchild pointer](#grandchild-nodes) |
+| Offset | Length | Content                           |
+|--------|--------|-----------------------------------|
+| 0      | 24     | [Record header](#record-header)   |
+| 24     | 4      | Unknown                           |
+| 28     | 4      | Unknown                           |
+| 32     | 4      | Unknown                           |
+| 36     | 4      | Unknown                           |
+| 40     | 4      | Unknown                           |
+| 44     | 4      | Unknown                           |
+| 48     | 4      | Bounding Rectangle Bottom Left X  |
+| 52     | 4      | Bounding Rectangle Bottom Left Y  |
+| 56     | 4      | Bounding Rectangle Top Left X     |
+| 60     | 4      | Bounding Rectangle Top Left Y     |
+| 64     | 4      | Bounding Rectangle Top Right X    |
+| 68     | 4      | Bounding Rectangle Top Right Y    |
+| 72     | 4      | Bounding Rectangle Bottom Right X |
+| 76     | 4      | Bounding Rectangle Bottom Right Y |
+| 80     | Varies | Unknown                           |
+| n - 8  | 8      | [Lists pointer](#sublists)        |
 
 #### Type 0x02: Path
 
@@ -281,7 +328,7 @@ Note: In certain cases there's extra data after the path data.
 | 0      | 24     | [Record header](#record-header)         |
 | 24     | varies | [Path data](#path-data)                 |
 | varies | varies | Unknown, sometimes present              |
-| n - 8  | 8      | [Grandchild pointer](#grandchild-nodes) |
+| n - 8  | 8      | [Lists pointer](#sublists) |
 
 #### Type 0x05: Sprite
 
@@ -329,7 +376,7 @@ The palette defined in this record seems to take precedence over the one defined
 | 24     | 4      | Unknown                                 |
 | 28     | 4      | Unknown                                 |
 | 32     | 4      | Unknown                                 |
-| 36     | 8      | [Grandchild pointer](#grandchild-nodes) |
+| 36     | 8      | [Lists pointer](#sublists) |
 
 #### Type 0x0A: Layer
 
@@ -338,12 +385,12 @@ The palette defined in this record seems to take precedence over the one defined
 | 0      | 24     | [Record header](#record-header)                                                                |
 | 24     | 4      | Unknown. Bit 3 is usually set and both bits 3 and 0 must be set for the layer to be visible.   |
 | 28     | 32     | Layer name, null terminated. The length stated here is a guess.                                |
-| 60     | 8      | [Grandchild pointer](#grandchild-nodes)                                                        |
+| 60     | 8      | [Lists pointer](#sublists)                                                        |
 
 #### Type 0x21: Work Area
 
 This record is thought to always occur at the end of the file. The record will always contain
-the file's [Palette](#palette) information, but may also contain other information such as the 
+the file's [Palette](#palette) information, but may also contain other information such as the
 [Undo Buffer](#ubuf). The object locations within this record are determined by absolute
 offsets specified in the file's [header](#header).
 
@@ -472,7 +519,6 @@ When an ArtWorks file doesn't specify a winding rule then !AWViewer defaults to 
 
 Setting the winding rule to a value not in the enumeration will result in !AWViewer not rendering paths.
 
-
 | Offset | Length | Content                                                            |
 |--------|--------|--------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                    |
@@ -485,8 +531,10 @@ The dash pattern structure is similar to that of !Draw.
 When an ArtWorks file doesn't specify a dash pattern then !AWViewer defaults to no pattern and draws solid paths.
 
 There are some doubts about Dash Pattern Index. One interpretation is that it forms an index into a dash palette.
-A negative index could mean that a bespoke dash pattern follows. However, positive values also have subsequent dash patterns.
-Maybe there is a palette of dash patterns within ArtWorks but for rendering purposes the pattern is specified inline in the record.
+A negative index could mean that a bespoke dash pattern follows. However, positive values also have subsequent dash
+patterns.
+Maybe there is a palette of dash patterns within ArtWorks but for rendering purposes the pattern is specified inline in
+the record.
 
 | Offset | Length | Content                                                                                                                     |
 |--------|--------|-----------------------------------------------------------------------------------------------------------------------------|
@@ -514,7 +562,7 @@ If Dash Pattern Index is non-zero
 | 0      | 24     | [Record header](#record-header)         |
 | 24     | 4      | Unknown                                 |
 | 28     | varies | [Path data](#path-data)                 |
-| n - 8  | 8      | [Grandchild pointer](#grandchild-nodes) |
+| n - 8  | 8      | [Lists pointer](#sublists) |
 
 #### Type 0x2D: Character
 
@@ -529,7 +577,7 @@ Please refer to the [RISC OS Character Set][risc-os-character-set] for details.
 | 32     | 4      | Unknown, Y Coordinate (text base line?) |
 | 36     | 4      | Unknown (0xf8f)                         |
 | 40     | 4      | Unknown (0)                             |
-| 44     | 8      | [Grandchild pointer](#grandchild-nodes) |
+| 44     | 8      | [Lists pointer](#sublists) |
 
 #### Type 0x2E: Unknown
 
@@ -602,7 +650,8 @@ rotation matrix.
 
 Note: Bounding Triangle
 
-These 3 points appear to define the rotated bounding box for the object in an anti-clockwise fashion but with the final point missing.
+These 3 points appear to define the rotated bounding box for the object in an anti-clockwise fashion but with the final
+point missing.
 Another interpretation could be that the points form basis vectors for the paths that follow.
 
 These 3 points might have something to do with radial fills.
@@ -617,7 +666,7 @@ These 3 points might have something to do with radial fills.
 | 40     | 4      | Bounding Triangle Top Right X           |
 | 44     | 4      | Bounding Triangle Top Right Y           |
 | 48     | varies | [Path data](#path-data)                 |
-| n - 8  | 8      | [Grandchild pointer](#grandchild-nodes) |
+| n - 8  | 8      | [Lists pointer](#sublists) |
 
 #### Type 0x35: Unknown
 
@@ -632,7 +681,7 @@ These 3 points might have something to do with radial fills.
 | 44     | 4      | Bounding Triangle Top Right X           |
 | 48     | 4      | Bounding Triangle Top Right Y           |
 | 52     | varies | [Path data](#path-data)                 |
-| n - 8  | 8      | [Grandchild pointer](#grandchild-nodes) |
+| n - 8  | 8      | [Lists pointer](#sublists) |
 
 #### Type 0x37: Unknown
 
@@ -642,7 +691,7 @@ These 3 points might have something to do with radial fills.
 | 24     | varies | [Path data](#path-data)                 |
 | varies | varies | Unknown                                 |
 | n - 24 | 16     | Bounding Box                            |
-| n - 8  | 8      | [Grandchild pointer](#grandchild-nodes) |
+| n - 8  | 8      | [Lists pointer](#sublists) |
 
 #### Type 0x38: Unknown
 
@@ -655,7 +704,7 @@ presence of path data.
 | 0      | 24     | [Record header](#record-header)                 |
 | 24     | 64     | [Path data](#path-data) (1 Moves, 4 Lines, End) |
 | 88     | 68     | Unknown                                         |
-| 156    | 8      | [Grandchild pointer](#grandchild-nodes)         |
+| 156    | 8      | [Lists pointer](#sublists)         |
 
 #### Type 0x39: File information
 
@@ -682,7 +731,7 @@ This record can vary in size.
 | 56     | 4      | Unknown, (-1)                           |
 | 60     | 4      | Unknown, (-1)                           |
 | 64     | 4      | Unknown, (-1)                           |
-| 68     | 8      | [Grandchild pointer](#grandchild-nodes) |
+| 68     | 8      | [Lists pointer](#sublists) |
 
 #### Type 0x3B: Unknown
 
@@ -744,11 +793,11 @@ This record seems to appear as a sibling to records of [Type 0x37](#type-0x37-un
 | Offset | Length | Content                                 |
 |--------|--------|-----------------------------------------|
 | 0      | 24     | [Record header](#record-header)         |
-| 24     | 8      | [Grandchild pointer](#grandchild-nodes) |
+| 24     | 8      | [Lists pointer](#sublists) |
 
 ### Coordinate system
 
-The coordinate system places the origin at the bottom left of the page. All coordinates in the file 
+The coordinate system places the origin at the bottom left of the page. All coordinates in the file
 are stored using _signed_ 32-bit integers.
 
 ### Path data
@@ -778,7 +827,7 @@ If bit 31 is clear, then the path (or sub-path) is only rendered in !AWViewer's 
 ### Palette
 
 Contains the indexed palette for the file. *NB* the number of entries sometimes might have
-bit-31 set. 
+bit-31 set.
 
 #### Palette header
 
@@ -819,7 +868,8 @@ In one case, `AFFY,d94`, the redo-list is corrupted, and the size of the sole en
 
 Offsets 8 and 12 seem to semi-reliably point to the last and first entries of the undo and redo lists respectively.
 
-In the one case where offset 12 seems to point to garbage, `AFFY,d94`, offset 16 is not in agreement with offset 12 (which is usually is).
+In the one case where offset 12 seems to point to garbage, `AFFY,d94`, offset 16 is not in agreement with offset 12 (
+which is usually is).
 
 | Offset | Length | Content                                                                                        |
 |--------|--------|------------------------------------------------------------------------------------------------|
@@ -856,6 +906,9 @@ you can encounter background objects after foreground ones.
 1. [RISC OS Character Set][risc-os-character-set]
 
 ---
+
 [draw-file-format]: http://www.riscos.com/support/developers/prm/fileformats.html
+
 [sprite-area-format]: http://www.riscos.com/support/developers/prm/sprites.html
+
 [risc-os-character-set]: https://en.wikipedia.org/wiki/RISC_OS_character_set
