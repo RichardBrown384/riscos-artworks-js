@@ -1,13 +1,17 @@
 const Constants = require('../constants');
 
 const {
-  createNodePointer,
-  writeNodePointer,
-  createChildPointer,
-  writeChildPointer,
+  createListsPointer,
+  writeListsPointer,
+  createListPointer,
+  writeListPointer,
+  createRecordPointer,
+  writeRecordPointer,
 } = require('../types/primitives');
 
 const { writeRecordBody, writeRecordHeader } = require('../types/records');
+
+const SubLists = require('./sublists');
 
 const DEFAULT_IDENTIFIER = 'Top!';
 const DEFAULT_PROGRAM = 'TopDraw';
@@ -30,44 +34,74 @@ class ArtworksWriter {
     this.view.writeInt32At(Constants.FILE_OFFSET_PALETTE_OFFSET, -1);
 
     this.view.setPosition(DEFAULT_BODY_OFFSET);
-    this.writeNodes(this.children);
+    this.writeLists(this.children, DEFAULT_BODY_OFFSET);
 
     return this.view.getPosition();
   }
 
-  writeNodes(children) {
-    let previous = 0;
-    for (let i = 0; i < children.length; i += 1) {
+  writeLists(lists, listsPointerPosition, recordPointerPosition) {
+    let previous = listsPointerPosition - this.view.getPosition();
+    for (let i = 0; i < lists.length; i += 1) {
+      const list = lists[i];
       const start = this.view.getPosition();
-      this.view.setPosition(start + 8);
-      this.writeChildren(children[i].children);
+      this.reservePointerSpace();
+      this.writeList(list.children, recordPointerPosition || this.view.getPosition());
       const end = this.view.getPosition();
-      const next = (i < children.length - 1) ? end - start : 0;
-      writeNodePointer(this.view, createNodePointer(start, previous, next));
+      const next = (i < lists.length - 1) ? end - start : 0;
+      this.writeListPointer(start, previous, next);
       previous = -next;
     }
   }
 
-  writeChildren(children) {
-    let previous = 0;
-    for (let i = 0; i < children.length; i += 1) {
+  writeList(list, recordPointerPosition) {
+    let previous = recordPointerPosition - this.view.getPosition();
+    const subLists = new SubLists();
+    for (let i = 0; i < list.length; i += 1) {
+      const record = list[i];
       const start = this.view.getPosition();
-      this.view.setPosition(start + 8);
-      writeRecordHeader(this.view, children[i]);
-      writeRecordBody(this.view, children[i]);
-      if (i < children.length - 1) {
-        const pointerPosition = this.view.getPosition();
-        writeNodePointer(
-          this.view,
-          createNodePointer(pointerPosition, 0, 0),
-        );
-        this.view.setPosition(pointerPosition + 8);
+      this.reservePointerSpace();
+      writeRecordHeader(this.view, record);
+      writeRecordBody(this.view, record);
+      if (i < list.length - 1) {
+        subLists.add(start, this.view.getPosition(), record.children);
+        this.reservePointerSpace();
       }
       const end = this.view.getPosition();
-      const next = (i < children.length - 1) ? (end - start) : 0;
-      writeChildPointer(this.view, createChildPointer(start, previous, next));
+      const next = (i < list.length - 1) ? (end - start) : 0;
+      this.writeRecordPointer(start, previous, next);
       previous = -next;
     }
+    this.writeSubLists(subLists.getList());
+  }
+
+  writeSubLists(subLists) {
+    for (let i = 0; i < subLists.length; i += 1) {
+      const {
+        recordPointerPosition,
+        listsPointerPosition,
+        lists,
+      } = subLists[i];
+      const position = this.view.getPosition();
+      const next = position - listsPointerPosition;
+      this.writeListsPointer(listsPointerPosition, 0, next);
+      this.writeLists(lists, listsPointerPosition, recordPointerPosition);
+    }
+  }
+
+  reservePointerSpace() {
+    this.view.setPosition(this.view.getPosition() + 8);
+  }
+
+  writeListsPointer(position, previous, next) {
+    writeListsPointer(this.view, createListsPointer(position, previous, next));
+  }
+
+  writeListPointer(position, previous, next) {
+    writeListPointer(this.view, createListPointer(position, previous, next));
+  }
+
+  writeRecordPointer(position, previous, next) {
+    writeRecordPointer(this.view, createRecordPointer(position, previous, next));
   }
 }
 

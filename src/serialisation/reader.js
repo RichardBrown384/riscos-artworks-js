@@ -1,8 +1,9 @@
 const UnsupportedRecordError = require('../exceptions/unsupported-record-error');
 
 const {
-  readNodePointer,
-  readChildPointer,
+  readListsPointer,
+  readListPointer,
+  readRecordPointer,
   readHeader,
 } = require('../types/primitives');
 
@@ -59,7 +60,7 @@ class ArtworksReader {
       const { bodyPosition } = header;
 
       this.view.setPosition(bodyPosition);
-      this.readNodes();
+      this.readLists();
 
       const {
         children: [{ palette = {} }],
@@ -79,12 +80,12 @@ class ArtworksReader {
     }
   }
 
-  readNodes() {
+  readLists() {
     for (;;) {
-      const pointer = readNodePointer(this.view);
+      const pointer = readListPointer(this.view);
       const { position, next } = pointer;
       this.startRecord({ pointer });
-      this.readChildren();
+      this.readList();
       this.finishRecord();
       if (next === 0) {
         break;
@@ -93,9 +94,9 @@ class ArtworksReader {
     }
   }
 
-  readChildren() {
+  readList() {
     for (;;) {
-      const pointer = readChildPointer(this.view);
+      const pointer = readRecordPointer(this.view);
       const header = readRecordHeader(this.view);
       const { position, next } = pointer;
       const checkLast = (message) => {
@@ -104,7 +105,7 @@ class ArtworksReader {
       this.startRecord({ pointer, ...header });
       this.readRecordBody(header, checkLast);
       if (next !== 0) {
-        this.readGrandchildren(position + next - 8);
+        this.readSubLists(position + next - 8);
       }
       this.finishRecord();
       if (next === 0) {
@@ -126,22 +127,22 @@ class ArtworksReader {
     }
   }
 
-  readGrandchildren(pointerPosition) {
+  readSubLists(listsPointerPosition) {
     const current = this.view.getPosition();
     this.view.check(
-      current <= pointerPosition,
-      'insufficient space for grandchild pointer',
-      { current, pointerPosition },
+      current <= listsPointerPosition,
+      'insufficient space for sub-lists pointer',
+      { current, listsPointerPosition },
     );
-    this.view.setPosition(pointerPosition);
-    const pointer = readNodePointer(this.view);
-    const { position, next } = pointer;
+    this.view.setPosition(listsPointerPosition);
+    const listsPointer = readListsPointer(this.view);
+    const { position, next } = listsPointer;
     if (next > 0) {
       this.populateRecord({
-        childPointer: pointer,
+        listsPointer,
       });
       this.view.setPosition(position + next);
-      this.readNodes();
+      this.readLists();
     }
   }
 }

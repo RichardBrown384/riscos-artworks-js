@@ -675,7 +675,7 @@ function readRecordBody(view, header, checkLast) {
 
 function writeRecordBody(view, record) {
   const { type } = record;
-  switch (type) {
+  switch (type & 0xFF) {
     case Constants.RECORD_PATH:
       writeRecordPath(view, record);
       break;
