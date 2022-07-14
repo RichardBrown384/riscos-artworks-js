@@ -249,7 +249,7 @@ function readSubLists(subListPointerPosition) {
 
 where
 
-1. The `readNodePointer` and `readChildPointer` functions read the appropriate `next`
+1. The `readListPointer`, `readRecordPointer` and `readListsPointer` functions read the appropriate `next`
    and `previous` values, and return them along with the position of the pointer in the file.
 1. The `setPosition` function allows one to navigate to a certain point in the file.
 1. The `readRecord` function reads the appropriate record data from the file.
