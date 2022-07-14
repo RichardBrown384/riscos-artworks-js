@@ -1,10 +1,21 @@
+const { createHeader } = require('../../types/primitives');
+
+const DEFAULT_IDENTIFIER = 'Top!';
+const DEFAULT_PROGRAM = 'TopDraw';
+
 class Artworks {
+  #identifier;
+
   #version;
+
+  #program;
 
   #children;
 
   constructor() {
+    this.#identifier = DEFAULT_IDENTIFIER;
     this.#version = 9;
+    this.#version = DEFAULT_PROGRAM;
     this.#children = [];
   }
 
@@ -24,9 +35,7 @@ class Artworks {
 
   build() {
     return {
-      header: {
-        version: this.#version,
-      },
+      header: createHeader(this.#identifier, this.#version, this.#program),
       children: this.#children,
     };
   }

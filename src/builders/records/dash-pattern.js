@@ -12,7 +12,7 @@ class RecordDashPattern extends RecordBuilder {
   constructor() {
     super(Constants.RECORD_DASH_PATTERN);
     this.#offset = 0;
-    this.array = [];
+    this.#elements = [];
   }
 
   static builder() {

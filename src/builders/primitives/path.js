@@ -1,6 +1,10 @@
 const Constants = require('../../constants');
 
-const { createPoint } = require('../../types/primitives');
+const {
+  createPoint,
+  createPathElement,
+  createPath,
+} = require('../../types/primitives');
 
 class Path {
   constructor() {
@@ -12,10 +16,7 @@ class Path {
   }
 
   push(tag, points) {
-    this.elements.push({
-      tag,
-      ...(points && { points }),
-    });
+    this.elements.push(createPathElement(tag, points));
   }
 
   end() {
@@ -52,7 +53,7 @@ class Path {
   }
 
   build() {
-    return this.elements;
+    return createPath(this.elements);
   }
 }
 

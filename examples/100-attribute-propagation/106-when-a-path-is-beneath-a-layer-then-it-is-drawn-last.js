@@ -9,7 +9,8 @@ stroked blue with a stroke width of 6000.
 This example demonstrates two things.
 
 Firstly, the order in which things are drawn:
-The layer's siblings (the triangle) are drawn first and end up behind the layer's descendants (the pentagram).
+The layer's siblings (the triangle) are drawn first and end up
+behind the layer's descendants (the pentagram).
 
 Secondly, some details about how attributes are propagated:
 
