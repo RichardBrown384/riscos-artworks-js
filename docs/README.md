@@ -188,7 +188,7 @@ or a list of records.
 
 For lists of lists, the first previous pointer points back to the location of the
 lists pointer within the record that they descended from.
-The top level list of lists within a file does not descend from a record,
+The top level list of lists within a file do not descend from a record,
 and in this case the first previous pointer will be zero.
 
 For example, a path might have a list of lists containing attributes as singleton lists.
