@@ -188,7 +188,7 @@ or a list of records.
 
 For lists of lists, the first previous pointer points back to the location of the
 lists pointer within the record that they descended from.
-The top level list of lists within a file does not descend from a record,
+The top level list of lists within a file do not descend from a record,
 and in this case the first previous pointer will be zero.
 
 For example, a path might have a list of lists containing attributes as singleton lists.
@@ -249,7 +249,7 @@ function readSubLists(subListPointerPosition) {
 
 where
 
-1. The `readNodePointer` and `readChildPointer` functions read the appropriate `next`
+1. The `readListPointer`, `readRecordPointer` and `readListsPointer` functions read the appropriate `next`
    and `previous` values, and return them along with the position of the pointer in the file.
 1. The `setPosition` function allows one to navigate to a certain point in the file.
 1. The `readRecord` function reads the appropriate record data from the file.
@@ -323,12 +323,12 @@ The number of zeros can vary, and there can sometimes be string data present at 
 
 Note: In certain cases there's extra data after the path data.
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | varies | [Path data](#path-data)                 |
-| varies | varies | Unknown, sometimes present              |
-| n - 8  | 8      | [Lists pointer](#sublists) |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 0      | 24     | [Record header](#record-header) |
+| 24     | varies | [Path data](#path-data)         |
+| varies | varies | Unknown, sometimes present      |
+| n - 8  | 8      | [Lists pointer](#sublists)      |
 
 #### Type 0x05: Sprite
 
@@ -370,22 +370,22 @@ The palette defined in this record seems to take precedence over the one defined
 
 #### Type 0x06: Unknown, Group
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | 4      | Unknown                                 |
-| 28     | 4      | Unknown                                 |
-| 32     | 4      | Unknown                                 |
-| 36     | 8      | [Lists pointer](#sublists) |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 0      | 24     | [Record header](#record-header) |
+| 24     | 4      | Unknown                         |
+| 28     | 4      | Unknown                         |
+| 32     | 4      | Unknown                         |
+| 36     | 8      | [Lists pointer](#sublists)      |
 
 #### Type 0x0A: Layer
 
-| Offset | Length | Content                                                                                        |
-|--------|--------|------------------------------------------------------------------------------------------------|
-| 0      | 24     | [Record header](#record-header)                                                                |
-| 24     | 4      | Unknown. Bit 3 is usually set and both bits 3 and 0 must be set for the layer to be visible.   |
-| 28     | 32     | Layer name, null terminated. The length stated here is a guess.                                |
-| 60     | 8      | [Lists pointer](#sublists)                                                        |
+| Offset | Length | Content                                                                                      |
+|--------|--------|----------------------------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                                              |
+| 24     | 4      | Unknown. Bit 3 is usually set and both bits 3 and 0 must be set for the layer to be visible. |
+| 28     | 32     | Layer name, null terminated. The length stated here is a guess.                              |
+| 60     | 8      | [Lists pointer](#sublists)                                                                   |
 
 #### Type 0x21: Work Area
 
@@ -557,12 +557,12 @@ If Dash Pattern Index is non-zero
 
 #### Type 0x2C: Path
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | 4      | Unknown                                 |
-| 28     | varies | [Path data](#path-data)                 |
-| n - 8  | 8      | [Lists pointer](#sublists) |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 0      | 24     | [Record header](#record-header) |
+| 24     | 4      | Unknown                         |
+| 28     | varies | [Path data](#path-data)         |
+| n - 8  | 8      | [Lists pointer](#sublists)      |
 
 #### Type 0x2D: Character
 
@@ -577,7 +577,7 @@ Please refer to the [RISC OS Character Set][risc-os-character-set] for details.
 | 32     | 4      | Unknown, Y Coordinate (text base line?) |
 | 36     | 4      | Unknown (0xf8f)                         |
 | 40     | 4      | Unknown (0)                             |
-| 44     | 8      | [Lists pointer](#sublists) |
+| 44     | 8      | [Lists pointer](#sublists)              |
 
 #### Type 0x2E: Unknown
 
@@ -656,42 +656,42 @@ Another interpretation could be that the points form basis vectors for the paths
 
 These 3 points might have something to do with radial fills.
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | 4      | Bounding Triangle Bottom Left X         |
-| 28     | 4      | Bounding Triangle Bottom Left Y         |
-| 32     | 4      | Bounding Triangle Top Left X            |
-| 36     | 4      | Bounding Triangle Top Left Y            |
-| 40     | 4      | Bounding Triangle Top Right X           |
-| 44     | 4      | Bounding Triangle Top Right Y           |
-| 48     | varies | [Path data](#path-data)                 |
-| n - 8  | 8      | [Lists pointer](#sublists) |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 0      | 24     | [Record header](#record-header) |
+| 24     | 4      | Bounding Triangle Bottom Left X |
+| 28     | 4      | Bounding Triangle Bottom Left Y |
+| 32     | 4      | Bounding Triangle Top Left X    |
+| 36     | 4      | Bounding Triangle Top Left Y    |
+| 40     | 4      | Bounding Triangle Top Right X   |
+| 44     | 4      | Bounding Triangle Top Right Y   |
+| 48     | varies | [Path data](#path-data)         |
+| n - 8  | 8      | [Lists pointer](#sublists)      |
 
 #### Type 0x35: Unknown
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | 4      | Unknown (26c)                           |
-| 28     | 4      | Bounding Triangle Bottom Left X         |
-| 32     | 4      | Bounding Triangle Bottom Left Y         |
-| 36     | 4      | Bounding Triangle Top Left X            |
-| 40     | 4      | Bounding Triangle Top Left Y            |
-| 44     | 4      | Bounding Triangle Top Right X           |
-| 48     | 4      | Bounding Triangle Top Right Y           |
-| 52     | varies | [Path data](#path-data)                 |
-| n - 8  | 8      | [Lists pointer](#sublists) |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 0      | 24     | [Record header](#record-header) |
+| 24     | 4      | Unknown (26c)                   |
+| 28     | 4      | Bounding Triangle Bottom Left X |
+| 32     | 4      | Bounding Triangle Bottom Left Y |
+| 36     | 4      | Bounding Triangle Top Left X    |
+| 40     | 4      | Bounding Triangle Top Left Y    |
+| 44     | 4      | Bounding Triangle Top Right X   |
+| 48     | 4      | Bounding Triangle Top Right Y   |
+| 52     | varies | [Path data](#path-data)         |
+| n - 8  | 8      | [Lists pointer](#sublists)      |
 
 #### Type 0x37: Unknown
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | varies | [Path data](#path-data)                 |
-| varies | varies | Unknown                                 |
-| n - 24 | 16     | Bounding Box                            |
-| n - 8  | 8      | [Lists pointer](#sublists) |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 0      | 24     | [Record header](#record-header) |
+| 24     | varies | [Path data](#path-data)         |
+| varies | varies | Unknown                         |
+| n - 24 | 16     | Bounding Box                    |
+| n - 8  | 8      | [Lists pointer](#sublists)      |
 
 #### Type 0x38: Unknown
 
@@ -704,7 +704,7 @@ presence of path data.
 | 0      | 24     | [Record header](#record-header)                 |
 | 24     | 64     | [Path data](#path-data) (1 Moves, 4 Lines, End) |
 | 88     | 68     | Unknown                                         |
-| 156    | 8      | [Lists pointer](#sublists)         |
+| 156    | 8      | [Lists pointer](#sublists)                      |
 
 #### Type 0x39: File information
 
@@ -717,21 +717,21 @@ This record can vary in size.
 
 #### Type 0x3A: Unknown
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | 4      | Unknown, (0)                            |
-| 28     | 4      | Unknown, (3)                            |
-| 32     | 4      | Unknown, (0x51900)                      |
-| 36     | 4      | Unknown, (0x40000006) or (6)            |
-| 40     | 4      | Unknown, (0xC4C3)                       |
-| 44     | 4      | Unknown, (0xC4C3)                       |
-| 48     | 4      | Unknown, (-1)                           |
-| 52     | 4      | Unknown, (-1)                           |
-| 56     | 4      | Unknown, (-1)                           |
-| 60     | 4      | Unknown, (-1)                           |
-| 64     | 4      | Unknown, (-1)                           |
-| 68     | 8      | [Lists pointer](#sublists) |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 0      | 24     | [Record header](#record-header) |
+| 24     | 4      | Unknown, (0)                    |
+| 28     | 4      | Unknown, (3)                    |
+| 32     | 4      | Unknown, (0x51900)              |
+| 36     | 4      | Unknown, (0x40000006) or (6)    |
+| 40     | 4      | Unknown, (0xC4C3)               |
+| 44     | 4      | Unknown, (0xC4C3)               |
+| 48     | 4      | Unknown, (-1)                   |
+| 52     | 4      | Unknown, (-1)                   |
+| 56     | 4      | Unknown, (-1)                   |
+| 60     | 4      | Unknown, (-1)                   |
+| 64     | 4      | Unknown, (-1)                   |
+| 68     | 8      | [Lists pointer](#sublists)      |
 
 #### Type 0x3B: Unknown
 
@@ -790,10 +790,10 @@ Line end caps are still drawn when markers are in use.
 
 This record seems to appear as a sibling to records of [Type 0x37](#type-0x37-unknown).
 
-| Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
-| 0      | 24     | [Record header](#record-header)         |
-| 24     | 8      | [Lists pointer](#sublists) |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 0      | 24     | [Record header](#record-header) |
+| 24     | 8      | [Lists pointer](#sublists)      |
 
 ### Coordinate system
 
