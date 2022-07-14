@@ -13,8 +13,6 @@ const { writeRecordBody, writeRecordHeader } = require('../types/records');
 
 const SubLists = require('./sublists');
 
-const DEFAULT_IDENTIFIER = 'Top!';
-const DEFAULT_PROGRAM = 'TopDraw';
 const DEFAULT_BODY_OFFSET = 128;
 
 class ArtworksWriter {
@@ -25,9 +23,11 @@ class ArtworksWriter {
   }
 
   write() {
-    this.view.writeStringAt(Constants.FILE_OFFSET_IDENTIFIER, DEFAULT_IDENTIFIER, 4);
-    this.view.writeInt32At(Constants.FILE_OFFSET_VERSION, this.header.version);
-    this.view.writeStringAt(Constants.FILE_OFFSET_PROGRAM, DEFAULT_PROGRAM, 8);
+    const { identifier, version, program } = this.header;
+
+    this.view.writeStringAt(Constants.FILE_OFFSET_IDENTIFIER, identifier, 4);
+    this.view.writeUint32At(Constants.FILE_OFFSET_VERSION, version);
+    this.view.writeStringAt(Constants.FILE_OFFSET_PROGRAM, program, 8);
     this.view.writeInt32At(Constants.FILE_OFFSET_BODY_OFFSET, DEFAULT_BODY_OFFSET);
     this.view.writeInt32At(Constants.FILE_OFFSET_UNDO_OFFSET, -1);
     this.view.writeInt32At(Constants.FILE_OFFSET_SPRITE_AREA_OFFSET, -1);

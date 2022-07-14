@@ -67,7 +67,7 @@ function writePolyline(view, polyline) {
 }
 
 function createPathElement(tag, points) {
-  return { tag, points };
+  return { tag, ...(points && { points }) };
 }
 
 function readPathElement(view) {
