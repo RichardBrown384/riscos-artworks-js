@@ -1,10 +1,11 @@
-module.exports.FILE_OFFSET_IDENTIFIER = 0x00;
-module.exports.FILE_OFFSET_VERSION = 0x04;
-module.exports.FILE_OFFSET_PROGRAM = 0x08;
-module.exports.FILE_OFFSET_BODY_OFFSET = 0x14;
-module.exports.FILE_OFFSET_UNDO_OFFSET = 0x28;
-module.exports.FILE_OFFSET_SPRITE_AREA_OFFSET = 0x2C;
-module.exports.FILE_OFFSET_PALETTE_OFFSET = 0x3C;
+module.exports.HEADER_IDENTIFIER = 'Top!';
+module.exports.HEADER_VERSION = 9;
+module.exports.HEADER_PROGRAM = 'TopDraw';
+
+module.exports.FILE_OFFSET_UNDO_POSITION = 0x28;
+module.exports.FILE_OFFSET_SPRITE_AREA_POSITION = 0x2C;
+module.exports.FILE_OFFSET_PALETTE_POSITION = 0x3C;
+module.exports.FILE_OFFSET_BODY = 0x80;
 
 module.exports.RECORD_00 = 0x00;
 module.exports.RECORD_TEXT = 0x01;
