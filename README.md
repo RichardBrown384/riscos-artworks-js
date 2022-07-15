@@ -9,6 +9,10 @@ riscos-artworks-js is a JavaScript library for reading and writing ArtWorks file
 
 The project was started in the aim of preserving the content of these files.
 
+A work-in-progress online viewer is hosted [here](http://richardbrown384.github.io/riscos-artworks-react).
+
+![The ArtWorks Apple](./media/apple4.svg)
+
 ## Installation
 
 ```bash
@@ -16,6 +20,15 @@ npm install git+https://github.com/RichardBrown384/riscos-artworks-js.git
 ```
 
 ## Usage
+
+To use in code
+
+```javascript
+const {Artworks} = require('riscos-artworks');
+
+const artworks = Artworks.load(buffer);
+const view = Artworks.save(artworks);
+```
 
 The library has some scripts that can be used to aid with the deciphering process
 
@@ -57,10 +70,6 @@ such as testing.
 
 Writing ArtWorks files is experimental and only a limited subset of features is supported. Typically, only
 those features that are well understood are supported, such as fills and strokes.
-
-A work-in-progress online viewer is hosted [here](http://richardbrown384.github.io/riscos-artworks-react).
-
-![The ArtWorks Apple](./media/apple4.svg)
 
 ---
 [artworks-wikipedia]: https://en.wikipedia.org/wiki/ArtWorks
