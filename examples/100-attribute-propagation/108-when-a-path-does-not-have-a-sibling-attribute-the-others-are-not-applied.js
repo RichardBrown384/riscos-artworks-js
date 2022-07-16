@@ -34,7 +34,7 @@ const {
   STROKE_WIDTH_1500,
   STROKE_WIDTH_3000,
   STROKE_WIDTH_6000,
-  WORK_AREA, FILL_RADIAL_RED_YELLOW, STROKE_COLOUR_MAGENTA,
+  WORK_AREA, FILL_RADIAL_RED_YELLOW, STROKE_COLOUR_MAGENTA, createRecordPathFromPath,
 } = require('../shared-objects');
 
 const {
@@ -60,17 +60,7 @@ const HEXAGON_PADDING = 10_000;
 
 function createHexagon(x, y, ...attributes) {
   const path = createClosedNSidedPolygon(6, x, y, HEXAGON_RADIUS);
-  const listsBuilder = Lists.builder();
-  for (let i = 0; i < attributes.length; i += 1) {
-    listsBuilder.push(List.of(attributes[i]));
-  }
-  const lists = listsBuilder.build();
-  return RecordPath.builder()
-    .unknown4(UNKNOWN_4_BIT_1)
-    .boundingBox(BoundingBox.of(path, HEXAGON_PADDING))
-    .path(path)
-    .lists(lists)
-    .build();
+  return createRecordPathFromPath(path, HEXAGON_PADDING, ...attributes);
 }
 
 const PATH_HEXAGON_1 = createHexagon(150_000, 50_000);

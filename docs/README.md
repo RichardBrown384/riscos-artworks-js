@@ -17,7 +17,7 @@
         * [Type 0x01](#type-0x01-unknown-text)
         * [Type 0x02 - Path](#type-0x02-path)
         * [Type 0x05 - Sprite](#type-0x05-sprite)
-        * [Type 0x06](#type-0x06-unknown-group)
+        * [Type 0x06 - Group](#type-0x06-group)
         * [Type 0x0A - Layer](#type-0x0a-layer)
         * [Type 0x21 - Work Area](#type-0x21-work-area)
         * [Type 0x22](#type-0x22-unknown)
@@ -378,7 +378,15 @@ The palette defined in this record seems to take precedence over the one defined
 |--------|--------|--------------------------------------|
 | 0      | 4      | Colour (BGR) usually with bit 29 set |
 
-#### Type 0x06: Unknown, Group
+#### Type 0x06: Group
+
+Bit 1 of `unknown4` must be set in order for the group to be drawn.
+
+The bounding box must be valid and encompass the group objects in order for !AWViewer
+to draw the group properly.
+
+The function of the unknowns in the record body aren't understood. Various values were tried: 0, -1
+0x55555555 and 0xAAAAAAAA to no noticeable affect.
 
 | Offset | Length | Content                         |
 |--------|--------|---------------------------------|

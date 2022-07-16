@@ -1,5 +1,7 @@
 const {
   Builders: {
+    Lists,
+    List,
     BoundingBox,
     Polyline,
 
@@ -37,25 +39,31 @@ const {
   createClosedPentagram,
 } = require('./path-creators');
 
-function createRecordPathFromPathWithPadding(path, padding) {
+function createRecordPathFromPath(path, padding, ...attributes) {
+  const listsBuilder = Lists.builder();
+  for (let i = 0; i < attributes.length; i += 1) {
+    listsBuilder.push(List.of(attributes[i]));
+  }
+  const lists = listsBuilder.build();
   return RecordPath.builder()
     .unknown4(UNKNOWN_4_BIT_1)
     .boundingBox(BoundingBox.of(path, padding))
     .path(path)
+    .lists(lists)
     .build();
 }
 
-const PATH_TRIANGLE = createRecordPathFromPathWithPadding(
+const PATH_TRIANGLE = createRecordPathFromPath(
   createClosedEquilateralTriangle(10_000, 10_000, 100_000),
   10_000,
 );
 
-const PATH_OPEN_INVERTED_V = createRecordPathFromPathWithPadding(
+const PATH_OPEN_INVERTED_V = createRecordPathFromPath(
   createOpenInvertedV(10_000, 10_000, 100_000),
   10_100,
 );
 
-const PATH_PENTAGRAM = createRecordPathFromPathWithPadding(
+const PATH_PENTAGRAM = createRecordPathFromPath(
   createClosedPentagram(100_000, 100_000, 80_000),
   10_000,
 );
@@ -144,5 +152,5 @@ module.exports = {
   FILL_LINEAR_YELLOW_RED,
   FILL_RADIAL_RED_YELLOW,
 
-  createRecordPathFromPathWithPadding,
+  createRecordPathFromPath,
 };

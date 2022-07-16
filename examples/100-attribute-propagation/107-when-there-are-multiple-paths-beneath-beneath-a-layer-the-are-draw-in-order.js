@@ -14,14 +14,11 @@ To demonstrate the order in which objects beneath a layer are rendered.
 const {
   Builders: {
     Artworks,
-    BoundingBox,
     Lists,
     List,
 
     RecordLayer,
-    RecordPath,
   },
-  UNKNOWN_4_BIT_1,
   LAYER_UNKNOWN_24_BIT_0,
   LAYER_UNKNOWN_24_BIT_3,
 } = require('../../src/artworks');
@@ -37,7 +34,7 @@ const {
   STROKE_WIDTH_1500,
   STROKE_WIDTH_3000,
   STROKE_WIDTH_6000,
-  WORK_AREA,
+  WORK_AREA, createRecordPathFromPath,
 } = require('../shared-objects');
 
 const {
@@ -46,30 +43,20 @@ const {
 } = require('../path-creators');
 
 const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
-const PATH_PENTAGRAM = RecordPath.builder()
-  .unknown4(UNKNOWN_4_BIT_1)
-  .boundingBox(BoundingBox.of(PENTAGRAM, 10_000))
-  .path(PENTAGRAM)
-  .lists(
-    Lists.of(
-      List.of(STROKE_WIDTH_6000),
-      List.of(FILL_FLAT_RED),
-    ),
-  )
-  .build();
+const PATH_PENTAGRAM = createRecordPathFromPath(
+  PENTAGRAM,
+  10_000,
+  STROKE_WIDTH_6000,
+  FILL_FLAT_RED,
+);
 
 const HEXAGON = createClosedNSidedPolygon(6, 150_000, 50_000, 40_000);
-const PATH_HEXAGON = RecordPath.builder()
-  .unknown4(UNKNOWN_4_BIT_1)
-  .boundingBox(BoundingBox.of(HEXAGON, 10_000))
-  .path(HEXAGON)
-  .lists(
-    Lists.of(
-      List.of(STROKE_WIDTH_1500),
-      List.of(FILL_RADIAL_RED_YELLOW),
-    ),
-  )
-  .build();
+const PATH_HEXAGON = createRecordPathFromPath(
+  HEXAGON,
+  10_000,
+  STROKE_WIDTH_1500,
+  FILL_RADIAL_RED_YELLOW,
+);
 
 const LAYER = RecordLayer.builder()
   .unknown24(LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3)
