@@ -136,7 +136,7 @@ function createRecordWorkArea(palette) {
 }
 
 function readRecordWorkArea(view) {
-  const paletteOffset = view.readInt32At(Constants.FILE_OFFSET_PALETTE_OFFSET);
+  const paletteOffset = view.readInt32At(Constants.FILE_OFFSET_PALETTE_POSITION);
   if (paletteOffset < 0) {
     return {};
   }
@@ -149,7 +149,7 @@ function readRecordWorkArea(view) {
 }
 
 function writeRecordWorkArea(view, { palette }) {
-  view.writeInt32At(Constants.FILE_OFFSET_PALETTE_OFFSET, view.getPosition());
+  view.writeInt32At(Constants.FILE_OFFSET_PALETTE_POSITION, view.getPosition());
   writePalette(view, palette);
 }
 

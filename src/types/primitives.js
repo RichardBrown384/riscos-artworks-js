@@ -195,8 +195,10 @@ function writePalette(view, palette) {
   }
 }
 
-function createHeader(identifier, version, program) {
-  return { identifier, version, program };
+function createHeader(identifier, version, program, bodyPosition) {
+  return {
+    identifier, version, program, bodyPosition,
+  };
 }
 
 function readHeader(view) {
@@ -207,17 +209,50 @@ function readHeader(view) {
     program: view.readStringFully(8),
     unknown16: view.readUint32(),
     bodyPosition: view.readUint32(),
-    unknown24: view.readUint32(),
-    unknown28: view.readUint32(),
+    europeanPaperWidth: view.readUint32(),
+    europeanPaperHeight: view.readUint32(),
     unknown32: view.readUint32(),
     unknown36: view.readUint32(),
     ubufPosition: view.readInt32(),
     spriteAreaPosition: view.readInt32(),
     unknown48: view.readUint32(),
-    unknown52: view.readUint32(),
-    unknown56: view.readUint32(),
+    americanPaperWidth: view.readUint32(),
+    americanPaperHeight: view.readUint32(),
     palettePosition: view.readInt32(),
+    unknown64: view.readUint32(),
+    unknown68: view.readUint32(),
+    unknown72: view.readUint32(),
+    unknown76: view.readUint32(),
+    unknown80: view.readUint32(),
+    unknown84: view.readUint32(),
+    unknown88: view.readUint32(),
   };
+}
+
+function writeHeader(view, header) {
+  view.checkAlignment('misaligned header');
+  view.writeString(header.identifier, 4);
+  view.writeUint32(header.version);
+  view.writeString(header.program, 8);
+  view.writeUint32(header.unknown16 || 0);
+  view.writeUint32(header.bodyPosition);
+  view.writeUint32(header.europeanPaperWidth || 0);
+  view.writeUint32(header.europeanPaperHeight || 0);
+  view.writeUint32(header.unknown32 || 0);
+  view.writeUint32(header.unknown36 || 0);
+  view.writeInt32(-1); // undo buffer position
+  view.writeInt32(-1); // sprite position
+  view.writeUint32(header.unknown48 || 0);
+  view.writeUint32(header.americanPaperWidth || 0);
+  view.writeUint32(header.americanPaperHeight || 0);
+  view.writeInt32(-1); // palette position
+  view.writeUint32(header.unknown64 || 0);
+  view.writeUint32(header.unknown68 || 0);
+  view.writeUint32(header.unknown72 || 0);
+  view.writeUint32(header.unknown76 || 0);
+  view.writeUint32(header.unknown80 || 0);
+  view.writeUint32(header.unknown84 || 0);
+  view.writeUint32(header.unknown88 || 0);
 }
 
 function createListsPointer(position, previous, next) {
@@ -311,6 +346,7 @@ module.exports = {
 
   createHeader,
   readHeader,
+  writeHeader,
 
   createListsPointer,
   readListsPointer,

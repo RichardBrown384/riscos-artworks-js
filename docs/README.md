@@ -94,14 +94,24 @@ The header has a 16 byte signature followed by more data whose purpose is largel
 | 0      | 4      | Top!                                                                        |
 | 4      | 4      | Unknown (version?) 9, 10                                                    |
 | 8      | 8      | TopDraw (null terminated)                                                   |
-| 16     | 4      | Unknown                                                                     |
+| 16     | 4      | Unknown, appears to be always 0                                             |
 | 20     | 4      | Absolute offset to start of [Body](#body)                                   |
-| 24     | 16     | Unknown                                                                     |
+| 24     | 4      | European paper width in 640ths of a printer's point                         |
+| 28     | 4      | European paper height in 640ths of a printer's point                        |
+| 32     | 8      | Unknown                                                                     |
 | 40     | 4      | Absolute offset to start of [Undo Buffer](#ubuf), -1 if absent              |
 | 44     | 4      | Absolute offset to start of [Sprite Area][sprite-area-format], -1 if absent |
-| 48     | 12     | Unknown                                                                     |
+| 48     | 4      | Unknown                                                                     |
+| 52     | 4      | US paper width in 640ths of a printer's point                               |
+| 56     | 4      | US paper height in 640ths of a printer's point                              |
 | 60     | 4      | Absolute offset to start of [Palette](#palette)                             |
-| 64     | varies | Unknown                                                                     |
+| 64     | 28     | Unknown                                                                     |
+| 92     | 36     | Unknown, appears to be reserved space, padded with 0                        |
+
+Note of paper dimensions: The European sizes seem to often conform to [ISO-126][iso-216], but the
+width and height values are sometimes flipped, presumably because of page orientation.
+
+There is only one US paper size, that of the US letter (8.5 x 11.0 in), in all the files available.
 
 ## Body
 
@@ -904,6 +914,7 @@ you can encounter background objects after foreground ones.
 1. [Draw file format][draw-file-format]
 1. [Sprite area format][sprite-area-format]
 1. [RISC OS Character Set][risc-os-character-set]
+1. [ISO-216][iso-216]
 
 ---
 
@@ -912,3 +923,5 @@ you can encounter background objects after foreground ones.
 [sprite-area-format]: http://www.riscos.com/support/developers/prm/sprites.html
 
 [risc-os-character-set]: https://en.wikipedia.org/wiki/RISC_OS_character_set
+
+[iso-216]: https://en.wikipedia.org/wiki/ISO_216

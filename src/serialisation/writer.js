@@ -1,6 +1,5 @@
-const Constants = require('../constants');
-
 const {
+  writeHeader,
   createListsPointer,
   writeListsPointer,
   createListPointer,
@@ -9,11 +8,12 @@ const {
   writeRecordPointer,
 } = require('../types/primitives');
 
-const { writeRecordBody, writeRecordHeader } = require('../types/records');
+const {
+  writeRecordBody,
+  writeRecordHeader,
+} = require('../types/records');
 
 const SubLists = require('./sublists');
-
-const DEFAULT_BODY_OFFSET = 128;
 
 class ArtworksWriter {
   constructor(view, { header, children }) {
@@ -23,18 +23,13 @@ class ArtworksWriter {
   }
 
   write() {
-    const { identifier, version, program } = this.header;
+    const { bodyPosition } = this.header;
 
-    this.view.writeStringAt(Constants.FILE_OFFSET_IDENTIFIER, identifier, 4);
-    this.view.writeUint32At(Constants.FILE_OFFSET_VERSION, version);
-    this.view.writeStringAt(Constants.FILE_OFFSET_PROGRAM, program, 8);
-    this.view.writeInt32At(Constants.FILE_OFFSET_BODY_OFFSET, DEFAULT_BODY_OFFSET);
-    this.view.writeInt32At(Constants.FILE_OFFSET_UNDO_OFFSET, -1);
-    this.view.writeInt32At(Constants.FILE_OFFSET_SPRITE_AREA_OFFSET, -1);
-    this.view.writeInt32At(Constants.FILE_OFFSET_PALETTE_OFFSET, -1);
+    this.view.setPosition(0);
+    writeHeader(this.view, this.header);
 
-    this.view.setPosition(DEFAULT_BODY_OFFSET);
-    this.writeLists(this.children, DEFAULT_BODY_OFFSET);
+    this.view.setPosition(bodyPosition);
+    this.writeLists(this.children, bodyPosition);
 
     return this.view.getPosition();
   }

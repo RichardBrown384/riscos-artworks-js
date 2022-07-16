@@ -1,7 +1,6 @@
-const { createHeader } = require('../../types/primitives');
+const Constants = require('../../constants');
 
-const DEFAULT_IDENTIFIER = 'Top!';
-const DEFAULT_PROGRAM = 'TopDraw';
+const { createHeader } = require('../../types/primitives');
 
 class Artworks {
   #identifier;
@@ -10,12 +9,15 @@ class Artworks {
 
   #program;
 
+  #bodyPosition;
+
   #children;
 
   constructor() {
-    this.#identifier = DEFAULT_IDENTIFIER;
-    this.#version = 9;
-    this.#version = DEFAULT_PROGRAM;
+    this.#identifier = Constants.HEADER_IDENTIFIER;
+    this.#version = Constants.HEADER_VERSION;
+    this.#program = Constants.HEADER_PROGRAM;
+    this.#bodyPosition = Constants.FILE_OFFSET_BODY;
     this.#children = [];
   }
 
@@ -35,7 +37,12 @@ class Artworks {
 
   build() {
     return {
-      header: createHeader(this.#identifier, this.#version, this.#program),
+      header: createHeader(
+        this.#identifier,
+        this.#version,
+        this.#program,
+        this.#bodyPosition,
+      ),
       children: this.#children,
     };
   }
