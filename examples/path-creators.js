@@ -29,18 +29,36 @@ function createOpenInvertedV(x, y, sideLength, moveOptions = TAG_BIT_31) {
 }
 
 function createClosedPentagram(x, y, radius, moveOptions = TAG_BIT_31) {
-  function xn(n) {
-    return x + radius * Math.sin((2 * n * Math.PI) / 5);
+  function xp(p) {
+    return x + radius * Math.sin((2 * p * Math.PI) / 5);
   }
-  function yn(n) {
-    return y + radius * Math.cos((2 * n * Math.PI) / 5);
+  function yp(p) {
+    return y + radius * Math.cos((2 * p * Math.PI) / 5);
   }
   return Path.builder()
-    .moveTo(xn(0), yn(0), moveOptions)
-    .lineTo(xn(2), yn(2))
-    .lineTo(xn(4), yn(4))
-    .lineTo(xn(1), yn(1))
-    .lineTo(xn(3), yn(3))
+    .moveTo(xp(0), yp(0), moveOptions)
+    .lineTo(xp(2), yp(2))
+    .lineTo(xp(4), yp(4))
+    .lineTo(xp(1), yp(1))
+    .lineTo(xp(3), yp(3))
+    .closeSubPath()
+    .end()
+    .build();
+}
+
+function createClosedNSidedPolygon(n, x, y, radius, moveOptions = TAG_BIT_31) {
+  function xp(p) {
+    return x + radius * Math.sin((2 * p * Math.PI) / n);
+  }
+  function yp(p) {
+    return y + radius * Math.cos((2 * p * Math.PI) / n);
+  }
+  const builder = Path.builder();
+  builder.moveTo(xp(0), yp(0), moveOptions);
+  for (let p = 1; p < n; p += 1) {
+    builder.lineTo(xp(p), yp(p));
+  }
+  return builder
     .closeSubPath()
     .end()
     .build();
@@ -50,4 +68,5 @@ module.exports = {
   createClosedEquilateralTriangle,
   createOpenInvertedV,
   createClosedPentagram,
+  createClosedNSidedPolygon,
 };
