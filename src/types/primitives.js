@@ -154,19 +154,19 @@ function readPaletteEntry(view) {
 function writePaletteEntry(view, entry) {
   view.checkAlignment('misaligned palette entry');
   view.writeString(entry.name, 24);
-  view.writeInt32(entry.colour);
-  view.writeInt32(entry.unknown28);
-  view.writeInt32(entry.unknown32);
-  view.writeInt32(entry.unknown36);
-  view.writeInt32(entry.unknown40);
-  view.writeInt32(entry.unknown44);
+  view.writeUint32(entry.colour);
+  view.writeUint32(entry.unknown28);
+  view.writeUint32(entry.unknown32);
+  view.writeUint32(entry.unknown36);
+  view.writeUint32(entry.unknown40);
+  view.writeUint32(entry.unknown44);
 }
 
 function createPalette(entries) {
   return {
     count: entries.length,
     unknown4: entries.length,
-    colours: entries,
+    entries,
   };
 }
 
@@ -174,24 +174,24 @@ function readPalette(view) {
   view.checkAlignment('misaligned palette');
   const count = view.readUint32() & 0x7FFFFFFF;
   const unknown4 = view.readUint32() & 0x7FFFFFFF;
-  const colours = [];
+  const entries = [];
   for (let n = 0; n < count; n += 1) {
-    colours.push(readPaletteEntry(view));
+    entries.push(readPaletteEntry(view));
   }
   return {
     count,
     unknown4,
-    colours,
+    entries,
   };
 }
 
 function writePalette(view, palette) {
   view.checkAlignment('misaligned palette');
-  const { count, unknown4, colours } = palette;
+  const { count, unknown4, entries } = palette;
   view.writeUint32(count);
   view.writeUint32(unknown4);
-  for (let i = 0; i < colours.length; i += 1) {
-    writePaletteEntry(view, colours[i]);
+  for (let i = 0; i < entries.length; i += 1) {
+    writePaletteEntry(view, entries[i]);
   }
 }
 
