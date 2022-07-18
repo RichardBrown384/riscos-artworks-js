@@ -1,25 +1,13 @@
 /*
-Example: 106-when-a-path-is-beneath-a-layer-then-it-is-drawn-last
+Example: 107-when-there-are-multiple-paths-beneath-beneath-a-layer-the-are-draw-in-order
 
 Purpose:
 
-Draws a 30% black triangle, stroked red with a stroke width of 3000 behind a red pentagram,
-stroked blue with a stroke width of 6000.
+Draws a 30% black triangle stroked red
+behind a red pentagon stroked blue
+behind a red-yellow radially-filled pentagon stroked magenta.
 
-This example demonstrates two things.
-
-Firstly, the order in which things are drawn:
-The layer's siblings (the triangle) are drawn first and end up
-behind the layer's descendants (the pentagram).
-
-Secondly, some details about how attributes are propagated:
-
-The triangle doesn't inherit any properties from the pentagram and vice versa.
-The rules appear to be
-
-1. Attribute changes that happen beneath the layer stay beneath the layer.
-2. Attribute changes that happen at the same level as the layer don't propagate down.
-(Otherwise in this case the pentagram would be stroked red).
+To demonstrate the order in which objects beneath a layer are rendered.
 
  */
 
@@ -42,8 +30,11 @@ const {
   PATH_TRIANGLE,
   FILL_FLAT_RED,
   FILL_FLAT_BLACK_30,
+  FILL_RADIAL_RED_YELLOW,
   STROKE_COLOUR_BLUE,
   STROKE_COLOUR_RED,
+  STROKE_COLOUR_MAGENTA,
+  STROKE_WIDTH_1500,
   STROKE_WIDTH_3000,
   STROKE_WIDTH_6000,
   WORK_AREA,
@@ -51,6 +42,7 @@ const {
 
 const {
   createClosedPentagram,
+  createClosedNSidedPolygon,
 } = require('../path-creators');
 
 const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
@@ -66,12 +58,26 @@ const PATH_PENTAGRAM = RecordPath.builder()
   )
   .build();
 
+const HEXAGON = createClosedNSidedPolygon(6, 150_000, 50_000, 40_000);
+const PATH_HEXAGON = RecordPath.builder()
+  .unknown4(UNKNOWN_4_BIT_1)
+  .boundingBox(BoundingBox.of(HEXAGON, 10_000))
+  .path(HEXAGON)
+  .lists(
+    Lists.of(
+      List.of(STROKE_WIDTH_1500),
+      List.of(FILL_RADIAL_RED_YELLOW),
+    ),
+  )
+  .build();
+
 const LAYER = RecordLayer.builder()
   .unknown24(LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3)
   .name('Foreground')
   .lists(
     Lists.of(
       List.of(PATH_PENTAGRAM, STROKE_COLOUR_BLUE),
+      List.of(PATH_HEXAGON, STROKE_COLOUR_MAGENTA),
     ),
   )
   .build();
