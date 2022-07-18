@@ -2,6 +2,7 @@ module.exports.RecordDashPatternEmpty = require('./dash-pattern-empty');
 module.exports.RecordDashPattern = require('./dash-pattern');
 module.exports.RecordFillColourFlat = require('./fill-colour-flat');
 module.exports.RecordFillColourGradient = require('./fill-colour-gradient');
+module.exports.RecordGroup = require('./group');
 module.exports.RecordJoinStyle = require('./join-style');
 module.exports.RecordLayer = require('./layer');
 module.exports.RecordLineCapEnd = require('./line-cap-end');

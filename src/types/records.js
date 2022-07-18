@@ -101,12 +101,22 @@ function readRecordSprite(view) {
   };
 }
 
+function createRecordGroup(unknown24, unknown28, unknown32) {
+  return { unknown24, unknown28, unknown32 };
+}
+
 function readRecordGroup(view) {
   return {
     unknown24: view.readUint32(),
     unknown28: view.readUint32(),
     unknown32: view.readUint32(),
   };
+}
+
+function writeRecordGroup(view, { unknown24, unknown28, unknown32 }) {
+  view.writeInt32(unknown24);
+  view.writeInt32(unknown28);
+  view.writeInt32(unknown32);
 }
 
 function createRecordLayer(unknown24, name) {
@@ -682,6 +692,9 @@ function writeRecordBody(view, record) {
     case Constants.RECORD_LAYER:
       writeRecordLayer(view, record);
       break;
+    case Constants.RECORD_GROUP:
+      writeRecordGroup(view, record);
+      break;
     case Constants.RECORD_WORK_AREA:
       writeRecordWorkArea(view, record);
       break;
@@ -735,7 +748,10 @@ module.exports = {
 
   readSpritePalette,
   readRecordSprite,
+
+  createRecordGroup,
   readRecordGroup,
+  writeRecordGroup,
 
   createRecordLayer,
   readRecordLayer,
