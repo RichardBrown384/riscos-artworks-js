@@ -666,13 +666,14 @@ rotation matrix.
 
 #### Type 0x34: Path
 
-Note: Bounding Triangle
+These 3 'triangle' points prior to the path data appear to define the rotated bounding box
+for the object in an anti-clockwise fashion but with the final point missing.
 
-These 3 points appear to define the rotated bounding box for the object in an anti-clockwise fashion but with the final
-point missing.
-Another interpretation could be that the points form basis vectors for the paths that follow.
+These records sometimes appear with gradient fills as descendants. It was thought that
+the triangle points might influence the fill gradients, in particular the radial fills, 
+but this does not appear to be the case.
 
-These 3 points might have something to do with radial fills.
+!AWViewer seems to ignore the 'triangle' points when rendering.
 
 | Offset | Length | Content                         |
 |--------|--------|---------------------------------|
