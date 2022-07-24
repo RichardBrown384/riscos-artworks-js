@@ -377,10 +377,29 @@ function writeRecordDashPattern(view, record) {
   writeDashPattern(view, record);
 }
 
+function createRecord2C(unknown24, path) {
+  return { unknown24, path };
+}
+
 function readRecord2C(view) {
   return {
     unknown24: view.readUint32(),
     path: readPath(view),
+  };
+}
+
+function writeRecord2C(view, { unknown24, path }) {
+  view.writeUint32(unknown24);
+  writePath(view, path);
+}
+
+function readRecordCharacter(view) {
+  return {
+    characterCode: view.readUint32(),
+    unknown28: view.readUint32(),
+    unknown32: view.readUint32(),
+    unknown36: view.readUint32(),
+    unknown40: view.readUint32(),
   };
 }
 
@@ -391,16 +410,6 @@ function readRecord2E(view) {
     unknown36: view.readStringFully(24),
     unknown60: view.readInt32(),
     unknown64: view.readInt32(),
-  };
-}
-
-function readRecordCharacter(view) {
-  return {
-    characterCode: view.readUint32(),
-    unknown28: view.readUint32(),
-    unknown32: view.readUint32(),
-    unknown36: view.readUint32(),
-    unknown40: view.readUint32(),
   };
 }
 
@@ -642,11 +651,11 @@ function readRecordBody(view, header, checkLast) {
       return readRecordDashPattern(view);
     case Constants.RECORD_2C:
       return readRecord2C(view);
+    case Constants.RECORD_CHARACTER:
+      return readRecordCharacter(view);
     case Constants.RECORD_2E:
       checkLast('types after record 2e');
       return readRecord2E(view);
-    case Constants.RECORD_CHARACTER:
-      return readRecordCharacter(view);
     case Constants.RECORD_FONT_NAME:
       checkLast('types after font name');
       return readRecordFontName(view);
@@ -730,6 +739,9 @@ function writeRecordBody(view, record) {
       break;
     case Constants.RECORD_DASH_PATTERN:
       writeRecordDashPattern(view, record);
+      break;
+    case Constants.RECORD_2C:
+      writeRecord2C(view, record);
       break;
     case Constants.RECORD_34:
       writeRecord34(view, record);
@@ -818,9 +830,12 @@ module.exports = {
   readRecordDashPattern,
   writeRecordDashPattern,
 
+  createRecord2C,
   readRecord2C,
-  readRecord2E,
+  writeRecord2C,
+
   readRecordCharacter,
+  readRecord2E,
   readRecordFontName,
   readRecordFontSize,
   readRecord31,
