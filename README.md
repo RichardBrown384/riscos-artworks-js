@@ -37,7 +37,7 @@ The library has some scripts that can be used to aid with the deciphering proces
 To unpack the contents of an ArtWorks file into a JSON structure you can use the following command
 
 ```bash
-npm run unpack file,d94
+npm run unpack file,d94 destination.json
 ```
 
 To pack a JSON structure into an ArtWorks file you can use
