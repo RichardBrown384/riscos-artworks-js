@@ -20,8 +20,6 @@ const {
     Lists,
     List,
     Path,
-    PathElement,
-    Point,
     Polyline,
     BoundingBox,
 
@@ -137,41 +135,20 @@ function degreesToRadians(d) {
 }
 
 function createGeometry(baseTransform, triangleTransform) {
-  function transformCoordinates(transform, x, y) {
-    const { x: tx, y: ty } = transform.transformPoint(Point.of(x, y));
-    return [tx, ty];
-  }
-
-  function transformPoint(transform, point) {
-    return transform.transformPoint(point);
-  }
-
-  function transformPoints(transform, points) {
-    return points && points.map((p) => (transformPoint(transform, p)));
-  }
-
-  function transformPathElements(transform, { tag, points }) {
-    return PathElement.of(tag, transformPoints(transform, points));
-  }
-
   const fillGradient = RecordFillColourGradient.builder()
     .unknown4(UNKNOWN_4_BIT_0)
     .type(FILL_RADIAL)
     .startColour(DEFAULT_PALETTE_INDEX_WHITE)
     .endColour(DEFAULT_PALETTE_INDEX_BLACK)
     .gradientLine(Polyline.builder()
-      .push(...transformCoordinates(baseTransform, FILL_START_X, FILL_START_Y))
-      .push(...transformCoordinates(baseTransform, FILL_END_X, FILL_END_Y))
+      .push(...baseTransform.transformCoordinate(FILL_START_X, FILL_START_Y))
+      .push(...baseTransform.transformCoordinate(FILL_END_X, FILL_END_Y))
       .build())
     .build();
 
-  const pathEllipse = ORIGINAL_PATH_ELLIPSE.map(
-    (e) => (transformPathElements(baseTransform, e)),
-  );
+  const pathEllipse = baseTransform.transformPath(ORIGINAL_PATH_ELLIPSE);
 
-  const polylineTriangle = ORIGINAL_POLYLINE_TRIANGLE.map(
-    (p) => (transformPoint(triangleTransform, p)),
-  );
+  const polylineTriangle = triangleTransform.transformPolyline(ORIGINAL_POLYLINE_TRIANGLE);
 
   const record34Ellipse = Record34.builder()
     .unknown4(UNKNOWN_4_BIT_1)
@@ -185,12 +162,12 @@ function createGeometry(baseTransform, triangleTransform) {
     .build();
 
   const recordPathFillLine = createRecordPathFromPath(
-    ORIGINAL_PATH_FILL_LINE.map((e) => (transformPathElements(baseTransform, e))),
+    baseTransform.transformPath(ORIGINAL_PATH_FILL_LINE),
     10_000,
   );
 
   const recordPathTriangle = createRecordPathFromPath(
-    ORIGINAL_PATH_TRIANGLE.map((e) => (transformPathElements(triangleTransform, e))),
+    triangleTransform.transformPath(ORIGINAL_PATH_TRIANGLE),
     10_000,
   );
 
