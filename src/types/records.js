@@ -443,11 +443,20 @@ function readRecord33(view) {
   };
 }
 
+function createRecord34(triangle, path) {
+  return { triangle, path };
+}
+
 function readRecord34(view) {
   return {
     triangle: readPolyline(view, 3),
     path: readPath(view),
   };
+}
+
+function writeRecord34(view, { triangle, path }) {
+  writePolyline(view, triangle);
+  writePath(view, path);
 }
 
 function readRecord35(view) {
@@ -722,6 +731,9 @@ function writeRecordBody(view, record) {
     case Constants.RECORD_DASH_PATTERN:
       writeRecordDashPattern(view, record);
       break;
+    case Constants.RECORD_34:
+      writeRecord34(view, record);
+      break;
     case Constants.RECORD_3E_MARKER_START:
       writeRecordMarkerStart(view, record);
       break;
@@ -814,7 +826,10 @@ module.exports = {
   readRecord31,
   readRecord32,
   readRecord33,
+
+  createRecord34,
   readRecord34,
+  writeRecord34,
   readRecord35,
   readRecord37,
   readRecord38,
