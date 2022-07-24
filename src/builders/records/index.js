@@ -11,6 +11,7 @@ module.exports.RecordMarkerEnd = require('./marker-end');
 module.exports.RecordMarkerStart = require('./marker-start');
 module.exports.RecordPath = require('./path');
 module.exports.Record34 = require('./record-34');
+module.exports.Record2C = require('./record-2c');
 module.exports.RecordStrokeColour = require('./stroke-colour');
 module.exports.RecordStrokeWidth = require('./stroke-width');
 module.exports.RecordWindingRule = require('./winding-rule');
