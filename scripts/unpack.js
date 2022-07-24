@@ -1,15 +1,13 @@
-/* eslint-disable no-console */
-
 const fs = require('fs');
 const { Artworks } = require('../src/artworks');
 
-function log(...data) {
-  console.log(...data);
-}
-
 (function main() {
-  const file = process.argv[2];
-  const buffer = fs.readFileSync(file);
+  const fileIn = process.argv[2];
+  const fileOut = process.argv[3];
+  const buffer = fs.readFileSync(fileIn);
   const { header, records } = Artworks.load(buffer);
-  log(JSON.stringify({ header, children: records }));
+  fs.writeFileSync(
+    fileOut,
+    JSON.stringify({ header, children: records }, null, 2),
+  );
 }());
