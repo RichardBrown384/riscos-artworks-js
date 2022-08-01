@@ -1,3 +1,10 @@
+const {
+  Builders: {
+    PathElement,
+    Point,
+  },
+} = require('../src/artworks');
+
 class AffineTransform {
   #a;
 
@@ -49,11 +56,27 @@ class AffineTransform {
     return this;
   }
 
-  transformPoint({ x, y }) {
-    return {
-      x: this.#a * x + this.#c * y + this.#e,
-      y: this.#b * x + this.#d * y + this.#f,
-    };
+  transformPoint = ({ x, y }) => Point.of(
+    this.#a * x + this.#c * y + this.#e,
+    this.#b * x + this.#d * y + this.#f,
+  );
+
+  transformCoordinate(x, y) {
+    return Object.values(this.transformPoint(Point.of(x, y)));
+  }
+
+  transformPoints(points) {
+    return points && points.map(this.transformPoint);
+  }
+
+  transformPolyline(polyline) {
+    return polyline.map(this.transformPoint);
+  }
+
+  transformPath(path) {
+    return path.map(
+      ({ tag, points }) => PathElement.of(tag, this.transformPoints(points)),
+    );
   }
 }
 
