@@ -575,10 +575,18 @@ If Dash Pattern Index is non-zero
 
 #### Type 0x2C: Path
 
+The value at offset 24 is zero in all the available files.
+
+Setting the value to anything other than zero will result, if more than one path is present,
+in !AWViewer in Outline mode producing an error with the message
+'Path elements out of order (1100)'.
+
+It's not known if there is a correct way to set the value at offset 24.
+
 | Offset | Length | Content                         |
 |--------|--------|---------------------------------|
 | 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Unknown                         |
+| 24     | 4      | Unknown (order?)                |
 | 28     | varies | [Path data](#path-data)         |
 | n - 8  | 8      | [Lists pointer](#sublists)      |
 
