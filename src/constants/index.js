@@ -44,6 +44,10 @@ module.exports.RECORD_3E_MARKER_START = 0x3E;
 module.exports.RECORD_3F_MARKER_END = 0x3F;
 module.exports.RECORD_42 = 0x42;
 
+module.exports.COLOUR_MODEL_RGB = 0;
+module.exports.COLOUR_MODEL_CMYK = 1;
+module.exports.COLOUR_MODEL_HSV = 2;
+
 module.exports.FILL_FLAT = 0;
 module.exports.FILL_LINEAR = 1;
 module.exports.FILL_RADIAL = 2;
