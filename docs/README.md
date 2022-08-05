@@ -76,13 +76,13 @@ to either confirm existing statements or to infer the purpose of certain record 
 There a general number of observations that can be made about the files
 
 1. Because of the early ARM heritage the data is little endian and word aligned.
-1. The files are record based, and some record type numbers seem to coincide with their !Draw equivalents.
-1. The records are stored in a tree/graph structure.
-1. The vector data format is virtually identical to !Draw's.
-1. The visual representation (stroke, cap) information are stored separately from the vectors.
-1. Colours are referenced by an index into a palette of defined colours (0xFFFFFFFF or -1 means no colour).
-1. Unlike !Draw, fonts appear to be referenced by name throughout.
-1. Strings are null terminated. However, there's often what looks like garbage after the string
+2. The files are record based, and some record type numbers seem to coincide with their !Draw equivalents.
+3. The records are stored in a tree/graph structure.
+4. The vector data format is virtually identical to !Draw's.
+5. The visual representation (stroke, cap) information are stored separately from the vectors.
+6. Colours are referenced by an index into a palette of defined colours (0xFFFFFFFF or -1 means no colour).
+7. Unlike !Draw, fonts appear to be referenced by name throughout.
+8. Strings are null terminated. However, there's often what looks like garbage after the string
    to pad it to a word boundary.
 
 ## Header
@@ -183,11 +183,11 @@ The rule appears to be that a record can have a sublist if and only if it isn't 
 Evidence:
 
 1. Layer records with no sublists typically appear inside singleton lists.
-1. Path records in certain files have data after the vectors, and the viable pointers
+2. Path records in certain files have data after the vectors, and the viable pointers
    occupy the last 8 bytes of the record.
-1. Attribute records, such as fills or stroke width, seem to reside as leaves
+3. Attribute records, such as fills or stroke width, seem to reside as leaves
    in singleton lists.
-1. Adopting this scheme appears to guarantee that the file is read without leaving
+4. Adopting this scheme appears to guarantee that the file is read without leaving
    a significant number of 8 byte gaps. These 8 byte gaps would indicate
    missed pointers at the end of records.
 
@@ -261,8 +261,8 @@ where
 
 1. The `readListPointer`, `readRecordPointer` and `readListsPointer` functions read the appropriate `next`
    and `previous` values, and return them along with the position of the pointer in the file.
-1. The `setPosition` function allows one to navigate to a certain point in the file.
-1. The `readRecord` function reads the appropriate record data from the file.
+2. The `setPosition` function allows one to navigate to a certain point in the file.
+3. The `readRecord` function reads the appropriate record data from the file.
 
 ### Record header
 
@@ -870,11 +870,26 @@ bit-31 set.
 |--------|--------|---------------------------------------------------------------------------|
 | 0      | 24     | Name of colour, null terminated, then filled with what looks like garbage |
 | 24     | 4      | Colour (BGR) usually with bit 29 set                                      |
-| 28     | 4      | Unknown                                                                   |
-| 32     | 4      | Unknown                                                                   |
-| 36     | 4      | Unknown                                                                   |
-| 40     | 4      | Unknown                                                                   |
-| 44     | 4      | Unknown                                                                   |
+| 28     | 4      | Colour Component 1 (R, C, or H)                                           |
+| 32     | 4      | Colour Component 2 (G, M, or S)                                           |
+| 36     | 4      | Colour Component 3 (B, Y, or V)                                           |
+| 40     | 4      | Colour Component 4 (K)                                                    |
+| 44     | 4      | [Flags](#palette-entry-flags)                                             |
+
+##### Palette entry flags
+
+| Bits | Content                                                                                         |
+|------|-------------------------------------------------------------------------------------------------|
+| 0-1  | Colour Model for the Colour Components <ol start="0"><li>RGB</li><li>CMYK</li><li>HSV</li></ol> |
+| 2-31 | Unknown                                                                                         |
+
+For RGB and CMYK the colour components range between 0 (0.0) and 0x7FFFFFFF (1.0).
+
+For HSV, the S and V components range between 0 (0.0) and and 0x7FFFFFFF (1.0).
+The H component varies between 0 (0.0) and 0x16800000 (360.0). A fixed point representation
+is used with the lower 20 bits for the fraction and the upper bits used for degrees. Setting
+the H component to a value greater than 0x16800000 will result in !AWViewer rendering
+black.
 
 ### Sprite Area
 
@@ -929,9 +944,9 @@ you can encounter background objects after foreground ones.
 ## References
 
 1. [Draw file format][draw-file-format]
-1. [Sprite area format][sprite-area-format]
-1. [RISC OS Character Set][risc-os-character-set]
-1. [ISO-216][iso-216]
+2. [Sprite area format][sprite-area-format]
+3. [RISC OS Character Set][risc-os-character-set]
+4. [ISO-216][iso-216]
 
 ---
 

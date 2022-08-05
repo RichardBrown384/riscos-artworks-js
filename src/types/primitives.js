@@ -127,14 +127,14 @@ function writePath(view, path) {
 function createPaletteEntry(
   name,
   colour,
-  unknown28,
-  unknown32,
-  unknown36,
-  unknown40,
-  unknown44,
+  component0,
+  component1,
+  component2,
+  component3,
+  flags,
 ) {
   return {
-    name, colour, unknown28, unknown32, unknown36, unknown40, unknown44,
+    name, colour, component0, component1, component2, component3, flags,
   };
 }
 
@@ -143,11 +143,11 @@ function readPaletteEntry(view) {
   return {
     name: view.readStringFully(24),
     colour: view.readUint32(),
-    unknown28: view.readUint32(),
-    unknown32: view.readUint32(),
-    unknown36: view.readUint32(),
-    unknown40: view.readUint32(),
-    unknown44: view.readUint32(),
+    component0: view.readUint32(),
+    component1: view.readUint32(),
+    component2: view.readUint32(),
+    component3: view.readUint32(),
+    flags: view.readUint32(),
   };
 }
 
@@ -155,11 +155,11 @@ function writePaletteEntry(view, entry) {
   view.checkAlignment('misaligned palette entry');
   view.writeString(entry.name, 24);
   view.writeUint32(entry.colour);
-  view.writeUint32(entry.unknown28);
-  view.writeUint32(entry.unknown32);
-  view.writeUint32(entry.unknown36);
-  view.writeUint32(entry.unknown40);
-  view.writeUint32(entry.unknown44);
+  view.writeUint32(entry.component0);
+  view.writeUint32(entry.component1);
+  view.writeUint32(entry.component2);
+  view.writeUint32(entry.component3);
+  view.writeUint32(entry.flags);
 }
 
 function createPalette(entries) {
