@@ -4,10 +4,6 @@ const { resolve } = require('path');
 const fs = require('fs');
 const { Artworks } = require('../src/artworks');
 
-function log(...data) {
-  console.log(...data);
-}
-
 function getFilesRecursively(directory) {
   const files = [];
   const dirents = fs.readdirSync(directory, { withFileTypes: true });
@@ -61,8 +57,8 @@ function processDirectory(directory) {
     errors,
     unsupportedRecordsByTypeAndFile,
   } = processDirectory(directory);
-  log('count', count);
-  log('errors', errors.length);
-  log(errors);
-  log('unsupported', unsupportedRecordsByTypeAndFile);
+  console.log('count', count);
+  console.log('errors', errors.length);
+  console.log(errors);
+  console.log('unsupported', unsupportedRecordsByTypeAndFile);
 }());

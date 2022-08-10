@@ -54,6 +54,16 @@ To recursively trawl a directory of ArtWorks files and have a summary of any pro
 npm run trawl directory
 ```
 
+### stats
+
+The stats script can be used in conjunction with the [trawl](#trawl) script to analyse records.
+Modify the read process to log any data you're interested in, such as record bodies, as a line of JSON.
+This script will then work out how many values appear in a given field for that set of records.
+
+```bash
+npm run stats json-per-line
+```
+
 ### examples
 
 To generate example ArtWorks files held in examples directory to a destination of your choice use
