@@ -1,12 +1,14 @@
 /*
-Example: 108-when-a-path-does-not-have-a-sibling-attribute-the-others-are-not-applied
+Example: 108-when-a-path-does-not-have-a-sibling-attribute-the-others-are-applied
 
 Purpose:
 
 File to draw multiple hexagons with varying number of attributes.
 
-Key observation. Those hexagons with sibling attributes are drawn using the default
-attributes.
+Some observations:
+
+1. The placement of layer objects within the tree doesn't cause immediate problems for the viewer
+2. When paths don't have style siblings their style children are applied.
 
  */
 
@@ -29,12 +31,18 @@ const {
   PATH_TRIANGLE,
   FILL_FLAT_RED,
   FILL_FLAT_BLACK_30,
+  FILL_RADIAL_RED_YELLOW,
   STROKE_COLOUR_BLUE,
   STROKE_COLOUR_RED,
+  STROKE_COLOUR_MAGENTA,
   STROKE_WIDTH_1500,
   STROKE_WIDTH_3000,
   STROKE_WIDTH_6000,
-  WORK_AREA, FILL_RADIAL_RED_YELLOW, STROKE_COLOUR_MAGENTA, createRecordPathFromPath,
+
+  LAYER_FOREGROUND,
+  WORK_AREA,
+
+  createRecordPathFromPath,
 } = require('../shared-objects');
 
 const {
@@ -80,11 +88,11 @@ const LAYER = RecordLayer.builder()
       List.of(PATH_PENTAGRAM, STROKE_COLOUR_BLUE),
       List.of(PATH_HEXAGON_1),
       List.of(PATH_HEXAGON_2, STROKE_COLOUR_BLUE),
-      List.of(PATH_HEXAGON_3),
+      List.of(PATH_HEXAGON_3, LAYER_FOREGROUND),
       List.of(PATH_HEXAGON_4, STROKE_COLOUR_MAGENTA),
-      List.of(PATH_HEXAGON_5),
+      List.of(PATH_HEXAGON_5, LAYER_FOREGROUND),
       List.of(PATH_HEXAGON_6, FILL_RADIAL_RED_YELLOW),
-      List.of(PATH_HEXAGON_7),
+      List.of(PATH_HEXAGON_7, LAYER_FOREGROUND),
       List.of(PATH_HEXAGON_8, STROKE_COLOUR_BLUE),
     ),
   )
