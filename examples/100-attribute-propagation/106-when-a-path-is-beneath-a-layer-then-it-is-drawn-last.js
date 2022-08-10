@@ -45,15 +45,18 @@ const {
   STROKE_WIDTH_6000,
   WORK_AREA,
 
-  createRecordPathFromPath,
 } = require('../shared-objects');
 
 const {
   createClosedPentagram,
 } = require('../path-creators');
 
+const {
+  createRecordPath,
+} = require('../record-creators');
+
 const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
-const PATH_PENTAGRAM = createRecordPathFromPath(
+const PATH_PENTAGRAM = createRecordPath(
   PENTAGRAM,
   10_000,
   STROKE_WIDTH_6000,

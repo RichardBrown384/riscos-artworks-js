@@ -42,13 +42,16 @@ const {
   LAYER_FOREGROUND,
   WORK_AREA,
 
-  createRecordPathFromPath,
 } = require('../shared-objects');
 
 const {
   createClosedPentagram,
   createClosedNSidedPolygon,
 } = require('../path-creators');
+
+const {
+  createRecordPath,
+} = require('../record-creators');
 
 const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
 const PATH_PENTAGRAM = RecordPath.builder()
@@ -68,7 +71,7 @@ const HEXAGON_PADDING = 10_000;
 
 function createHexagon(x, y, ...attributes) {
   const path = createClosedNSidedPolygon(6, x, y, HEXAGON_RADIUS);
-  return createRecordPathFromPath(path, HEXAGON_PADDING, ...attributes);
+  return createRecordPath(path, HEXAGON_PADDING, ...attributes);
 }
 
 const PATH_HEXAGON_1 = createHexagon(150_000, 50_000);
