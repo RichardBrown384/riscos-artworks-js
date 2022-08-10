@@ -127,7 +127,7 @@ class ArtWorks {
 ArtWorksRecords, depending on the type of record, can themselves have their own list of lists of records.
 
 ````java
-class ArtworksRecord {
+class ArtWorksRecord {
     private List<List<ArtWorksRecord>> subLists;
 }
 ````
@@ -878,10 +878,15 @@ bit-31 set.
 
 ##### Palette entry flags
 
-| Bits | Content                                                                                         |
-|------|-------------------------------------------------------------------------------------------------|
-| 0-1  | Colour Model for the Colour Components <ol start="0"><li>RGB</li><li>CMYK</li><li>HSV</li></ol> |
-| 2-31 | Unknown                                                                                         |
+| Bits  | Content                                                                                                                                        |
+|-------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| 0-1   | Colour Model for the Colour Components <ol start="0"><li>RGB</li><li>CMYK</li><li>HSV</li><li>RGB, but the colours don't interpolate</li></ol> |
+| 2-3   | Unknown, usually 0, 1 or 2                                                                                                                     |
+| 4-5   | Unknown, usually 0, 2 or 3                                                                                                                     |
+| 6-7   | Unknown, usually 0, 1 or 2                                                                                                                     |
+| 8-15  | Unknown, nearly always 0                                                                                                                       |
+| 16-17 | Unknown, usually 0, 1 or 2                                                                                                                     |
+| 18-31 | Unknown, nearly always 0                                                                                                                       |
 
 For RGB and CMYK the colour components range between 0 (0.0) and 0x7FFFFFFF (1.0).
 
@@ -890,6 +895,10 @@ The H component varies between 0 (0.0) and 0x16800000 (360.0). A fixed point rep
 is used with the lower 20 bits for the fraction and the upper bits used for degrees. Setting
 the H component to a value greater than 0x16800000 will result in !AWViewer rendering
 black.
+
+The partitioning of bits 2 to 7 inclusive into 2-bit fields is somewhat arbitrary.
+It is known that ArtWorks supported Spot, Process, and Tint colours and that information
+should be encoded somewhere. However, that information doesn't appear to be used by the renderer.
 
 ### Sprite Area
 
