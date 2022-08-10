@@ -2,7 +2,7 @@ const {
   Builders: {
     Lists,
     List,
-    BoundingBox,
+    PathBoundingBox,
     Polyline,
 
     RecordPath,
@@ -12,6 +12,8 @@ const {
     RecordStrokeWidth,
     RecordFillColourFlat,
     RecordFillColourGradient,
+    Record2C,
+    Record34,
   },
 
   UNKNOWN_4_BIT_0,
@@ -19,17 +21,20 @@ const {
 
 } = require('../src/artworks');
 
-function createRecordPath(path, padding, ...attributes) {
+function createAttributeLists(attributes) {
   const listsBuilder = Lists.builder();
   for (let i = 0; i < attributes.length; i += 1) {
     listsBuilder.push(List.of(attributes[i]));
   }
-  const lists = listsBuilder.build();
+  return Object.freeze(listsBuilder.build());
+}
+
+function createRecordPath(path, padding, ...attributes) {
   const record = RecordPath.builder()
     .unknown4(UNKNOWN_4_BIT_1)
-    .boundingBox(BoundingBox.of(path, padding))
+    .boundingBox(PathBoundingBox.of(path, padding))
     .path(path)
-    .lists(lists)
+    .lists(createAttributeLists(attributes))
     .build();
   return Object.freeze(record);
 }
@@ -73,6 +78,28 @@ function createRecordFillColourGradient(type, x0, y0, x1, y1, startColour, endCo
   return Object.freeze(record);
 }
 
+function createRecord2C(path, padding, unknown24, ...attributes) {
+  const record = Record2C.builder()
+    .unknown4(UNKNOWN_4_BIT_1)
+    .boundingBox(PathBoundingBox.of(path, padding))
+    .unknown24(unknown24)
+    .path(path)
+    .lists(createAttributeLists(attributes))
+    .build();
+  return Object.freeze(record);
+}
+
+function createRecord34(path, padding, triangle, ...attributes) {
+  const record = Record34.builder()
+    .unknown4(UNKNOWN_4_BIT_1)
+    .boundingBox(PathBoundingBox.of(path, 10_000))
+    .triangle(triangle)
+    .path(path)
+    .lists(createAttributeLists(attributes))
+    .build();
+  return Object.freeze(record);
+}
+
 module.exports = {
   createRecordPath,
   createRecordLayer,
@@ -81,4 +108,6 @@ module.exports = {
   createRecordStrokeColour,
   createRecordFillColourFlat,
   createRecordFillColourGradient,
+  createRecord2C,
+  createRecord34,
 };

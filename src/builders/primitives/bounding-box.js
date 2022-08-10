@@ -20,30 +20,24 @@ class BoundingBox {
     return new BoundingBox();
   }
 
-  static of(path, padding = 0) {
-    const [
-      first = { x: 0, y: 0 },
-      ...rest
-    ] = path.flatMap(({ points = [] }) => points);
+  static union(first, ...others) {
+    let {
+      minX, minY, maxX, maxY,
+    } = first;
 
-    let minX = first.x;
-    let minY = first.y;
-    let maxX = first.x;
-    let maxY = first.y;
-
-    for (let i = 0; i < rest.length; i += 1) {
-      const { x, y } = rest[i];
-      if (x < minX) minX = x;
-      if (y < minY) minY = y;
-      if (x > maxX) maxX = x;
-      if (y > maxY) maxY = y;
+    for (let i = 0; i < others.length; i += 1) {
+      const other = others[i];
+      if (other.minX < minX) minX = other.minX;
+      if (other.minY < minY) minY = other.minY;
+      if (other.maxX > maxX) maxX = other.maxX;
+      if (other.maxY > maxY) maxY = other.maxY;
     }
 
     return BoundingBox.builder()
-      .minX(minX - padding)
-      .minY(minY - padding)
-      .maxX(maxX + padding)
-      .maxY(maxY + padding)
+      .minX(minX)
+      .minY(minY)
+      .maxX(maxX)
+      .maxY(maxY)
       .build();
   }
 

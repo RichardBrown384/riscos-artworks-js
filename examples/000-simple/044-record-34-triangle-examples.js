@@ -21,14 +21,9 @@ const {
     List,
     Path,
     Polyline,
-    BoundingBox,
-
-    Record34,
   },
 
   FILL_RADIAL,
-
-  UNKNOWN_4_BIT_1,
 
   TAG_BIT_31,
 } = require('../../src/artworks');
@@ -52,6 +47,7 @@ const {
   createRecordStrokeColour,
   createRecordStrokeWidth,
   createRecordFillColourGradient,
+  createRecord34,
 } = require('../record-creators');
 
 const AffineTransform = require('../affine-transform');
@@ -153,16 +149,13 @@ function createGeometry(baseTransform, triangleTransform) {
 
   const polylineTriangle = triangleTransform.transformPolyline(ORIGINAL_POLYLINE_TRIANGLE);
 
-  const record34Ellipse = Record34.builder()
-    .unknown4(UNKNOWN_4_BIT_1)
-    .boundingBox(BoundingBox.of(pathEllipse, 10_000))
-    .triangle(polylineTriangle)
-    .path(pathEllipse)
-    .lists(Lists.of(
-      List.of(fillGradient),
-      List.of(STROKE_WIDTH_1280),
-    ))
-    .build();
+  const record34Ellipse = createRecord34(
+    pathEllipse,
+    10_000,
+    polylineTriangle,
+    fillGradient,
+    STROKE_WIDTH_1280,
+  );
 
   const recordPathFillLine = createRecordPath(
     baseTransform.transformPath(ORIGINAL_PATH_FILL_LINE),
