@@ -1,3 +1,6 @@
+module.exports.RecordBlendGroup = require('./blend-group');
+module.exports.RecordBlendOptions = require('./blend-options');
+module.exports.RecordBlendPath = require('./blend-path');
 module.exports.RecordDashPatternEmpty = require('./dash-pattern-empty');
 module.exports.RecordDashPattern = require('./dash-pattern');
 module.exports.RecordFillColourFlat = require('./fill-colour-flat');
@@ -10,8 +13,8 @@ module.exports.RecordLineCapStart = require('./line-cap-start');
 module.exports.RecordMarkerEnd = require('./marker-end');
 module.exports.RecordMarkerStart = require('./marker-start');
 module.exports.RecordPath = require('./path');
-module.exports.Record34 = require('./record-34');
 module.exports.Record2C = require('./record-2c');
+module.exports.Record34 = require('./record-34');
 module.exports.RecordStrokeColour = require('./stroke-colour');
 module.exports.RecordStrokeWidth = require('./stroke-width');
 module.exports.RecordWindingRule = require('./winding-rule');
