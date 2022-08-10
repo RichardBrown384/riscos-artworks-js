@@ -60,6 +60,8 @@ class ArtworksWriter {
       if (i < list.length - 1) {
         subLists.add(start, this.view.getPosition(), record.children);
         this.reservePointerSpace();
+      } else {
+        this.view.check(record.children.length === 0, 'Final record in list has children');
       }
       const end = this.view.getPosition();
       const next = (i < list.length - 1) ? (end - start) : 0;
