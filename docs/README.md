@@ -43,9 +43,9 @@
         * [Type 0x37](#type-0x37-unknown)
         * [Type 0x38](#type-0x38-unknown)
         * [Type 0x39](#type-0x39-file-information)
-        * [Type 0x3A](#type-0x3a-unknown)
-        * [Type 0x3B](#type-0x3b-unknown)
-        * [Type 0x3D](#type-0x3d-unknown)
+        * [Type 0x3A - Blend Group](#type-0x3a-blend-group)
+        * [Type 0x3B - Blend Options](#type-0x3b-blend-options)
+        * [Type 0x3D - Blend Path](#type-0x3d-blend-path)
         * [Type 0x3E - Start Marker](#type-0x3e-line-start-marker)
         * [Type 0x3F - End Marker](#type-0x3f-line-end-marker)
         * [Type 0x42](#type-0x42-unknown)
@@ -742,41 +742,53 @@ This record can vary in size.
 | 0      | 24     | [Record header](#record-header)                                                   |
 | 24     | varies | Information about the file, creation date, serial number. Null terminated string. |
 
-#### Type 0x3A: Unknown
+#### Type 0x3A: Blend Group
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Unknown, (0)                    |
-| 28     | 4      | Unknown, (3)                    |
-| 32     | 4      | Unknown, (0x51900)              |
-| 36     | 4      | Unknown, (0x40000006) or (6)    |
-| 40     | 4      | Unknown, (0xC4C3)               |
-| 44     | 4      | Unknown, (0xC4C3)               |
-| 48     | 4      | Unknown, (-1)                   |
-| 52     | 4      | Unknown, (-1)                   |
-| 56     | 4      | Unknown, (-1)                   |
-| 60     | 4      | Unknown, (-1)                   |
-| 64     | 4      | Unknown, (-1)                   |
-| 68     | 8      | [Lists pointer](#sublists)      |
+This record defines a blend group between shapes.
 
-#### Type 0x3B: Unknown
+Its sibling [path](#type-0x02-path) defines the shape to blend from.
+It normally has a [blend options](#type-0x3b-blend-options) record amongst its descendants and then
+one or more [path](#type-0x02-path) records defining the intermediate and end shapes.
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Unknown, (0)                    |
-| 28     | 4      | Unknown, (0x10)                 |
-| 32     | 4      | Unknown, (-1)                   |
-| 36     | 4      | Unknown, (-1)                   |
-| 40     | 4      | Unknown, (-1)                   |
-| 44     | 4      | Unknown, (-1)                   |
-| 48     | 4      | Unknown, (-1)                   |
-| 52     | 4      | Unknown, (-1)                   |
-| 56     | 4      | Unknown, (-1)                   |
-| 60     | 4      | Unknown, (-1)                   |
 
-#### Type 0x3D: Unknown
+| Offset | Length | Content                                                                     |
+|--------|--------|-----------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                             |
+| 24     | 4      | Unknown, 0 in all available files                                           |
+| 28     | 4      | Unknown, potentially an index, only a small number of distinct values found |
+| 32     | 4      | Unknown, potentially coordinates, large number of distinct values found     |
+| 36     | 4      | Unknown, potentially flags, these look a lot like [path](#path-data) tags   |
+| 40     | 4      | Unknown, potentially coordinates, large number of distinct values found     |
+| 44     | 4      | Unknown, -1 in all available files                                          |
+| 48     | 4      | Unknown, -1 in all available files                                          |
+| 52     | 4      | Unknown, -1 in all available files                                          |
+| 56     | 4      | Unknown, -1 in all available files                                          |
+| 60     | 4      | Unknown, -1 in all available files                                          |
+| 64     | 4      | Unknown, -1 in all available files                                          |
+| 68     | 8      | [Lists pointer](#sublists)                                                  |
+
+For the unknown value at offset 36, the least significant nibbles are nearly all 0, 2, 6 or 8.
+
+#### Type 0x3B: Blend Options
+
+| Offset | Length | Content                                                                     |
+|--------|--------|-----------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                             |
+| 24     | 4      | Unknown, only a small number of distinct positive values found              |
+| 28     | 4      | Number of blend steps                                                       |
+| 32     | 4      | Unknown, -1 in all available files                                          |
+| 36     | 4      | Unknown, 0 or -1 in all available files                                     |
+| 40     | 4      | Unknown, potentially an index, only a small number of distinct values found |
+| 44     | 4      | Unknown, potentially an index, only a small number of distinct values found |
+| 48     | 4      | Unknown, -1 in all available files                                          |
+| 52     | 4      | Unknown, -1 in all available files                                          |
+| 56     | 4      | Unknown, -1 in all available files                                          |
+| 60     | 4      | Unknown, -1 in all available files                                          |
+
+#### Type 0x3D: Blend Path
+
+These records are found beneath the path records in a blend group. It appears that none of the control
+bits are set meaning that they won't be drawn in !AWViewer's Outline mode.
 
 | Offset | Length | Content                         |
 |--------|--------|---------------------------------|
