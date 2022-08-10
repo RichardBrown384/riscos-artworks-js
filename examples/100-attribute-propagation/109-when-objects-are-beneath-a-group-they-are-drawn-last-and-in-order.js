@@ -35,19 +35,22 @@ const {
   STROKE_WIDTH_6000,
   WORK_AREA,
 
-  createRecordPathFromPath,
 } = require('../shared-objects');
 
 const {
   createClosedNSidedPolygon,
 } = require('../path-creators');
 
+const {
+  createRecordPath,
+} = require('../record-creators');
+
 const HEXAGON_RADIUS = 40_000;
 const HEXAGON_PADDING = 10_000;
 
 function createHexagon(x, y, ...attributes) {
   const path = createClosedNSidedPolygon(6, x, y, HEXAGON_RADIUS);
-  return createRecordPathFromPath(path, HEXAGON_PADDING, ...attributes);
+  return createRecordPath(path, HEXAGON_PADDING, ...attributes);
 }
 
 const PATH_HEXAGON_1 = createHexagon(50_000, 50_000);

@@ -23,15 +23,11 @@ const {
     Polyline,
     BoundingBox,
 
-    RecordFillColourGradient,
-    RecordStrokeColour,
-    RecordStrokeWidth,
     Record34,
   },
 
   FILL_RADIAL,
 
-  UNKNOWN_4_BIT_0,
   UNKNOWN_4_BIT_1,
 
   TAG_BIT_31,
@@ -43,8 +39,6 @@ const {
   STROKE_COLOUR_BLUE,
   STROKE_WIDTH_1500,
   WORK_AREA,
-
-  createRecordPathFromPath,
 } = require('../shared-objects');
 
 const {
@@ -53,10 +47,17 @@ const {
   DEFAULT_PALETTE_INDEX_WHITE,
 } = require('../default-palette');
 
+const {
+  createRecordPath,
+  createRecordStrokeColour,
+  createRecordStrokeWidth,
+  createRecordFillColourGradient,
+} = require('../record-creators');
+
 const AffineTransform = require('../affine-transform');
 
-const STROKE_TRANSPARENT = RecordStrokeColour.of(UNKNOWN_4_BIT_0, PALETTE_INDEX_TRANSPARENT);
-const STROKE_WIDTH_1280 = RecordStrokeWidth.of(UNKNOWN_4_BIT_0, 1280);
+const STROKE_TRANSPARENT = createRecordStrokeColour(PALETTE_INDEX_TRANSPARENT);
+const STROKE_WIDTH_1280 = createRecordStrokeWidth(1280);
 
 const FILL_START_X = 332139;
 const FILL_START_Y = 218765;
@@ -135,16 +136,18 @@ function degreesToRadians(d) {
 }
 
 function createGeometry(baseTransform, triangleTransform) {
-  const fillGradient = RecordFillColourGradient.builder()
-    .unknown4(UNKNOWN_4_BIT_0)
-    .type(FILL_RADIAL)
-    .startColour(DEFAULT_PALETTE_INDEX_WHITE)
-    .endColour(DEFAULT_PALETTE_INDEX_BLACK)
-    .gradientLine(Polyline.builder()
-      .push(...baseTransform.transformCoordinate(FILL_START_X, FILL_START_Y))
-      .push(...baseTransform.transformCoordinate(FILL_END_X, FILL_END_Y))
-      .build())
-    .build();
+  const [x0, y0] = baseTransform.transformCoordinate(FILL_START_X, FILL_START_Y);
+  const [x1, y1] = baseTransform.transformCoordinate(FILL_END_X, FILL_END_Y);
+
+  const fillGradient = createRecordFillColourGradient(
+    FILL_RADIAL,
+    x0,
+    y0,
+    x1,
+    y1,
+    DEFAULT_PALETTE_INDEX_WHITE,
+    DEFAULT_PALETTE_INDEX_BLACK,
+  );
 
   const pathEllipse = baseTransform.transformPath(ORIGINAL_PATH_ELLIPSE);
 
@@ -161,12 +164,12 @@ function createGeometry(baseTransform, triangleTransform) {
     ))
     .build();
 
-  const recordPathFillLine = createRecordPathFromPath(
+  const recordPathFillLine = createRecordPath(
     baseTransform.transformPath(ORIGINAL_PATH_FILL_LINE),
     10_000,
   );
 
-  const recordPathTriangle = createRecordPathFromPath(
+  const recordPathTriangle = createRecordPath(
     triangleTransform.transformPath(ORIGINAL_PATH_TRIANGLE),
     10_000,
   );

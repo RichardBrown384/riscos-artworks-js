@@ -18,14 +18,17 @@ const {
   FILL_FLAT_RED,
   LAYER_FOREGROUND,
   WORK_AREA,
-  createRecordPathFromPath,
 } = require('../shared-objects');
 
 const {
   createClosedEquilateralTriangle,
 } = require('../path-creators');
 
-const PATH = createRecordPathFromPath(
+const {
+  createRecordPath,
+} = require('../record-creators');
+
+const PATH = createRecordPath(
   createClosedEquilateralTriangle(10_000, 10_000, 100_000, 0),
   10_000,
 );

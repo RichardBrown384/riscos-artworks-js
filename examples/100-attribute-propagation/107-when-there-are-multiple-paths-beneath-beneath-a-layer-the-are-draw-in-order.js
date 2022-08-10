@@ -34,7 +34,7 @@ const {
   STROKE_WIDTH_1500,
   STROKE_WIDTH_3000,
   STROKE_WIDTH_6000,
-  WORK_AREA, createRecordPathFromPath,
+  WORK_AREA,
 } = require('../shared-objects');
 
 const {
@@ -42,8 +42,12 @@ const {
   createClosedNSidedPolygon,
 } = require('../path-creators');
 
+const {
+  createRecordPath,
+} = require('../record-creators');
+
 const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
-const PATH_PENTAGRAM = createRecordPathFromPath(
+const PATH_PENTAGRAM = createRecordPath(
   PENTAGRAM,
   10_000,
   STROKE_WIDTH_6000,
@@ -51,7 +55,7 @@ const PATH_PENTAGRAM = createRecordPathFromPath(
 );
 
 const HEXAGON = createClosedNSidedPolygon(6, 150_000, 50_000, 40_000);
-const PATH_HEXAGON = createRecordPathFromPath(
+const PATH_HEXAGON = createRecordPath(
   HEXAGON,
   10_000,
   STROKE_WIDTH_1500,
