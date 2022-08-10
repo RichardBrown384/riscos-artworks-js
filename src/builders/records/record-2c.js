@@ -2,10 +2,9 @@ const Constants = require('../../constants');
 
 const RecordBuilder = require('./record');
 
-const { Path } = require('../primitives');
 const { createRecord2C } = require('../../types/records');
 
-const EMPTY_PATH = Object.freeze(Path.builder().end().build());
+const EMPTY_PATH = require('./empty-path');
 
 class Record2C extends RecordBuilder {
   #unknown24;

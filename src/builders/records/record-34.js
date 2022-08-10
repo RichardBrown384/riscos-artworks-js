@@ -2,10 +2,9 @@ const Constants = require('../../constants');
 
 const RecordBuilder = require('./record');
 
-const { Path } = require('../primitives');
 const { createRecord34 } = require('../../types/records');
 
-const EMPTY_PATH = Object.freeze(Path.builder().end().build());
+const EMPTY_PATH = require('./empty-path');
 
 class Record34 extends RecordBuilder {
   #triangle;
