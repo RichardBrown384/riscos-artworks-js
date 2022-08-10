@@ -15,14 +15,11 @@ Some observations:
 const {
   Builders: {
     Artworks,
-    BoundingBox,
     Lists,
     List,
 
     RecordLayer,
-    RecordPath,
   },
-  UNKNOWN_4_BIT_1,
   LAYER_UNKNOWN_24_BIT_0,
   LAYER_UNKNOWN_24_BIT_3,
 } = require('../../src/artworks');
@@ -54,17 +51,7 @@ const {
 } = require('../record-creators');
 
 const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
-const PATH_PENTAGRAM = RecordPath.builder()
-  .unknown4(UNKNOWN_4_BIT_1)
-  .boundingBox(BoundingBox.of(PENTAGRAM, 10_000))
-  .path(PENTAGRAM)
-  .lists(
-    Lists.of(
-      List.of(STROKE_WIDTH_6000),
-      List.of(FILL_FLAT_RED),
-    ),
-  )
-  .build();
+const PATH_PENTAGRAM = createRecordPath(PENTAGRAM, 10_000, STROKE_WIDTH_6000, FILL_FLAT_RED);
 
 const HEXAGON_RADIUS = 40_000;
 const HEXAGON_PADDING = 10_000;

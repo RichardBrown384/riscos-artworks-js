@@ -11,7 +11,7 @@ const {
     Artworks,
     Lists,
     List,
-    BoundingBox,
+    PathBoundingBox,
 
     RecordPath,
   },
@@ -31,7 +31,7 @@ const PATH = (function p() {
   const path = createClosedEquilateralTriangle(10_000, 10_000, 100_000);
   return RecordPath.builder()
     .unknown4(0)
-    .boundingBox(BoundingBox.of(path, 10_000))
+    .boundingBox(PathBoundingBox.of(path, 10_000))
     .path(path)
     .build();
 }());

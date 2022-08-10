@@ -24,12 +24,7 @@ const {
     Lists,
     List,
     Path,
-    BoundingBox,
-
-    Record2C,
   },
-
-  UNKNOWN_4_BIT_1,
 
   TAG_BIT_31,
 } = require('../../src/artworks');
@@ -42,6 +37,10 @@ const {
 
 } = require('../shared-objects');
 
+const {
+  createRecord2C,
+} = require('../record-creators');
+
 const AffineTransform = require('../affine-transform');
 
 const UNTRANSFORMED_PATH = Path.builder()
@@ -53,29 +52,18 @@ const UNTRANSFORMED_PATH = Path.builder()
   .end()
   .build();
 
-const ROWS = 2;
-const COLUMNS = 16;
-
-function createRecord2C(unknown24, path) {
-  return Record2C.builder()
-    .unknown4(UNKNOWN_4_BIT_1)
-    .boundingBox(BoundingBox.of(path, 5_000))
-    .unknown24(unknown24)
-    .path(path)
-    .build();
-}
-
-function createRecords2C() {
+function createGeometry(rows, columns) {
   const lists = [];
   let index = 0;
-  for (let row = 0; row < ROWS; row += 1) {
-    for (let column = 0; column < COLUMNS; column += 1) {
-      const unknown24 = Math.floor(index / COLUMNS);
+  for (let row = 0; row < rows; row += 1) {
+    for (let column = 0; column < columns; column += 1) {
+      const unknown24 = Math.floor(index / columns);
       const transform = new AffineTransform()
         .translate(20_000 * column, -20_000 * row);
       const record = createRecord2C(
-        unknown24,
         transform.transformPath(UNTRANSFORMED_PATH),
+        5_000,
+        unknown24,
       );
       lists.push(List.of(record));
       index += 1;
@@ -90,7 +78,7 @@ module.exports = Artworks.builder()
       List.of(FILL_FLAT_TRANSPARENT),
       List.of(STROKE_WIDTH_960),
       List.of(STROKE_COLOUR_RED),
-      ...createRecords2C(),
+      ...createGeometry(2, 16),
       List.of(WORK_AREA),
     ),
   )
