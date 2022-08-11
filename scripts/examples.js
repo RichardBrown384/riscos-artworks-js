@@ -34,4 +34,5 @@ function processExamplesDirectory(directory, examplesDirectory) {
   const directory = process.argv[2] || './examples-output';
   processExamplesDirectory(directory, './examples/000-simple');
   processExamplesDirectory(directory, './examples/100-attribute-propagation');
+  processExamplesDirectory(directory, './examples/200-blends');
 }());
