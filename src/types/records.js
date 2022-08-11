@@ -511,41 +511,130 @@ function readRecordFileInfo(view) {
   };
 }
 
-function readRecord3A(view) {
+function createRecordBlendGroup(
+  unknown24,
+  unknown28,
+  unknown32,
+  unknown36,
+  unknown40,
+  unknown44,
+  unknown48,
+  unknown52,
+  unknown56,
+  unknown60,
+  unknown64,
+) {
   return {
-    unknown24: view.readUint32(),
-    unknown28: view.readUint32(),
-    unknown32: view.readUint32(),
-    unknown36: view.readUint32(),
-    unknown40: view.readUint32(),
-    unknown44: view.readUint32(),
-    unknown48: view.readUint32(),
-    unknown52: view.readUint32(),
-    unknown56: view.readUint32(),
-    unknown60: view.readUint32(),
-    unknown64: view.readUint32(),
+    unknown24,
+    unknown28,
+    unknown32,
+    unknown36,
+    unknown40,
+    unknown44,
+    unknown48,
+    unknown52,
+    unknown56,
+    unknown60,
+    unknown64,
   };
 }
 
-function readRecord3B(view) {
+function readRecordBlendGroup(view) {
   return {
-    unknown24: view.readUint32(),
-    unknown28: view.readUint32(),
-    unknown32: view.readUint32(),
-    unknown36: view.readUint32(),
-    unknown40: view.readUint32(),
-    unknown44: view.readUint32(),
-    unknown48: view.readUint32(),
-    unknown52: view.readUint32(),
-    unknown56: view.readUint32(),
-    unknown60: view.readUint32(),
+    unknown24: view.readInt32(),
+    unknown28: view.readInt32(),
+    unknown32: view.readInt32(),
+    unknown36: view.readInt32(),
+    unknown40: view.readInt32(),
+    unknown44: view.readInt32(),
+    unknown48: view.readInt32(),
+    unknown52: view.readInt32(),
+    unknown56: view.readInt32(),
+    unknown60: view.readInt32(),
+    unknown64: view.readInt32(),
   };
 }
 
-function readRecord3D(view) {
+function writeRecordBlendGroup(view, record) {
+  view.writeInt32(record.unknown24);
+  view.writeInt32(record.unknown28);
+  view.writeInt32(record.unknown32);
+  view.writeInt32(record.unknown36);
+  view.writeInt32(record.unknown40);
+  view.writeInt32(record.unknown44);
+  view.writeInt32(record.unknown48);
+  view.writeInt32(record.unknown52);
+  view.writeInt32(record.unknown56);
+  view.writeInt32(record.unknown60);
+  view.writeInt32(record.unknown64);
+}
+
+function createRecordBlendOptions(
+  unknown24,
+  blendSteps,
+  unknown32,
+  unknown36,
+  unknown40,
+  unknown44,
+  unknown48,
+  unknown52,
+  unknown56,
+  unknown60,
+) {
+  return {
+    unknown24,
+    blendSteps,
+    unknown32,
+    unknown36,
+    unknown40,
+    unknown44,
+    unknown48,
+    unknown52,
+    unknown56,
+    unknown60,
+  };
+}
+
+function readRecordBlendOptions(view) {
+  return {
+    unknown24: view.readInt32(),
+    blendSteps: view.readInt32(),
+    unknown32: view.readInt32(),
+    unknown36: view.readInt32(),
+    unknown40: view.readInt32(),
+    unknown44: view.readInt32(),
+    unknown48: view.readInt32(),
+    unknown52: view.readInt32(),
+    unknown56: view.readInt32(),
+    unknown60: view.readInt32(),
+  };
+}
+
+function writeRecordBlendOptions(view, record) {
+  view.writeInt32(record.unknown24);
+  view.writeInt32(record.blendSteps);
+  view.writeInt32(record.unknown32);
+  view.writeInt32(record.unknown36);
+  view.writeInt32(record.unknown40);
+  view.writeInt32(record.unknown44);
+  view.writeInt32(record.unknown48);
+  view.writeInt32(record.unknown52);
+  view.writeInt32(record.unknown56);
+  view.writeInt32(record.unknown60);
+}
+
+function createRecordBlendPath(path) {
+  return { path };
+}
+
+function readRecordBlendPath(view) {
   return {
     path: readPath(view),
   };
+}
+
+function writeRecordBlendPath(view, { path }) {
+  writePath(view, path);
 }
 
 function createRecordMarkerStart(markerStyle, markerWidth, markerHeight) {
@@ -680,14 +769,14 @@ function readRecordBody(view, header, checkLast) {
     case Constants.RECORD_FILE_INFO:
       checkLast('types after file info');
       return readRecordFileInfo(view);
-    case Constants.RECORD_3A:
-      return readRecord3A(view);
-    case Constants.RECORD_3B:
+    case Constants.RECORD_3A_BLEND_GROUP:
+      return readRecordBlendGroup(view);
+    case Constants.RECORD_3B_BLEND_OPTIONS:
       checkLast('types after record 3b');
-      return readRecord3B(view);
-    case Constants.RECORD_3D:
+      return readRecordBlendOptions(view);
+    case Constants.RECORD_3D_BLEND_PATH:
       checkLast('types after 3d');
-      return readRecord3D(view);
+      return readRecordBlendPath(view);
     case Constants.RECORD_3E_MARKER_START:
       checkLast('types after record marker start');
       return readRecordMarkerStart(view);
@@ -745,6 +834,15 @@ function writeRecordBody(view, record) {
       break;
     case Constants.RECORD_34:
       writeRecord34(view, record);
+      break;
+    case Constants.RECORD_3A_BLEND_GROUP:
+      writeRecordBlendGroup(view, record);
+      break;
+    case Constants.RECORD_3B_BLEND_OPTIONS:
+      writeRecordBlendOptions(view, record);
+      break;
+    case Constants.RECORD_3D_BLEND_PATH:
+      writeRecordBlendPath(view, record);
       break;
     case Constants.RECORD_3E_MARKER_START:
       writeRecordMarkerStart(view, record);
@@ -849,9 +947,18 @@ module.exports = {
   readRecord37,
   readRecord38,
   readRecordFileInfo,
-  readRecord3A,
-  readRecord3B,
-  readRecord3D,
+
+  createRecordBlendGroup,
+  readRecordBlendGroup,
+  writeRecordBlendGroup,
+
+  createRecordBlendOptions,
+  readRecordBlendOptions,
+  writeRecordBlendOptions,
+
+  createRecordBlendPath,
+  readRecordBlendPath,
+  writeRecordBlendPath,
 
   createRecordMarkerStart,
   readRecordMarkerStart,

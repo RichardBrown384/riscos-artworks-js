@@ -17,6 +17,17 @@ function createClosedEquilateralTriangle(x, y, sideLength, moveOptions = TAG_BIT
     .build();
 }
 
+function createClosedRectangle(x, y, w, h, moveOptions = TAG_BIT_31) {
+  return Path.builder()
+    .moveTo(x, y, moveOptions)
+    .lineTo(x, y + h)
+    .lineTo(x + w, y + h)
+    .lineTo(x + w, y)
+    .closeSubPath()
+    .end()
+    .build();
+}
+
 function createOpenInvertedV(x, y, sideLength, moveOptions = TAG_BIT_31) {
   const width = sideLength;
   const height = 0.5 * Math.sqrt(3) * width;
@@ -66,6 +77,7 @@ function createClosedNSidedPolygon(n, x, y, radius, moveOptions = TAG_BIT_31) {
 
 module.exports = {
   createClosedEquilateralTriangle,
+  createClosedRectangle,
   createOpenInvertedV,
   createClosedPentagram,
   createClosedNSidedPolygon,

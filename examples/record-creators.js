@@ -12,8 +12,13 @@ const {
     RecordStrokeWidth,
     RecordFillColourFlat,
     RecordFillColourGradient,
+    RecordWindingRule,
+    RecordDashPatternEmpty,
     Record2C,
     Record34,
+    RecordBlendGroup,
+    RecordBlendOptions,
+    RecordBlendPath,
   },
 
   UNKNOWN_4_BIT_0,
@@ -78,6 +83,14 @@ function createRecordFillColourGradient(type, x0, y0, x1, y1, startColour, endCo
   return Object.freeze(record);
 }
 
+function createRecordWindingRule(windingRule) {
+  return Object.freeze(RecordWindingRule.of(UNKNOWN_4_BIT_0, windingRule));
+}
+
+function createRecordDashPatternEmpty() {
+  return Object.freeze(RecordDashPatternEmpty.of(UNKNOWN_4_BIT_0));
+}
+
 function createRecord2C(path, padding, unknown24, ...attributes) {
   const record = Record2C.builder()
     .unknown4(UNKNOWN_4_BIT_1)
@@ -100,6 +113,32 @@ function createRecord34(path, padding, triangle, ...attributes) {
   return Object.freeze(record);
 }
 
+function createRecordBlendGroup(boundingBox, ...lists) {
+  const record = RecordBlendGroup.builder()
+    .unknown4(UNKNOWN_4_BIT_1)
+    .boundingBox(boundingBox)
+    .lists(Lists.of(...lists))
+    .build();
+  return Object.freeze(record);
+}
+
+function createRecordBlendOptions(boundingBox, blendSteps) {
+  const record = RecordBlendOptions.builder()
+    .unknown4(UNKNOWN_4_BIT_1)
+    .boundingBox(boundingBox)
+    .blendSteps(blendSteps)
+    .build();
+  return Object.freeze(record);
+}
+
+function createRecordBlendPath(path, padding) {
+  const record = RecordBlendPath.builder()
+    .boundingBox(PathBoundingBox.of(path, padding))
+    .path(path)
+    .build();
+  return Object.freeze(record);
+}
+
 module.exports = {
   createRecordPath,
   createRecordLayer,
@@ -108,6 +147,11 @@ module.exports = {
   createRecordStrokeColour,
   createRecordFillColourFlat,
   createRecordFillColourGradient,
+  createRecordWindingRule,
+  createRecordDashPatternEmpty,
   createRecord2C,
   createRecord34,
+  createRecordBlendGroup,
+  createRecordBlendOptions,
+  createRecordBlendPath,
 };
