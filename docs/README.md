@@ -554,6 +554,9 @@ patterns.
 Maybe there is a palette of dash patterns within ArtWorks but for rendering purposes the pattern is specified inline in
 the record.
 
+[Blend Groups](#type-0x3a-blend-group) expect a dash pattern to be specified. Failing to set one will
+result in !AWViewer crashing.
+
 | Offset | Length | Content                                                                                                                     |
 |--------|--------|-----------------------------------------------------------------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                                                                             |
@@ -750,7 +753,6 @@ Its sibling [path](#type-0x02-path) defines the shape to blend from.
 It normally has a [blend options](#type-0x3b-blend-options) record amongst its descendants and then
 one or more [path](#type-0x02-path) records defining the intermediate and end shapes.
 
-
 | Offset | Length | Content                                                                     |
 |--------|--------|-----------------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                             |
@@ -785,10 +787,18 @@ For the unknown value at offset 36, the least significant nibbles are nearly all
 | 56     | 4      | Unknown, -1 in all available files                                          |
 | 60     | 4      | Unknown, -1 in all available files                                          |
 
+The number of steps drawn between the start and end shapes is blend steps minus one. Zero appears
+to mean only draw the start shape, one both the start and end shape and a value of two would mean
+draw one intermediate shape.
+
 #### Type 0x3D: Blend Path
 
 These records are found beneath the path records in a blend group. It appears that none of the control
 bits are set meaning that they won't be drawn in !AWViewer's Outline mode.
+
+Current speculation is that these are the paths that ArtWorks uses to interpolate between the two shapes.
+The points are sometimes reordered in comparison to their parent paths, potentially making it easier to
+identify pairs of vertices.
 
 | Offset | Length | Content                         |
 |--------|--------|---------------------------------|
@@ -888,6 +898,18 @@ bit-31 set.
 | 40     | 4      | Colour Component 4 (K)                                                    |
 | 44     | 4      | [Flags](#palette-entry-flags)                                             |
 
+For RGB and CMYK the colour components range between 0 (0.0) and 0x7FFFFFFF (1.0).
+
+For HSV, the S and V components range between 0 (0.0) and and 0x7FFFFFFF (1.0).
+The H component varies between 0 (0.0) and 0x16800000 (360.0). A fixed point representation
+is used with the lower 20 bits for the fraction and the upper bits used for degrees. Setting
+the H component to a value greater than 0x16800000 will result in !AWViewer rendering
+black.
+
+For flat, linear and radial fills ArtWorks uses the BGR values defined in the entry.
+However, when rendering [blend groups](#type-0x3a-blend-group) the colour components are used
+to interpolate the colours.
+
 ##### Palette entry flags
 
 | Bits  | Content                                                                                                                                        |
@@ -899,14 +921,6 @@ bit-31 set.
 | 8-15  | Unknown, nearly always 0                                                                                                                       |
 | 16-17 | Unknown, usually 0, 1 or 2                                                                                                                     |
 | 18-31 | Unknown, nearly always 0                                                                                                                       |
-
-For RGB and CMYK the colour components range between 0 (0.0) and 0x7FFFFFFF (1.0).
-
-For HSV, the S and V components range between 0 (0.0) and and 0x7FFFFFFF (1.0).
-The H component varies between 0 (0.0) and 0x16800000 (360.0). A fixed point representation
-is used with the lower 20 bits for the fraction and the upper bits used for degrees. Setting
-the H component to a value greater than 0x16800000 will result in !AWViewer rendering
-black.
 
 The partitioning of bits 2 to 7 inclusive into 2-bit fields is somewhat arbitrary.
 It is known that ArtWorks supported Spot, Process, and Tint colours and that information
