@@ -537,6 +537,8 @@ When an ArtWorks file doesn't specify a winding rule then !AWViewer defaults to 
 
 Setting the winding rule to a value not in the enumeration will result in !AWViewer not rendering paths.
 
+[Blend Groups](#type-0x3a-blend-group) will not render correctly if no winding rule is specified.
+
 | Offset | Length | Content                                                            |
 |--------|--------|--------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                    |
