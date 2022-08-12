@@ -16,8 +16,6 @@ const {
     Artworks,
     Lists,
     List,
-
-    RecordLayer,
   },
   Constants,
 } = require('../../src').Artworks;
@@ -43,6 +41,7 @@ const {
 
 const {
   createRecordPath,
+  createRecordLayer,
 } = require('../record-creators');
 
 const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
@@ -61,16 +60,12 @@ const PATH_HEXAGON = createRecordPath(
   FILL_RADIAL_RED_YELLOW,
 );
 
-const LAYER = RecordLayer.builder()
-  .unknown24(Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3)
-  .name('Foreground')
-  .lists(
-    Lists.of(
-      List.of(PATH_PENTAGRAM, STROKE_COLOUR_BLUE),
-      List.of(PATH_HEXAGON, STROKE_COLOUR_MAGENTA),
-    ),
-  )
-  .build();
+const LAYER = createRecordLayer(
+  Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3,
+  'Foreground',
+  List.of(PATH_PENTAGRAM, STROKE_COLOUR_BLUE),
+  List.of(PATH_HEXAGON, STROKE_COLOUR_MAGENTA),
+);
 
 module.exports = Artworks.builder()
   .lists(

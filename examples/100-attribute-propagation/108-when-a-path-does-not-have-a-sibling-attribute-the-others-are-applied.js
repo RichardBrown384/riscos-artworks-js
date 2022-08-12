@@ -17,10 +17,8 @@ const {
     Artworks,
     Lists,
     List,
-
-    RecordLayer,
   },
-  Constants
+  Constants,
 } = require('../../src').Artworks;
 
 const {
@@ -47,6 +45,7 @@ const {
 
 const {
   createRecordPath,
+  createRecordLayer,
 } = require('../record-creators');
 
 const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
@@ -69,23 +68,19 @@ const PATH_HEXAGON_6 = createHexagon(200_000, 250_000, STROKE_COLOUR_MAGENTA);
 const PATH_HEXAGON_7 = createHexagon(250_000, 250_000, FILL_FLAT_RED, STROKE_WIDTH_3000);
 const PATH_HEXAGON_8 = createHexagon(300_000, 250_000, FILL_FLAT_RED, STROKE_WIDTH_3000);
 
-const LAYER = RecordLayer.builder()
-  .unknown24(Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3)
-  .name('Foreground')
-  .lists(
-    Lists.of(
-      List.of(PATH_PENTAGRAM, STROKE_COLOUR_BLUE),
-      List.of(PATH_HEXAGON_1),
-      List.of(PATH_HEXAGON_2, STROKE_COLOUR_BLUE),
-      List.of(PATH_HEXAGON_3, LAYER_FOREGROUND),
-      List.of(PATH_HEXAGON_4, STROKE_COLOUR_MAGENTA),
-      List.of(PATH_HEXAGON_5, LAYER_FOREGROUND),
-      List.of(PATH_HEXAGON_6, FILL_RADIAL_RED_YELLOW),
-      List.of(PATH_HEXAGON_7, LAYER_FOREGROUND),
-      List.of(PATH_HEXAGON_8, STROKE_COLOUR_BLUE),
-    ),
-  )
-  .build();
+const LAYER = createRecordLayer(
+  Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3,
+  'Foreground',
+  List.of(PATH_PENTAGRAM, STROKE_COLOUR_BLUE),
+  List.of(PATH_HEXAGON_1),
+  List.of(PATH_HEXAGON_2, STROKE_COLOUR_BLUE),
+  List.of(PATH_HEXAGON_3, LAYER_FOREGROUND),
+  List.of(PATH_HEXAGON_4, STROKE_COLOUR_MAGENTA),
+  List.of(PATH_HEXAGON_5, LAYER_FOREGROUND),
+  List.of(PATH_HEXAGON_6, FILL_RADIAL_RED_YELLOW),
+  List.of(PATH_HEXAGON_7, LAYER_FOREGROUND),
+  List.of(PATH_HEXAGON_8, STROKE_COLOUR_BLUE),
+);
 
 module.exports = Artworks.builder()
   .lists(
