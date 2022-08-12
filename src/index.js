@@ -12,26 +12,26 @@ const {
 
 module.exports = {
 
-  ...Constants,
-
-  Builders: {
-    ...PrimitiveBuilders,
-    ...RecordBuilders,
-  },
-
   Artworks: {
-    load(buffer) {
-      const buf = Uint8Array.from(buffer).buffer;
-      const view = new ArtworksView(buf);
+    Constants,
+
+    Builders: {
+      ...PrimitiveBuilders,
+      ...RecordBuilders,
+    },
+
+    fromUint8Array(array) {
+      const view = new ArtworksView(array.buffer);
       const reader = new ArtworksReader(view);
       return reader.read();
     },
-    save(artworks) {
-      const buf = new ArrayBuffer(FOUR_MEGABYTES);
+
+    toUint8Array(artworks, limit = FOUR_MEGABYTES) {
+      const buf = new ArrayBuffer(limit);
       const view = new ArtworksView(buf);
       const writer = new ArtworksWriter(view, artworks);
       const length = writer.write();
-      return new DataView(buf, 0, length);
+      return new Uint8Array(buf, 0, length);
     },
   },
 };

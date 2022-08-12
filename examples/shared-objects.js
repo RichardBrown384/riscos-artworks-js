@@ -1,10 +1,12 @@
 const {
-  FILL_LINEAR,
-  FILL_RADIAL,
+  Constants: {
+    FILL_LINEAR,
+    FILL_RADIAL,
 
-  LAYER_UNKNOWN_24_BIT_0,
-  LAYER_UNKNOWN_24_BIT_3,
-} = require('../src/artworks');
+    LAYER_UNKNOWN_24_BIT_0,
+    LAYER_UNKNOWN_24_BIT_3,
+  },
+} = require('../src').Artworks;
 
 const {
   DEFAULT_PALETTE,

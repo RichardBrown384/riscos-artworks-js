@@ -15,7 +15,7 @@ const {
 
     RecordPath,
   },
-} = require('../../src/artworks');
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_RED,

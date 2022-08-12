@@ -2,8 +2,10 @@ const {
   Builders: {
     Path,
   },
-  TAG_BIT_31,
-} = require('../src/artworks');
+  Constants: {
+    TAG_BIT_31,
+  },
+} = require('../src').Artworks;
 
 function createClosedEquilateralTriangle(x, y, sideLength, moveOptions = TAG_BIT_31) {
   const width = sideLength;

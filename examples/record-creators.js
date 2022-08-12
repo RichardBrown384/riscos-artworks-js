@@ -21,10 +21,12 @@ const {
     RecordBlendPath,
   },
 
-  UNKNOWN_4_BIT_0,
-  UNKNOWN_4_BIT_1,
+  Constants: {
+    UNKNOWN_4_BIT_0,
+    UNKNOWN_4_BIT_1,
+  },
 
-} = require('../src/artworks');
+} = require('../src').Artworks;
 
 function createAttributeLists(attributes) {
   const listsBuilder = Lists.builder();

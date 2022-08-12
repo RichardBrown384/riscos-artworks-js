@@ -2,7 +2,7 @@
   "name": "riscos-artworks",
   "version": "1.0.0",
   "description": "Library for loading RISC OS Artworks files",
-  "main": "src/artworks.js",
+  "main": "src/index.js",
   "directories": {
     "doc": "docs"
   },

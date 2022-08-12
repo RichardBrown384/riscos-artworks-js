@@ -15,7 +15,7 @@ const {
     RecordFillColourFlat,
   },
 
-} = require('../../src/artworks');
+} = require('../../src').Artworks;
 
 const {
   LAYER_FOREGROUND,

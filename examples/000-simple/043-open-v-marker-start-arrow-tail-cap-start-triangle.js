@@ -14,11 +14,8 @@ const {
     RecordLineCapStart,
     RecordMarkerStart,
   },
-  CAP_TRIANGLE,
-  MARKER_ARROW_TAIL,
-
-  UNKNOWN_4_BIT_0,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_TRANSPARENT,
@@ -30,14 +27,14 @@ const {
 } = require('../shared-objects');
 
 const START_CAP = RecordLineCapStart.of(
-  UNKNOWN_4_BIT_0,
-  CAP_TRIANGLE,
+  Constants.UNKNOWN_4_BIT_0,
+  Constants.CAP_TRIANGLE,
   RecordLineCapStart.capTriangle(10 * 128, 10 * 128),
 );
 
 const MARKER_START = RecordMarkerStart.builder()
-  .unknown4(UNKNOWN_4_BIT_0)
-  .markerStyle(MARKER_ARROW_TAIL)
+  .unknown4(Constants.UNKNOWN_4_BIT_0)
+  .markerStyle(Constants.MARKER_ARROW_TAIL)
   .markerWidth(0x10000 * 4)
   .markerHeight(0x10000 * 4)
   .build();

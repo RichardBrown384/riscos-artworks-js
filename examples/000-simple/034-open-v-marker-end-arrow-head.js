@@ -13,10 +13,8 @@ const {
 
     RecordMarkerEnd,
   },
-  MARKER_ARROW_HEAD,
-
-  UNKNOWN_4_BIT_0,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_TRANSPARENT,
@@ -28,8 +26,8 @@ const {
 } = require('../shared-objects');
 
 const MARKER_END = RecordMarkerEnd.builder()
-  .unknown4(UNKNOWN_4_BIT_0)
-  .markerStyle(MARKER_ARROW_HEAD)
+  .unknown4(Constants.UNKNOWN_4_BIT_0)
+  .markerStyle(Constants.MARKER_ARROW_HEAD)
   .markerWidth(0x10000 * 4)
   .markerHeight(0x10000 * 6)
   .build();

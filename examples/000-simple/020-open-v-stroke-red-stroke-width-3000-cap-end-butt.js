@@ -18,9 +18,8 @@ const {
 
     RecordLineCapEnd,
   },
-  CAP_BUTT,
-  UNKNOWN_4_BIT_0,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_TRANSPARENT,
@@ -31,7 +30,7 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-const END_CAP = RecordLineCapEnd.of(UNKNOWN_4_BIT_0, CAP_BUTT);
+const END_CAP = RecordLineCapEnd.of(Constants.UNKNOWN_4_BIT_0, Constants.CAP_BUTT);
 
 module.exports = Artworks.builder()
   .lists(

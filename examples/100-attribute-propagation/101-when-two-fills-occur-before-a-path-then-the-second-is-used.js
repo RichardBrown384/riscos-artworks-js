@@ -15,7 +15,7 @@ const {
     Lists,
     List,
   },
-} = require('../../src/artworks');
+} = require('../../src').Artworks;
 
 const {
   LAYER_FOREGROUND,

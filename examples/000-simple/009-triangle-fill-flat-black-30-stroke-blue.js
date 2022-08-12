@@ -11,7 +11,7 @@ const {
     Lists,
     List,
   },
-} = require('../../src/artworks');
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_BLACK_30,

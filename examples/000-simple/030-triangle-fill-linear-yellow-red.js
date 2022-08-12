@@ -11,7 +11,7 @@ const {
     Lists,
     List,
   },
-} = require('../../src/artworks');
+} = require('../../src').Artworks;
 
 const {
   FILL_LINEAR_YELLOW_RED,

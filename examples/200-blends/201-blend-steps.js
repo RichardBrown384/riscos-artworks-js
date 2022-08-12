@@ -21,9 +21,9 @@ const {
     PathBoundingBox,
   },
 
-  WINDING_RULE_EVEN_ODD,
+  Constants,
 
-} = require('../../src/artworks');
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_RED,
@@ -46,7 +46,7 @@ const {
 } = require('../record-creators');
 
 const DASH_PATTERN_EMPTY = createRecordDashPatternEmpty();
-const WINDING_RULE = createRecordWindingRule(WINDING_RULE_EVEN_ODD);
+const WINDING_RULE = createRecordWindingRule(Constants.WINDING_RULE_EVEN_ODD);
 
 function createSimpleBlendGroup({
   sx, sy, sw, sh,

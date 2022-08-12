@@ -2,7 +2,7 @@
 
 const { resolve } = require('path');
 const fs = require('fs');
-const { Artworks } = require('../src/artworks');
+const { Artworks } = require('../src');
 
 function getFilesRecursively(directory) {
   const files = [];
@@ -29,7 +29,8 @@ function processDirectory(directory) {
   for (let i = 0; i < files.length; i += 1) {
     const file = files[i];
     const buffer = fs.readFileSync(file);
-    const { error, unsupported, ...data } = Artworks.load(buffer);
+    const array = Uint8Array.from(buffer);
+    const { error, unsupported, ...data } = Artworks.fromUint8Array(array);
     if (error) {
       errors.push({ file, error, data });
     } else {
