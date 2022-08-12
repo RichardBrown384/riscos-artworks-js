@@ -21,8 +21,8 @@ const {
 
     RecordGroup,
   },
-  UNKNOWN_4_BIT_1,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   LAYER_FOREGROUND,
@@ -58,7 +58,7 @@ const PATH_HEXAGON_2 = createHexagon(100_000, 75_000, FILL_FLAT_RED);
 const PATH_HEXAGON_3 = createHexagon(150_000, 50_000, FILL_RADIAL_RED_YELLOW);
 
 const GROUP = RecordGroup.builder()
-  .unknown4(UNKNOWN_4_BIT_1)
+  .unknown4(Constants.UNKNOWN_4_BIT_1)
   .boundingBox(BoundingBox.builder()
     .minX(0)
     .minY(0)

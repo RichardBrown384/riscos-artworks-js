@@ -13,9 +13,8 @@ const {
 
     RecordJoinStyle,
   },
-  JOIN_ROUND,
-  UNKNOWN_4_BIT_0,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_TRANSPARENT,
@@ -26,7 +25,7 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-const JOIN = RecordJoinStyle.of(UNKNOWN_4_BIT_0, JOIN_ROUND);
+const JOIN = RecordJoinStyle.of(Constants.UNKNOWN_4_BIT_0, Constants.JOIN_ROUND);
 
 module.exports = Artworks.builder()
   .lists(

@@ -23,10 +23,8 @@ const {
     Polyline,
   },
 
-  FILL_RADIAL,
-
-  TAG_BIT_31,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_TRANSPARENT,
@@ -61,7 +59,7 @@ const FILL_END_X = 93424;
 const FILL_END_Y = 218765;
 
 const ORIGINAL_PATH_FILL_LINE = Path.builder()
-  .moveTo(FILL_START_X, FILL_START_Y, TAG_BIT_31)
+  .moveTo(FILL_START_X, FILL_START_Y, Constants.TAG_BIT_31)
   .lineTo(FILL_END_X, FILL_END_Y)
   .end()
   .build();
@@ -80,7 +78,7 @@ const ORIGINAL_POLYLINE_TRIANGLE = Polyline.builder()
   .build();
 
 const ORIGINAL_PATH_TRIANGLE = Path.builder()
-  .moveTo(TRIANGLE_X0, TRIANGLE_Y0, TAG_BIT_31)
+  .moveTo(TRIANGLE_X0, TRIANGLE_Y0, Constants.TAG_BIT_31)
   .lineTo(TRIANGLE_X1, TRIANGLE_Y1)
   .lineTo(TRIANGLE_X2, TRIANGLE_Y2)
   .end()
@@ -118,7 +116,7 @@ const B3_X2 = 132655;
 const B3_Y2 = 220760;
 
 const ORIGINAL_PATH_ELLIPSE = Path.builder()
-  .moveTo(M0_X0, M0_Y0, TAG_BIT_31)
+  .moveTo(M0_X0, M0_Y0, Constants.TAG_BIT_31)
   .bezierTo(B0_X0, B0_Y0, B0_X1, B0_Y1, B0_X2, B0_Y2)
   .bezierTo(B1_X0, B1_Y0, B1_X1, B1_Y1, B1_X2, B1_Y2)
   .bezierTo(B2_X0, B2_Y0, B2_X1, B2_Y1, B2_X2, B2_Y2)
@@ -136,7 +134,7 @@ function createGeometry(baseTransform, triangleTransform) {
   const [x1, y1] = baseTransform.transformCoordinate(FILL_END_X, FILL_END_Y);
 
   const fillGradient = createRecordFillColourGradient(
-    FILL_RADIAL,
+    Constants.FILL_RADIAL,
     x0,
     y0,
     x1,

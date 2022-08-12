@@ -14,8 +14,8 @@ const {
     RecordDashPatternEmpty,
   },
 
-  UNKNOWN_4_BIT_0,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_TRANSPARENT,
@@ -26,7 +26,7 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-const DASH_PATTERN = RecordDashPatternEmpty.of(UNKNOWN_4_BIT_0);
+const DASH_PATTERN = RecordDashPatternEmpty.of(Constants.UNKNOWN_4_BIT_0);
 
 module.exports = Artworks.builder()
   .lists(

@@ -26,8 +26,8 @@ const {
     Path,
   },
 
-  TAG_BIT_31,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_TRANSPARENT,
@@ -44,7 +44,7 @@ const {
 const AffineTransform = require('../affine-transform');
 
 const UNTRANSFORMED_PATH = Path.builder()
-  .moveTo(10_000, 10_000, TAG_BIT_31)
+  .moveTo(10_000, 10_000, Constants.TAG_BIT_31)
   .lineTo(10_000, 20_000)
   .lineTo(20_000, 20_000)
   .lineTo(20_000, 10_000)

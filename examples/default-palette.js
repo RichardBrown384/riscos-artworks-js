@@ -1,7 +1,9 @@
 const {
-  Palette,
-  PaletteEntry,
-} = require('../src/artworks').Builders;
+  Builders: {
+    Palette,
+    PaletteEntry,
+  },
+} = require('../src').Artworks;
 
 module.exports.DEFAULT_PALETTE = Palette.builder()
   .entry(PaletteEntry.of('Black', 0x20000000))

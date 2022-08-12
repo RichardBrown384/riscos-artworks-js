@@ -13,9 +13,8 @@ const {
 
     RecordDashPattern,
   },
-
-  UNKNOWN_4_BIT_0,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_TRANSPARENT,
@@ -27,7 +26,7 @@ const {
 } = require('../shared-objects');
 
 const DASH_PATTERN = RecordDashPattern.builder()
-  .unknown4(UNKNOWN_4_BIT_0)
+  .unknown4(Constants.UNKNOWN_4_BIT_0)
   .elements(5000, 10000, 5000)
   .build();
 

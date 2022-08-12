@@ -19,9 +19,8 @@ const {
 
     RecordLayer,
   },
-  LAYER_UNKNOWN_24_BIT_0,
-  LAYER_UNKNOWN_24_BIT_3,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   PATH_TRIANGLE,
@@ -63,7 +62,7 @@ const PATH_HEXAGON = createRecordPath(
 );
 
 const LAYER = RecordLayer.builder()
-  .unknown24(LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3)
+  .unknown24(Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3)
   .name('Foreground')
   .lists(
     Lists.of(

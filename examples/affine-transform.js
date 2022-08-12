@@ -3,7 +3,7 @@ const {
     PathElement,
     Point,
   },
-} = require('../src/artworks');
+} = require('../src').Artworks;
 
 class AffineTransform {
   #a;

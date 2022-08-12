@@ -13,9 +13,8 @@ const {
 
     RecordWindingRule,
   },
-  WINDING_RULE_NON_ZERO,
-  UNKNOWN_4_BIT_0,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_RED,
@@ -26,7 +25,10 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-const WINDING_RULE = RecordWindingRule.of(UNKNOWN_4_BIT_0, WINDING_RULE_NON_ZERO);
+const WINDING_RULE = RecordWindingRule.of(
+  Constants.UNKNOWN_4_BIT_0,
+  Constants.WINDING_RULE_NON_ZERO,
+);
 
 module.exports = Artworks.builder()
   .lists(

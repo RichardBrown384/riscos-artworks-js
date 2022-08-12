@@ -18,9 +18,8 @@ const {
 
     RecordLineCapStart,
   },
-  CAP_TRIANGLE,
-  UNKNOWN_4_BIT_0,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_TRANSPARENT,
@@ -32,8 +31,8 @@ const {
 } = require('../shared-objects');
 
 const END_CAP = RecordLineCapStart.of(
-  UNKNOWN_4_BIT_0,
-  CAP_TRIANGLE,
+  Constants.UNKNOWN_4_BIT_0,
+  Constants.CAP_TRIANGLE,
   RecordLineCapStart.capTriangle(4 * 128, 2 * 128),
 );
 

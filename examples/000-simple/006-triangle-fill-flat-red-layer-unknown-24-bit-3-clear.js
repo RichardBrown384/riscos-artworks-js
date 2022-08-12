@@ -14,8 +14,8 @@ const {
     RecordLayer,
   },
 
-  LAYER_UNKNOWN_24_BIT_0,
-} = require('../../src/artworks');
+  Constants,
+} = require('../../src').Artworks;
 
 const {
   FILL_FLAT_RED,
@@ -25,7 +25,7 @@ const {
 
 const LAYER = RecordLayer
   .builder()
-  .unknown24(LAYER_UNKNOWN_24_BIT_0)
+  .unknown24(Constants.LAYER_UNKNOWN_24_BIT_0)
   .name('Foreground')
   .build();
 

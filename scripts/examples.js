@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { Artworks } = require('../src/artworks');
+const { Artworks } = require('../src');
 
 function loadExamples(directory) {
   const resolved = path.resolve(directory);
@@ -25,8 +25,8 @@ function processExamplesDirectory(directory, examplesDirectory) {
       directory,
       `${path.basename(basename, '.js')},d94`,
     );
-    const view = Artworks.save(artworks);
-    fs.writeFileSync(filename, view);
+    const array = Artworks.toUint8Array(artworks);
+    fs.writeFileSync(filename, array);
   }
 }
 
