@@ -26,8 +26,8 @@ To use in code
 ```javascript
 const {Artworks} = require('riscos-artworks');
 
-const artworks = Artworks.load(buffer);
-const view = Artworks.save(artworks);
+const artworks = Artworks.fromUint8Array(array);
+const array = Artworks.toUint8Array(artworks);
 ```
 
 The library has some scripts that can be used to aid with the deciphering process
