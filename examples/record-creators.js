@@ -46,11 +46,11 @@ function createRecordPath(path, padding, ...attributes) {
   return Object.freeze(record);
 }
 
-function createRecordLayer(unknown24, name) {
-  const record = RecordLayer
-    .builder()
+function createRecordLayer(unknown24, name, ...lists) {
+  const record = RecordLayer.builder()
     .unknown24(unknown24)
     .name(name)
+    .lists(Lists.of(...lists))
     .build();
   return Object.freeze(record);
 }
