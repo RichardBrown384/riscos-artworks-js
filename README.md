@@ -30,7 +30,24 @@ const artworks = Artworks.fromUint8Array(array);
 const array = Artworks.toUint8Array(artworks);
 ```
 
+## Scripts
+
 The library has some scripts that can be used to aid with the deciphering process
+
+### svg
+
+To convert an ArtWorks file to an SVG you can use the following commands
+
+```bash
+npm run svg source,d94 target.svg
+npm run svg source,d94 target.svg outline
+```
+
+The later form produces an outline only representation of the original file.
+
+_Please note that this command is offered as an experimental feature.
+The conversion process often gets details wrong and some features, such as blended shapes,
+are not supported._
 
 ### unpack and pack
 
