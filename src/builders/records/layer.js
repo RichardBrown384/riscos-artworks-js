@@ -10,7 +10,7 @@ class RecordLayer extends RecordBuilder {
   #name;
 
   constructor() {
-    super(Constants.RECORD_LAYER);
+    super(Constants.RECORD_0A_LAYER);
     this.#unknown24 = 0;
     this.#name = 0;
   }

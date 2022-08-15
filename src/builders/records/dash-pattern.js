@@ -10,7 +10,7 @@ class RecordDashPattern extends RecordBuilder {
   #elements;
 
   constructor() {
-    super(Constants.RECORD_DASH_PATTERN);
+    super(Constants.RECORD_2B_DASH_PATTERN);
     this.#offset = 0;
     this.#elements = [];
   }

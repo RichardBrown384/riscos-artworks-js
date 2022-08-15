@@ -8,7 +8,7 @@ class RecordStrokeColour extends RecordBuilder {
   #strokeColour;
 
   constructor() {
-    super(Constants.RECORD_STROKE_COLOUR);
+    super(Constants.RECORD_24_STROKE_COLOUR);
     this.#strokeColour = 0;
   }
 

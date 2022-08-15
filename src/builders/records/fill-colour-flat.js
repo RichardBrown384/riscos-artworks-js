@@ -10,7 +10,7 @@ class RecordFillColourFlat extends RecordBuilder {
   #colour;
 
   constructor() {
-    super(Constants.RECORD_FILL_COLOUR);
+    super(Constants.RECORD_26_FILL_COLOUR);
     this.#unknown28 = 0;
     this.#colour = -1;
   }

@@ -6,7 +6,7 @@ const { createRecordDashPatternEmpty } = require('../../types/records');
 
 class RecordDashPatternEmpty extends RecordBuilder {
   constructor() {
-    super(Constants.RECORD_DASH_PATTERN);
+    super(Constants.RECORD_2B_DASH_PATTERN);
   }
 
   static builder() {

@@ -8,7 +8,7 @@ class RecordWindingRule extends RecordBuilder {
   #windingRule;
 
   constructor() {
-    super(Constants.RECORD_WINDING_RULE);
+    super(Constants.RECORD_2A_WINDING_RULE);
     this.#windingRule = Constants.WINDING_RULE_EVEN_ODD;
   }
 

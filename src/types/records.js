@@ -694,61 +694,61 @@ function readRecordBody(view, header, checkLast) {
   switch (type & 0xFF) {
     case Constants.RECORD_00:
       return readRecord00(view);
-    case Constants.RECORD_TEXT:
+    case Constants.RECORD_01_TEXT:
       return readRecordText(view);
-    case Constants.RECORD_PATH:
+    case Constants.RECORD_02_PATH:
       return readRecordPath(view);
-    case Constants.RECORD_SPRITE:
+    case Constants.RECORD_05_SPRITE:
       checkLast('types after sprite');
       return readRecordSprite(view);
-    case Constants.RECORD_GROUP:
+    case Constants.RECORD_06_GROUP:
       return readRecordGroup(view);
-    case Constants.RECORD_LAYER:
+    case Constants.RECORD_0A_LAYER:
       return readRecordLayer(view);
-    case Constants.RECORD_WORK_AREA:
+    case Constants.RECORD_21_WORK_AREA:
       checkLast('types after work area');
       return readRecordWorkArea(view);
     case Constants.RECORD_22:
       checkLast('types after record 22');
       return readRecord22(view);
-    case Constants.RECORD_SAVE_LOCATION:
+    case Constants.RECORD_23_SAVE_LOCATION:
       checkLast('types after save location');
       return readRecordSaveLocation(view);
-    case Constants.RECORD_STROKE_COLOUR:
+    case Constants.RECORD_24_STROKE_COLOUR:
       checkLast('types after stroke colour');
       return readRecordStrokeColour(view);
-    case Constants.RECORD_STROKE_WIDTH:
+    case Constants.RECORD_25_STROKE_WIDTH:
       checkLast('types after stroke width');
       return readRecordStrokeWidth(view);
-    case Constants.RECORD_FILL_COLOUR:
+    case Constants.RECORD_26_FILL_COLOUR:
       checkLast('types after fill colour');
       return readRecordFillColour(view);
-    case Constants.RECORD_JOIN_STYLE:
+    case Constants.RECORD_27_JOIN_STYLE:
       checkLast('types after join style');
       return readRecordJoinStyle(view);
-    case Constants.RECORD_LINE_CAP_END:
+    case Constants.RECORD_28_LINE_CAP_END:
       checkLast('types after end line cap');
       return readRecordLineCapEnd(view);
-    case Constants.RECORD_LINE_CAP_START:
+    case Constants.RECORD_29_LINE_CAP_START:
       checkLast('types after start line cap');
       return readRecordLineCapStart(view);
-    case Constants.RECORD_WINDING_RULE:
+    case Constants.RECORD_2A_WINDING_RULE:
       checkLast('types after winding rule');
       return readRecordWindingRule(view);
-    case Constants.RECORD_DASH_PATTERN:
+    case Constants.RECORD_2B_DASH_PATTERN:
       checkLast('types after record dash pattern');
       return readRecordDashPattern(view);
     case Constants.RECORD_2C:
       return readRecord2C(view);
-    case Constants.RECORD_CHARACTER:
+    case Constants.RECORD_2D_CHARACTER:
       return readRecordCharacter(view);
     case Constants.RECORD_2E:
       checkLast('types after record 2e');
       return readRecord2E(view);
-    case Constants.RECORD_FONT_NAME:
+    case Constants.RECORD_2F_FONT_NAME:
       checkLast('types after font name');
       return readRecordFontName(view);
-    case Constants.RECORD_FONT_SIZE:
+    case Constants.RECORD_30_FONT_SIZE:
       checkLast('types after font size');
       return readRecordFontSize(view);
     case Constants.RECORD_31:
@@ -766,7 +766,7 @@ function readRecordBody(view, header, checkLast) {
       return readRecord37(view);
     case Constants.RECORD_38:
       return readRecord38(view);
-    case Constants.RECORD_FILE_INFO:
+    case Constants.RECORD_39_FILE_INFO:
       checkLast('types after file info');
       return readRecordFileInfo(view);
     case Constants.RECORD_3A_BLEND_GROUP:
@@ -793,40 +793,40 @@ function readRecordBody(view, header, checkLast) {
 function writeRecordBody(view, record) {
   const { type } = record;
   switch (type & 0xFF) {
-    case Constants.RECORD_PATH:
+    case Constants.RECORD_02_PATH:
       writeRecordPath(view, record);
       break;
-    case Constants.RECORD_LAYER:
+    case Constants.RECORD_0A_LAYER:
       writeRecordLayer(view, record);
       break;
-    case Constants.RECORD_GROUP:
+    case Constants.RECORD_06_GROUP:
       writeRecordGroup(view, record);
       break;
-    case Constants.RECORD_WORK_AREA:
+    case Constants.RECORD_21_WORK_AREA:
       writeRecordWorkArea(view, record);
       break;
-    case Constants.RECORD_STROKE_COLOUR:
+    case Constants.RECORD_24_STROKE_COLOUR:
       writeRecordStrokeColour(view, record);
       break;
-    case Constants.RECORD_STROKE_WIDTH:
+    case Constants.RECORD_25_STROKE_WIDTH:
       writeRecordStrokeWidth(view, record);
       break;
-    case Constants.RECORD_FILL_COLOUR:
+    case Constants.RECORD_26_FILL_COLOUR:
       writeRecordFillColour(view, record);
       break;
-    case Constants.RECORD_JOIN_STYLE:
+    case Constants.RECORD_27_JOIN_STYLE:
       writeRecordJoinStyle(view, record);
       break;
-    case Constants.RECORD_LINE_CAP_END:
+    case Constants.RECORD_28_LINE_CAP_END:
       writeRecordLineCapEnd(view, record);
       break;
-    case Constants.RECORD_LINE_CAP_START:
+    case Constants.RECORD_29_LINE_CAP_START:
       writeRecordLineCapStart(view, record);
       break;
-    case Constants.RECORD_WINDING_RULE:
+    case Constants.RECORD_2A_WINDING_RULE:
       writeRecordWindingRule(view, record);
       break;
-    case Constants.RECORD_DASH_PATTERN:
+    case Constants.RECORD_2B_DASH_PATTERN:
       writeRecordDashPattern(view, record);
       break;
     case Constants.RECORD_2C:

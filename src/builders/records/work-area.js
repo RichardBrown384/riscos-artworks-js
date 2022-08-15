@@ -8,7 +8,7 @@ class RecordWorkArea extends RecordBuilder {
   #palette;
 
   constructor() {
-    super(Constants.RECORD_WORK_AREA);
+    super(Constants.RECORD_21_WORK_AREA);
     this.#palette = 0;
   }
 

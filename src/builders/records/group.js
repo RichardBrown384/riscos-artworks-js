@@ -12,7 +12,7 @@ class RecordGroup extends RecordBuilder {
   #unknown32;
 
   constructor() {
-    super(Constants.RECORD_GROUP);
+    super(Constants.RECORD_06_GROUP);
     this.#unknown24 = 0;
     this.#unknown28 = 0;
     this.#unknown32 = 0;
