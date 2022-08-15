@@ -10,7 +10,7 @@ class RecordLineCapStart extends RecordBuilder {
   #capTriangle;
 
   constructor() {
-    super(Constants.RECORD_LINE_CAP_START);
+    super(Constants.RECORD_29_LINE_CAP_START);
     this.#capStyle = Constants.CAP_BUTT;
     this.#capTriangle = 0;
   }

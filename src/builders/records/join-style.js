@@ -8,7 +8,7 @@ class RecordJoinStyle extends RecordBuilder {
   #joinStyle;
 
   constructor() {
-    super(Constants.RECORD_JOIN_STYLE);
+    super(Constants.RECORD_27_JOIN_STYLE);
     this.#joinStyle = Constants.JOIN_BEVEL;
   }
 

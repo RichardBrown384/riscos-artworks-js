@@ -8,7 +8,7 @@ class RecordStrokeWidth extends RecordBuilder {
   #strokeWidth;
 
   constructor() {
-    super(Constants.RECORD_STROKE_WIDTH);
+    super(Constants.RECORD_25_STROKE_WIDTH);
     this.#strokeWidth = 0;
   }
 

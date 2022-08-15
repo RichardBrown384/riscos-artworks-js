@@ -10,7 +10,7 @@ class RecordPath extends RecordBuilder {
   #path;
 
   constructor() {
-    super(Constants.RECORD_PATH);
+    super(Constants.RECORD_02_PATH);
     this.#path = EMPTY_PATH;
   }
 

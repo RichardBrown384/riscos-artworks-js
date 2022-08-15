@@ -16,7 +16,7 @@ class RecordFillColourShaded extends RecordBuilder {
   #endColour;
 
   constructor() {
-    super(Constants.RECORD_FILL_COLOUR);
+    super(Constants.RECORD_26_FILL_COLOUR);
     this.#type = Constants.FILL_LINEAR;
     this.#unknown28 = 0;
     this.#gradientLine = null;
