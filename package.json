@@ -13,7 +13,8 @@
     "trawl": "node scripts/trawler.js",
     "unpack": "node scripts/unpack.js",
     "pack": "node scripts/pack.js",
-    "stats": "node scripts/stats.js"
+    "stats": "node scripts/stats.js",
+    "svg": "node scripts/svg.js"
   },
   "repository": {
     "type": "git",
@@ -29,5 +30,8 @@
     "eslint": "^8.4.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3"
+  },
+  "dependencies": {
+    "riscos-support": "github:RichardBrown384/riscos-support-js"
   }
 }
