@@ -9,7 +9,7 @@ riscos-artworks-js is a JavaScript library for reading and writing ArtWorks file
 
 The project was started in the aim of preserving the content of these files.
 
-A work-in-progress online viewer is hosted [here](http://richardbrown384.github.io/riscos-artworks-react).
+A work-in-progress online viewer is hosted [here][host].
 
 ![The ArtWorks Apple](./media/apple4.svg)
 
@@ -100,3 +100,4 @@ those features that are well understood are supported, such as fills and strokes
 
 ---
 [artworks-wikipedia]: https://en.wikipedia.org/wiki/ArtWorks
+[host]: http://richardbrown384.github.io/riscos-file-viewer
