@@ -19,8 +19,8 @@ class Path {
     this.elements.push(createPathElement(tag, points));
   }
 
-  end() {
-    this.push(Constants.TAG_END);
+  end(options = 0) {
+    this.push(Constants.TAG_END + options);
     return this;
   }
 
@@ -31,13 +31,13 @@ class Path {
     return this;
   }
 
-  closeSubPath() {
-    this.push(Constants.TAG_CLOSE_SUB_PATH);
+  closeSubPath(options = 0) {
+    this.push(Constants.TAG_CLOSE_SUB_PATH + options);
     return this;
   }
 
-  bezierTo(x0, y0, x1, y1, x2, y2) {
-    this.push(Constants.TAG_BEZIER, [
+  bezierTo(x0, y0, x1, y1, x2, y2, options = 0) {
+    this.push(Constants.TAG_BEZIER + options, [
       createPoint(x0, y0),
       createPoint(x1, y1),
       createPoint(x2, y2),
@@ -45,8 +45,8 @@ class Path {
     return this;
   }
 
-  lineTo(x0, y0) {
-    this.push(Constants.TAG_LINE, [
+  lineTo(x0, y0, options = 0) {
+    this.push(Constants.TAG_LINE + options, [
       createPoint(x0, y0),
     ]);
     return this;
