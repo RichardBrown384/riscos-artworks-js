@@ -871,9 +871,9 @@ A path then comprises one or more path elements.
 | 6   | 3      | Bezier to absolute       |
 | 8   | 1      | Line to absolute         |
 
-For moves (tag 2), bit 31 of the tag appears to influence if the path or sub-path is rendered.
-If bit 31 is set, then the path (or sub-path) is rendered in all of !AWViewer's WYSIWIG modes.
-If bit 31 is clear, then the path (or sub-path) is only rendered in !AWViewer's Outline mode.
+For moves (tag 2), bit 31 of the tag appears to influence how a path or sub-path is rendered.
+If bit 31 of the first move is set, then the path and all its sub-paths are filled.
+Otherwise, the path and all its sub-paths are unfilled.
 
 ### Palette
 
