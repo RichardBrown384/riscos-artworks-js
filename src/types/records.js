@@ -691,7 +691,7 @@ function getUnsupportedRecordErrorMessage(type) {
   return `unsupported record ${type}, (0x${type.toString(16)})`;
 }
 
-function readRecordBody(view, header, checkLast) {
+function readRecordBody(view, header, checkLast = () => {}) {
   const { type } = header;
   switch (type & 0xFF) {
     case Constants.RECORD_00:
@@ -790,6 +790,12 @@ function readRecordBody(view, header, checkLast) {
     default:
       throw new UnsupportedRecordError(getUnsupportedRecordErrorMessage(type));
   }
+}
+
+function shouldSkipRecordBody({ type }, { next }) {
+  const maskedType = type & 0xFF;
+  return next === 0
+      && [Constants.RECORD_37, Constants.RECORD_38].includes(maskedType);
 }
 
 function writeRecordBody(view, record) {
@@ -972,6 +978,7 @@ module.exports = {
 
   readRecord42,
 
+  shouldSkipRecordBody,
   readRecordBody,
   writeRecordBody,
 };
