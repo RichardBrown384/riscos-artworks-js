@@ -2,6 +2,20 @@
 
 const Constants = require('../constants');
 
+function createColourIndex(colour) {
+  return colour;
+}
+
+function readColourIndex(view) {
+  view.checkAlignment('misaligned colour index');
+  return view.readUint32();
+}
+
+function writeColourIndex(view, colour) {
+  view.checkAlignment('misaligned colour index');
+  view.writeUint32(colour);
+}
+
 function createPoint(x, y) {
   return { x, y };
 }
@@ -316,6 +330,10 @@ function writeRecordPointer(view, pointer) {
 }
 
 module.exports = {
+  createColourIndex,
+  readColourIndex,
+  writeColourIndex,
+
   createPoint,
   readPoint,
   writePoint,

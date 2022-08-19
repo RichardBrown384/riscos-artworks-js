@@ -2,6 +2,7 @@ const {
   Builders: {
     Lists,
     List,
+    ColourIndex,
     PathBoundingBox,
     Polyline,
 
@@ -27,6 +28,10 @@ const {
   },
 
 } = require('../src').Artworks;
+
+function createColourIndex(colour) {
+  return ColourIndex.of(colour);
+}
 
 function createAttributeLists(attributes) {
   const listsBuilder = Lists.builder();
@@ -64,11 +69,11 @@ function createRecordStrokeWidth(strokeWidth) {
 }
 
 function createRecordStrokeColour(strokeColour) {
-  return Object.freeze(RecordStrokeColour.of(UNKNOWN_4_BIT_0, strokeColour));
+  return Object.freeze(RecordStrokeColour.of(UNKNOWN_4_BIT_0, createColourIndex(strokeColour)));
 }
 
 function createRecordFillColourFlat(colour) {
-  return Object.freeze(RecordFillColourFlat.of(UNKNOWN_4_BIT_0, colour));
+  return Object.freeze(RecordFillColourFlat.of(UNKNOWN_4_BIT_0, createColourIndex(colour)));
 }
 
 function createRecordFillColourGradient(type, x0, y0, x1, y1, startColour, endColour) {
@@ -79,8 +84,8 @@ function createRecordFillColourGradient(type, x0, y0, x1, y1, startColour, endCo
       .push(x0, y0)
       .push(x1, y1)
       .build())
-    .startColour(startColour)
-    .endColour(endColour)
+    .startColour(createColourIndex(startColour))
+    .endColour(createColourIndex(endColour))
     .build();
   return Object.freeze(record);
 }

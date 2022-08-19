@@ -5,14 +5,16 @@ const UnsupportedRecordError = require('../exceptions/unsupported-record-error')
 const Constants = require('../constants');
 
 const {
+  readColourIndex,
+  writeColourIndex,
   readPolyline,
   writePolyline,
   readPath,
   writePath,
   readBoundingBox,
   writeBoundingBox,
-  writePalette,
   readPalette,
+  writePalette,
 } = require('./primitives');
 
 function createRecordHeader(type, unknown4, boundingBox) {
@@ -180,12 +182,12 @@ function createRecordStrokeColour(strokeColour) {
 
 function readRecordStrokeColour(view) {
   return {
-    strokeColour: view.readUint32(),
+    strokeColour: readColourIndex(view),
   };
 }
 
 function writeRecordStrokeColour(view, { strokeColour }) {
-  view.writeUint32(strokeColour);
+  writeColourIndex(view, strokeColour);
 }
 
 function createRecordStrokeWidth(strokeWidth) {
@@ -213,14 +215,14 @@ function createFillGradientShaded(gradientLine, startColour, endColour) {
 function readFillGradient(view, fillType) {
   if (fillType === Constants.FILL_FLAT) {
     return {
-      colour: view.readUint32(),
+      colour: readColourIndex(view),
     };
   }
   if (fillType === Constants.FILL_LINEAR || fillType === Constants.FILL_RADIAL) {
     return {
       gradientLine: readPolyline(view, 2),
-      startColour: view.readUint32(),
-      endColour: view.readUint32(),
+      startColour: readColourIndex(view),
+      endColour: readColourIndex(view),
     };
   }
   view.fail('unsupported fill type', fillType);
@@ -229,11 +231,11 @@ function readFillGradient(view, fillType) {
 
 function writeFillGradient(view, fillType, gradient) {
   if (fillType === Constants.FILL_FLAT) {
-    view.writeUint32(gradient.colour);
+    writeColourIndex(view, gradient.colour);
   } else if (fillType === Constants.FILL_LINEAR || fillType === Constants.FILL_RADIAL) {
     writePolyline(view, gradient.gradientLine);
-    view.writeUint32(gradient.startColour);
-    view.writeUint32(gradient.endColour);
+    writeColourIndex(view, gradient.startColour);
+    writeColourIndex(view, gradient.endColour);
   } else {
     view.fail('unsupported fill type', fillType);
   }
