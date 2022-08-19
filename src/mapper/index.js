@@ -11,6 +11,7 @@ const {
 const mapPath = require('./svg/map-path');
 const mapSvg = require('./svg/map-svg');
 const { filterRenderStateForPath } = require('./render-state-filter');
+const rotateArtworks = require('./rotate-artworks');
 
 function extractRGBComponents(colour) {
   const r = (colour) & 0xFF;
@@ -45,7 +46,7 @@ class ArtworksMapper {
 
   processList(list = []) {
     for (let i = 0; i < list.length; i += 1) {
-      const record = list[list.length - 1 - i];
+      const record = list[i];
       this.processRecord(record);
     }
   }
@@ -54,7 +55,6 @@ class ArtworksMapper {
     const { type } = record;
     switch (type & 0xFF) {
       case Constants.RECORD_02_PATH:
-        this.processLists(record.children);
         this.processPath(record);
         break;
       case Constants.RECORD_24_STROKE_COLOUR:
@@ -82,34 +82,34 @@ class ArtworksMapper {
         this.processDashPattern(record);
         break;
       case Constants.RECORD_2C:
-        this.processLists(record.children);
         this.processPath(record);
         break;
       case Constants.RECORD_34:
-        this.processLists(record.children);
         this.processPath(record);
         break;
       case Constants.RECORD_35:
-        this.processLists(record.children);
         this.processPath(record);
         break;
       case Constants.RECORD_3D_BLEND_PATH:
-        this.processLists(record.children);
         this.processPath(record);
         break;
       default:
+        this.renderState.duplicate();
         this.processLists(record.children);
+        this.renderState.pop();
         break;
     }
   }
 
-  processPath({ pointer, path, boundingBox }) {
+  processPath({ children, ...rest }) {
+    const { path, boundingBox } = rest;
     this.fileBoundingBox.merge(boundingBox);
+    this.renderState.duplicate();
+    this.processLists(children);
     const currentState = this.renderState.getCurrentState();
     const state = filterRenderStateForPath(path, currentState);
-    this.objects.push(mapPath(path, state, pointer));
-    // TODO resetting the state here is a work around
-    this.renderState.reset();
+    this.objects.push(mapPath(path, state, rest));
+    this.renderState.pop();
   }
 
   getColour(index) {
@@ -198,17 +198,17 @@ class ArtworksMapper {
 
 function mapArtworksOutline(artworks, strokeWidth = 160) {
   const state = new RenderState(Modes.MODE_OUTLINE, strokeWidth);
-  const mapper = new ArtworksMapper(state, artworks.palette);
-  const { fileBoundingBox, objects } = mapper.mapArtworks(artworks);
-
+  const rotated = rotateArtworks(artworks);
+  const mapper = new ArtworksMapper(state, rotated.palette);
+  const { fileBoundingBox, objects } = mapper.mapArtworks(rotated);
   return mapSvg({ fileBoundingBox, objects });
 }
 
 function mapArtworksNormal(artworks) {
   const state = new RenderState(Modes.MODE_NORMAL);
-  const mapper = new ArtworksMapper(state, artworks.palette);
-  const result = mapper.mapArtworks(artworks);
-
+  const rotated = rotateArtworks(artworks);
+  const mapper = new ArtworksMapper(state, rotated.palette);
+  const result = mapper.mapArtworks(rotated);
   return mapSvg(result);
 }
 
