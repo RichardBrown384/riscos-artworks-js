@@ -1050,6 +1050,14 @@ the descendants traversed, and finally the popped element of the stack is used t
 In pseudocode:
 
 ```javascript
+class AttributeStack {
+    setAttribute(attribute) {
+        const top = this.stack.pop();
+        const newTop = { ...top, attribute };
+        this.stack.push(newTop);
+    }
+}
+
 function processAttribute(attribute) {
     attributeStack.setAttribute(attribute);
 }
@@ -1065,7 +1073,7 @@ function processPath(path) {
 The advantage to this approach is that for special kinds of record, like [Blend Groups](#type-0x3a-blend-group),
 now have all the relevant records as descendants and in order.
 
-If we were to develop an in-place traversal algorithm then we'd need to firstly traverse lists backwards
+If we were to develop an in-place traversal algorithm then firstly we'd need to traverse lists backwards
 so that we'd encounter path A before the layer.
 
 Secondly we might need to maintain a one record lookahead. This is because for Blend Groups, the starting
