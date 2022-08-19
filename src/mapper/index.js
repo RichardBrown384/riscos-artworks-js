@@ -10,17 +10,13 @@ const {
 } = require('./svg/map-gradients');
 const mapPath = require('./svg/map-path');
 const mapSvg = require('./svg/map-svg');
-const { isPathFilled } = require('../types/primitives');
+const { filterRenderStateForPath } = require('./render-state-filter');
 
 function extractRGBComponents(colour) {
   const r = (colour) & 0xFF;
   const g = (colour >> 8) & 0xFF;
   const b = (colour >> 16) & 0xFF;
   return { r, g, b };
-}
-
-function filterRenderStateForPath(path, state) {
-  return (isPathFilled(path)) ? state : { ...state, fill: 'none' };
 }
 
 class ArtworksMapper {

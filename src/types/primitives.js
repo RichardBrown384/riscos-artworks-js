@@ -124,10 +124,6 @@ function writePath(view, path) {
   }
 }
 
-function isPathFilled(path) {
-  return (path[0]?.tag & Constants.TAG_BIT_31) !== 0;
-}
-
 function createPaletteEntry(
   name,
   colour,
@@ -339,7 +335,6 @@ module.exports = {
   createPath,
   readPath,
   writePath,
-  isPathFilled,
 
   createPaletteEntry,
   readPaletteEntry,
