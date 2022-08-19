@@ -1027,7 +1027,7 @@ The final point is because the final element in a list is not allowed to have de
 To get around this restriction the fills are promoted to be siblings of their respective paths.
 
 The same rule applies to the layer. Since it's not allowed to be the last element in the list
-with descendants the first child is promoted to sibling status.
+with descendants itd first child is promoted to sibling status.
 
 This kind of structure is very common within ArtWorks files.
 
@@ -1050,19 +1050,27 @@ the descendants traversed, and finally the popped element of the stack is used t
 In pseudocode:
 
 ```javascript
+function processAttribute(attribute) {
+    attributeStack.setAttribute(attribute);
+}
+
 function processPath(path) {
     attributeStack.duplicate();
-    visit(path.lists);
+    visit(path.getSubLists());
     const state = attributeStack.pop();
     output.addPath(path, state);
 }
 ```
 
-The advantage to this approach is that for special kinds of record, like [Blend Groups](#type-0x3a-blend-group)
-now have all the relevant records as descendants. If we were to develop an in-place traversal
-algorithm then we'd need to firstly traverse lists backwards, and secondly we'd need to manage a
-one record lookahead. The second point is because for Blend Groups the starting contour occurs
-after the Blend Group record itself.
+The advantage to this approach is that for special kinds of record, like [Blend Groups](#type-0x3a-blend-group),
+now have all the relevant records as descendants and in order.
+
+If we were to develop an in-place traversal algorithm then we'd need to firstly traverse lists backwards
+so that we'd encounter path A before the layer.
+
+Secondly we might need to maintain a one record lookahead. This is because for Blend Groups, the starting
+contour occurs in the list after the Blend Group. Therefore, when traversing backwards when we encounter
+a path we'd need to check its previous sibling to see if it's a Blend Group.
 
 #### Example
 
@@ -1088,7 +1096,8 @@ The result is
 
 ##### Step 3
 
-The final step is to demote path A to be the first singleton list of the layer.
+The final step is to demote path A to be the first singleton list of the layer to ensure
+that the layer exists on its own inside a singleton list.
 
 The result is
 
