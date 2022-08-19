@@ -4,49 +4,18 @@ const MergingBoundingBox = require('./merging-bounding-box');
 
 const Constants = require('../constants');
 const { RenderState, Modes } = require('./render-state');
-const mapPathElements = require('./path-elements-map');
-const mapRenderState = require('./path-attributes-map');
-
-const ARTWORKS_UNITS_TO_USER_UNITS = (1.0 / 640.0) * (4.0 / 3.0);
+const {
+  mapRadialGradient,
+  mapLinearGradient,
+} = require('./svg/map-gradients');
+const mapPath = require('./svg/map-path');
+const mapSvg = require('./svg/map-svg');
 
 function extractRGBComponents(colour) {
   const r = (colour) & 0xFF;
   const g = (colour >> 8) & 0xFF;
   const b = (colour >> 16) & 0xFF;
   return { r, g, b };
-}
-
-function createStopColour(offset, stopColour) {
-  return {
-    tag: 'stop',
-    attributes: { offset, 'stop-color': stopColour },
-  };
-}
-
-function createLinearGradientAttributes(id, p1, p2) {
-  return {
-    id,
-    gradientUnits: 'userSpaceOnUse',
-    x1: p1.x,
-    y1: p1.y,
-    x2: p2.x,
-    y2: p2.y,
-  };
-}
-
-function createRadialGradientAttributes(id, p1, p2) {
-  const dx = p2.x - p1.x;
-  const dy = p2.y - p1.y;
-  const r = Math.sqrt(dx * dx + dy * dy);
-  return {
-    id,
-    gradientUnits: 'userSpaceOnUse',
-    cx: p1.x,
-    cy: p1.y,
-    fx: p1.x,
-    fy: p1.y,
-    r,
-  };
 }
 
 class ArtworksMapper {
@@ -56,16 +25,6 @@ class ArtworksMapper {
     this.fileBoundingBox = new MergingBoundingBox({});
     this.definitions = [];
     this.objects = [];
-  }
-
-  getColour(index) {
-    const { entries = [] } = this.palette;
-    if (index < 0 || index >= entries.length) {
-      return 'none';
-    }
-    const { colour } = entries[index];
-    const { r, g, b } = extractRGBComponents(colour);
-    return `rgb(${[r, g, b]})`;
   }
 
   mapArtworks(artworks) {
@@ -149,19 +108,20 @@ class ArtworksMapper {
 
   processPath({ pointer, path, boundingBox }) {
     this.fileBoundingBox.merge(boundingBox);
-    this.objects.push({
-      tag: 'path',
-      attributes: {
-        d: mapPathElements(path),
-        ...mapRenderState(this.renderState.getCurrentState()),
-      },
-      children: [{
-        tag: 'desc',
-        text: JSON.stringify(pointer),
-      }],
-    });
+    const state = this.renderState.getCurrentState();
+    this.objects.push(mapPath(path, state, pointer));
     // TODO resetting the state here is a work around
     this.renderState.reset();
+  }
+
+  getColour(index) {
+    const { entries = [] } = this.palette;
+    if (index < 0 || index >= entries.length) {
+      return 'none';
+    }
+    const { colour } = entries[index];
+    const { r, g, b } = extractRGBComponents(colour);
+    return `rgb(${[r, g, b]})`;
   }
 
   processStrokeColour({ strokeColour }) {
@@ -173,9 +133,6 @@ class ArtworksMapper {
   }
 
   processFillColour(data) {
-    if (!this.renderState.supportsFills()) {
-      return;
-    }
     this.renderState.setFill(this.processFillByType(data));
   }
 
@@ -198,30 +155,24 @@ class ArtworksMapper {
 
   processFillLinear({ gradientLine, startColour, endColour }) {
     const id = `linear-gradient-${this.definitions.length}`;
-    const [p1, p2] = gradientLine;
-    const gradient = {
-      tag: 'linearGradient',
-      attributes: createLinearGradientAttributes(id, p1, p2),
-      children: [
-        createStopColour('0%', this.getColour(startColour)),
-        createStopColour('100%', this.getColour(endColour)),
-      ],
-    };
+    const gradient = mapLinearGradient(
+      id,
+      gradientLine,
+      this.getColour(startColour),
+      this.getColour(endColour),
+    );
     this.definitions.push(gradient);
     return `url(#${id})`;
   }
 
   processFillRadial({ gradientLine, startColour, endColour }) {
     const id = `radial-gradient-${this.definitions.length}`;
-    const [p1, p2] = gradientLine;
-    const gradient = {
-      tag: 'radialGradient',
-      attributes: createRadialGradientAttributes(id, p1, p2),
-      children: [
-        createStopColour('0%', this.getColour(startColour)),
-        createStopColour('100%', this.getColour(endColour)),
-      ],
-    };
+    const gradient = mapRadialGradient(
+      id,
+      gradientLine,
+      this.getColour(startColour),
+      this.getColour(endColour),
+    );
     this.definitions.push(gradient);
     return `url(#${id})`;
   }
@@ -247,51 +198,20 @@ class ArtworksMapper {
   }
 }
 
-function mapArtworks(renderState, artworks) {
-  const mapper = new ArtworksMapper(renderState, artworks.palette);
-
-  const {
-    fileBoundingBox: {
-      minX, minY, maxX, maxY,
-    },
-    definitions,
-    objects,
-  } = mapper.mapArtworks(artworks);
-
-  const viewBoxWidth = Math.max(maxX - minX, 1);
-  const viewBoxHeight = Math.max(maxY - minY, 1);
-
-  const width = viewBoxWidth * ARTWORKS_UNITS_TO_USER_UNITS;
-  const height = viewBoxHeight * ARTWORKS_UNITS_TO_USER_UNITS;
-
-  return {
-    tag: 'svg',
-    attributes: {
-      width,
-      height,
-      viewBox: `${minX} ${-maxY} ${viewBoxWidth} ${viewBoxHeight}`,
-      xmlns: 'http://www.w3.org/2000/svg',
-      'xmlns:xlink': 'http://www.w3.org/1999/xlink',
-    },
-    children: [{
-      tag: 'defs',
-      children: definitions,
-    }, {
-      tag: 'g',
-      attributes: {
-        transform: 'scale(1, -1)',
-      },
-      children: objects,
-    }],
-  };
-}
-
 function mapArtworksOutline(artworks, strokeWidth = 160) {
-  return mapArtworks(new RenderState(Modes.MODE_OUTLINE, strokeWidth), artworks);
+  const state = new RenderState(Modes.MODE_OUTLINE, strokeWidth);
+  const mapper = new ArtworksMapper(state, artworks.palette);
+  const { fileBoundingBox, objects } = mapper.mapArtworks(artworks);
+
+  return mapSvg({ fileBoundingBox, objects });
 }
 
 function mapArtworksNormal(artworks) {
-  return mapArtworks(new RenderState(Modes.MODE_NORMAL), artworks);
+  const state = new RenderState(Modes.MODE_NORMAL);
+  const mapper = new ArtworksMapper(state, artworks.palette);
+  const result = mapper.mapArtworks(artworks);
+
+  return mapSvg(result);
 }
 
 module.exports = {

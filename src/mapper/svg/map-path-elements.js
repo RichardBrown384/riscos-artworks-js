@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 
-const Constants = require('../constants');
+const Constants = require('../../constants');
 
 const TAG_MAP = {
   [Constants.TAG_END]: '',
