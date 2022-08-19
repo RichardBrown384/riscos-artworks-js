@@ -10,12 +10,17 @@ const {
 } = require('./svg/map-gradients');
 const mapPath = require('./svg/map-path');
 const mapSvg = require('./svg/map-svg');
+const { isPathFilled } = require('../types/primitives');
 
 function extractRGBComponents(colour) {
   const r = (colour) & 0xFF;
   const g = (colour >> 8) & 0xFF;
   const b = (colour >> 16) & 0xFF;
   return { r, g, b };
+}
+
+function filterRenderStateForPath(path, state) {
+  return (isPathFilled(path)) ? state : { ...state, fill: 'none' };
 }
 
 class ArtworksMapper {
@@ -108,7 +113,8 @@ class ArtworksMapper {
 
   processPath({ pointer, path, boundingBox }) {
     this.fileBoundingBox.merge(boundingBox);
-    const state = this.renderState.getCurrentState();
+    const currentState = this.renderState.getCurrentState();
+    const state = filterRenderStateForPath(path, currentState);
     this.objects.push(mapPath(path, state, pointer));
     // TODO resetting the state here is a work around
     this.renderState.reset();
