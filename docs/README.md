@@ -995,8 +995,127 @@ which is usually is).
 
 ## Rendering
 
-It's not clear how ArtWorks renders the file. When doing a naive forward traversal of the graph,
-you can encounter background objects after foreground ones.
+It's not entirely clear how ArtWorks renders a file. There are a couple of 
+informed guesses allow us to speculate, but it's not known with 100% certainty
+if these guesses apply in call cases.
+
+### Example image
+
+Consider the following image:
+
+![Image](./media/image.svg)
+
+Both paths are dashed and path A has a slightly thicker stroke width than path B.
+
+### File structure 
+
+The image's ArtWorks file representation will then look something like this:
+
+![Step 0](./media/image-file.svg)
+
+The yellow rectangles represent individual records while the turquoise ones represent
+lists and the red hatched ones represent lists of lists. Please refer to [this](#body-structure)
+section if these terms aren't clear.
+
+Some points to note here:
+
+1. The dash pattern in the very first list is applied to all the following paths.
+2. Even though path A occurs after the layer it is rendered before the layer's descendants.
+3. Both fills occur after their respective paths.
+
+The final point is because the final element in a list is not allowed to have descendants.
+To get around this restriction the fills are promoted to be siblings of their respective paths.
+
+The same rule applies to the layer. Since it's not allowed to be the last element in the list
+with descendants its first child is promoted to sibling status.
+
+This kind of structure is very common within ArtWorks files.
+
+All this together with the first point implies that ArtWorks probably keeps a stack
+of path attributes while rendering. Both paths are dashed, but the sibling and descendant
+attributes of path A don't influence path B and vice-versa.
+
+### Rendering traversal algorithm
+
+From the previous section it seems that we can develop an algorithm for how to render ArtWorks files.
+
+The general approach is to take the last element in each list and demote it to be the
+first descendant of its predecessor. Then we do this repeatedly until all the lists in the
+file are singleton lists.
+
+Once this is done, the file can be rendered using a depth-first traversal, and a stack for the
+path attributes. When a non-attribute record is encountered, the top of the stack is duplicated,
+the descendants traversed, and finally the popped element of the stack is used to render the object.
+
+In pseudocode:
+
+```javascript
+class AttributeStack {
+    setAttribute(attribute) {
+        const top = this.stack.pop();
+        const newTop = { ...top, attribute };
+        this.stack.push(newTop);
+    }
+}
+
+function processAttribute(attribute) {
+    attributeStack.setAttribute(attribute);
+}
+
+function processPath(path) {
+    attributeStack.duplicate();
+    visit(path.getSubLists());
+    const state = attributeStack.pop();
+    output.addPath(path, state);
+}
+```
+
+The advantage to this approach is that for special kinds of record, like [Blend Groups](#type-0x3a-blend-group),
+now have all the relevant records as descendants and in order.
+
+If we were to develop an in-place traversal algorithm then firstly we'd need to traverse lists backwards
+so that we'd encounter path A before the layer.
+
+Secondly we might need to maintain a one record lookahead. This is because for Blend Groups, the starting
+contour occurs in the list after the Blend Group. Therefore, when traversing backwards when we encounter
+a path we'd need to check its previous sibling to see if it's a Blend Group.
+
+#### Example
+
+To make this a little more clear we use the file above to illustrate.
+
+##### Step 1
+
+Starting bottom up, the first thing to do is to take path B's blue fill sibling and
+demote it to be the first singleton list in path B's sublists.
+
+The result is
+
+![Step 1](./media/step-1.svg)
+
+##### Step 2
+
+The second step is to perform the same operation on path A's red fill sibling.
+It ends up being the first singleton list in path A's sublists.
+
+The result is
+
+![Step 2](./media/step-2.svg)
+
+##### Step 3
+
+The final step is to demote path A to be the first singleton list of the layer to ensure
+that the layer exists on its own inside a singleton list.
+
+The result is
+
+![Step 3](./media/step-3.svg)
+
+Rendering is now just a case of performing a depth first traversal.
+
+Also note, that this final structure could be flattened further.
+All the lists are now singletons so there's a redundant level of wrapping 
+in having a list of lists only contain one list each.
 
 ## References
 
