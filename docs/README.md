@@ -3,7 +3,7 @@
 ## Table of contents
 
 * [About](#about)
-* [General Observations](#general-observations)
+* [General observations](#general-observations)
 * [Header](#header)
 * [Body](#body)
     * [Body structure](#body-structure)
@@ -52,7 +52,8 @@
     * [Coordinate system](#coordinate-system)
     * [Path data](#path-data)
     * [Palette](#palette)
-    * [Sprite Area](#sprite-area)
+    * [Colour indices](#colour-indices)
+    * [Sprite area](#sprite-area)
     * [UBuf](#ubuf)
 * [Rendering](#rendering)
 * [References](#references)
@@ -71,7 +72,7 @@ features or options.
 Since being able to write ArtWorks files, the process has included programmatically creating small handcrafted files
 to either confirm existing statements or to infer the purpose of certain record types in a controlled environment.
 
-## General Observations
+## General observations
 
 There a general number of observations that can be made about the files
 
@@ -80,7 +81,7 @@ There a general number of observations that can be made about the files
 3. The records are stored in a tree/graph structure.
 4. The vector data format is virtually identical to !Draw's.
 5. The visual representation (stroke, cap) information are stored separately from the vectors.
-6. Colours are referenced by an index into a palette of defined colours (0xFFFFFFFF or -1 means no colour).
+6. Colours are usually referenced by an index into a palette of defined colours.
 7. Unlike !Draw, fonts appear to be referenced by name throughout.
 8. Strings are null terminated. However, there's often what looks like garbage after the string
    to pad it to a word boundary.
@@ -440,10 +441,10 @@ This record can vary in size.
 
 #### Type 0x24: Stroke Colour
 
-| Offset | Length | Content                             |
-|--------|--------|-------------------------------------|
-| 0      | 24     | [Record header](#record-header)     |
-| 24     | 4      | Colour Index (-1 means transparent) |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 0      | 24     | [Record header](#record-header) |
+| 24     | 4      | [Colour index](#colour-indices) |
 
 #### Type 0x25: Stroke Width
 
@@ -464,20 +465,20 @@ When an ArtWorks file doesn't specify a fill then !AWViewer will crash with a da
 
 If Fill Type is flat
 
-| Offset | Length | Content      |
-|--------|--------|--------------|
-| 32     | 4      | Colour Index |
+| Offset | Length | Content                         |
+|--------|--------|---------------------------------|
+| 32     | 4      | [Colour index](#colour-indices) |
 
 If Fill Type is linear or radial
 
-| Offset | Length | Content            |
-|--------|--------|--------------------|
-| 32     | 4      | Gradient Start X   |
-| 36     | 4      | Gradient Start Y   |
-| 40     | 4      | Gradient End X     |
-| 44     | 4      | Gradient End Y     |
-| 48     | 4      | Start Colour Index |
-| 52     | 4      | End Colour Index   |
+| Offset | Length | Content                               |
+|--------|--------|---------------------------------------|
+| 32     | 4      | Gradient Start X                      |
+| 36     | 4      | Gradient Start Y                      |
+| 40     | 4      | Gradient End X                        |
+| 44     | 4      | Gradient End Y                        |
+| 48     | 4      | Start [Colour index](#colour-indices) |
+| 52     | 4      | End [Colour index](#colour-indices)   |
 
 #### Type 0x27: Join Style
 
@@ -928,9 +929,28 @@ The partitioning of bits 2 to 7 inclusive into 2-bit fields is somewhat arbitrar
 It is known that ArtWorks supported Spot, Process, and Tint colours and that information
 should be encoded somewhere. However, that information doesn't appear to be used by the renderer.
 
-### Sprite Area
+### Colour indices
 
-Note: You can't rely on the first word of the [Sprite Area][sprite-area-format] to be able to compute its size.
+Colours in ArtWorks are referenced by index into a [palette](#palette) with 0xFFFFFFFFF or -1 
+meaning transparent.
+
+However, it appears that a palette can have a maximum size of 1,6777,216 entries.
+I guess this coincides with the maximum number of colours a standard RGB monitor could
+theoretically display.
+
+Indices above this threshold are interpreted as BGR colours in their own right.
+
+To summarise,
+
+| Index value  | Interpretation                                        |
+|--------------|-------------------------------------------------------|
+| < 0x01000000 | An index into the file's [palette](#palette)          |
+| < 0xFFFFFFFF | The index itself is to be interpreted as a BGR colour |
+| = 0xFFFFFFFF | Transparent                                           |
+
+### Sprite area
+
+Note: You can't rely on the first word of the [Sprite area][sprite-area-format] to be able to compute its size.
 Some files, for example `WORLDPEACE,d94`, have nonsensical values.
 
 ### UBuf
