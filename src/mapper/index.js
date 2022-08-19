@@ -93,10 +93,6 @@ class ArtworksMapper {
         this.processLists(record.children);
         this.processPath(record);
         break;
-      case Constants.RECORD_38:
-        this.processLists(record.children);
-        this.processPath(record);
-        break;
       case Constants.RECORD_3D_BLEND_PATH:
         this.processLists(record.children);
         this.processPath(record);
