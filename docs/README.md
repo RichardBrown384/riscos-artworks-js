@@ -1027,7 +1027,7 @@ The final point is because the final element in a list is not allowed to have de
 To get around this restriction the fills are promoted to be siblings of their respective paths.
 
 The same rule applies to the layer. Since it's not allowed to be the last element in the list
-with descendants itd first child is promoted to sibling status.
+with descendants its first child is promoted to sibling status.
 
 This kind of structure is very common within ArtWorks files.
 
