@@ -19,11 +19,24 @@ class RenderState {
         elements: [],
       },
     };
-    this.state = { ...this.defaultState };
+    this.stack = [];
+    this.stack.push({ ...this.defaultState });
   }
 
-  reset() {
-    this.state = { ...this.defaultState };
+  peek() {
+    return this.stack.at(-1);
+  }
+
+  pop() {
+    this.stack.pop();
+  }
+
+  push(state) {
+    this.stack.push({ ...state });
+  }
+
+  duplicate() {
+    this.push(this.peek());
   }
 
   supportsFills() {
@@ -31,25 +44,25 @@ class RenderState {
   }
 
   getCurrentState() {
-    return this.supportsFills() ? this.state : this.defaultState;
+    return this.supportsFills() ? this.peek() : this.defaultState;
   }
 
-  setStroke(stroke) { this.state.stroke = stroke; }
+  setStroke(stroke) { this.peek().stroke = stroke; }
 
-  setStrokeWidth(strokeWidth) { this.state.strokeWidth = strokeWidth; }
+  setStrokeWidth(strokeWidth) { this.peek().strokeWidth = strokeWidth; }
 
-  setFill(fill) { this.state.fill = fill; }
+  setFill(fill) { this.peek().fill = fill; }
 
-  setJoinStyle(joinStyle) { this.state.joinStyle = joinStyle; }
+  setJoinStyle(joinStyle) { this.peek().joinStyle = joinStyle; }
 
-  setStrokeLineCapEnd(capStyle) { this.state.capStyleEnd = capStyle; }
+  setStrokeLineCapEnd(capStyle) { this.peek().capStyleEnd = capStyle; }
 
-  setStrokeLineCapStart(capStyle) { this.state.capStyleStart = capStyle; }
+  setStrokeLineCapStart(capStyle) { this.peek().capStyleStart = capStyle; }
 
-  setWindingRule(windingRule) { this.state.windingRule = windingRule; }
+  setWindingRule(windingRule) { this.peek().windingRule = windingRule; }
 
   setDashPattern(offset = 0, elements = []) {
-    this.state.dash = { offset, elements };
+    this.peek().dash = { offset, elements };
   }
 }
 
