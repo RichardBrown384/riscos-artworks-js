@@ -4,21 +4,16 @@ const MergingBoundingBox = require('./merging-bounding-box');
 
 const Constants = require('../constants');
 const { RenderState, Modes } = require('./render-state');
-const {
-  mapRadialGradient,
-  mapLinearGradient,
-} = require('./svg/map-gradients');
-const mapPath = require('./svg/map-path');
-const mapSvg = require('./svg/map-svg');
 const { filterRenderStateForPath } = require('./render-state-filter');
 const rotateArtworks = require('./rotate-artworks');
 
-function extractRGBComponents(colour) {
-  const r = (colour) & 0xFF;
-  const g = (colour >> 8) & 0xFF;
-  const b = (colour >> 16) & 0xFF;
-  return { r, g, b };
-}
+const {
+  mapRadialGradient,
+  mapLinearGradient,
+  mapPath,
+  mapSvg,
+  mapColour,
+} = require('./svg');
 
 class ArtworksMapper {
   constructor(renderState, palette = []) {
@@ -112,14 +107,18 @@ class ArtworksMapper {
     this.renderState.pop();
   }
 
-  getColour(index) {
-    const { entries = [] } = this.palette;
-    if (index < 0 || index >= entries.length) {
-      return 'none';
+  getColourFromPalette(index) {
+    if (index < 0x01000000) {
+      return this.palette?.entries[index]?.colour;
     }
-    const { colour } = entries[index];
-    const { r, g, b } = extractRGBComponents(colour);
-    return `rgb(${[r, g, b]})`;
+    if (index < 0xFFFFFFFF) {
+      return index;
+    }
+    return null;
+  }
+
+  getColour(index) {
+    return mapColour(this.getColourFromPalette(index));
   }
 
   processStrokeColour({ strokeColour }) {
