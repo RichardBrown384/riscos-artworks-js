@@ -1,4 +1,6 @@
-const Constants = require('../constants');
+/* eslint-disable no-bitwise */
+
+const Constants = require('../../constants');
 
 const FILL = 'fill';
 const FILL_RULE = 'fill-rule';
@@ -28,18 +30,21 @@ const WINDING_RULE_MAP = {
 };
 
 function mapJoinStyle(joinStyle) {
-  return joinStyle !== Constants.JOIN_MITRE
-      && { [STROKE_LINEJOIN]: JOIN_MAP[joinStyle] };
+  const maskedJoinStyle = joinStyle & 0xFF;
+  return maskedJoinStyle !== Constants.JOIN_MITRE
+      && { [STROKE_LINEJOIN]: JOIN_MAP[maskedJoinStyle] };
 }
 
-function mapCapStyle(capStyleStart) {
-  return capStyleStart !== Constants.CAP_BUTT
-      && { [STROKE_LINECAP]: CAP_MAP[capStyleStart] };
+function mapCapStyle(capStyle) {
+  const maskedCapStyle = capStyle & 0xFF;
+  return maskedCapStyle !== Constants.CAP_BUTT
+      && { [STROKE_LINECAP]: CAP_MAP[maskedCapStyle] };
 }
 
 function mapWindingRule(windingRule) {
-  return windingRule !== Constants.WINDING_RULE_NON_ZERO
-      && { [FILL_RULE]: WINDING_RULE_MAP[windingRule] };
+  const maskedWindingRule = windingRule & 0xFF;
+  return maskedWindingRule !== Constants.WINDING_RULE_NON_ZERO
+      && { [FILL_RULE]: WINDING_RULE_MAP[maskedWindingRule] };
 }
 
 function mapDashOffset({ offset = 0 }) {
