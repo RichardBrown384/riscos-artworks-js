@@ -28,30 +28,26 @@ const {
 
 const {
   FILL_FLAT_TRANSPARENT,
+  STROKE_COLOUR_TRANSPARENT,
   STROKE_COLOUR_RED,
   STROKE_COLOUR_BLUE,
+  STROKE_WIDTH_1280,
   STROKE_WIDTH_1500,
   WORK_AREA,
 } = require('../shared-objects');
 
 const {
-  PALETTE_INDEX_TRANSPARENT,
   DEFAULT_PALETTE_INDEX_BLACK,
   DEFAULT_PALETTE_INDEX_WHITE,
 } = require('../default-palette');
 
 const {
   createRecordPath,
-  createRecordStrokeColour,
-  createRecordStrokeWidth,
   createRecordFillColourGradient,
   createRecord34,
 } = require('../record-creators');
 
 const AffineTransform = require('../affine-transform');
-
-const STROKE_TRANSPARENT = createRecordStrokeColour(PALETTE_INDEX_TRANSPARENT);
-const STROKE_WIDTH_1280 = createRecordStrokeWidth(1280);
 
 const FILL_START_X = 332139;
 const FILL_START_Y = 218765;
@@ -166,7 +162,7 @@ function createGeometry(baseTransform, triangleTransform) {
   );
 
   return [
-    List.of(record34Ellipse, STROKE_TRANSPARENT),
+    List.of(record34Ellipse, STROKE_COLOUR_TRANSPARENT),
     List.of(recordPathFillLine, STROKE_COLOUR_BLUE),
     List.of(recordPathTriangle),
   ];

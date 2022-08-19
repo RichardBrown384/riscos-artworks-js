@@ -61,6 +61,7 @@ const STROKE_COLOUR_MAGENTA = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_MAG
 const STROKE_COLOUR_TRANSPARENT = createRecordStrokeColour(PALETTE_INDEX_TRANSPARENT);
 
 const STROKE_WIDTH_960 = createRecordStrokeWidth(960);
+const STROKE_WIDTH_1280 = createRecordStrokeWidth(1280);
 const STROKE_WIDTH_1500 = createRecordStrokeWidth(1500);
 const STROKE_WIDTH_3000 = createRecordStrokeWidth(3000);
 const STROKE_WIDTH_6000 = createRecordStrokeWidth(6000);
@@ -108,6 +109,7 @@ module.exports = {
   STROKE_COLOUR_TRANSPARENT,
 
   STROKE_WIDTH_960,
+  STROKE_WIDTH_1280,
   STROKE_WIDTH_1500,
   STROKE_WIDTH_3000,
   STROKE_WIDTH_6000,

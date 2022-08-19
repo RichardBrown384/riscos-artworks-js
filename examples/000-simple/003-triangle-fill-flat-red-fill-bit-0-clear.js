@@ -11,6 +11,7 @@ const {
     Artworks,
     Lists,
     List,
+    ColourIndex,
 
     RecordFillColourFlat,
   },
@@ -27,7 +28,7 @@ const {
   DEFAULT_PALETTE_INDEX_RED,
 } = require('../default-palette');
 
-const FILL = RecordFillColourFlat.of(0, DEFAULT_PALETTE_INDEX_RED);
+const FILL = RecordFillColourFlat.of(0, ColourIndex.of(DEFAULT_PALETTE_INDEX_RED));
 
 module.exports = Artworks.builder()
   .lists(
