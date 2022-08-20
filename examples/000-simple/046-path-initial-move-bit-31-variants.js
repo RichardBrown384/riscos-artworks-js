@@ -1,5 +1,5 @@
 /*
-Example: 046-path-fill-examples
+Example: 046-path-initial-move-bit-31-variants
 
 Purpose:
 
@@ -15,6 +15,8 @@ to see if that impacts the rendering. The bit appears to only be relevant
 for the first move.
 
 For the open paths we try with the first move, the first line to and ending the path.
+
+For two sub paths we try setting bit 31 for the first and second move respectively.
 
 */
 
