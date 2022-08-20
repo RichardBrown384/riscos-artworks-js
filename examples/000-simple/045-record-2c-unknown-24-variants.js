@@ -1,5 +1,5 @@
 /*
-Example: 045-record-2c-examples
+Example: 045-record-2c-unknown-24-variants
 
 Purpose:
 

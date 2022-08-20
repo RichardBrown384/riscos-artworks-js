@@ -1,5 +1,5 @@
 /*
-Example: 044-record-34-triangle-examples
+Example: 044-record-34-triangle-variants
 
 Purpose:
 
