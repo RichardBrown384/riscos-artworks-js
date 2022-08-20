@@ -30,6 +30,10 @@ function createClosedRectangle(x, y, w, h, moveOptions = TAG_BIT_31) {
     .build();
 }
 
+function createClosedSquare(x, y, sideLength, moveOptions = TAG_BIT_31) {
+  return createClosedRectangle(x, y, sideLength, sideLength, moveOptions);
+}
+
 function createOpenInvertedV(x, y, sideLength, moveOptions = TAG_BIT_31) {
   const width = sideLength;
   const height = 0.5 * Math.sqrt(3) * width;
@@ -80,6 +84,7 @@ function createClosedNSidedPolygon(n, x, y, radius, moveOptions = TAG_BIT_31) {
 module.exports = {
   createClosedEquilateralTriangle,
   createClosedRectangle,
+  createClosedSquare,
   createOpenInvertedV,
   createClosedPentagram,
   createClosedNSidedPolygon,
