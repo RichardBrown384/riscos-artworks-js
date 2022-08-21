@@ -39,11 +39,8 @@ const OBJECT_HEIGHT = SIDE_LENGTH + VERTICAL_SPACING;
 const PADDING = 10_000;
 
 const SQUARE_1 = createRecordPath(createClosedSquare(0, 0, SIDE_LENGTH), PADDING);
-
 const SQUARE_2 = createRecordPath(createClosedSquare(0, OBJECT_HEIGHT, SIDE_LENGTH), PADDING);
-
 const SQUARE_3 = createRecordPath(createClosedSquare(0, 2 * OBJECT_HEIGHT, SIDE_LENGTH), PADDING);
-
 const SQUARE_4 = createRecordPath(createClosedSquare(0, 3 * OBJECT_HEIGHT, SIDE_LENGTH), PADDING);
 
 const FILL_INDEX_BGR_PASTEL_PURPLE = createRecordFillColourFlat(0x20CAA2B1);

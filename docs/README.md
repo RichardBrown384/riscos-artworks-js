@@ -465,6 +465,16 @@ If Fill Type is linear or radial
 | 48     | 4      | Start [Colour index](#colour-indices) |
 | 52     | 4      | End [Colour index](#colour-indices)   |
 
+Note that it is possible for the start and end coordinates to be equal.
+
+In this case, radial fills behave as one would expect and paths are filled
+with the end colour. 
+
+Linear fills are however filled with the start colour. To make matters more
+interesting, when the gradient line is short, what !AWViewer draws is dependent
+on the zoom level. When zoomed in a gradient will be drawn, but when zoomed out
+only the start colour will be used.
+
 #### Type 0x27: Join Style
 
 The Join Style enumeration coincides exactly with that of !Draw.
