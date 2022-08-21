@@ -10,7 +10,6 @@ const {
 const {
   readRecordBody,
   readRecordHeader,
-  shouldSkipRecordBody,
 } = require('../types/records');
 
 class ArtworksReader {
@@ -115,14 +114,7 @@ class ArtworksReader {
 
   readRecordBody(header, pointer) {
     try {
-      if (shouldSkipRecordBody(header, pointer)) {
-        return;
-      }
-      const { next } = pointer;
-      const body = readRecordBody(this.view, header, (message) => {
-        this.view.check(next === 0, message);
-      });
-      this.populateRecord(body);
+      this.populateRecord(readRecordBody(this.view, header, pointer));
     } catch (e) {
       if (e instanceof UnsupportedRecordError) {
         this.unsupportedRecord();

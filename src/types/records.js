@@ -691,7 +691,9 @@ function getUnsupportedRecordErrorMessage(type) {
   return `unsupported record ${type}, (0x${type.toString(16)})`;
 }
 
-function readRecordBody(view, header, checkLast = () => {}) {
+function readRecordBody(view, header, pointer) {
+  const isLast = () => pointer.next === 0;
+  const checkLast = (message) => { view.check(isLast(), message); };
   const { type } = header;
   switch (type & 0xFF) {
     case Constants.RECORD_00:
@@ -765,9 +767,9 @@ function readRecordBody(view, header, checkLast = () => {}) {
     case Constants.RECORD_35:
       return readRecord35(view);
     case Constants.RECORD_37:
-      return readRecord37(view);
+      return isLast() ? {} : readRecord37(view);
     case Constants.RECORD_38:
-      return readRecord38(view);
+      return isLast() ? {} : readRecord38(view);
     case Constants.RECORD_39_FILE_INFO:
       checkLast('types after file info');
       return readRecordFileInfo(view);
@@ -790,12 +792,6 @@ function readRecordBody(view, header, checkLast = () => {}) {
     default:
       throw new UnsupportedRecordError(getUnsupportedRecordErrorMessage(type));
   }
-}
-
-function shouldSkipRecordBody({ type }, { next }) {
-  const maskedType = type & 0xFF;
-  return next === 0
-      && [Constants.RECORD_37, Constants.RECORD_38].includes(maskedType);
 }
 
 function writeRecordBody(view, record) {
@@ -978,7 +974,6 @@ module.exports = {
 
   readRecord42,
 
-  shouldSkipRecordBody,
   readRecordBody,
   writeRecordBody,
 };
