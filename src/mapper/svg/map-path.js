@@ -1,17 +1,19 @@
 const mapPathElements = require('./map-path-elements');
 const mapRenderState = require('./map-path-attributes');
 
-function mapPath(path, state, data) {
+function mapPath(path, state, data = {}) {
   return {
     tag: 'path',
     attributes: {
       d: mapPathElements(path),
       ...mapRenderState(state),
     },
-    children: [{
-      tag: 'desc',
-      text: JSON.stringify(data),
-    }],
+    ...(data && {
+      children: [{
+        tag: 'desc',
+        text: JSON.stringify(data),
+      }],
+    }),
   };
 }
 
