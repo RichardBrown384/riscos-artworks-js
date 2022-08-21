@@ -4,7 +4,7 @@ const MergingBoundingBox = require('./merging-bounding-box');
 
 const Constants = require('../constants');
 const { RenderState, Modes } = require('./render-state');
-const { filterRenderStateForPath } = require('./filter-render-state');
+const { preprocessRenderStateForPath } = require('./preprocess-render-state');
 const preprocessFillColour = require('./preprocess-fills');
 const rotateArtworks = require('./rotate-artworks');
 
@@ -102,9 +102,9 @@ class ArtworksMapper {
     this.fileBoundingBox.merge(boundingBox);
     this.renderState.duplicate();
     this.processLists(children);
-    const currentState = this.renderState.getCurrentState();
-    const state = filterRenderStateForPath(path, currentState);
-    this.objects.push(mapPath(path, state, rest));
+    const state = this.renderState.getCurrentState();
+    const preprocessedState = preprocessRenderStateForPath(path, state);
+    this.objects.push(mapPath(path, preprocessedState, rest));
     this.renderState.pop();
   }
 
