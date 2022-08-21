@@ -873,10 +873,14 @@ Otherwise, the path and all its sub-paths are unfilled.
 
 ### Palette
 
-Contains the indexed palette for the file. *NB* the number of entries sometimes might have
-bit-31 set.
+Contains the indexed palette for the file.
 
 #### Palette header
+
+The maximum number of palette entries is 16,777,216. For why, see [colour indices](#colour-indices).
+
+Therefore, the number of palette entries, should be masked with 0x00FFFFFF when read
+as sometimes bits 24 to 31 (inclusive) are set.
 
 | Offset | Length | Content                                                  |
 |--------|--------|----------------------------------------------------------|

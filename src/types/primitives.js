@@ -186,8 +186,8 @@ function createPalette(entries) {
 
 function readPalette(view) {
   view.checkAlignment('misaligned palette');
-  const count = view.readUint32() & 0x7FFFFFFF;
-  const unknown4 = view.readUint32() & 0x7FFFFFFF;
+  const count = view.readUint32() & 0x00FFFFFF;
+  const unknown4 = view.readUint32() & 0x00FFFFFFF;
   const entries = [];
   for (let n = 0; n < count; n += 1) {
     entries.push(readPaletteEntry(view));
