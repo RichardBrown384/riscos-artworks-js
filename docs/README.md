@@ -9,7 +9,7 @@
     * [Body structure](#body-structure)
         * [Lists](#lists)
         * [List](#list)
-        * [Sublists](#sublists)
+        * [SubLists](#sublists)
         * [Traversal](#traversal)
     * [Record header](#record-header)
     * [Record types](#record-types)
@@ -148,11 +148,9 @@ Starting at offset specified in the header there are a series of doubly-linked l
 Note that both offsets are relative to the _start_ of the node.
 An offset of zero means that there is no previous or next entry.
 
-We refer to these structures as list pointer, since they are pointing to list objects.
-
 #### List
 
-The lists themselves are doubly-linked list nodes and have the following structure
+Lists are doubly-linked list nodes and have the following structure
 
 | Offset | Length | Content                       |
 |--------|--------|-------------------------------|
@@ -163,27 +161,23 @@ The lists themselves are doubly-linked list nodes and have the following structu
 As above, the offsets are relative to the _start_ of the child node.
 An offset of zero means that there is no previous or next entry.
 
-We refer to these structures as record pointers, since they are pointing to record objects.
+#### SubLists
 
-#### Sublists
+Records can also have SubLists. When a record has SubLists, there will be an
+extra 8 bytes at the end of the record containing a pointer to the start of the SubLists.
 
-Records can also have lists of lists, we call these sublists. When a record has a sublist, there will be an
-extra 8 bytes at the end of the record containing a pointer to the start of the list of lists.
-
-| Offset | Length | Content                    |
-|--------|--------|----------------------------|
-| n - 8  | 4      | Offset to previous sublist |
-| n - 4  | 4      | Offset to next sublist     |
+| Offset | Length | Content                     |
+|--------|--------|-----------------------------|
+| n - 8  | 4      | Offset to previous SubLists |
+| n - 4  | 4      | Offset to next SubLists     |
 
 The offsets are relative to `n-8`. An offset of zero means that there is no previous or next entry.
 
-We refer to these structures as lists pointers, since they are pointing to lists of lists.
-
-The rule appears to be that a record can have a sublist if and only if it isn't the last record in a list.
+The rule appears to be that a record can have SubLists if and only if it isn't the last record in a List.
 
 Evidence:
 
-1. Layer records with no sublists typically appear inside singleton lists.
+1. Layer records without SubLists typically appear inside singleton lists.
 2. Path records in certain files have data after the vectors, and the viable pointers
    occupy the last 8 bytes of the record.
 3. Attribute records, such as fills or stroke width, seem to reside as leaves
@@ -194,25 +188,16 @@ Evidence:
 
 ##### First previous pointers
 
-There appear to be a couple of rules for the first previous pointer in either a list of lists
-or a list of records.
+It appears that SubLists need to know which record they are descended from.
+To achieve this the first SubLists previous pointer will point back to the
+location of the SubLists pointer at the end of the parent record.
 
-For lists of lists, the first previous pointer points back to the location of the
-lists pointer within the record that they descended from.
-The top level list of lists within a file do not descend from a record,
-and in this case the first previous pointer will be zero.
+It also appears that records need to know which record they are descended from.
+For example a Stroke Width record needs to know which Path record it descended from.
+To achieve this the first previous pointer in a List will point back to the
+start of the parent record.
 
-For example, a path might have a list of lists containing attributes as singleton lists.
-The first previous pointer of the list of lists then points back to the pointer occupying
-the last 8 bytes of the path record, the lists pointer.
-
-For lists of records, the first previous pointer points back to the location of the record
-that it descends from. The top level singleton records within a file aren't descended from
-a record, and in this case the first previous pointer will be zero.
-
-For example, a Stroke Width record's previous pointer would point back to
-the Path record it's descended from. In turn, the Path record's previous pointer
-would then point back to the Layer it's descended from.
+If a record isn't descended from another, then the previous pointer will be zero.
 
 If these pointers aren't set correctly then !AWViewer won't draw anything.
 
@@ -250,7 +235,7 @@ function readSubLists(subListPointerPosition) {
     const current = getPosition();
     assert(current <= subListPointerPosition);
     setPosition(subListPointerPosition);
-    const {position, next} = readListsPointer();
+    const {position, next} = readSubListsPointer();
     if (next !== 0) {
         setPosition(position + next);
         readLists();
@@ -260,7 +245,7 @@ function readSubLists(subListPointerPosition) {
 
 where
 
-1. The `readListPointer`, `readRecordPointer` and `readListsPointer` functions read the appropriate `next`
+1. The `readListPointer`, `readRecordPointer` and `readSubListsPointer` functions read the appropriate `next`
    and `previous` values, and return them along with the position of the pointer in the file.
 2. The `setPosition` function allows one to navigate to a certain point in the file.
 3. The `readRecord` function reads the appropriate record data from the file.
@@ -310,25 +295,25 @@ This record appears to be always 124 bytes long and filled with zeros.
 Notes: After the bounding rectangle there are a number of trailing zeros.
 The number of zeros can vary, and there can sometimes be string data present at offset 84 too.
 
-| Offset | Length | Content                           |
-|--------|--------|-----------------------------------|
-| 0      | 24     | [Record header](#record-header)   |
-| 24     | 4      | Unknown                           |
-| 28     | 4      | Unknown                           |
-| 32     | 4      | Unknown                           |
-| 36     | 4      | Unknown                           |
-| 40     | 4      | Unknown                           |
-| 44     | 4      | Unknown                           |
-| 48     | 4      | Bounding Rectangle Bottom Left X  |
-| 52     | 4      | Bounding Rectangle Bottom Left Y  |
-| 56     | 4      | Bounding Rectangle Top Left X     |
-| 60     | 4      | Bounding Rectangle Top Left Y     |
-| 64     | 4      | Bounding Rectangle Top Right X    |
-| 68     | 4      | Bounding Rectangle Top Right Y    |
-| 72     | 4      | Bounding Rectangle Bottom Right X |
-| 76     | 4      | Bounding Rectangle Bottom Right Y |
-| 80     | Varies | Unknown                           |
-| n - 8  | 8      | [Lists pointer](#sublists)        |
+| Offset | Length | Content                            |
+|--------|--------|------------------------------------|
+| 0      | 24     | [Record header](#record-header)    |
+| 24     | 4      | Unknown                            |
+| 28     | 4      | Unknown                            |
+| 32     | 4      | Unknown                            |
+| 36     | 4      | Unknown                            |
+| 40     | 4      | Unknown                            |
+| 44     | 4      | Unknown                            |
+| 48     | 4      | Bounding Rectangle Bottom Left X   |
+| 52     | 4      | Bounding Rectangle Bottom Left Y   |
+| 56     | 4      | Bounding Rectangle Top Left X      |
+| 60     | 4      | Bounding Rectangle Top Left Y      |
+| 64     | 4      | Bounding Rectangle Top Right X     |
+| 68     | 4      | Bounding Rectangle Top Right Y     |
+| 72     | 4      | Bounding Rectangle Bottom Right X  |
+| 76     | 4      | Bounding Rectangle Bottom Right Y  |
+| 80     | Varies | Unknown                            |
+| n - 8  | 8      | [SubLists pointer](#sublists)      |
 
 #### Type 0x02: Path
 
@@ -339,7 +324,7 @@ Note: In certain cases there's extra data after the path data.
 | 0      | 24     | [Record header](#record-header) |
 | 24     | varies | [Path data](#path-data)         |
 | varies | varies | Unknown, sometimes present      |
-| n - 8  | 8      | [Lists pointer](#sublists)      |
+| n - 8  | 8      | [SubLists pointer](#sublists)   |
 
 #### Type 0x05: Sprite
 
@@ -395,7 +380,7 @@ The function of the unknowns in the record body aren't understood. Various value
 | 24     | 4      | Unknown                         |
 | 28     | 4      | Unknown                         |
 | 32     | 4      | Unknown                         |
-| 36     | 8      | [Lists pointer](#sublists)      |
+| 36     | 8      | [SubLists pointer](#sublists)   |
 
 #### Type 0x0A: Layer
 
@@ -404,7 +389,7 @@ The function of the unknowns in the record body aren't understood. Various value
 | 0      | 24     | [Record header](#record-header)                                                              |
 | 24     | 4      | Unknown. Bit 3 is usually set and both bits 3 and 0 must be set for the layer to be visible. |
 | 28     | 32     | Layer name, null terminated. The length stated here is a guess.                              |
-| 60     | 8      | [Lists pointer](#sublists)                                                                   |
+| 60     | 8      | [SubLists pointer](#sublists)                                                                |
 
 #### Type 0x21: Work Area
 
@@ -589,12 +574,12 @@ in !AWViewer in Outline mode producing an error with the message
 
 It's not known if there is a correct way to set the value at offset 24.
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Unknown (order?)                |
-| 28     | varies | [Path data](#path-data)         |
-| n - 8  | 8      | [Lists pointer](#sublists)      |
+| Offset | Length | Content                          |
+|--------|--------|----------------------------------|
+| 0      | 24     | [Record header](#record-header)  |
+| 24     | 4      | Unknown (order?)                 |
+| 28     | varies | [Path data](#path-data)          |
+| n - 8  | 8      | [SubLists pointer](#sublists)    |
 
 #### Type 0x2D: Character
 
@@ -609,7 +594,7 @@ Please refer to the [RISC OS Character Set][risc-os-character-set] for details.
 | 32     | 4      | Unknown, Y Coordinate (text base line?) |
 | 36     | 4      | Unknown (0xf8f)                         |
 | 40     | 4      | Unknown (0)                             |
-| 44     | 8      | [Lists pointer](#sublists)              |
+| 44     | 8      | [SubLists pointer](#sublists)           |
 
 #### Type 0x2E: Unknown
 
@@ -699,7 +684,7 @@ but this does not appear to be the case.
 | 40     | 4      | Bounding Triangle Top Right X   |
 | 44     | 4      | Bounding Triangle Top Right Y   |
 | 48     | varies | [Path data](#path-data)         |
-| n - 8  | 8      | [Lists pointer](#sublists)      |
+| n - 8  | 8      | [SubLists pointer](#sublists)   |
 
 #### Type 0x35: Unknown
 
@@ -714,17 +699,17 @@ but this does not appear to be the case.
 | 44     | 4      | Bounding Triangle Top Right X   |
 | 48     | 4      | Bounding Triangle Top Right Y   |
 | 52     | varies | [Path data](#path-data)         |
-| n - 8  | 8      | [Lists pointer](#sublists)      |
+| n - 8  | 8      | [SubLists pointer](#sublists)   |
 
 #### Type 0x37: Unknown
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | varies | [Path data](#path-data)         |
-| varies | varies | Unknown                         |
-| n - 24 | 16     | Bounding Box                    |
-| n - 8  | 8      | [Lists pointer](#sublists)      |
+| Offset | Length | Content                          |
+|--------|--------|----------------------------------|
+| 0      | 24     | [Record header](#record-header)  |
+| 24     | varies | [Path data](#path-data)          |
+| varies | varies | Unknown                          |
+| n - 24 | 16     | Bounding Box                     |
+| n - 8  | 8      | [SubLists pointer](#sublists)    |
 
 #### Type 0x38: Unknown
 
@@ -737,7 +722,7 @@ presence of path data.
 | 0      | 24     | [Record header](#record-header)                 |
 | 24     | 64     | [Path data](#path-data) (1 Moves, 4 Lines, End) |
 | 88     | 68     | Unknown                                         |
-| 156    | 8      | [Lists pointer](#sublists)                      |
+| 156    | 8      | [SubLists pointer](#sublists)                   |
 
 #### Type 0x39: File information
 
@@ -770,7 +755,7 @@ one or more [path](#type-0x02-path) records defining the intermediate and end sh
 | 56     | 4      | Unknown, -1 in all available files                                          |
 | 60     | 4      | Unknown, -1 in all available files                                          |
 | 64     | 4      | Unknown, -1 in all available files                                          |
-| 68     | 8      | [Lists pointer](#sublists)                                                  |
+| 68     | 8      | [SubLists pointer](#sublists)                                               |
 
 For the unknown value at offset 36, the least significant nibbles are nearly all 0, 2, 6 or 8.
 
@@ -845,7 +830,7 @@ This record seems to appear as a sibling to records of [Type 0x37](#type-0x37-un
 | Offset | Length | Content                         |
 |--------|--------|---------------------------------|
 | 0      | 24     | [Record header](#record-header) |
-| 24     | 8      | [Lists pointer](#sublists)      |
+| 24     | 8      | [SubLists pointer](#sublists)   |
 
 ### Coordinate system
 
@@ -996,7 +981,7 @@ which is usually is).
 ## Rendering
 
 It's not entirely clear how ArtWorks renders a file. There are a couple of 
-informed guesses allow us to speculate, but it's not known with 100% certainty
+informed guesses that allow us to speculate, but it's not known with 100% certainty
 if these guesses apply in call cases.
 
 ### Example image
@@ -1064,7 +1049,7 @@ function processAttribute(attribute) {
 
 function processPath(path) {
     attributeStack.duplicate();
-    visit(path.getSubLists());
+    processSubLists(path.getSubLists());
     const state = attributeStack.pop();
     output.addPath(path, state);
 }
@@ -1073,13 +1058,6 @@ function processPath(path) {
 The advantage to this approach is that for special kinds of record, like [Blend Groups](#type-0x3a-blend-group),
 now have all the relevant records as descendants and in order.
 
-If we were to develop an in-place traversal algorithm then firstly we'd need to traverse lists backwards
-so that we'd encounter path A before the layer.
-
-Secondly we might need to maintain a one record lookahead. This is because for Blend Groups, the starting
-contour occurs in the list after the Blend Group. Therefore, when traversing backwards when we encounter
-a path we'd need to check its previous sibling to see if it's a Blend Group.
-
 #### Example
 
 To make this a little more clear we use the file above to illustrate.
@@ -1087,7 +1065,7 @@ To make this a little more clear we use the file above to illustrate.
 ##### Step 1
 
 Starting bottom up, the first thing to do is to take path B's blue fill sibling and
-demote it to be the first singleton list in path B's sublists.
+demote it to be the first singleton list in path B's SubLists.
 
 The result is
 
@@ -1096,7 +1074,7 @@ The result is
 ##### Step 2
 
 The second step is to perform the same operation on path A's red fill sibling.
-It ends up being the first singleton list in path A's sublists.
+It ends up being the first singleton list in path A's SubLists.
 
 The result is
 
