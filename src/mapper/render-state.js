@@ -4,11 +4,11 @@ const MODE_OUTLINE = 0;
 const MODE_NORMAL = 1;
 
 class RenderState {
-  constructor(mode = MODE_OUTLINE, strokeWidth = 160) {
+  constructor(mode = MODE_OUTLINE) {
     this.mode = mode;
     this.defaultState = {
       stroke: 'black',
-      strokeWidth,
+      strokeWidth: 0,
       fill: 'none',
       joinStyle: Constants.JOIN_BEVEL,
       capStyleEnd: Constants.CAP_BUTT,
