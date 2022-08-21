@@ -4,7 +4,8 @@ const MergingBoundingBox = require('./merging-bounding-box');
 
 const Constants = require('../constants');
 const { RenderState, Modes } = require('./render-state');
-const { filterRenderStateForPath } = require('./render-state-filter');
+const { filterRenderStateForPath } = require('./filter-render-state');
+const preprocessFillColour = require('./preprocess-fills');
 const rotateArtworks = require('./rotate-artworks');
 
 const {
@@ -130,7 +131,9 @@ class ArtworksMapper {
   }
 
   processFillColour(data) {
-    this.renderState.setFill(this.processFillByType(data));
+    const preprocessedFillColour = preprocessFillColour(data);
+    const processedFill = this.processFillByType(preprocessedFillColour);
+    this.renderState.setFill(processedFill);
   }
 
   processFillByType({ fillType, ...data }) {
