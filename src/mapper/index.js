@@ -198,8 +198,8 @@ class ArtworksMapper {
   }
 }
 
-function mapArtworksOutline(artworks, strokeWidth = 160) {
-  const state = new RenderState(Modes.MODE_OUTLINE, strokeWidth);
+function mapArtworksOutline(artworks) {
+  const state = new RenderState(Modes.MODE_OUTLINE);
   const rotated = rotateArtworks(artworks);
   const mapper = new ArtworksMapper(state, rotated.palette);
   const { fileBoundingBox, objects } = mapper.mapArtworks(rotated);

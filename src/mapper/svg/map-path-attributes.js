@@ -10,6 +10,7 @@ const STROKE_LINECAP = 'stroke-linecap';
 const STROKE_LINEJOIN = 'stroke-linejoin';
 const STROKE_DASHOFFSET = 'stroke-dashoffset';
 const STROKE_DASHARRAY = 'stroke-dasharray';
+const VECTOR_EFFECT = 'vector-effect';
 
 const JOIN_MAP = {
   [Constants.JOIN_MITRE]: 'miter',
@@ -28,6 +29,26 @@ const WINDING_RULE_MAP = {
   [Constants.WINDING_RULE_NON_ZERO]: 'nonzero',
   [Constants.WINDING_RULE_EVEN_ODD]: 'evenodd',
 };
+
+function mapStroke(stroke) {
+  return { [STROKE]: stroke };
+}
+
+function mapStrokeWidth(strokeWidth) {
+  if (strokeWidth !== 0) {
+    return { [STROKE_WIDTH]: strokeWidth };
+  }
+  return {
+    // I would have thought 1px would be correct, but Chrome produces thicker
+    // lines than are perhaps desirable
+    [STROKE_WIDTH]: '0.5px',
+    [VECTOR_EFFECT]: 'non-scaling-stroke',
+  };
+}
+
+function mapFill(fill) {
+  return { [FILL]: fill };
+}
 
 function mapJoinStyle(joinStyle) {
   const maskedJoinStyle = joinStyle & 0xFF;
@@ -65,14 +86,14 @@ function mapPathAttributes({
   dash,
 }) {
   return {
-    [STROKE]: stroke,
-    [STROKE_WIDTH]: strokeWidth,
-    [FILL]: fill,
-    ...(mapJoinStyle(joinStyle)),
-    ...(mapCapStyle(capStyleStart)),
-    ...(mapWindingRule(windingRule)),
-    ...(mapDashOffset(dash)),
-    ...(mapDashElements(dash)),
+    ...mapStroke(stroke),
+    ...mapStrokeWidth(strokeWidth),
+    ...mapFill(fill),
+    ...mapJoinStyle(joinStyle),
+    ...mapCapStyle(capStyleStart),
+    ...mapWindingRule(windingRule),
+    ...mapDashOffset(dash),
+    ...mapDashElements(dash),
   };
 }
 
