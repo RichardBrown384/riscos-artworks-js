@@ -6,10 +6,10 @@ function isPathFilled(path) {
   return (path[0]?.tag & Constants.TAG_BIT_31) !== 0;
 }
 
-function filterRenderStateForPath(path, state) {
+function preprocessRenderStateForPath(path, state) {
   return (isPathFilled(path)) ? state : { ...state, fill: 'none' };
 }
 
 module.exports = {
-  filterRenderStateForPath,
+  preprocessRenderStateForPath,
 };
