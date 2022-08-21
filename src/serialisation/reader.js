@@ -99,11 +99,8 @@ class ArtworksReader {
       const pointer = readRecordPointer(this.view);
       const header = readRecordHeader(this.view);
       const { position, next } = pointer;
-      const checkLast = (message) => {
-        this.view.check(next === 0, message);
-      };
       this.startRecord({ pointer, ...header });
-      this.readRecordBody(header, checkLast);
+      this.readRecordBody(header, pointer);
       if (next !== 0) {
         this.readSubLists(position + next - 8);
       }
@@ -115,9 +112,9 @@ class ArtworksReader {
     }
   }
 
-  readRecordBody(header, checkLast) {
+  readRecordBody(header, pointer) {
     try {
-      this.populateRecord(readRecordBody(this.view, header, checkLast));
+      this.populateRecord(readRecordBody(this.view, header, pointer));
     } catch (e) {
       if (e instanceof UnsupportedRecordError) {
         this.unsupportedRecord();
