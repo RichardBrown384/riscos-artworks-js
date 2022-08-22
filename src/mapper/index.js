@@ -1,11 +1,14 @@
 /* eslint-disable no-bitwise */
 
+const Constants = require('../constants');
+
 const MergingBoundingBox = require('./merging-bounding-box');
 
-const Constants = require('../constants');
 const { RenderState, Modes } = require('./render-state');
 const { preprocessRenderStateForPath } = require('./preprocess-render-state');
 const preprocessFillColour = require('./preprocess-fills');
+
+const { denormalise } = require('../normalisation');
 
 const {
   mapRadialGradient,
@@ -14,7 +17,10 @@ const {
   mapSvg,
   mapColour,
 } = require('./svg');
-const { denormalise } = require('../normalisation');
+
+function headerControlWordPathVisible({unknown4}) {
+  return (unknown4 & Constants.UNKNOWN_4_BIT_1) !== 0;
+}
 
 class ArtworksMapper {
   constructor(renderState, palette = []) {
@@ -96,12 +102,14 @@ class ArtworksMapper {
 
   processPath({ children, ...data }) {
     const { path, boundingBox } = data;
-    this.fileBoundingBox.merge(boundingBox);
     this.renderState.duplicate();
     this.processLists(children);
-    const state = this.renderState.getCurrentState();
-    const preprocessedState = preprocessRenderStateForPath(path, state);
-    this.objects.push(mapPath(path, preprocessedState, data));
+    if (headerControlWordPathVisible(data)) {
+      this.fileBoundingBox.merge(boundingBox);
+      const state = this.renderState.getCurrentState();
+      const preprocessedState = preprocessRenderStateForPath(path, state);
+      this.objects.push(mapPath(path, preprocessedState, data));
+    }
     this.renderState.pop();
   }
 

@@ -478,16 +478,25 @@ function readRecord35(view) {
   };
 }
 
-function readRecord37(view) {
+function readRecordDistortionGroup(view) {
   return {
     path: readPath(view),
+    unknown156: view.readUint32(),
+    unknown160: view.readUint32(),
+    unknown164: view.readUint32(),
+    unknown168: view.readUint32(),
+    unknown172: view.readUint32(),
+    unknown176: view.readUint32(),
+    unknown180: view.readUint32(),
+    unknown184: view.readUint32(),
+    unknown188: view.readUint32(),
+    originalObjectsBoundingBox: readBoundingBox(view),
   };
 }
 
-function readRecord38(view) {
+function readRecordPerspectiveGroup(view) {
   return {
     path: readPath(view),
-    unknown88: view.readUint32(),
     unknown92: view.readUint32(),
     unknown96: view.readUint32(),
     unknown100: view.readUint32(),
@@ -501,9 +510,7 @@ function readRecord38(view) {
     unknown132: view.readUint32(),
     unknown136: view.readUint32(),
     unknown140: view.readUint32(),
-    unknown144: view.readUint32(),
-    unknown148: view.readUint32(),
-    unknown152: view.readUint32(),
+    originalObjectsBoundingBox: readBoundingBox(view),
   };
 }
 
@@ -683,7 +690,7 @@ function writeRecordMarkerEnd(view, { markerStyle, markerWidth, markerHeight }) 
   view.writeUint32(markerHeight);
 }
 
-function readRecord42() {
+function readRecordDistortionSubgroup() {
   return {};
 }
 
@@ -766,10 +773,10 @@ function readRecordBody(view, header, pointer) {
       return readRecord34(view);
     case Constants.RECORD_35:
       return readRecord35(view);
-    case Constants.RECORD_37:
-      return isLast() ? {} : readRecord37(view);
-    case Constants.RECORD_38:
-      return isLast() ? {} : readRecord38(view);
+    case Constants.RECORD_37_DISTORTION_GROUP:
+      return isLast() ? {} : readRecordDistortionGroup(view);
+    case Constants.RECORD_38_PERSPECTIVE_GROUP:
+      return isLast() ? {} : readRecordPerspectiveGroup(view);
     case Constants.RECORD_39_FILE_INFO:
       checkLast('types after file info');
       return readRecordFileInfo(view);
@@ -787,8 +794,8 @@ function readRecordBody(view, header, pointer) {
     case Constants.RECORD_3F_MARKER_END:
       checkLast('types after record marker end');
       return readRecordMarkerEnd(view);
-    case Constants.RECORD_42:
-      return readRecord42();
+    case Constants.RECORD_DISTORTION_SUBGROUP:
+      return readRecordDistortionSubgroup();
     default:
       throw new UnsupportedRecordError(getUnsupportedRecordErrorMessage(type));
   }
@@ -948,8 +955,8 @@ module.exports = {
   readRecord34,
   writeRecord34,
   readRecord35,
-  readRecord37,
-  readRecord38,
+  readRecordDistortionGroup,
+  readRecordPerspectiveGroup,
   readRecordFileInfo,
 
   createRecordBlendGroup,
@@ -972,7 +979,7 @@ module.exports = {
   readRecordMarkerEnd,
   writeRecordMarkerEnd,
 
-  readRecord42,
+  readRecordDistortionSubgroup,
 
   readRecordBody,
   writeRecordBody,
