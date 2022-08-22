@@ -40,15 +40,15 @@
         * [Type 0x33](#type-0x33-unknown)
         * [Type 0x34](#type-0x34-path)
         * [Type 0x35](#type-0x35-unknown)
-        * [Type 0x37](#type-0x37-unknown)
-        * [Type 0x38](#type-0x38-unknown)
+        * [Type 0x37 - Distortion Group](#type-0x37-distortion-group)
+        * [Type 0x38 - Perspective Group](#type-0x38-perspective-group)
         * [Type 0x39](#type-0x39-file-information)
         * [Type 0x3A - Blend Group](#type-0x3a-blend-group)
         * [Type 0x3B - Blend Options](#type-0x3b-blend-options)
         * [Type 0x3D - Blend Path](#type-0x3d-blend-path)
         * [Type 0x3E - Start Marker](#type-0x3e-line-start-marker)
         * [Type 0x3F - End Marker](#type-0x3f-line-end-marker)
-        * [Type 0x42](#type-0x42-unknown)
+        * [Type 0x42 - Distortion Subgroup](#type-0x42-distortion-subgroup)
     * [Coordinate system](#coordinate-system)
     * [Path data](#path-data)
     * [Palette](#palette)
@@ -257,27 +257,35 @@ The records, unless noted otherwise, all share a common header.
 | Offset | Length | Content                                             |
 |--------|--------|-----------------------------------------------------|
 | 0      | 4      | Record type (Bits 0-7 type, 8-31 are sometimes set) |
-| 4      | 4      | Unknown                                             |
+| 4      | 4      | [Header control word](#header-control-word)         |
 | 8      | 4      | Bounding Box Min X                                  |
 | 12     | 4      | Bounding Box Min Y                                  |
 | 16     | 4      | Bounding Box Max X                                  |
 | 20     | 4      | Bounding Box Max Y                                  |
 
-The function of the integer at offset 4 is not very well understood.
+The bounding box elements, given ArtWorks uses signed coordinates, may be negative.
+
+For objects that have no immediate visual representation, such as the palette, the bounding box
+entries are usually zero.
+
+#### Header control word
+
+The function of the header control word is not very well understood.
+
 However, in simple cases, the following seems to apply.
 
 | Bit(s) | Content                                                                  |
 |--------|--------------------------------------------------------------------------|
 | 0      | If set then style records (fills and so on) are used, otherwise ignored. |
 | 1      | If set then path records are used, otherwise ignored.                    |
-| 2..7   | Unknown                                                                  |
+| 2..3   | Unknown                                                                  |
+| 4      | Seems to be set if the path was computed for perspective or distortion.  |
+| 5..7   | Unknown                                                                  |
 | 8..15  | Unknown, perhaps a counter or index, some files have sequential values.  |
 | 16..31 | Unknown                                                                  |
 
-For objects that have no immediate visual representation, such as the palette, the bounding box
-entries are usually zero.
-
-Finally, bounding box values may be negative.
+Note that, for paths, if bit 1 is clear the path itself is invisible, but its descendants
+might not be.
 
 ### Record types
 
@@ -366,7 +374,7 @@ The palette defined in this record seems to take precedence over the one defined
 
 #### Type 0x06: Group
 
-Bit 1 of `unknown4` must be set in order for the group to be drawn.
+Bit 1 of the [header control word](#header-control-word) must be set in order for the group to be drawn.
 
 The bounding box must be valid and encompass the group objects in order for !AWViewer
 to draw the group properly.
@@ -410,12 +418,12 @@ offsets specified in the file's [header](#header).
 The purpose of this record isn't known. Maybe an options record?
 The text `1cm` seems to occur relatively often.
 
-The body is always 208 bytes long.
+The record is always 208 bytes long.
 
 | Offset | Length | Content                         |
 |--------|--------|---------------------------------|
 | 0      | 24     | [Record header](#record-header) |
-| 24     | 208    | Unknown                         |
+| 24     | 184    | Unknown                         |
 
 #### Type 0x23: File save location
 
@@ -440,6 +448,8 @@ This record can vary in size.
 |--------|--------|-----------------------------------|
 | 0      | 24     | [Record header](#record-header)   |
 | 24     | 4      | Stroke Width (-1 means no stroke) |
+
+Like !Draw, a stroke width of zero means draw the thinnest possible line on the device.
 
 #### Type 0x26: Fill
 
@@ -549,19 +559,20 @@ The dash pattern structure is similar to that of !Draw.
 
 When an ArtWorks file doesn't specify a dash pattern then !AWViewer defaults to no pattern and draws solid paths.
 
-There are some doubts about Dash Pattern Index. One interpretation is that it forms an index into a dash palette.
-A negative index could mean that a bespoke dash pattern follows. However, positive values also have subsequent dash
-patterns.
-Maybe there is a palette of dash patterns within ArtWorks but for rendering purposes the pattern is specified inline in
-the record.
-
-[Blend Groups](#type-0x3a-blend-group) expect a dash pattern to be specified. Failing to set one will
+However, [Blend Groups](#type-0x3a-blend-group) expect a dash pattern to be specified. Failing to set one will
 result in !AWViewer crashing.
 
 | Offset | Length | Content                                                                                                                     |
 |--------|--------|-----------------------------------------------------------------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                                                                             |
 | 24     | 4      | Dash Pattern Index <ul><li>-1 - Dash pattern follows</li><li>0 - No dash</li><li>Otherwise - Dash pattern follows</li></ul> |
+
+There are some doubts about Dash Pattern Index. One interpretation is that it forms an index into a dash palette.
+A negative index could mean that a bespoke dash pattern follows. However, positive values also have subsequent dash
+patterns.
+
+Maybe there is a palette of dash patterns within ArtWorks but for rendering purposes the pattern is specified inline in
+the record.
 
 If Dash Pattern Index is non-zero
 
@@ -714,28 +725,55 @@ but this does not appear to be the case.
 | 52     | varies | [Path data](#path-data)         |
 | n - 8  | 8      | [SubLists pointer](#sublists)   |
 
-#### Type 0x37: Unknown
+#### Type 0x37: Distortion Group
 
-| Offset | Length | Content                          |
-|--------|--------|----------------------------------|
-| 0      | 24     | [Record header](#record-header)  |
-| 24     | varies | [Path data](#path-data)          |
-| varies | varies | Unknown                          |
-| n - 24 | 16     | Bounding Box                     |
-| n - 8  | 8      | [SubLists pointer](#sublists)    |
+This record appears to be a fixed 216 bytes in length, unless it appears at the end of a list,
+in which case, !AWViewer ignores it.
 
-#### Type 0x38: Unknown
+| Offset | Length | Content                                                              |
+|--------|--------|----------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                      |
+| 24     | 132    | [Distortion path](#path-data) (Move, 4 Beziers, Close sub path, End) |
+| 156    | 36     | Unknown                                                              |
+| 192    | 16     | Bounding box of reference objects                                    |
+| 208    | 8      | [SubLists pointer](#sublists)                                        |
 
-This record appears to be a fixed 156 bytes in length. However, there is one instance of the record
-being at the end of a list and with no path data. It isn't known how to correctly determine the
-presence of path data.
+A path comprising four Béziers is used to define the distortion transform for the group.
 
-| Offset | Length | Content                                         |
-|--------|--------|-------------------------------------------------|
-| 0      | 24     | [Record header](#record-header)                 |
-| 24     | 64     | [Path data](#path-data) (1 Moves, 4 Lines, End) |
-| 88     | 68     | Unknown                                         |
-| 156    | 8      | [SubLists pointer](#sublists)                   |
+Within the group (once the file has been restructured see [rendering](#rendering)),
+there is usually a single [Distortion Subgroup](#type-0x42-distortion-subgroup) sitting above all other
+descendants.
+
+It appears that a distortion group was an expensive thing to compute so ArtWorks
+stores the distorted paths beneath invisible copies of the original paths within the group.
+
+The bounding box at then end of the record appears to coincide with the bounds of
+all the invisible original objects.
+
+#### Type 0x38: Perspective Group
+
+This record appears to be a fixed 168 bytes in length, unless it appears at the end of a list,
+in which case, !AWViewer ignores it.
+
+| Offset | Length | Content                                                               |
+|--------|--------|-----------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                       |
+| 24     | 68     | [Quadrilateral path](#path-data) (Move, 4 Lines, Close sub path, End) |
+| 92     | 52     | Unknown                                                               |
+| 144    | 16     | Bounding box of original objects                                      |
+| 160    | 8      | [SubLists pointer](#sublists)                                         |
+
+The quadrilateral path is used to define the perspective transform for the group.
+
+Within the group (once the file has been restructured see [rendering](#rendering)),
+there is usually a single [Distortion Subgroup](#type-0x42-distortion-subgroup) sitting above all other
+descendants.
+
+It appears that a perspective group was an expensive thing to compute so ArtWorks
+stores the perspective paths beneath invisible copies of the original paths within the group.
+
+The bounding box at then end of the record appears to coincide with the bounds of 
+all the invisible original objects.
 
 #### Type 0x39: File information
 
@@ -836,9 +874,15 @@ Line end caps are still drawn when markers are in use.
 | 28     | 4      | Marker Width (0x10000 corresponds to line width)                                                                     |
 | 32     | 4      | Marker Height (0x10000 corresponds to line width)                                                                    |
 
-#### Type 0x42: Unknown
+#### Type 0x42: Distortion Subgroup
 
-This record seems to appear as a sibling to records of [Type 0x37](#type-0x37-unknown).
+This record type appears to be related to [Distortion](#type-0x37-distortion-group)
+and [Perspective](#type-0x38-perspective-group) groups.
+
+Typically, once the file has been restructured see [rendering](#rendering),
+one of these subgroups resides immediately beneath a Distortion or Perspective group.
+
+It has no fields or data of its own and the records are always of length 32.
 
 | Offset | Length | Content                         |
 |--------|--------|---------------------------------|
