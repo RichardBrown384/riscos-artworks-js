@@ -6,7 +6,6 @@ const Constants = require('../constants');
 const { RenderState, Modes } = require('./render-state');
 const { preprocessRenderStateForPath } = require('./preprocess-render-state');
 const preprocessFillColour = require('./preprocess-fills');
-const rotateArtworks = require('./rotate-artworks');
 
 const {
   mapRadialGradient,
@@ -15,6 +14,7 @@ const {
   mapSvg,
   mapColour,
 } = require('./svg');
+const { denormalise } = require('../normalisation');
 
 class ArtworksMapper {
   constructor(renderState, palette = []) {
@@ -86,9 +86,6 @@ class ArtworksMapper {
       case Constants.RECORD_35:
         this.processPath(record);
         break;
-      case Constants.RECORD_3D_BLEND_PATH:
-        this.processPath(record);
-        break;
       default:
         this.renderState.duplicate();
         this.processLists(record.children);
@@ -97,14 +94,14 @@ class ArtworksMapper {
     }
   }
 
-  processPath({ children, ...rest }) {
-    const { path, boundingBox } = rest;
+  processPath({ children, ...data }) {
+    const { path, boundingBox } = data;
     this.fileBoundingBox.merge(boundingBox);
     this.renderState.duplicate();
     this.processLists(children);
     const state = this.renderState.getCurrentState();
     const preprocessedState = preprocessRenderStateForPath(path, state);
-    this.objects.push(mapPath(path, preprocessedState, rest));
+    this.objects.push(mapPath(path, preprocessedState, data));
     this.renderState.pop();
   }
 
@@ -200,17 +197,17 @@ class ArtworksMapper {
 
 function mapArtworksOutline(artworks) {
   const state = new RenderState(Modes.MODE_OUTLINE);
-  const rotated = rotateArtworks(artworks);
-  const mapper = new ArtworksMapper(state, rotated.palette);
-  const { fileBoundingBox, objects } = mapper.mapArtworks(rotated);
+  const denormalised = denormalise(artworks);
+  const mapper = new ArtworksMapper(state, denormalised.palette);
+  const { fileBoundingBox, objects } = mapper.mapArtworks(denormalised);
   return mapSvg({ fileBoundingBox, objects });
 }
 
 function mapArtworksNormal(artworks) {
   const state = new RenderState(Modes.MODE_NORMAL);
-  const rotated = rotateArtworks(artworks);
-  const mapper = new ArtworksMapper(state, rotated.palette);
-  const result = mapper.mapArtworks(rotated);
+  const denormalised = denormalise(artworks);
+  const mapper = new ArtworksMapper(state, denormalised.palette);
+  const result = mapper.mapArtworks(denormalised);
   return mapSvg(result);
 }
 

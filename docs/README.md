@@ -407,12 +407,15 @@ offsets specified in the file's [header](#header).
 
 #### Type 0x22: Unknown
 
-Purpose of this record isn't known. Maybe an options record? The text `1cm` seems to occur relatively often.
+The purpose of this record isn't known. Maybe an options record?
+The text `1cm` seems to occur relatively often.
+
+The body is always 208 bytes long.
 
 | Offset | Length | Content                         |
 |--------|--------|---------------------------------|
 | 0      | 24     | [Record header](#record-header) |
-| 24     | ?      | Unknown                         |
+| 24     | 208    | Unknown                         |
 
 #### Type 0x23: File save location
 
