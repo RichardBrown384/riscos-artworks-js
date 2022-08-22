@@ -86,9 +86,6 @@ class ArtworksMapper {
       case Constants.RECORD_35:
         this.processPath(record);
         break;
-      case Constants.RECORD_3D_BLEND_PATH:
-        this.processPath(record);
-        break;
       default:
         this.renderState.duplicate();
         this.processLists(record.children);
