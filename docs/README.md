@@ -734,8 +734,16 @@ in which case, !AWViewer ignores it.
 |--------|--------|----------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                      |
 | 24     | 132    | [Distortion path](#path-data) (Move, 4 Beziers, Close sub path, End) |
-| 156    | 36     | Unknown                                                              |
-| 192    | 16     | Bounding box of reference objects                                    |
+| 156    | 4      | Unknown, 0 in all available files                                    |                                 
+| 160    | 4      | Unknown, 0 or 1 in all available files                               |                              
+| 164    | 4      | Unknown, 0 in all available files                                    |                                   
+| 168    | 4      | Unknown, 0 in all available files                                    |                                   
+| 172    | 4      | Unknown, 0 in all available files                                    |                                   
+| 176    | 4      | Unknown, 0 in all available files                                    |                                   
+| 180    | 4      | Unknown, 0 in all available files                                    |                                   
+| 184    | 4      | Unknown, 0 in all available files                                    |                                   
+| 188    | 4      | Unknown, 0 in all available files                                    |                                   
+| 192    | 16     | Bounding box of reference objects                                    |                                   |
 | 208    | 8      | [SubLists pointer](#sublists)                                        |
 
 A path comprising four Béziers is used to define the distortion transform for the group.
@@ -759,7 +767,19 @@ in which case, !AWViewer ignores it.
 |--------|--------|-----------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                       |
 | 24     | 68     | [Quadrilateral path](#path-data) (Move, 4 Lines, Close sub path, End) |
-| 92     | 52     | Unknown                                                               |
+| 92     | 4      | Unknown, 0 in all available files                                     |
+| 96     | 4      | Unknown, large number of different values                             |
+| 100    | 4      | Unknown, large number of different values                             |
+| 104    | 4      | Unknown, large number of different values                             |
+| 108    | 4      | Unknown, large number of different values                             |
+| 112    | 4      | Unknown, 0 or 1 in all available files                                |
+| 116    | 4      | Unknown, 0 in all available files                                     |
+| 120    | 4      | Unknown, 0 in all available files                                     |
+| 124    | 4      | Unknown, 0 in all available files                                     |
+| 128    | 4      | Unknown, 0 in all available files                                     |
+| 132    | 4      | Unknown, 0 in all available files                                     |
+| 136    | 4      | Unknown, 0 in all available files                                     |
+| 140    | 4      | Unknown, 0 in all available files                                     |
 | 144    | 16     | Bounding box of original objects                                      |
 | 160    | 8      | [SubLists pointer](#sublists)                                         |
 
