@@ -94,14 +94,14 @@ class ArtworksMapper {
     }
   }
 
-  processPath({ children, ...rest }) {
-    const { path, boundingBox } = rest;
+  processPath({ children, ...data }) {
+    const { path, boundingBox } = data;
     this.fileBoundingBox.merge(boundingBox);
     this.renderState.duplicate();
     this.processLists(children);
     const state = this.renderState.getCurrentState();
     const preprocessedState = preprocessRenderStateForPath(path, state);
-    this.objects.push(mapPath(path, preprocessedState, rest));
+    this.objects.push(mapPath(path, preprocessedState, data));
     this.renderState.pop();
   }
 
