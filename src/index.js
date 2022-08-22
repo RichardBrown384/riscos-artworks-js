@@ -10,6 +10,7 @@ const {
 } = require('./serialisation');
 
 const { mapArtworksOutline, mapArtworksNormal } = require('./mapper');
+const { denormalise, normalise } = require('./normalisation');
 
 const FOUR_MEGABYTES = 4 * 1024 * 1024;
 
@@ -36,6 +37,12 @@ module.exports = {
       const writer = new ArtworksWriter(view, artworks);
       const length = writer.write();
       return new Uint8Array(buf, 0, length);
+    },
+    denormalise(artworks) {
+      return denormalise(artworks);
+    },
+    normalise(artworks) {
+      return normalise(artworks);
     },
     SVGElement: {
       Outline: {
