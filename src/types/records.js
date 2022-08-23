@@ -379,18 +379,18 @@ function writeRecordDashPattern(view, record) {
   writeDashPattern(view, record);
 }
 
-function createRecord2C(unknown24, path) {
+function createRecordRectangle(unknown24, path) {
   return { unknown24, path };
 }
 
-function readRecord2C(view) {
+function readRecordRectangle(view) {
   return {
     unknown24: view.readUint32(),
     path: readPath(view),
   };
 }
 
-function writeRecord2C(view, { unknown24, path }) {
+function writeRecordRectangle(view, { unknown24, path }) {
   view.writeUint32(unknown24);
   writePath(view, path);
 }
@@ -470,7 +470,7 @@ function writeRecordEllipse(view, { triangle, path }) {
   writePath(view, path);
 }
 
-function readRecordRectangle(view) {
+function readRecordRoundedRectangle(view) {
   return {
     cornerRadius: view.readUint32(),
     triangle: readPolyline(view, 3),
@@ -749,8 +749,8 @@ function readRecordBody(view, header, pointer) {
     case Constants.RECORD_2B_DASH_PATTERN:
       checkLast('records after record dash pattern');
       return readRecordDashPattern(view);
-    case Constants.RECORD_2C:
-      return readRecord2C(view);
+    case Constants.RECORD_2C_RECTANGLE:
+      return readRecordRectangle(view);
     case Constants.RECORD_2D_CHARACTER:
       return readRecordCharacter(view);
     case Constants.RECORD_2E:
@@ -772,7 +772,7 @@ function readRecordBody(view, header, pointer) {
     case Constants.RECORD_34_ELLIPSE:
       return readRecordEllipse(view);
     case Constants.RECORD_35_ROUNDED_RECTANGLE:
-      return readRecordRectangle(view);
+      return readRecordRoundedRectangle(view);
     case Constants.RECORD_37_DISTORTION_GROUP:
       return isLast() ? {} : readRecordDistortionGroup(view);
     case Constants.RECORD_38_PERSPECTIVE_GROUP:
@@ -840,8 +840,8 @@ function writeRecordBody(view, record) {
     case Constants.RECORD_2B_DASH_PATTERN:
       writeRecordDashPattern(view, record);
       break;
-    case Constants.RECORD_2C:
-      writeRecord2C(view, record);
+    case Constants.RECORD_2C_RECTANGLE:
+      writeRecordRectangle(view, record);
       break;
     case Constants.RECORD_34_ELLIPSE:
       writeRecordEllipse(view, record);
@@ -939,9 +939,9 @@ module.exports = {
   readRecordDashPattern,
   writeRecordDashPattern,
 
-  createRecord2C,
-  readRecord2C,
-  writeRecord2C,
+  createRecordRectangle,
+  readRecordRectangle,
+  writeRecordRectangle,
 
   readRecordCharacter,
   readRecord2E,
@@ -955,7 +955,7 @@ module.exports = {
   readRecordEllipse,
   writeRecordEllipse,
 
-  readRecordRectangle,
+  readRecordRoundedRectangle,
   readRecordDistortionGroup,
   readRecordPerspectiveGroup,
   readRecordFileInfo,

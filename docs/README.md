@@ -30,7 +30,7 @@
         * [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
         * [Type 0x2A - Winding Rule](#type-0x2a-winding-rule)
         * [Type 0x2B - Dash Pattern](#type-0x2b-dash-pattern)
-        * [Type 0x2C](#type-0x2c-path)
+        * [Type 0x2C - Rectangle](#type-0x2c-rectangle)
         * [Type 0x2D](#type-0x2d-character)
         * [Type 0x2E](#type-0x2e-unknown)
         * [Type 0x2F](#type-0x2f-font-name)
@@ -588,22 +588,20 @@ If Dash Pattern Index is non-zero
 |--------|--------|--------------------------------|
 | 0      | 4      | Length of dash pattern element |
 
-#### Type 0x2C: Path
+#### Type 0x2C: Rectangle
 
-The value at offset 24 is zero in all the available files.
+| Offset | Length | Content                                                      |
+|--------|--------|--------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                              |
+| 24     | 4      | Unknown, 0 in all available files                            |
+| 28     | 68     | [Path data](#path-data) (Move, 4 Lines, Close sub path, End) |
+| 96     | 8      | [SubLists pointer](#sublists)                                |
 
-Setting the value to anything other than zero will result, if more than one path is present,
-in !AWViewer in Outline mode producing an error with the message
-'Path elements out of order (1100)'.
+Attempting to naively set the value at offset 24 to anything other than zero will result,
+if more than one path is present, in !AWViewer in Outline mode producing
+an error with the message 'Path elements out of order (1100)'.
 
 It's not known if there is a correct way to set the value at offset 24.
-
-| Offset | Length | Content                          |
-|--------|--------|----------------------------------|
-| 0      | 24     | [Record header](#record-header)  |
-| 24     | 4      | Unknown (order?)                 |
-| 28     | varies | [Path data](#path-data)          |
-| n - 8  | 8      | [SubLists pointer](#sublists)    |
 
 #### Type 0x2D: Character
 
@@ -727,7 +725,7 @@ The points are specified in anti-clockwise fashion.
 | 40     | 4      | Bounding Triangle Top Left Y                                             |
 | 44     | 4      | Bounding Triangle Top Right X                                            |
 | 48     | 4      | Bounding Triangle Top Right Y                                            |
-| 52     | 180    | [Path data](#path-data) (Move, 4x Line then Bezier, Close sup path, End) |
+| 52     | 180    | [Path data](#path-data) (Move, 4x Line then Bezier, Close sub path, End) |
 | 232    | 8      | [SubLists pointer](#sublists)                                            |
 
 #### Type 0x37: Distortion Group
