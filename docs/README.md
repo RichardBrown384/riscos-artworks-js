@@ -598,7 +598,7 @@ If Dash Pattern Index is non-zero
 | 96     | 8      | [SubLists pointer](#sublists)                                |
 
 Attempting to naively set the value at offset 24 to anything other than zero will result,
-if more than one path is present, resulted in !AWViewer in Outline mode producing
+if more than one path is present, in !AWViewer in Outline mode producing
 an error with the message 'Path elements out of order (1100)'.
 
 It's not known if there is a correct way to set the value at offset 24.
