@@ -794,7 +794,7 @@ function readRecordBody(view, header, pointer) {
     case Constants.RECORD_3F_MARKER_END:
       checkLast('records after record marker end');
       return readRecordMarkerEnd(view);
-    case Constants.RECORD_DISTORTION_SUBGROUP:
+    case Constants.RECORD_42_DISTORTION_SUBGROUP:
       return readRecordDistortionSubgroup();
     default:
       throw new UnsupportedRecordError(getUnsupportedRecordErrorMessage(type));
