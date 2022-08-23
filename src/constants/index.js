@@ -42,7 +42,7 @@ module.exports.RECORD_3B_BLEND_OPTIONS = 0x3B;
 module.exports.RECORD_3D_BLEND_PATH = 0x3D;
 module.exports.RECORD_3E_MARKER_START = 0x3E;
 module.exports.RECORD_3F_MARKER_END = 0x3F;
-module.exports.RECORD_DISTORTION_SUBGROUP = 0x42;
+module.exports.RECORD_42_DISTORTION_SUBGROUP = 0x42;
 
 module.exports.COLOUR_MODEL_RGB = 0;
 module.exports.COLOUR_MODEL_CMYK = 1;
