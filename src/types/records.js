@@ -470,7 +470,7 @@ function writeRecordEllipse(view, { triangle, path }) {
   writePath(view, path);
 }
 
-function readRecordRectangle(view) {
+function readRecordRoundedRectangle(view) {
   return {
     cornerRadius: view.readUint32(),
     triangle: readPolyline(view, 3),
@@ -772,7 +772,7 @@ function readRecordBody(view, header, pointer) {
     case Constants.RECORD_34_ELLIPSE:
       return readRecordEllipse(view);
     case Constants.RECORD_35_ROUNDED_RECTANGLE:
-      return readRecordRectangle(view);
+      return readRecordRoundedRectangle(view);
     case Constants.RECORD_37_DISTORTION_GROUP:
       return isLast() ? {} : readRecordDistortionGroup(view);
     case Constants.RECORD_38_PERSPECTIVE_GROUP:
@@ -955,7 +955,7 @@ module.exports = {
   readRecordEllipse,
   writeRecordEllipse,
 
-  readRecordRectangle,
+  readRecordRoundedRectangle,
   readRecordDistortionGroup,
   readRecordPerspectiveGroup,
   readRecordFileInfo,
