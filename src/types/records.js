@@ -710,62 +710,62 @@ function readRecordBody(view, header, pointer) {
     case Constants.RECORD_02_PATH:
       return readRecordPath(view);
     case Constants.RECORD_05_SPRITE:
-      checkLast('types after sprite');
+      checkLast('records after sprite');
       return readRecordSprite(view);
     case Constants.RECORD_06_GROUP:
       return readRecordGroup(view);
     case Constants.RECORD_0A_LAYER:
       return readRecordLayer(view);
     case Constants.RECORD_21_WORK_AREA:
-      checkLast('types after work area');
+      checkLast('records after work area');
       return readRecordWorkArea(view);
     case Constants.RECORD_22:
-      checkLast('types after record 22');
+      checkLast('records after record 22');
       return readRecord22(view);
     case Constants.RECORD_23_SAVE_LOCATION:
-      checkLast('types after save location');
+      checkLast('records after save location');
       return readRecordSaveLocation(view);
     case Constants.RECORD_24_STROKE_COLOUR:
-      checkLast('types after stroke colour');
+      checkLast('records after stroke colour');
       return readRecordStrokeColour(view);
     case Constants.RECORD_25_STROKE_WIDTH:
-      checkLast('types after stroke width');
+      checkLast('records after stroke width');
       return readRecordStrokeWidth(view);
     case Constants.RECORD_26_FILL_COLOUR:
-      checkLast('types after fill colour');
+      checkLast('records after fill colour');
       return readRecordFillColour(view);
     case Constants.RECORD_27_JOIN_STYLE:
-      checkLast('types after join style');
+      checkLast('records after join style');
       return readRecordJoinStyle(view);
     case Constants.RECORD_28_LINE_CAP_END:
-      checkLast('types after end line cap');
+      checkLast('records after end line cap');
       return readRecordLineCapEnd(view);
     case Constants.RECORD_29_LINE_CAP_START:
-      checkLast('types after start line cap');
+      checkLast('records after start line cap');
       return readRecordLineCapStart(view);
     case Constants.RECORD_2A_WINDING_RULE:
-      checkLast('types after winding rule');
+      checkLast('records after winding rule');
       return readRecordWindingRule(view);
     case Constants.RECORD_2B_DASH_PATTERN:
-      checkLast('types after record dash pattern');
+      checkLast('records after record dash pattern');
       return readRecordDashPattern(view);
     case Constants.RECORD_2C:
       return readRecord2C(view);
     case Constants.RECORD_2D_CHARACTER:
       return readRecordCharacter(view);
     case Constants.RECORD_2E:
-      checkLast('types after record 2e');
+      checkLast('records after record 2e');
       return readRecord2E(view);
     case Constants.RECORD_2F_FONT_NAME:
-      checkLast('types after font name');
+      checkLast('records after font name');
       return readRecordFontName(view);
     case Constants.RECORD_30_FONT_SIZE:
-      checkLast('types after font size');
+      checkLast('records after font size');
       return readRecordFontSize(view);
     case Constants.RECORD_31:
       return readRecord31(view);
     case Constants.RECORD_32:
-      checkLast('types after record 32');
+      checkLast('records after record 32');
       return readRecord32(view);
     case Constants.RECORD_33:
       return readRecord33(view);
@@ -778,21 +778,21 @@ function readRecordBody(view, header, pointer) {
     case Constants.RECORD_38_PERSPECTIVE_GROUP:
       return isLast() ? {} : readRecordPerspectiveGroup(view);
     case Constants.RECORD_39_FILE_INFO:
-      checkLast('types after file info');
+      checkLast('records after file info');
       return readRecordFileInfo(view);
     case Constants.RECORD_3A_BLEND_GROUP:
       return readRecordBlendGroup(view);
     case Constants.RECORD_3B_BLEND_OPTIONS:
-      checkLast('types after record 3b');
+      checkLast('records after record 3b');
       return readRecordBlendOptions(view);
     case Constants.RECORD_3D_BLEND_PATH:
-      checkLast('types after 3d');
+      checkLast('records after 3d');
       return readRecordBlendPath(view);
     case Constants.RECORD_3E_MARKER_START:
-      checkLast('types after record marker start');
+      checkLast('records after record marker start');
       return readRecordMarkerStart(view);
     case Constants.RECORD_3F_MARKER_END:
-      checkLast('types after record marker end');
+      checkLast('records after record marker end');
       return readRecordMarkerEnd(view);
     case Constants.RECORD_DISTORTION_SUBGROUP:
       return readRecordDistortionSubgroup();
