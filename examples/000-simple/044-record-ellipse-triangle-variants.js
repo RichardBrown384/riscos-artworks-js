@@ -1,12 +1,13 @@
 /*
-Example: 044-record-34-triangle-variants
+Example: 044-record-ellipse-triangle-variants
 
 Purpose:
 
 To demonstrate the influence (if any) of the 'triangle' that precedes the path data
-in record 34 upon the rendering.
+in ellipse records upon the rendering.
 
-It appears that this is not the case.
+It looks like the triangle is used by ArtWorks to define the ellipse but
+!AWViewer, at any rate, uses the precomputed path information to render ellipses.
 
 Draws several ellipses shaded from white to black.
 The fill's gradient line is superimposed in blue.
@@ -44,7 +45,7 @@ const {
 const {
   createRecordPath,
   createRecordFillColourGradient,
-  createRecord34,
+  createRecordEllipse,
 } = require('../record-creators');
 
 const AffineTransform = require('../affine-transform');
@@ -143,7 +144,7 @@ function createGeometry(baseTransform, triangleTransform) {
 
   const polylineTriangle = triangleTransform.transformPolyline(ORIGINAL_POLYLINE_TRIANGLE);
 
-  const record34Ellipse = createRecord34(
+  const recordEllipse = createRecordEllipse(
     pathEllipse,
     10_000,
     polylineTriangle,
@@ -162,7 +163,7 @@ function createGeometry(baseTransform, triangleTransform) {
   );
 
   return [
-    List.of(record34Ellipse, STROKE_COLOUR_TRANSPARENT),
+    List.of(recordEllipse, STROKE_COLOUR_TRANSPARENT),
     List.of(recordPathFillLine, STROKE_COLOUR_BLUE),
     List.of(recordPathTriangle),
   ];
