@@ -38,8 +38,8 @@
         * [Type 0x31](#type-0x31-unknown)
         * [Type 0x32](#type-0x32-unknown)
         * [Type 0x33](#type-0x33-unknown)
-        * [Type 0x34](#type-0x34-path)
-        * [Type 0x35](#type-0x35-unknown)
+        * [Type 0x34 - Ellipse](#type-0x34-ellipse)
+        * [Type 0x35 - Rounded Rectangle](#type-0x35-rounded-rectangle)
         * [Type 0x37 - Distortion Group](#type-0x37-distortion-group)
         * [Type 0x38 - Perspective Group](#type-0x38-perspective-group)
         * [Type 0x39](#type-0x39-file-information)
@@ -687,66 +687,71 @@ rotation matrix.
 | 40     | 4      | Unknown (0)                     |
 | 36     | 4      | Unknown (0)                     |
 
-#### Type 0x34: Path
+#### Type 0x34: Ellipse
 
-These 3 'triangle' points prior to the path data appear to define the rotated bounding box
-for the object in an anti-clockwise fashion but with the final point missing.
+The 3 bounding 'triangle' points prior to the path data 
+define the height and width of the ellipse as well as its rotation.
 
-These records sometimes appear with gradient fills as descendants. It was thought that
-the triangle points might influence the fill gradients, in particular the radial fills, 
-but this does not appear to be the case.
+The points are specified in anti-clockwise fashion.
 
-!AWViewer seems to ignore the 'triangle' points when rendering.
+!AWViewer ignores the 'triangle' points when rendering and instead relies on the path data.
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Bounding Triangle Bottom Left X |
-| 28     | 4      | Bounding Triangle Bottom Left Y |
-| 32     | 4      | Bounding Triangle Top Left X    |
-| 36     | 4      | Bounding Triangle Top Left Y    |
-| 40     | 4      | Bounding Triangle Top Right X   |
-| 44     | 4      | Bounding Triangle Top Right Y   |
-| 48     | varies | [Path data](#path-data)         |
-| n - 8  | 8      | [SubLists pointer](#sublists)   |
+| Offset | Length | Content                                                           |
+|--------|--------|-------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                   |
+| 24     | 4      | Bounding Triangle Bottom Left X                                   |
+| 28     | 4      | Bounding Triangle Bottom Left Y                                   |
+| 32     | 4      | Bounding Triangle Top Left X                                      |
+| 36     | 4      | Bounding Triangle Top Left Y                                      |
+| 40     | 4      | Bounding Triangle Top Right X                                     |
+| 44     | 4      | Bounding Triangle Top Right Y                                     |
+| 48     | 132    | [Ellipse path](#path-data) (Move, 4 Beziers, Close sub path, End) |
+| 180    | 8      | [SubLists pointer](#sublists)                                     |
 
-#### Type 0x35: Unknown
+#### Type 0x35: Rounded Rectangle
 
-| Offset | Length | Content                         |
-|--------|--------|---------------------------------|
-| 0      | 24     | [Record header](#record-header) |
-| 24     | 4      | Unknown (26c)                   |
-| 28     | 4      | Bounding Triangle Bottom Left X |
-| 32     | 4      | Bounding Triangle Bottom Left Y |
-| 36     | 4      | Bounding Triangle Top Left X    |
-| 40     | 4      | Bounding Triangle Top Left Y    |
-| 44     | 4      | Bounding Triangle Top Right X   |
-| 48     | 4      | Bounding Triangle Top Right Y   |
-| 52     | varies | [Path data](#path-data)         |
-| n - 8  | 8      | [SubLists pointer](#sublists)   |
+The 3 bounding 'triangle' points prior to the path data
+define the height and width of the rounded rectangle as well as its rotation.
+
+The points are specified in anti-clockwise fashion.
+
+!AWViewer ignores the 'triangle' points when rendering and instead relies on the path data.
+
+| Offset | Length | Content                                                                  |
+|--------|--------|--------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                          |
+| 24     | 4      | Corner radius                                                            |
+| 28     | 4      | Bounding Triangle Bottom Left X                                          |
+| 32     | 4      | Bounding Triangle Bottom Left Y                                          |
+| 36     | 4      | Bounding Triangle Top Left X                                             |
+| 40     | 4      | Bounding Triangle Top Left Y                                             |
+| 44     | 4      | Bounding Triangle Top Right X                                            |
+| 48     | 4      | Bounding Triangle Top Right Y                                            |
+| 52     | 180    | [Path data](#path-data) (Move, 4x Line then Bezier, Close sup path, End) |
+| 232    | 8      | [SubLists pointer](#sublists)                                            |
 
 #### Type 0x37: Distortion Group
 
 This record appears to be a fixed 216 bytes in length, unless it appears at the end of a list,
 in which case, !AWViewer ignores it.
 
-| Offset | Length | Content                                                              |
-|--------|--------|----------------------------------------------------------------------|
-| 0      | 24     | [Record header](#record-header)                                      |
-| 24     | 132    | [Distortion path](#path-data) (Move, 4 Beziers, Close sub path, End) |
-| 156    | 4      | Unknown, 0 in all available files                                    |                                 
-| 160    | 4      | Unknown, 0 or 1 in all available files                               |                              
-| 164    | 4      | Unknown, 0 in all available files                                    |                                   
-| 168    | 4      | Unknown, 0 in all available files                                    |                                   
-| 172    | 4      | Unknown, 0 in all available files                                    |                                   
-| 176    | 4      | Unknown, 0 in all available files                                    |                                   
-| 180    | 4      | Unknown, 0 in all available files                                    |                                   
-| 184    | 4      | Unknown, 0 in all available files                                    |                                   
-| 188    | 4      | Unknown, 0 in all available files                                    |                                   
-| 192    | 16     | Bounding box of reference objects                                    |                                   |
-| 208    | 8      | [SubLists pointer](#sublists)                                        |
+| Offset | Length | Content                                                                       |
+|--------|--------|-------------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                               |
+| 24     | 132    | [Distortion envelope path](#path-data) (Move, 4 Beziers, Close sub path, End) |
+| 156    | 4      | Unknown, 0 in all available files                                             |                                 
+| 160    | 4      | Unknown, 0 or 1 in all available files                                        |                              
+| 164    | 4      | Unknown, 0 in all available files                                             |                                   
+| 168    | 4      | Unknown, 0 in all available files                                             |                                   
+| 172    | 4      | Unknown, 0 in all available files                                             |                                   
+| 176    | 4      | Unknown, 0 in all available files                                             |                                   
+| 180    | 4      | Unknown, 0 in all available files                                             |                                   
+| 184    | 4      | Unknown, 0 in all available files                                             |                                   
+| 188    | 4      | Unknown, 0 in all available files                                             |                                   
+| 192    | 16     | Bounding box of reference objects                                             |                                   |
+| 208    | 8      | [SubLists pointer](#sublists)                                                 |
 
-A path comprising four Béziers is used to define the distortion transform for the group.
+A path comprising four Béziers is used to define the distortion envelope for the group.
 
 Within the group (once the file has been restructured see [rendering](#rendering)),
 there is usually a single [Distortion Subgroup](#type-0x42-distortion-subgroup) sitting above all other
@@ -763,27 +768,27 @@ all the invisible original objects.
 This record appears to be a fixed 168 bytes in length, unless it appears at the end of a list,
 in which case, !AWViewer ignores it.
 
-| Offset | Length | Content                                                               |
-|--------|--------|-----------------------------------------------------------------------|
-| 0      | 24     | [Record header](#record-header)                                       |
-| 24     | 68     | [Quadrilateral path](#path-data) (Move, 4 Lines, Close sub path, End) |
-| 92     | 4      | Unknown, 0 in all available files                                     |
-| 96     | 4      | Unknown, large number of different values                             |
-| 100    | 4      | Unknown, large number of different values                             |
-| 104    | 4      | Unknown, large number of different values                             |
-| 108    | 4      | Unknown, large number of different values                             |
-| 112    | 4      | Unknown, 0 or 1 in all available files                                |
-| 116    | 4      | Unknown, 0 in all available files                                     |
-| 120    | 4      | Unknown, 0 in all available files                                     |
-| 124    | 4      | Unknown, 0 in all available files                                     |
-| 128    | 4      | Unknown, 0 in all available files                                     |
-| 132    | 4      | Unknown, 0 in all available files                                     |
-| 136    | 4      | Unknown, 0 in all available files                                     |
-| 140    | 4      | Unknown, 0 in all available files                                     |
-| 144    | 16     | Bounding box of original objects                                      |
-| 160    | 8      | [SubLists pointer](#sublists)                                         |
+| Offset | Length | Content                                                                      |
+|--------|--------|------------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                              |
+| 24     | 68     | [Perspective envelope path](#path-data) (Move, 4 Lines, Close sub path, End) |
+| 92     | 4      | Unknown, 0 in all available files                                            |
+| 96     | 4      | Unknown, large number of different values                                    |
+| 100    | 4      | Unknown, large number of different values                                    |
+| 104    | 4      | Unknown, large number of different values                                    |
+| 108    | 4      | Unknown, large number of different values                                    |
+| 112    | 4      | Unknown, 0 or 1 in all available files                                       |
+| 116    | 4      | Unknown, 0 in all available files                                            |
+| 120    | 4      | Unknown, 0 in all available files                                            |
+| 124    | 4      | Unknown, 0 in all available files                                            |
+| 128    | 4      | Unknown, 0 in all available files                                            |
+| 132    | 4      | Unknown, 0 in all available files                                            |
+| 136    | 4      | Unknown, 0 in all available files                                            |
+| 140    | 4      | Unknown, 0 in all available files                                            |
+| 144    | 16     | Bounding box of original objects                                             |
+| 160    | 8      | [SubLists pointer](#sublists)                                                |
 
-The quadrilateral path is used to define the perspective transform for the group.
+The perspective envelope path is a quadrilateral and is used to define the perspective transform for the group.
 
 Within the group (once the file has been restructured see [rendering](#rendering)),
 there is usually a single [Distortion Subgroup](#type-0x42-distortion-subgroup) sitting above all other
