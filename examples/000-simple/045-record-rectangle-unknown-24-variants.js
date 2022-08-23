@@ -1,5 +1,5 @@
 /*
-Example: 045-record-2c-unknown-24-variants
+Example: 045-record-rectangle-unknown-24-variants
 
 Purpose:
 
@@ -43,7 +43,7 @@ const {
 
 const AffineTransform = require('../affine-transform');
 
-const UNTRANSFORMED_PATH = Path.builder()
+const RECTANGLE_PATH = Path.builder()
   .moveTo(10_000, 10_000, Constants.TAG_BIT_31)
   .lineTo(10_000, 20_000)
   .lineTo(20_000, 20_000)
@@ -52,7 +52,7 @@ const UNTRANSFORMED_PATH = Path.builder()
   .end()
   .build();
 
-function createGeometry(rows, columns) {
+function createRectangles(rows, columns) {
   const lists = [];
   let index = 0;
   for (let row = 0; row < rows; row += 1) {
@@ -61,7 +61,7 @@ function createGeometry(rows, columns) {
       const transform = new AffineTransform()
         .translate(20_000 * column, -20_000 * row);
       const record = createRecordRectangle(
-        transform.transformPath(UNTRANSFORMED_PATH),
+        transform.transformPath(RECTANGLE_PATH),
         5_000,
         unknown24,
       );
@@ -78,7 +78,7 @@ module.exports = Artworks.builder()
       List.of(FILL_FLAT_TRANSPARENT),
       List.of(STROKE_WIDTH_960),
       List.of(STROKE_COLOUR_RED),
-      ...createGeometry(2, 16),
+      ...createRectangles(2, 16),
       List.of(WORK_AREA),
     ),
   )
