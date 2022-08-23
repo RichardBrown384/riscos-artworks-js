@@ -379,18 +379,18 @@ function writeRecordDashPattern(view, record) {
   writeDashPattern(view, record);
 }
 
-function createRecord2C(unknown24, path) {
+function createRecordRectangle(unknown24, path) {
   return { unknown24, path };
 }
 
-function readRecord2C(view) {
+function readRecordRectangle(view) {
   return {
     unknown24: view.readUint32(),
     path: readPath(view),
   };
 }
 
-function writeRecord2C(view, { unknown24, path }) {
+function writeRecordRectangle(view, { unknown24, path }) {
   view.writeUint32(unknown24);
   writePath(view, path);
 }
@@ -750,7 +750,7 @@ function readRecordBody(view, header, pointer) {
       checkLast('records after record dash pattern');
       return readRecordDashPattern(view);
     case Constants.RECORD_2C:
-      return readRecord2C(view);
+      return readRecordRectangle(view);
     case Constants.RECORD_2D_CHARACTER:
       return readRecordCharacter(view);
     case Constants.RECORD_2E:
@@ -841,7 +841,7 @@ function writeRecordBody(view, record) {
       writeRecordDashPattern(view, record);
       break;
     case Constants.RECORD_2C:
-      writeRecord2C(view, record);
+      writeRecordRectangle(view, record);
       break;
     case Constants.RECORD_34_ELLIPSE:
       writeRecordEllipse(view, record);
@@ -939,9 +939,9 @@ module.exports = {
   readRecordDashPattern,
   writeRecordDashPattern,
 
-  createRecord2C,
-  readRecord2C,
-  writeRecord2C,
+  createRecordRectangle,
+  readRecordRectangle,
+  writeRecordRectangle,
 
   readRecordCharacter,
   readRecord2E,
