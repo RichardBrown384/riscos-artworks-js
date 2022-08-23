@@ -454,25 +454,25 @@ function readRecord33(view) {
   };
 }
 
-function createRecord34(triangle, path) {
+function createRecordEllipse(triangle, path) {
   return { triangle, path };
 }
 
-function readRecord34(view) {
+function readRecordEllipse(view) {
   return {
     triangle: readPolyline(view, 3),
     path: readPath(view),
   };
 }
 
-function writeRecord34(view, { triangle, path }) {
+function writeRecordEllipse(view, { triangle, path }) {
   writePolyline(view, triangle);
   writePath(view, path);
 }
 
-function readRecord35(view) {
+function readRecordRectangle(view) {
   return {
-    unknown24: view.readUint32(),
+    cornerRadius: view.readUint32(),
     triangle: readPolyline(view, 3),
     path: readPath(view),
   };
@@ -769,10 +769,10 @@ function readRecordBody(view, header, pointer) {
       return readRecord32(view);
     case Constants.RECORD_33:
       return readRecord33(view);
-    case Constants.RECORD_34:
-      return readRecord34(view);
-    case Constants.RECORD_35:
-      return readRecord35(view);
+    case Constants.RECORD_34_ELLIPSE:
+      return readRecordEllipse(view);
+    case Constants.RECORD_35_ROUNDED_RECTANGLE:
+      return readRecordRectangle(view);
     case Constants.RECORD_37_DISTORTION_GROUP:
       return isLast() ? {} : readRecordDistortionGroup(view);
     case Constants.RECORD_38_PERSPECTIVE_GROUP:
@@ -843,8 +843,8 @@ function writeRecordBody(view, record) {
     case Constants.RECORD_2C:
       writeRecord2C(view, record);
       break;
-    case Constants.RECORD_34:
-      writeRecord34(view, record);
+    case Constants.RECORD_34_ELLIPSE:
+      writeRecordEllipse(view, record);
       break;
     case Constants.RECORD_3A_BLEND_GROUP:
       writeRecordBlendGroup(view, record);
@@ -951,10 +951,11 @@ module.exports = {
   readRecord32,
   readRecord33,
 
-  createRecord34,
-  readRecord34,
-  writeRecord34,
-  readRecord35,
+  createRecordEllipse,
+  readRecordEllipse,
+  writeRecordEllipse,
+
+  readRecordRectangle,
   readRecordDistortionGroup,
   readRecordPerspectiveGroup,
   readRecordFileInfo,

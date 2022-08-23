@@ -86,10 +86,10 @@ class ArtworksMapper {
       case Constants.RECORD_2C:
         this.processPath(record);
         break;
-      case Constants.RECORD_34:
+      case Constants.RECORD_34_ELLIPSE:
         this.processPath(record);
         break;
-      case Constants.RECORD_35:
+      case Constants.RECORD_35_ROUNDED_RECTANGLE:
         this.processPath(record);
         break;
       default:

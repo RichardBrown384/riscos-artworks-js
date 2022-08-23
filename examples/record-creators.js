@@ -16,7 +16,7 @@ const {
     RecordWindingRule,
     RecordDashPatternEmpty,
     Record2C,
-    Record34,
+    RecordEllipse,
     RecordBlendGroup,
     RecordBlendOptions,
     RecordBlendPath,
@@ -109,8 +109,8 @@ function createRecord2C(path, padding, unknown24, ...attributes) {
   return Object.freeze(record);
 }
 
-function createRecord34(path, padding, triangle, ...attributes) {
-  const record = Record34.builder()
+function createRecordEllipse(path, padding, triangle, ...attributes) {
+  const record = RecordEllipse.builder()
     .unknown4(UNKNOWN_4_BIT_1)
     .boundingBox(PathBoundingBox.of(path, 10_000))
     .triangle(triangle)
@@ -157,7 +157,7 @@ module.exports = {
   createRecordWindingRule,
   createRecordDashPatternEmpty,
   createRecord2C,
-  createRecord34,
+  createRecordEllipse,
   createRecordBlendGroup,
   createRecordBlendOptions,
   createRecordBlendPath,
