@@ -749,7 +749,7 @@ function readRecordBody(view, header, pointer) {
     case Constants.RECORD_2B_DASH_PATTERN:
       checkLast('records after record dash pattern');
       return readRecordDashPattern(view);
-    case Constants.RECORD_2C:
+    case Constants.RECORD_2C_RECTANGLE:
       return readRecordRectangle(view);
     case Constants.RECORD_2D_CHARACTER:
       return readRecordCharacter(view);
@@ -840,7 +840,7 @@ function writeRecordBody(view, record) {
     case Constants.RECORD_2B_DASH_PATTERN:
       writeRecordDashPattern(view, record);
       break;
-    case Constants.RECORD_2C:
+    case Constants.RECORD_2C_RECTANGLE:
       writeRecordRectangle(view, record);
       break;
     case Constants.RECORD_34_ELLIPSE:

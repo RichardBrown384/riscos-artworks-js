@@ -12,7 +12,7 @@ class Record2C extends RecordBuilder {
   #path;
 
   constructor() {
-    super(Constants.RECORD_2C);
+    super(Constants.RECORD_2C_RECTANGLE);
     this.#unknown24 = 0;
     this.#path = EMPTY_PATH;
   }

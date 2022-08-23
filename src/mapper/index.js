@@ -83,7 +83,7 @@ class ArtworksMapper {
       case Constants.RECORD_2B_DASH_PATTERN:
         this.processDashPattern(record);
         break;
-      case Constants.RECORD_2C:
+      case Constants.RECORD_2C_RECTANGLE:
         this.processPath(record);
         break;
       case Constants.RECORD_34_ELLIPSE:
