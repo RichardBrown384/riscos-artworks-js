@@ -748,7 +748,7 @@ in which case, !AWViewer ignores it.
 | 180    | 4      | Unknown, 0 in all available files                                             |                                   
 | 184    | 4      | Unknown, 0 in all available files                                             |                                   
 | 188    | 4      | Unknown, 0 in all available files                                             |                                   
-| 192    | 16     | Bounding box of reference objects                                             |                                   |
+| 192    | 16     | Bounding box of reference objects                                             |
 | 208    | 8      | [SubLists pointer](#sublists)                                                 |
 
 A path comprising four Béziers is used to define the distortion envelope for the group.
