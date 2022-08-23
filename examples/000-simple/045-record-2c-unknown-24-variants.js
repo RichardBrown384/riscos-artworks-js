@@ -38,7 +38,7 @@ const {
 } = require('../shared-objects');
 
 const {
-  createRecord2C,
+  createRecordRectangle,
 } = require('../record-creators');
 
 const AffineTransform = require('../affine-transform');
@@ -60,7 +60,7 @@ function createGeometry(rows, columns) {
       const unknown24 = Math.floor(index / columns);
       const transform = new AffineTransform()
         .translate(20_000 * column, -20_000 * row);
-      const record = createRecord2C(
+      const record = createRecordRectangle(
         transform.transformPath(UNTRANSFORMED_PATH),
         5_000,
         unknown24,

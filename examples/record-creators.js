@@ -15,7 +15,7 @@ const {
     RecordFillColourGradient,
     RecordWindingRule,
     RecordDashPatternEmpty,
-    Record2C,
+    RecordRectangle,
     RecordEllipse,
     RecordBlendGroup,
     RecordBlendOptions,
@@ -98,8 +98,8 @@ function createRecordDashPatternEmpty() {
   return Object.freeze(RecordDashPatternEmpty.of(UNKNOWN_4_BIT_0));
 }
 
-function createRecord2C(path, padding, unknown24, ...attributes) {
-  const record = Record2C.builder()
+function createRecordRectangle(path, padding, unknown24, ...attributes) {
+  const record = RecordRectangle.builder()
     .unknown4(UNKNOWN_4_BIT_1)
     .boundingBox(PathBoundingBox.of(path, padding))
     .unknown24(unknown24)
@@ -156,7 +156,7 @@ module.exports = {
   createRecordFillColourGradient,
   createRecordWindingRule,
   createRecordDashPatternEmpty,
-  createRecord2C,
+  createRecordRectangle,
   createRecordEllipse,
   createRecordBlendGroup,
   createRecordBlendOptions,

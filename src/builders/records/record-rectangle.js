@@ -6,7 +6,7 @@ const { createRecordRectangle } = require('../../types/records');
 
 const EMPTY_PATH = require('./empty-path');
 
-class Record2C extends RecordBuilder {
+class RecordRectangle extends RecordBuilder {
   #unknown24;
 
   #path;
@@ -18,7 +18,7 @@ class Record2C extends RecordBuilder {
   }
 
   static builder() {
-    return new Record2C();
+    return new RecordRectangle();
   }
 
   unknown24(v) { this.#unknown24 = v; return this; }
@@ -30,4 +30,4 @@ class Record2C extends RecordBuilder {
   }
 }
 
-module.exports = Record2C;
+module.exports = RecordRectangle;
