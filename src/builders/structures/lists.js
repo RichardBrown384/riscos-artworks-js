@@ -1,6 +1,10 @@
+const { createLists } = require('../../types/structures');
+
 class Lists {
+  #lists;
+
   constructor() {
-    this.lists = [];
+    this.#lists = [];
   }
 
   static builder() {
@@ -15,13 +19,10 @@ class Lists {
     return builder.build();
   }
 
-  push(list) {
-    this.lists.push({ children: list });
-    return this;
-  }
+  push(list) { this.#lists.push(list); return this; }
 
   build() {
-    return this.lists;
+    return createLists(this.#lists);
   }
 }
 

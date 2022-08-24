@@ -1,6 +1,6 @@
 const Constants = require('../../constants');
 
-const RecordBuilder = require('./record');
+const RecordBuilder = require('../structures/record');
 
 const { createRecordStrokeWidth } = require('../../types/records');
 
