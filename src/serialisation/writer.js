@@ -14,7 +14,6 @@ const {
 } = require('../types/records');
 
 const SubLists = require('./sublists');
-const {} = require("../types/structures");
 
 class ArtworksWriter {
   constructor(view, { header, children }) {
