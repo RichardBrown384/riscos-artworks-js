@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise */
-
 const Constants = require('../constants');
 
 const MergingBoundingBox = require('./merging-bounding-box');
@@ -18,10 +16,10 @@ const {
   mapColour,
 } = require('./svg');
 
-const { extractBitField } = require('../common/bitwise');
+const { extractBitField, isBitSet } = require('../common/bitwise');
 
 function headerControlWordPathVisible({ unknown4 }) {
-  return (unknown4 & Constants.UNKNOWN_4_BIT_1) !== 0;
+  return isBitSet(unknown4, 1);
 }
 
 class ArtworksMapper {
