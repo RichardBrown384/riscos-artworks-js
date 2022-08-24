@@ -1,15 +1,14 @@
-/* eslint-disable no-bitwise */
-
 const Constants = require('../../constants');
 
 const { createPaletteEntry } = require('../../types/primitives');
+const { extractBitField } = require('../../common/bitwise');
 
 const DEFAULT_FLAG_BITS = 0x24; // Not sure why these are often set, maybe UI options
 
 function scale(v) { return Math.floor((v / 255.0) * 0x7FFF_FFFF); }
-function red(v) { return scale(v & 0xFF); }
-function green(v) { return scale((v >> 8) & 0xFF); }
-function blue(v) { return scale((v >> 16) & 0xFF); }
+function red(v) { return extractBitField(v, 0, 8); }
+function green(v) { return extractBitField(v, 8, 8); }
+function blue(v) { return extractBitField(v, 16, 8); }
 
 class PaletteEntry {
   #name;
@@ -44,9 +43,9 @@ class PaletteEntry {
     return PaletteEntry.builder()
       .name(name)
       .colour(colour)
-      .component0(red(colour))
-      .component1(green(colour))
-      .component2(blue(colour))
+      .component0(scale(red(colour)))
+      .component1(scale(green(colour)))
+      .component2(scale(blue(colour)))
       .component3(0)
       .flags(DEFAULT_FLAG_BITS + Constants.COLOUR_MODEL_RGB)
       .build();

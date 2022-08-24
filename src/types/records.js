@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise */
-
 const UnsupportedRecordError = require('../exceptions/unsupported-record-error');
 
 const Constants = require('../constants');
@@ -15,6 +13,8 @@ const {
   readPalette,
   writePalette,
 } = require('./primitives');
+
+const { extractBitField } = require('../common/bitwise');
 
 function readRecord00() {
   return {};
@@ -680,7 +680,8 @@ function readRecordBody(view, header, pointer) {
   const isLast = () => pointer.next === 0;
   const checkLast = (message) => { view.check(isLast(), message); };
   const { type } = header;
-  switch (type & 0xFF) {
+  const maskedType = extractBitField(header.type, 0, 8);
+  switch (maskedType) {
     case Constants.RECORD_00:
       return readRecord00(view);
     case Constants.RECORD_01_TEXT:
@@ -781,7 +782,8 @@ function readRecordBody(view, header, pointer) {
 
 function writeRecordBody(view, record) {
   const { type } = record;
-  switch (type & 0xFF) {
+  const maskedType = extractBitField(type, 0, 8);
+  switch (maskedType) {
     case Constants.RECORD_02_PATH:
       writeRecordPath(view, record);
       break;

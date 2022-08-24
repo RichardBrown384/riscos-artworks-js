@@ -1,9 +1,7 @@
-/* eslint-disable no-bitwise */
-
-const Constants = require('../constants');
+const { isBitSet } = require('../common/bitwise');
 
 function isPathFilled(path) {
-  return (path[0]?.tag & Constants.TAG_BIT_31) !== 0;
+  return isBitSet(path[0]?.tag, 31);
 }
 
 function preprocessRenderStateForPath(path, state) {
