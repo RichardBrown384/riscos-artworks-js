@@ -1,15 +1,15 @@
 const UnsupportedRecordError = require('../exceptions/unsupported-record-error');
 
 const {
+  readArtworksHeader,
+  readRecordHeader,
   readListsPointer,
   readListPointer,
   readRecordPointer,
-  readHeader,
-} = require('../types/primitives');
+} = require('../types/structures');
 
 const {
   readRecordBody,
-  readRecordHeader,
 } = require('../types/records');
 
 class ArtworksReader {
@@ -55,7 +55,7 @@ class ArtworksReader {
   read() {
     try {
       this.view.setPosition(0);
-      const header = readHeader(this.view);
+      const header = readArtworksHeader(this.view);
 
       const { bodyPosition } = header;
 
@@ -132,12 +132,10 @@ class ArtworksReader {
       { current, listsPointerPosition },
     );
     this.view.setPosition(listsPointerPosition);
-    const listsPointer = readListsPointer(this.view);
-    const { position, next } = listsPointer;
+    const pointer = readListsPointer(this.view);
+    const { position, next } = pointer;
     if (next > 0) {
-      this.populateRecord({
-        listsPointer,
-      });
+      this.populateRecord({ pointer });
       this.view.setPosition(position + next);
       this.readLists();
     }

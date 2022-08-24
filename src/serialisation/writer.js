@@ -1,19 +1,20 @@
 const {
-  writeHeader,
+  writeArtworksHeader,
+  writeRecordHeader,
   createListsPointer,
   writeListsPointer,
   createListPointer,
   writeListPointer,
   createRecordPointer,
   writeRecordPointer,
-} = require('../types/primitives');
+} = require('../types/structures');
 
 const {
   writeRecordBody,
-  writeRecordHeader,
 } = require('../types/records');
 
 const SubLists = require('./sublists');
+const {} = require("../types/structures");
 
 class ArtworksWriter {
   constructor(view, { header, children }) {
@@ -26,7 +27,7 @@ class ArtworksWriter {
     const { bodyPosition } = this.header;
 
     this.view.setPosition(0);
-    writeHeader(this.view, this.header);
+    writeArtworksHeader(this.view, this.header);
 
     this.view.setPosition(bodyPosition);
     this.writeLists(this.children, bodyPosition);
@@ -40,7 +41,8 @@ class ArtworksWriter {
       const list = lists[i];
       const start = this.view.getPosition();
       this.reservePointerSpace();
-      this.writeList(list.children, recordPointerPosition || this.view.getPosition());
+      const listStart = this.view.getPosition();
+      this.writeList(list.children, recordPointerPosition || listStart);
       const end = this.view.getPosition();
       const next = (i < lists.length - 1) ? end - start : 0;
       this.writeListPointer(start, previous, next);

@@ -1,6 +1,13 @@
+const { createList } = require('../../types/structures');
+
 class List {
+  #pointer;
+
+  #list;
+
   constructor() {
-    this.list = [];
+    this.#pointer = null;
+    this.#list = [];
   }
 
   static builder() {
@@ -15,13 +22,15 @@ class List {
     return builder.build();
   }
 
+  pointer(v) { this.#pointer = v; return this; }
+
   push(item) {
-    this.list.push(item);
+    this.#list.push(item);
     return this;
   }
 
   build() {
-    return this.list;
+    return createList(this.#pointer, this.#list);
   }
 }
 

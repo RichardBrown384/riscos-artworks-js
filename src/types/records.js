@@ -12,31 +12,9 @@ const {
   readPath,
   writePath,
   readBoundingBox,
-  writeBoundingBox,
   readPalette,
   writePalette,
 } = require('./primitives');
-
-function createRecordHeader(type, unknown4, boundingBox) {
-  return { type, unknown4, boundingBox };
-}
-
-function readRecordHeader(view) {
-  view.checkAlignment('misaligned record header');
-  return {
-    type: view.readUint32(),
-    unknown4: view.readUint32(),
-    boundingBox: readBoundingBox(view),
-  };
-}
-
-function writeRecordHeader(view, header) {
-  view.checkAlignment('misaligned record header');
-  const { type, unknown4, boundingBox } = header;
-  view.writeUint32(type);
-  view.writeUint32(unknown4);
-  writeBoundingBox(view, boundingBox);
-}
 
 function readRecord00() {
   return {};
@@ -867,10 +845,6 @@ function writeRecordBody(view, record) {
 }
 
 module.exports = {
-
-  createRecordHeader,
-  readRecordHeader,
-  writeRecordHeader,
 
   readRecord00,
   readRecordText,

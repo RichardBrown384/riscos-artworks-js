@@ -18,7 +18,7 @@ const {
   mapColour,
 } = require('./svg');
 
-function headerControlWordPathVisible({unknown4}) {
+function headerControlWordPathVisible({ unknown4 }) {
   return (unknown4 & Constants.UNKNOWN_4_BIT_1) !== 0;
 }
 
