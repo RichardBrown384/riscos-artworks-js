@@ -1,6 +1,5 @@
-/* eslint-disable no-bitwise */
-
 const Constants = require('../../constants');
+const { extractBitField } = require('../../common/bitwise');
 
 const TAG_MAP = {
   [Constants.TAG_END]: '',
@@ -15,7 +14,8 @@ function mapPathElements(elements) {
   const path = [];
   for (let i = 0; i < elements.length; i += 1) {
     const { tag, points = [] } = elements[i];
-    path.push(TAG_MAP[tag & 0xFF]);
+    const maskedTag = extractBitField(tag, 0, 8);
+    path.push(TAG_MAP[maskedTag]);
     path.push(points.flatMap(({ x, y }) => [x, y]).join(','));
   }
   return path.join('');

@@ -1,6 +1,5 @@
-/* eslint-disable no-bitwise */
-
 const Constants = require('../constants');
+const { extractBitField } = require('../common/bitwise');
 
 function createColourIndex(colour) {
   return colour;
@@ -86,7 +85,7 @@ function createPathElement(tag, points) {
 
 function readPathElement(view) {
   const tag = view.readUint32();
-  const maskedTag = tag & 0xFF;
+  const maskedTag = extractBitField(tag, 0, 8);
   if (maskedTag === Constants.TAG_END
       || maskedTag === Constants.TAG_UNKNOWN
       || maskedTag === Constants.TAG_CLOSE_SUB_PATH) {
@@ -186,15 +185,15 @@ function createPalette(entries) {
 
 function readPalette(view) {
   view.checkAlignment('misaligned palette');
-  const count = view.readUint32() & 0x00FFFFFF;
-  const unknown4 = view.readUint32() & 0x00FFFFFFF;
+  const count = view.readUint32();
+  const unknown4 = view.readUint32();
   const entries = [];
   for (let n = 0; n < count; n += 1) {
     entries.push(readPaletteEntry(view));
   }
   return {
-    count,
-    unknown4,
+    count: extractBitField(count, 0, 24),
+    unknown4: extractBitField(unknown4, 0, 24),
     entries,
   };
 }

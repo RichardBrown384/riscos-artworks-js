@@ -18,6 +18,8 @@ const {
   mapColour,
 } = require('./svg');
 
+const { extractBitField } = require('../common/bitwise');
+
 function headerControlWordPathVisible({ unknown4 }) {
   return (unknown4 & Constants.UNKNOWN_4_BIT_1) !== 0;
 }
@@ -55,7 +57,8 @@ class ArtworksMapper {
 
   processRecord(record) {
     const { type } = record;
-    switch (type & 0xFF) {
+    const maskedType = extractBitField(type, 0, 8);
+    switch (maskedType) {
       case Constants.RECORD_02_PATH:
         this.processPath(record);
         break;

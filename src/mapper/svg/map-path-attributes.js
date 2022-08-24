@@ -1,6 +1,5 @@
-/* eslint-disable no-bitwise */
-
 const Constants = require('../../constants');
+const { extractBitField } = require('../../common/bitwise');
 
 const FILL = 'fill';
 const FILL_RULE = 'fill-rule';
@@ -50,22 +49,26 @@ function mapFill(fill) {
   return { [FILL]: fill };
 }
 
+function mapAttributeWithDefault(value, map, svgAttributeName, svgDefault) {
+  const maskedValue = extractBitField(value, 0, 8);
+  return maskedValue !== svgDefault && { [svgAttributeName]: map[maskedValue] };
+}
+
 function mapJoinStyle(joinStyle) {
-  const maskedJoinStyle = joinStyle & 0xFF;
-  return maskedJoinStyle !== Constants.JOIN_MITRE
-      && { [STROKE_LINEJOIN]: JOIN_MAP[maskedJoinStyle] };
+  return mapAttributeWithDefault(joinStyle, JOIN_MAP, STROKE_LINEJOIN, Constants.JOIN_MITRE);
 }
 
 function mapCapStyle(capStyle) {
-  const maskedCapStyle = capStyle & 0xFF;
-  return maskedCapStyle !== Constants.CAP_BUTT
-      && { [STROKE_LINECAP]: CAP_MAP[maskedCapStyle] };
+  return mapAttributeWithDefault(capStyle, CAP_MAP, STROKE_LINECAP, Constants.CAP_BUTT);
 }
 
 function mapWindingRule(windingRule) {
-  const maskedWindingRule = windingRule & 0xFF;
-  return maskedWindingRule !== Constants.WINDING_RULE_NON_ZERO
-      && { [FILL_RULE]: WINDING_RULE_MAP[maskedWindingRule] };
+  return mapAttributeWithDefault(
+    windingRule,
+    WINDING_RULE_MAP,
+    FILL_RULE,
+    Constants.WINDING_RULE_NON_ZERO,
+  );
 }
 
 function mapDashOffset({ offset = 0 }) {

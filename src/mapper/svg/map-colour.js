@@ -1,10 +1,10 @@
-/* eslint-disable no-bitwise */
+const { extractBitField } = require('../../common/bitwise');
 
 function mapColour(colour) {
   if (colour) {
-    const r = (colour) & 0xFF;
-    const g = (colour >> 8) & 0xFF;
-    const b = (colour >> 16) & 0xFF;
+    const r = extractBitField(colour, 0, 8);
+    const g = extractBitField(colour, 8, 8);
+    const b = extractBitField(colour, 16, 8);
     return `rgb(${[r, g, b]})`;
   }
   return 'none';
