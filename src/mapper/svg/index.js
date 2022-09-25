@@ -1,15 +1,3 @@
-const {
-  mapRadialGradient,
-  mapLinearGradient,
-} = require('./map-gradients');
-const mapPath = require('./map-path');
-const mapSvg = require('./map-svg');
-const mapColour = require('./map-colour');
+const SvgMapper = require('./mapper');
 
-module.exports = {
-  mapRadialGradient,
-  mapLinearGradient,
-  mapPath,
-  mapSvg,
-  mapColour,
-};
+module.exports = SvgMapper;

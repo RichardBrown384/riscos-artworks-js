@@ -29,11 +29,16 @@ const WINDING_RULE_MAP = {
   [Constants.WINDING_RULE_EVEN_ODD]: 'evenodd',
 };
 
-function mapStroke(stroke) {
+function mapAttributeWithDefault(value, map, svgAttributeName, svgDefault) {
+  const maskedValue = extractBitField(value, 0, 8);
+  return maskedValue !== svgDefault && { [svgAttributeName]: map[maskedValue] };
+}
+
+function mapStroke({ stroke }) {
   return { [STROKE]: stroke };
 }
 
-function mapStrokeWidth(strokeWidth) {
+function mapStrokeWidth({ strokeWidth }) {
   if (strokeWidth !== 0) {
     return { [STROKE_WIDTH]: strokeWidth };
   }
@@ -45,24 +50,19 @@ function mapStrokeWidth(strokeWidth) {
   };
 }
 
-function mapFill(fill) {
+function mapFill({ fill }) {
   return { [FILL]: fill };
 }
 
-function mapAttributeWithDefault(value, map, svgAttributeName, svgDefault) {
-  const maskedValue = extractBitField(value, 0, 8);
-  return maskedValue !== svgDefault && { [svgAttributeName]: map[maskedValue] };
-}
-
-function mapJoinStyle(joinStyle) {
+function mapJoinStyle({ joinStyle }) {
   return mapAttributeWithDefault(joinStyle, JOIN_MAP, STROKE_LINEJOIN, Constants.JOIN_MITRE);
 }
 
-function mapCapStyle(capStyle) {
+function mapCapStyle({ capStyle }) {
   return mapAttributeWithDefault(capStyle, CAP_MAP, STROKE_LINECAP, Constants.CAP_BUTT);
 }
 
-function mapWindingRule(windingRule) {
+function mapWindingRule({ windingRule }) {
   return mapAttributeWithDefault(
     windingRule,
     WINDING_RULE_MAP,
