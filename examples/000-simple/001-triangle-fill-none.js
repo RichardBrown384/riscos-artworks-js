@@ -7,11 +7,11 @@ To demonstrate that !AWViewer crashes when a file doesn't contain a fill record
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
 } = require('../../src').Artworks;
+
+const { createArtworks } = require('../record-creators');
 
 const {
   LAYER_FOREGROUND,
@@ -19,11 +19,7 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
+  List.of(WORK_AREA),
+);

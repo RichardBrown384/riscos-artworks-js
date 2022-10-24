@@ -14,8 +14,6 @@ Note a couple of issues:
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
     BoundingBox,
     PathBoundingBox,
@@ -42,7 +40,7 @@ const {
   createRecordDashPatternEmpty,
   createRecordBlendGroup,
   createRecordBlendOptions,
-  createRecordBlendPath,
+  createRecordBlendPath, createArtworks,
 } = require('../record-creators');
 
 const DASH_PATTERN_EMPTY = createRecordDashPatternEmpty();
@@ -104,11 +102,9 @@ function createSimpleBlendGroups() {
   return groups;
 }
 
-module.exports = Artworks.builder()
-  .lists(Lists.of(
-    List.of(WINDING_RULE),
-    List.of(DASH_PATTERN_EMPTY),
-    ...createSimpleBlendGroups(),
-    List.of(WORK_AREA),
-  ))
-  .build();
+module.exports = createArtworks(
+  List.of(WINDING_RULE),
+  List.of(DASH_PATTERN_EMPTY),
+  ...createSimpleBlendGroups(),
+  List.of(WORK_AREA),
+);

@@ -20,8 +20,6 @@ the rendering.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
     Path,
   },
@@ -38,6 +36,7 @@ const {
 } = require('../shared-objects');
 
 const {
+  createArtworks,
   createRecordRectangle,
 } = require('../record-creators');
 
@@ -72,14 +71,10 @@ function createRectangles(rows, columns) {
   return lists;
 }
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_TRANSPARENT),
-      List.of(STROKE_WIDTH_960),
-      List.of(STROKE_COLOUR_RED),
-      ...createRectangles(2, 16),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_TRANSPARENT),
+  List.of(STROKE_WIDTH_960),
+  List.of(STROKE_COLOUR_RED),
+  ...createRectangles(2, 16),
+  List.of(WORK_AREA),
+);

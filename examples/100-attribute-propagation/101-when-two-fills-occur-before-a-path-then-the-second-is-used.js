@@ -11,8 +11,6 @@ using the second colour.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
 } = require('../../src').Artworks;
@@ -25,13 +23,11 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_RED),
-      List.of(FILL_FLAT_BLACK_30),
-      List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+const { createArtworks } = require('../record-creators');
+
+module.exports = createArtworks(
+  List.of(FILL_FLAT_RED),
+  List.of(FILL_FLAT_BLACK_30),
+  List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
+  List.of(WORK_AREA),
+);

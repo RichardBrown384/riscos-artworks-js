@@ -12,8 +12,6 @@ and a red triangle on top.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
 } = require('../../src').Artworks;
@@ -27,14 +25,12 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_RED),
-      List.of(STROKE_COLOUR_BLUE),
-      List.of(PATH_PENTAGRAM, FILL_FLAT_BLACK_30),
-      List.of(PATH_TRIANGLE),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+const { createArtworks } = require('../record-creators');
+
+module.exports = createArtworks(
+  List.of(FILL_FLAT_RED),
+  List.of(STROKE_COLOUR_BLUE),
+  List.of(PATH_PENTAGRAM, FILL_FLAT_BLACK_30),
+  List.of(PATH_TRIANGLE),
+  List.of(WORK_AREA),
+);

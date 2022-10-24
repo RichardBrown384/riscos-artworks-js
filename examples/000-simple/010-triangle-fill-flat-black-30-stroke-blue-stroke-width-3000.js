@@ -7,8 +7,6 @@ To demonstrate setting the stroke width.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
 } = require('../../src').Artworks;
@@ -22,14 +20,12 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_BLACK_30),
-      List.of(STROKE_COLOUR_BLUE),
-      List.of(STROKE_WIDTH_3000),
-      List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+const { createArtworks } = require('../record-creators');
+
+module.exports = createArtworks(
+  List.of(FILL_FLAT_BLACK_30),
+  List.of(STROKE_COLOUR_BLUE),
+  List.of(STROKE_WIDTH_3000),
+  List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
+  List.of(WORK_AREA),
+);

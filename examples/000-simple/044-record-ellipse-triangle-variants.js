@@ -17,8 +17,6 @@ The 'triangles' are superimposed in red.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
     Path,
     Polyline,
@@ -43,6 +41,7 @@ const {
 } = require('../default-palette');
 
 const {
+  createArtworks,
   createRecordPath,
   createRecordFillColourGradient,
   createRecordEllipse,
@@ -215,19 +214,15 @@ const GEOMETRY_5 = createGeometry(
     .translate(800_000, 200_000),
 );
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_TRANSPARENT),
-      List.of(STROKE_WIDTH_1500),
-      List.of(STROKE_COLOUR_RED),
-      ...GEOMETRY_0,
-      ...GEOMETRY_1,
-      ...GEOMETRY_2,
-      ...GEOMETRY_3,
-      ...GEOMETRY_4,
-      ...GEOMETRY_5,
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_TRANSPARENT),
+  List.of(STROKE_WIDTH_1500),
+  List.of(STROKE_COLOUR_RED),
+  ...GEOMETRY_0,
+  ...GEOMETRY_1,
+  ...GEOMETRY_2,
+  ...GEOMETRY_3,
+  ...GEOMETRY_4,
+  ...GEOMETRY_5,
+  List.of(WORK_AREA),
+);

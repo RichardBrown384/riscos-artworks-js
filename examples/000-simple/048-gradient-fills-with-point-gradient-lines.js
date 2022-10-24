@@ -37,8 +37,6 @@ with the start colour irrespective of the zoom level.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
   Constants,
@@ -52,7 +50,7 @@ const {
 } = require('../shared-objects');
 
 const { createClosedSquare } = require('../path-creators');
-const { createRecordPath, createRecordFillColourGradient } = require('../record-creators');
+const { createArtworks, createRecordPath, createRecordFillColourGradient } = require('../record-creators');
 const { DEFAULT_PALETTE_INDEX_MAGENTA, DEFAULT_PALETTE_INDEX_BLACK, DEFAULT_PALETTE_INDEX_YELLOW } = require('../default-palette');
 
 const SIDE_LENGTH = 500_000;
@@ -112,20 +110,16 @@ const FILL_POINT_RADIAL_YELLOW_2_0 = createFillRadial(2, 0);
 const FILL_POINT_RADIAL_YELLOW_2_1 = createFillRadial(2, 1, 5_000);
 const FILL_POINT_RADIAL_YELLOW_2_2 = createFillRadial(2, 2, 100);
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(STROKE_WIDTH_1280),
-      List.of(STROKE_COLOUR_BLUE),
-      List.of(SQUARE_0_0, FILL_FLAT_RED),
-      List.of(SQUARE_1_0, FILL_POINT_LINEAR_MAGENTA_1_0),
-      List.of(SQUARE_1_1, FILL_POINT_LINEAR_MAGENTA_1_1),
-      List.of(SQUARE_1_2, FILL_POINT_LINEAR_MAGENTA_1_2),
-      List.of(SQUARE_2_0, FILL_POINT_RADIAL_YELLOW_2_0),
-      List.of(SQUARE_2_1, FILL_POINT_RADIAL_YELLOW_2_1),
-      List.of(SQUARE_2_2, FILL_POINT_RADIAL_YELLOW_2_2),
-      List.of(SQUARE_3_0, FILL_FLAT_RED),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(STROKE_WIDTH_1280),
+  List.of(STROKE_COLOUR_BLUE),
+  List.of(SQUARE_0_0, FILL_FLAT_RED),
+  List.of(SQUARE_1_0, FILL_POINT_LINEAR_MAGENTA_1_0),
+  List.of(SQUARE_1_1, FILL_POINT_LINEAR_MAGENTA_1_1),
+  List.of(SQUARE_1_2, FILL_POINT_LINEAR_MAGENTA_1_2),
+  List.of(SQUARE_2_0, FILL_POINT_RADIAL_YELLOW_2_0),
+  List.of(SQUARE_2_1, FILL_POINT_RADIAL_YELLOW_2_1),
+  List.of(SQUARE_2_2, FILL_POINT_RADIAL_YELLOW_2_2),
+  List.of(SQUARE_3_0, FILL_FLAT_RED),
+  List.of(WORK_AREA),
+);

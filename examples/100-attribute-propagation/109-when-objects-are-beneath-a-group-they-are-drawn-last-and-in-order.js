@@ -14,7 +14,6 @@ are drawn in order.
 
 const {
   Builders: {
-    Artworks,
     BoundingBox,
     Lists,
     List,
@@ -42,7 +41,7 @@ const {
 } = require('../path-creators');
 
 const {
-  createRecordPath,
+  createRecordPath, createArtworks,
 } = require('../record-creators');
 
 const HEXAGON_RADIUS = 40_000;
@@ -76,14 +75,10 @@ const GROUP = RecordGroup.builder()
   )
   .build();
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_BLACK_30),
-      List.of(STROKE_COLOUR_RED),
-      List.of(STROKE_WIDTH_3000),
-      List.of(LAYER_FOREGROUND, GROUP, PATH_HEXAGON_1, STROKE_COLOUR_BLUE),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_BLACK_30),
+  List.of(STROKE_COLOUR_RED),
+  List.of(STROKE_WIDTH_3000),
+  List.of(LAYER_FOREGROUND, GROUP, PATH_HEXAGON_1, STROKE_COLOUR_BLUE),
+  List.of(WORK_AREA),
+);

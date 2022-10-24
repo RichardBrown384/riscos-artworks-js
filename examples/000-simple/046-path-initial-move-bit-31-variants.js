@@ -22,8 +22,6 @@ For two sub paths we try setting bit 31 for the first and second move respective
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
     Path,
   },
@@ -37,7 +35,11 @@ const {
   STROKE_COLOUR_BLUE,
   WORK_AREA,
 } = require('../shared-objects');
-const { createRecordPath } = require('../record-creators');
+
+const {
+  createArtworks,
+  createRecordPath,
+} = require('../record-creators');
 
 const CLOSED_SQUARE_FILLED = Path.builder()
   .moveTo(10_000, 10_000, Constants.TAG_BIT_31)
@@ -175,27 +177,23 @@ const TWO_SUB_PATHS_NO_FILL_2 = Path.builder()
 
 const PADDING = 50_000;
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_RED),
-      List.of(STROKE_WIDTH_960),
-      List.of(STROKE_COLOUR_BLUE),
-      List.of(createRecordPath(CLOSED_SQUARE_FILLED, PADDING)),
-      List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_1, PADDING)),
-      List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_2, PADDING)),
-      List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_3, PADDING)),
-      List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_4, PADDING)),
-      List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_5, PADDING)),
-      List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_6, PADDING)),
-      List.of(createRecordPath(OPEN_SQUARE_FILLED, PADDING)),
-      List.of(createRecordPath(OPEN_SQUARE_NO_FILL_1, PADDING)),
-      List.of(createRecordPath(OPEN_SQUARE_NO_FILL_2, PADDING)),
-      List.of(createRecordPath(OPEN_SQUARE_NO_FILL_3, PADDING)),
-      List.of(createRecordPath(TWO_SUB_PATHS_FILLED, PADDING)),
-      List.of(createRecordPath(TWO_SUB_PATHS_NO_FILL_1, PADDING)),
-      List.of(createRecordPath(TWO_SUB_PATHS_NO_FILL_2, PADDING)),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_RED),
+  List.of(STROKE_WIDTH_960),
+  List.of(STROKE_COLOUR_BLUE),
+  List.of(createRecordPath(CLOSED_SQUARE_FILLED, PADDING)),
+  List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_1, PADDING)),
+  List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_2, PADDING)),
+  List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_3, PADDING)),
+  List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_4, PADDING)),
+  List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_5, PADDING)),
+  List.of(createRecordPath(CLOSED_SQUARE_NO_FILL_6, PADDING)),
+  List.of(createRecordPath(OPEN_SQUARE_FILLED, PADDING)),
+  List.of(createRecordPath(OPEN_SQUARE_NO_FILL_1, PADDING)),
+  List.of(createRecordPath(OPEN_SQUARE_NO_FILL_2, PADDING)),
+  List.of(createRecordPath(OPEN_SQUARE_NO_FILL_3, PADDING)),
+  List.of(createRecordPath(TWO_SUB_PATHS_FILLED, PADDING)),
+  List.of(createRecordPath(TWO_SUB_PATHS_NO_FILL_1, PADDING)),
+  List.of(createRecordPath(TWO_SUB_PATHS_NO_FILL_2, PADDING)),
+  List.of(WORK_AREA),
+);

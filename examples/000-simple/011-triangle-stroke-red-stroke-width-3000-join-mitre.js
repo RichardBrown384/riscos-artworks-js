@@ -7,8 +7,6 @@ To demonstrate mitred joins
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
 
     RecordJoinStyle,
@@ -25,17 +23,15 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
+const { createArtworks } = require('../record-creators');
+
 const JOIN = RecordJoinStyle.of(Constants.UNKNOWN_4_BIT_0, Constants.JOIN_MITRE);
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_TRANSPARENT),
-      List.of(STROKE_COLOUR_RED),
-      List.of(STROKE_WIDTH_3000),
-      List.of(JOIN),
-      List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_TRANSPARENT),
+  List.of(STROKE_COLOUR_RED),
+  List.of(STROKE_WIDTH_3000),
+  List.of(JOIN),
+  List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
+  List.of(WORK_AREA),
+);

@@ -8,8 +8,6 @@ and crashes !AWViewer.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
     ColourIndex,
 
@@ -24,18 +22,16 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
+const { createArtworks } = require('../record-creators');
+
 const {
   DEFAULT_PALETTE_INDEX_RED,
 } = require('../default-palette');
 
 const FILL = RecordFillColourFlat.of(0, ColourIndex.of(DEFAULT_PALETTE_INDEX_RED));
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL),
-      List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL),
+  List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
+  List.of(WORK_AREA),
+);

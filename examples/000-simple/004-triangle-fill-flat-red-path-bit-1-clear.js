@@ -8,8 +8,6 @@ the path doesn't get drawn
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
     PathBoundingBox,
 
@@ -22,6 +20,8 @@ const {
   LAYER_FOREGROUND,
   WORK_AREA,
 } = require('../shared-objects');
+
+const { createArtworks } = require('../record-creators');
 
 const {
   createClosedEquilateralTriangle,
@@ -36,12 +36,8 @@ const PATH = (function p() {
     .build();
 }());
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_RED),
-      List.of(LAYER_FOREGROUND, PATH),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_RED),
+  List.of(LAYER_FOREGROUND, PATH),
+  List.of(WORK_AREA),
+);
