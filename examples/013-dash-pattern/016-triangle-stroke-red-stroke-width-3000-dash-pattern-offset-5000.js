@@ -1,18 +1,14 @@
 /*
-Example: 014-triangle-stroke-red-stroke-width-3000-dash-empty
+Example: 016-triangle-stroke-red-stroke-width-3000-dash-pattern-offset-5000
 
 Purpose:
-To demonstrate that an empty dash pattern does nothing
+To demonstrate dash patterns with non-zero offset.
  */
 
 const {
   Builders: {
     List,
-
-    RecordDashPatternEmpty,
   },
-
-  Constants,
 } = require('../../src').Artworks;
 
 const {
@@ -21,18 +17,17 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_TRIANGLE,
+  DASH_PATTERN_OFFSET_5000,
   WORK_AREA,
 } = require('../shared-objects');
 
 const { createArtworks } = require('../record-creators');
 
-const DASH_PATTERN = RecordDashPatternEmpty.of(Constants.UNKNOWN_4_BIT_0);
-
 module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  List.of(DASH_PATTERN),
+  List.of(DASH_PATTERN_OFFSET_5000),
   List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
   List.of(WORK_AREA),
 );

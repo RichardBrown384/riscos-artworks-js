@@ -19,6 +19,7 @@ const {
     RecordLineCapStart,
     RecordWindingRule,
     RecordDashPatternEmpty,
+    RecordDashPattern,
     RecordRectangle,
     RecordEllipse,
     RecordBlendGroup,
@@ -122,6 +123,15 @@ function createRecordDashPatternEmpty() {
   return Object.freeze(RecordDashPatternEmpty.of(UNKNOWN_4_BIT_0));
 }
 
+function createRecordDashPattern(offset, ...elements) {
+  const record = RecordDashPattern.builder()
+    .unknown4(UNKNOWN_4_BIT_0)
+    .offset(offset)
+    .elements(...elements)
+    .build();
+  return Object.freeze(record);
+}
+
 function createRecordRectangle(path, padding, unknown24, ...attributes) {
   const record = RecordRectangle.builder()
     .unknown4(UNKNOWN_4_BIT_1)
@@ -184,6 +194,7 @@ module.exports = {
   createRecordLineCapStart,
   createRecordWindingRule,
   createRecordDashPatternEmpty,
+  createRecordDashPattern,
   createRecordRectangle,
   createRecordEllipse,
   createRecordBlendGroup,

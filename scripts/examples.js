@@ -37,6 +37,7 @@ function processExamplesDirectory(directory, examplesDirectory) {
   processExamplesDirectory(directory, './examples/010-end-caps');
   processExamplesDirectory(directory, './examples/011-start-caps');
   processExamplesDirectory(directory, './examples/012-winding-rule');
+  processExamplesDirectory(directory, './examples/013-dash-pattern');
   processExamplesDirectory(directory, './examples/100-attribute-propagation');
   processExamplesDirectory(directory, './examples/200-blends');
 }());
