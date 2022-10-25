@@ -14,6 +14,7 @@ const {
     RecordStrokeWidth,
     RecordFillColourFlat,
     RecordFillColourGradient,
+    RecordJoinStyle,
     RecordLineCapEnd,
     RecordLineCapStart,
     RecordWindingRule,
@@ -99,6 +100,10 @@ function createRecordFillColourGradient(type, x0, y0, x1, y1, startColour, endCo
   return Object.freeze(record);
 }
 
+function createRecordJoinStyle(joinStyle) {
+  return Object.freeze(RecordJoinStyle.of(UNKNOWN_4_BIT_0, joinStyle));
+}
+
 function createRecordLineCapEnd(capStyle, triangleWidth = 0, triangleHeight = 0) {
   const capTriangle = RecordLineCapEnd.capTriangle(128 * triangleWidth, 128 * triangleHeight);
   return Object.freeze(RecordLineCapEnd.of(UNKNOWN_4_BIT_0, capStyle, capTriangle));
@@ -174,6 +179,7 @@ module.exports = {
   createRecordStrokeColour,
   createRecordFillColourFlat,
   createRecordFillColourGradient,
+  createRecordJoinStyle,
   createRecordLineCapEnd,
   createRecordLineCapStart,
   createRecordWindingRule,

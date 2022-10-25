@@ -33,6 +33,7 @@ function processExamplesDirectory(directory, examplesDirectory) {
 (function main() {
   const directory = process.argv[2] || './examples-output';
   processExamplesDirectory(directory, './examples/000-simple');
+  processExamplesDirectory(directory, './examples/009-join-style');
   processExamplesDirectory(directory, './examples/010-end-caps');
   processExamplesDirectory(directory, './examples/011-start-caps');
   processExamplesDirectory(directory, './examples/100-attribute-propagation');
