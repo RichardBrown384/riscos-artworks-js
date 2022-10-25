@@ -1,16 +1,5 @@
 const {
-  Constants: {
-    FILL_LINEAR,
-    FILL_RADIAL,
-
-    CAP_BUTT,
-    CAP_ROUND,
-    CAP_SQUARE,
-    CAP_TRIANGLE,
-
-    LAYER_UNKNOWN_24_BIT_0,
-    LAYER_UNKNOWN_24_BIT_3,
-  },
+  Constants,
 } = require('../src').Artworks;
 
 const {
@@ -39,6 +28,7 @@ const {
   createRecordStrokeWidth,
   createRecordFillColourFlat,
   createRecordFillColourGradient,
+  createRecordJoinStyle,
   createRecordLineCapEnd,
   createRecordLineCapStart,
 } = require('./record-creators');
@@ -58,8 +48,9 @@ const PATH_PENTAGRAM = createRecordPath(
   10_000,
 );
 
-const LAYER_BACKGROUND = createRecordLayer(LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3, 'Background');
-const LAYER_FOREGROUND = createRecordLayer(LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3, 'Foreground');
+const LAYER_UNKNOWN_24 = Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3;
+const LAYER_BACKGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Background');
+const LAYER_FOREGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Foreground');
 
 const WORK_AREA = createRecordWorkArea(DEFAULT_PALETTE);
 
@@ -82,7 +73,7 @@ const FILL_FLAT_RED = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_RED);
 const FILL_FLAT_BLUE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_BLUE);
 
 const FILL_LINEAR_YELLOW_RED = createRecordFillColourGradient(
-  FILL_LINEAR,
+  Constants.FILL_LINEAR,
   0,
   0,
   150_000,
@@ -92,7 +83,7 @@ const FILL_LINEAR_YELLOW_RED = createRecordFillColourGradient(
 );
 
 const FILL_RADIAL_RED_YELLOW = createRecordFillColourGradient(
-  FILL_RADIAL,
+  Constants.FILL_RADIAL,
   0,
   0,
   150_000,
@@ -101,17 +92,21 @@ const FILL_RADIAL_RED_YELLOW = createRecordFillColourGradient(
   DEFAULT_PALETTE_INDEX_YELLOW,
 );
 
-const END_CAP_BUTT = createRecordLineCapEnd(CAP_BUTT);
-const END_CAP_ROUND = createRecordLineCapEnd(CAP_ROUND);
-const END_CAP_SQUARE = createRecordLineCapEnd(CAP_SQUARE);
-const END_CAP_TRIANGLE_W2_H4 = createRecordLineCapEnd(CAP_TRIANGLE, 2, 4);
-const END_CAP_TRIANGLE_W4_H2 = createRecordLineCapEnd(CAP_TRIANGLE, 4, 2);
+const JOIN_MITRE = createRecordJoinStyle(Constants.JOIN_MITRE);
+const JOIN_ROUND = createRecordJoinStyle(Constants.JOIN_ROUND);
+const JOIN_BEVEL = createRecordJoinStyle(Constants.JOIN_BEVEL);
 
-const START_CAP_BUTT = createRecordLineCapStart(CAP_BUTT);
-const START_CAP_ROUND = createRecordLineCapStart(CAP_ROUND);
-const START_CAP_SQUARE = createRecordLineCapStart(CAP_SQUARE);
-const START_CAP_TRIANGLE_W2_H4 = createRecordLineCapStart(CAP_TRIANGLE, 2, 4);
-const START_CAP_TRIANGLE_W4_H2 = createRecordLineCapStart(CAP_TRIANGLE, 4, 2);
+const END_CAP_BUTT = createRecordLineCapEnd(Constants.CAP_BUTT);
+const END_CAP_ROUND = createRecordLineCapEnd(Constants.CAP_ROUND);
+const END_CAP_SQUARE = createRecordLineCapEnd(Constants.CAP_SQUARE);
+const END_CAP_TRIANGLE_W2_H4 = createRecordLineCapEnd(Constants.CAP_TRIANGLE, 2, 4);
+const END_CAP_TRIANGLE_W4_H2 = createRecordLineCapEnd(Constants.CAP_TRIANGLE, 4, 2);
+
+const START_CAP_BUTT = createRecordLineCapStart(Constants.CAP_BUTT);
+const START_CAP_ROUND = createRecordLineCapStart(Constants.CAP_ROUND);
+const START_CAP_SQUARE = createRecordLineCapStart(Constants.CAP_SQUARE);
+const START_CAP_TRIANGLE_W2_H4 = createRecordLineCapStart(Constants.CAP_TRIANGLE, 2, 4);
+const START_CAP_TRIANGLE_W4_H2 = createRecordLineCapStart(Constants.CAP_TRIANGLE, 4, 2);
 
 module.exports = {
   PATH_TRIANGLE,
@@ -143,6 +138,10 @@ module.exports = {
 
   FILL_LINEAR_YELLOW_RED,
   FILL_RADIAL_RED_YELLOW,
+
+  JOIN_MITRE,
+  JOIN_ROUND,
+  JOIN_BEVEL,
 
   END_CAP_BUTT,
   END_CAP_ROUND,
