@@ -1,17 +1,14 @@
 /*
-Example: 034-open-v-marker-end-arrow-head
+Example: 038-open-v-marker-start-none
 
 Purpose:
-Demonstrates arrow head end markers
+Demonstrates no start markers.
  */
 
 const {
   Builders: {
     List,
-
-    RecordMarkerEnd,
   },
-  Constants,
 } = require('../../src').Artworks;
 
 const {
@@ -20,23 +17,17 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_OPEN_INVERTED_V,
+  START_MARKER_NONE,
   WORK_AREA,
 } = require('../shared-objects');
 
 const { createArtworks } = require('../record-creators');
 
-const MARKER_END = RecordMarkerEnd.builder()
-  .unknown4(Constants.UNKNOWN_4_BIT_0)
-  .markerStyle(Constants.MARKER_ARROW_HEAD)
-  .markerWidth(0x10000 * 4)
-  .markerHeight(0x10000 * 6)
-  .build();
-
 module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  List.of(MARKER_END),
+  List.of(START_MARKER_NONE),
   List.of(LAYER_FOREGROUND, PATH_OPEN_INVERTED_V),
   List.of(WORK_AREA),
 );

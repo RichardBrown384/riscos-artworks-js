@@ -25,6 +25,8 @@ const {
     RecordBlendGroup,
     RecordBlendOptions,
     RecordBlendPath,
+    RecordMarkerStart,
+    RecordMarkerEnd,
   },
 
   Constants: {
@@ -180,6 +182,26 @@ function createRecordBlendPath(path, padding) {
   return Object.freeze(record);
 }
 
+function createRecordStartMarker(markerStyle, width = 0, height = 0) {
+  const record = RecordMarkerStart.builder()
+    .unknown4(UNKNOWN_4_BIT_0)
+    .markerStyle(markerStyle)
+    .markerWidth(0x10000 * width)
+    .markerHeight(0x10000 * height)
+    .build();
+  return Object.freeze(record);
+}
+
+function createRecordEndMarker(markerStyle, width = 0, height = 0) {
+  const record = RecordMarkerEnd.builder()
+    .unknown4(UNKNOWN_4_BIT_0)
+    .markerStyle(markerStyle)
+    .markerWidth(0x10000 * width)
+    .markerHeight(0x10000 * height)
+    .build();
+  return Object.freeze(record);
+}
+
 module.exports = {
   createArtworks,
   createRecordPath,
@@ -200,4 +222,6 @@ module.exports = {
   createRecordBlendGroup,
   createRecordBlendOptions,
   createRecordBlendPath,
+  createRecordStartMarker,
+  createRecordEndMarker,
 };

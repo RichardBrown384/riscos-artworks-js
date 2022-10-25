@@ -1,5 +1,29 @@
 const {
-  Constants,
+  Constants: {
+    LAYER_UNKNOWN_24_BIT_0,
+    LAYER_UNKNOWN_24_BIT_3,
+
+    FILL_LINEAR,
+    FILL_RADIAL,
+
+    JOIN_MITRE,
+    JOIN_ROUND,
+    JOIN_BEVEL,
+
+    CAP_BUTT,
+    CAP_ROUND,
+    CAP_SQUARE,
+    CAP_TRIANGLE,
+
+    WINDING_RULE_EVEN_ODD,
+    WINDING_RULE_NON_ZERO,
+
+    MARKER_NONE,
+    MARKER_TRIANGLE,
+    MARKER_ARROW_HEAD,
+    MARKER_CIRCLE,
+    MARKER_ARROW_TAIL,
+  },
 } = require('../src').Artworks;
 
 const {
@@ -34,6 +58,8 @@ const {
   createRecordWindingRule,
   createRecordDashPatternEmpty,
   createRecordDashPattern,
+  createRecordStartMarker,
+  createRecordEndMarker,
 } = require('./record-creators');
 
 module.exports.PATH_TRIANGLE = createRecordPath(
@@ -51,7 +77,7 @@ module.exports.PATH_PENTAGRAM = createRecordPath(
   10_000,
 );
 
-const LAYER_UNKNOWN_24 = Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3;
+const LAYER_UNKNOWN_24 = LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3;
 module.exports.LAYER_BACKGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Background');
 module.exports.LAYER_FOREGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Foreground');
 
@@ -78,7 +104,7 @@ module.exports.FILL_FLAT_RED = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_
 module.exports.FILL_FLAT_BLUE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_BLUE);
 
 module.exports.FILL_LINEAR_YELLOW_RED = createRecordFillColourGradient(
-  Constants.FILL_LINEAR,
+  FILL_LINEAR,
   0,
   0,
   150_000,
@@ -88,7 +114,7 @@ module.exports.FILL_LINEAR_YELLOW_RED = createRecordFillColourGradient(
 );
 
 module.exports.FILL_RADIAL_RED_YELLOW = createRecordFillColourGradient(
-  Constants.FILL_RADIAL,
+  FILL_RADIAL,
   0,
   0,
   150_000,
@@ -97,25 +123,39 @@ module.exports.FILL_RADIAL_RED_YELLOW = createRecordFillColourGradient(
   DEFAULT_PALETTE_INDEX_YELLOW,
 );
 
-module.exports.JOIN_MITRE = createRecordJoinStyle(Constants.JOIN_MITRE);
-module.exports.JOIN_ROUND = createRecordJoinStyle(Constants.JOIN_ROUND);
-module.exports.JOIN_BEVEL = createRecordJoinStyle(Constants.JOIN_BEVEL);
+module.exports.JOIN_MITRE = createRecordJoinStyle(JOIN_MITRE);
+module.exports.JOIN_ROUND = createRecordJoinStyle(JOIN_ROUND);
+module.exports.JOIN_BEVEL = createRecordJoinStyle(JOIN_BEVEL);
 
-module.exports.END_CAP_BUTT = createRecordLineCapEnd(Constants.CAP_BUTT);
-module.exports.END_CAP_ROUND = createRecordLineCapEnd(Constants.CAP_ROUND);
-module.exports.END_CAP_SQUARE = createRecordLineCapEnd(Constants.CAP_SQUARE);
-module.exports.END_CAP_TRIANGLE_W2_H4 = createRecordLineCapEnd(Constants.CAP_TRIANGLE, 2, 4);
-module.exports.END_CAP_TRIANGLE_W4_H2 = createRecordLineCapEnd(Constants.CAP_TRIANGLE, 4, 2);
+module.exports.END_CAP_BUTT = createRecordLineCapEnd(CAP_BUTT);
+module.exports.END_CAP_ROUND = createRecordLineCapEnd(CAP_ROUND);
+module.exports.END_CAP_SQUARE = createRecordLineCapEnd(CAP_SQUARE);
+module.exports.END_CAP_TRIANGLE_W2_H4 = createRecordLineCapEnd(CAP_TRIANGLE, 2, 4);
+module.exports.END_CAP_TRIANGLE_W4_H2 = createRecordLineCapEnd(CAP_TRIANGLE, 4, 2);
+module.exports.END_CAP_TRIANGLE_W10_H10 = createRecordLineCapEnd(CAP_TRIANGLE, 10, 10);
 
-module.exports.START_CAP_BUTT = createRecordLineCapStart(Constants.CAP_BUTT);
-module.exports.START_CAP_ROUND = createRecordLineCapStart(Constants.CAP_ROUND);
-module.exports.START_CAP_SQUARE = createRecordLineCapStart(Constants.CAP_SQUARE);
-module.exports.START_CAP_TRIANGLE_W2_H4 = createRecordLineCapStart(Constants.CAP_TRIANGLE, 2, 4);
-module.exports.START_CAP_TRIANGLE_W4_H2 = createRecordLineCapStart(Constants.CAP_TRIANGLE, 4, 2);
+module.exports.START_CAP_BUTT = createRecordLineCapStart(CAP_BUTT);
+module.exports.START_CAP_ROUND = createRecordLineCapStart(CAP_ROUND);
+module.exports.START_CAP_SQUARE = createRecordLineCapStart(CAP_SQUARE);
+module.exports.START_CAP_TRIANGLE_W2_H4 = createRecordLineCapStart(CAP_TRIANGLE, 2, 4);
+module.exports.START_CAP_TRIANGLE_W4_H2 = createRecordLineCapStart(CAP_TRIANGLE, 4, 2);
+module.exports.START_CAP_TRIANGLE_W10_H10 = createRecordLineCapStart(CAP_TRIANGLE, 10, 10);
 
-module.exports.WINDING_RULE_EVEN_ODD = createRecordWindingRule(Constants.WINDING_RULE_EVEN_ODD);
-module.exports.WINDING_RULE_NON_ZERO = createRecordWindingRule(Constants.WINDING_RULE_NON_ZERO);
+module.exports.WINDING_RULE_EVEN_ODD = createRecordWindingRule(WINDING_RULE_EVEN_ODD);
+module.exports.WINDING_RULE_NON_ZERO = createRecordWindingRule(WINDING_RULE_NON_ZERO);
 
 module.exports.DASH_PATTERN_EMPTY = createRecordDashPatternEmpty();
 module.exports.DASH_PATTERN_OFFSET_0 = createRecordDashPattern(0, 5000, 10000, 5000);
 module.exports.DASH_PATTERN_OFFSET_5000 = createRecordDashPattern(5000, 5000, 10000, 5000);
+
+module.exports.START_MARKER_NONE = createRecordStartMarker(MARKER_NONE);
+module.exports.START_MARKER_TRIANGLE_W4_H4 = createRecordStartMarker(MARKER_TRIANGLE, 4, 4);
+module.exports.START_MARKER_ARROW_HEAD_W4_H6 = createRecordStartMarker(MARKER_ARROW_HEAD, 4, 6);
+module.exports.START_MARKER_CIRCLE_W6_H4 = createRecordStartMarker(MARKER_CIRCLE, 6, 4);
+module.exports.START_MARKER_ARROW_TAIL_W4_H4 = createRecordStartMarker(MARKER_ARROW_TAIL, 4, 4);
+
+module.exports.END_MARKER_NONE = createRecordEndMarker(MARKER_NONE);
+module.exports.END_MARKER_TRIANGLE_W4_H4 = createRecordEndMarker(MARKER_TRIANGLE, 4, 4);
+module.exports.END_MARKER_ARROW_HEAD_W4_H6 = createRecordEndMarker(MARKER_ARROW_HEAD, 4, 6);
+module.exports.END_MARKER_CIRCLE_W6_H4 = createRecordEndMarker(MARKER_CIRCLE, 6, 4);
+module.exports.END_MARKER_ARROW_TAIL_W4_H4 = createRecordEndMarker(MARKER_ARROW_TAIL, 4, 4);
