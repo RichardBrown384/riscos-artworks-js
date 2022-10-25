@@ -31,48 +31,51 @@ const {
   createRecordJoinStyle,
   createRecordLineCapEnd,
   createRecordLineCapStart,
+  createRecordWindingRule,
 } = require('./record-creators');
 
-const PATH_TRIANGLE = createRecordPath(
+module.exports.PATH_TRIANGLE = createRecordPath(
   createClosedEquilateralTriangle(10_000, 10_000, 100_000),
   10_000,
 );
 
-const PATH_OPEN_INVERTED_V = createRecordPath(
+module.exports.PATH_OPEN_INVERTED_V = createRecordPath(
   createOpenInvertedV(10_000, 10_000, 100_000),
   10_100,
 );
 
-const PATH_PENTAGRAM = createRecordPath(
+module.exports.PATH_PENTAGRAM = createRecordPath(
   createClosedPentagram(100_000, 100_000, 80_000),
   10_000,
 );
 
 const LAYER_UNKNOWN_24 = Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3;
-const LAYER_BACKGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Background');
-const LAYER_FOREGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Foreground');
+module.exports.LAYER_BACKGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Background');
+module.exports.LAYER_FOREGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Foreground');
 
-const WORK_AREA = createRecordWorkArea(DEFAULT_PALETTE);
+module.exports.WORK_AREA = createRecordWorkArea(DEFAULT_PALETTE);
 
-const STROKE_COLOUR_RED = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_RED);
-const STROKE_COLOUR_BLUE = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_BLUE);
-const STROKE_COLOUR_MAGENTA = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_MAGENTA);
-const STROKE_COLOUR_TRANSPARENT = createRecordStrokeColour(PALETTE_INDEX_TRANSPARENT);
+module.exports.STROKE_COLOUR_RED = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_RED);
+module.exports.STROKE_COLOUR_BLUE = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_BLUE);
+module.exports.STROKE_COLOUR_MAGENTA = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_MAGENTA);
+module.exports.STROKE_COLOUR_TRANSPARENT = createRecordStrokeColour(PALETTE_INDEX_TRANSPARENT);
 
-const STROKE_WIDTH_960 = createRecordStrokeWidth(960);
-const STROKE_WIDTH_1280 = createRecordStrokeWidth(1280);
-const STROKE_WIDTH_1500 = createRecordStrokeWidth(1500);
-const STROKE_WIDTH_3000 = createRecordStrokeWidth(3000);
-const STROKE_WIDTH_6000 = createRecordStrokeWidth(6000);
+module.exports.STROKE_WIDTH_960 = createRecordStrokeWidth(960);
+module.exports.STROKE_WIDTH_1280 = createRecordStrokeWidth(1280);
+module.exports.STROKE_WIDTH_1500 = createRecordStrokeWidth(1500);
+module.exports.STROKE_WIDTH_3000 = createRecordStrokeWidth(3000);
+module.exports.STROKE_WIDTH_6000 = createRecordStrokeWidth(6000);
 
-const FILL_FLAT_TRANSPARENT = createRecordFillColourFlat(PALETTE_INDEX_TRANSPARENT);
-const FILL_FLAT_BLACK = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_BLACK);
-const FILL_FLAT_BLACK_30 = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_BLACK_30_PERCENT);
-const FILL_FLAT_WHITE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_WHITE);
-const FILL_FLAT_RED = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_RED);
-const FILL_FLAT_BLUE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_BLUE);
+module.exports.FILL_FLAT_TRANSPARENT = createRecordFillColourFlat(PALETTE_INDEX_TRANSPARENT);
+module.exports.FILL_FLAT_BLACK = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_BLACK);
+module.exports.FILL_FLAT_BLACK_30 = createRecordFillColourFlat(
+  DEFAULT_PALETTE_INDEX_BLACK_30_PERCENT,
+);
+module.exports.FILL_FLAT_WHITE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_WHITE);
+module.exports.FILL_FLAT_RED = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_RED);
+module.exports.FILL_FLAT_BLUE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_BLUE);
 
-const FILL_LINEAR_YELLOW_RED = createRecordFillColourGradient(
+module.exports.FILL_LINEAR_YELLOW_RED = createRecordFillColourGradient(
   Constants.FILL_LINEAR,
   0,
   0,
@@ -82,7 +85,7 @@ const FILL_LINEAR_YELLOW_RED = createRecordFillColourGradient(
   DEFAULT_PALETTE_INDEX_RED,
 );
 
-const FILL_RADIAL_RED_YELLOW = createRecordFillColourGradient(
+module.exports.FILL_RADIAL_RED_YELLOW = createRecordFillColourGradient(
   Constants.FILL_RADIAL,
   0,
   0,
@@ -92,66 +95,21 @@ const FILL_RADIAL_RED_YELLOW = createRecordFillColourGradient(
   DEFAULT_PALETTE_INDEX_YELLOW,
 );
 
-const JOIN_MITRE = createRecordJoinStyle(Constants.JOIN_MITRE);
-const JOIN_ROUND = createRecordJoinStyle(Constants.JOIN_ROUND);
-const JOIN_BEVEL = createRecordJoinStyle(Constants.JOIN_BEVEL);
+module.exports.JOIN_MITRE = createRecordJoinStyle(Constants.JOIN_MITRE);
+module.exports.JOIN_ROUND = createRecordJoinStyle(Constants.JOIN_ROUND);
+module.exports.JOIN_BEVEL = createRecordJoinStyle(Constants.JOIN_BEVEL);
 
-const END_CAP_BUTT = createRecordLineCapEnd(Constants.CAP_BUTT);
-const END_CAP_ROUND = createRecordLineCapEnd(Constants.CAP_ROUND);
-const END_CAP_SQUARE = createRecordLineCapEnd(Constants.CAP_SQUARE);
-const END_CAP_TRIANGLE_W2_H4 = createRecordLineCapEnd(Constants.CAP_TRIANGLE, 2, 4);
-const END_CAP_TRIANGLE_W4_H2 = createRecordLineCapEnd(Constants.CAP_TRIANGLE, 4, 2);
+module.exports.END_CAP_BUTT = createRecordLineCapEnd(Constants.CAP_BUTT);
+module.exports.END_CAP_ROUND = createRecordLineCapEnd(Constants.CAP_ROUND);
+module.exports.END_CAP_SQUARE = createRecordLineCapEnd(Constants.CAP_SQUARE);
+module.exports.END_CAP_TRIANGLE_W2_H4 = createRecordLineCapEnd(Constants.CAP_TRIANGLE, 2, 4);
+module.exports.END_CAP_TRIANGLE_W4_H2 = createRecordLineCapEnd(Constants.CAP_TRIANGLE, 4, 2);
 
-const START_CAP_BUTT = createRecordLineCapStart(Constants.CAP_BUTT);
-const START_CAP_ROUND = createRecordLineCapStart(Constants.CAP_ROUND);
-const START_CAP_SQUARE = createRecordLineCapStart(Constants.CAP_SQUARE);
-const START_CAP_TRIANGLE_W2_H4 = createRecordLineCapStart(Constants.CAP_TRIANGLE, 2, 4);
-const START_CAP_TRIANGLE_W4_H2 = createRecordLineCapStart(Constants.CAP_TRIANGLE, 4, 2);
+module.exports.START_CAP_BUTT = createRecordLineCapStart(Constants.CAP_BUTT);
+module.exports.START_CAP_ROUND = createRecordLineCapStart(Constants.CAP_ROUND);
+module.exports.START_CAP_SQUARE = createRecordLineCapStart(Constants.CAP_SQUARE);
+module.exports.START_CAP_TRIANGLE_W2_H4 = createRecordLineCapStart(Constants.CAP_TRIANGLE, 2, 4);
+module.exports.START_CAP_TRIANGLE_W4_H2 = createRecordLineCapStart(Constants.CAP_TRIANGLE, 4, 2);
 
-module.exports = {
-  PATH_TRIANGLE,
-  PATH_OPEN_INVERTED_V,
-  PATH_PENTAGRAM,
-
-  LAYER_BACKGROUND,
-  LAYER_FOREGROUND,
-
-  WORK_AREA,
-
-  STROKE_COLOUR_RED,
-  STROKE_COLOUR_BLUE,
-  STROKE_COLOUR_MAGENTA,
-  STROKE_COLOUR_TRANSPARENT,
-
-  STROKE_WIDTH_960,
-  STROKE_WIDTH_1280,
-  STROKE_WIDTH_1500,
-  STROKE_WIDTH_3000,
-  STROKE_WIDTH_6000,
-
-  FILL_FLAT_TRANSPARENT,
-  FILL_FLAT_BLACK,
-  FILL_FLAT_BLACK_30,
-  FILL_FLAT_WHITE,
-  FILL_FLAT_RED,
-  FILL_FLAT_BLUE,
-
-  FILL_LINEAR_YELLOW_RED,
-  FILL_RADIAL_RED_YELLOW,
-
-  JOIN_MITRE,
-  JOIN_ROUND,
-  JOIN_BEVEL,
-
-  END_CAP_BUTT,
-  END_CAP_ROUND,
-  END_CAP_SQUARE,
-  END_CAP_TRIANGLE_W2_H4,
-  END_CAP_TRIANGLE_W4_H2,
-
-  START_CAP_BUTT,
-  START_CAP_ROUND,
-  START_CAP_SQUARE,
-  START_CAP_TRIANGLE_W2_H4,
-  START_CAP_TRIANGLE_W4_H2,
-};
+module.exports.WINDING_RULE_EVEN_ODD = createRecordWindingRule(Constants.WINDING_RULE_EVEN_ODD);
+module.exports.WINDING_RULE_NON_ZERO = createRecordWindingRule(Constants.WINDING_RULE_NON_ZERO);

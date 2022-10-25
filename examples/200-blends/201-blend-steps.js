@@ -18,15 +18,13 @@ const {
     BoundingBox,
     PathBoundingBox,
   },
-
-  Constants,
-
 } = require('../../src').Artworks;
 
 const {
   FILL_FLAT_RED,
   FILL_FLAT_BLUE,
   STROKE_COLOUR_TRANSPARENT,
+  WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } = require('../shared-objects');
 
@@ -35,16 +33,15 @@ const {
 } = require('../path-creators');
 
 const {
+  createArtworks,
   createRecordPath,
-  createRecordWindingRule,
   createRecordDashPatternEmpty,
   createRecordBlendGroup,
   createRecordBlendOptions,
-  createRecordBlendPath, createArtworks,
+  createRecordBlendPath,
 } = require('../record-creators');
 
 const DASH_PATTERN_EMPTY = createRecordDashPatternEmpty();
-const WINDING_RULE = createRecordWindingRule(Constants.WINDING_RULE_EVEN_ODD);
 
 function createSimpleBlendGroup({
   sx, sy, sw, sh,
@@ -103,7 +100,7 @@ function createSimpleBlendGroups() {
 }
 
 module.exports = createArtworks(
-  List.of(WINDING_RULE),
+  List.of(WINDING_RULE_EVEN_ODD),
   List.of(DASH_PATTERN_EMPTY),
   ...createSimpleBlendGroups(),
   List.of(WORK_AREA),
