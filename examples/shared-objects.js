@@ -3,6 +3,11 @@ const {
     FILL_LINEAR,
     FILL_RADIAL,
 
+    CAP_BUTT,
+    CAP_ROUND,
+    CAP_SQUARE,
+    CAP_TRIANGLE,
+
     LAYER_UNKNOWN_24_BIT_0,
     LAYER_UNKNOWN_24_BIT_3,
   },
@@ -32,7 +37,10 @@ const {
   createRecordWorkArea,
   createRecordStrokeColour,
   createRecordStrokeWidth,
-  createRecordFillColourFlat, createRecordFillColourGradient,
+  createRecordFillColourFlat,
+  createRecordFillColourGradient,
+  createRecordLineCapEnd,
+  createRecordLineCapStart,
 } = require('./record-creators');
 
 const PATH_TRIANGLE = createRecordPath(
@@ -93,6 +101,18 @@ const FILL_RADIAL_RED_YELLOW = createRecordFillColourGradient(
   DEFAULT_PALETTE_INDEX_YELLOW,
 );
 
+const END_CAP_BUTT = createRecordLineCapEnd(CAP_BUTT);
+const END_CAP_ROUND = createRecordLineCapEnd(CAP_ROUND);
+const END_CAP_SQUARE = createRecordLineCapEnd(CAP_SQUARE);
+const END_CAP_TRIANGLE_W2_H4 = createRecordLineCapEnd(CAP_TRIANGLE, 2, 4);
+const END_CAP_TRIANGLE_W4_H2 = createRecordLineCapEnd(CAP_TRIANGLE, 4, 2);
+
+const START_CAP_BUTT = createRecordLineCapStart(CAP_BUTT);
+const START_CAP_ROUND = createRecordLineCapStart(CAP_ROUND);
+const START_CAP_SQUARE = createRecordLineCapStart(CAP_SQUARE);
+const START_CAP_TRIANGLE_W2_H4 = createRecordLineCapStart(CAP_TRIANGLE, 2, 4);
+const START_CAP_TRIANGLE_W4_H2 = createRecordLineCapStart(CAP_TRIANGLE, 4, 2);
+
 module.exports = {
   PATH_TRIANGLE,
   PATH_OPEN_INVERTED_V,
@@ -123,4 +143,16 @@ module.exports = {
 
   FILL_LINEAR_YELLOW_RED,
   FILL_RADIAL_RED_YELLOW,
+
+  END_CAP_BUTT,
+  END_CAP_ROUND,
+  END_CAP_SQUARE,
+  END_CAP_TRIANGLE_W2_H4,
+  END_CAP_TRIANGLE_W4_H2,
+
+  START_CAP_BUTT,
+  START_CAP_ROUND,
+  START_CAP_SQUARE,
+  START_CAP_TRIANGLE_W2_H4,
+  START_CAP_TRIANGLE_W4_H2,
 };
