@@ -32,6 +32,8 @@ const {
   createRecordLineCapEnd,
   createRecordLineCapStart,
   createRecordWindingRule,
+  createRecordDashPatternEmpty,
+  createRecordDashPattern,
 } = require('./record-creators');
 
 module.exports.PATH_TRIANGLE = createRecordPath(
@@ -113,3 +115,7 @@ module.exports.START_CAP_TRIANGLE_W4_H2 = createRecordLineCapStart(Constants.CAP
 
 module.exports.WINDING_RULE_EVEN_ODD = createRecordWindingRule(Constants.WINDING_RULE_EVEN_ODD);
 module.exports.WINDING_RULE_NON_ZERO = createRecordWindingRule(Constants.WINDING_RULE_NON_ZERO);
+
+module.exports.DASH_PATTERN_EMPTY = createRecordDashPatternEmpty();
+module.exports.DASH_PATTERN_OFFSET_0 = createRecordDashPattern(0, 5000, 10000, 5000);
+module.exports.DASH_PATTERN_OFFSET_5000 = createRecordDashPattern(5000, 5000, 10000, 5000);

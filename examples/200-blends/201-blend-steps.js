@@ -25,6 +25,7 @@ const {
   FILL_FLAT_BLUE,
   STROKE_COLOUR_TRANSPARENT,
   WINDING_RULE_EVEN_ODD,
+  DASH_PATTERN_EMPTY,
   WORK_AREA,
 } = require('../shared-objects');
 
@@ -35,13 +36,10 @@ const {
 const {
   createArtworks,
   createRecordPath,
-  createRecordDashPatternEmpty,
   createRecordBlendGroup,
   createRecordBlendOptions,
   createRecordBlendPath,
 } = require('../record-creators');
-
-const DASH_PATTERN_EMPTY = createRecordDashPatternEmpty();
 
 function createSimpleBlendGroup({
   sx, sy, sw, sh,
