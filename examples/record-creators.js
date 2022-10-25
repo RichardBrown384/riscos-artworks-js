@@ -14,6 +14,8 @@ const {
     RecordStrokeWidth,
     RecordFillColourFlat,
     RecordFillColourGradient,
+    RecordLineCapEnd,
+    RecordLineCapStart,
     RecordWindingRule,
     RecordDashPatternEmpty,
     RecordRectangle,
@@ -97,6 +99,16 @@ function createRecordFillColourGradient(type, x0, y0, x1, y1, startColour, endCo
   return Object.freeze(record);
 }
 
+function createRecordLineCapEnd(capStyle, triangleWidth = 0, triangleHeight = 0) {
+  const capTriangle = RecordLineCapEnd.capTriangle(128 * triangleWidth, 128 * triangleHeight);
+  return Object.freeze(RecordLineCapEnd.of(UNKNOWN_4_BIT_0, capStyle, capTriangle));
+}
+
+function createRecordLineCapStart(capStyle, triangleWidth = 0, triangleHeight = 0) {
+  const capTriangle = RecordLineCapStart.capTriangle(128 * triangleWidth, 128 * triangleHeight);
+  return Object.freeze(RecordLineCapStart.of(UNKNOWN_4_BIT_0, capStyle, capTriangle));
+}
+
 function createRecordWindingRule(windingRule) {
   return Object.freeze(RecordWindingRule.of(UNKNOWN_4_BIT_0, windingRule));
 }
@@ -162,6 +174,8 @@ module.exports = {
   createRecordStrokeColour,
   createRecordFillColourFlat,
   createRecordFillColourGradient,
+  createRecordLineCapEnd,
+  createRecordLineCapStart,
   createRecordWindingRule,
   createRecordDashPatternEmpty,
   createRecordRectangle,

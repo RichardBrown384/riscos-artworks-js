@@ -13,10 +13,7 @@ It's then also possible to infer the default (butt caps)
 const {
   Builders: {
     List,
-
-    RecordLineCapEnd,
   },
-  Constants,
 } = require('../../src').Artworks;
 
 const {
@@ -25,18 +22,17 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_OPEN_INVERTED_V,
+  END_CAP_BUTT,
   WORK_AREA,
 } = require('../shared-objects');
 
 const { createArtworks } = require('../record-creators');
 
-const END_CAP = RecordLineCapEnd.of(Constants.UNKNOWN_4_BIT_0, Constants.CAP_BUTT);
-
 module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  List.of(END_CAP),
+  List.of(END_CAP_BUTT),
   List.of(LAYER_FOREGROUND, PATH_OPEN_INVERTED_V),
   List.of(WORK_AREA),
 );
