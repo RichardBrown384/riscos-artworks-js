@@ -38,6 +38,8 @@ function processExamplesDirectory(directory, examplesDirectory) {
   processExamplesDirectory(directory, './examples/011-start-caps');
   processExamplesDirectory(directory, './examples/012-winding-rule');
   processExamplesDirectory(directory, './examples/013-dash-pattern');
+  processExamplesDirectory(directory, './examples/03E-start-markers');
+  processExamplesDirectory(directory, './examples/03F-end-markers');
   processExamplesDirectory(directory, './examples/100-attribute-propagation');
   processExamplesDirectory(directory, './examples/200-blends');
 }());

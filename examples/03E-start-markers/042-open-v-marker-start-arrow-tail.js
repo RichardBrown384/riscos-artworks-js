@@ -1,17 +1,14 @@
 /*
-Example: 035-open-v-marker-end-circle
+Example: 042-open-v-marker-start-arrow-tail
 
 Purpose:
-Demonstrates circle end markers
+Demonstrates arrow tail start markers
  */
 
 const {
   Builders: {
     List,
-
-    RecordMarkerEnd,
   },
-  Constants,
 } = require('../../src').Artworks;
 
 const {
@@ -19,23 +16,18 @@ const {
   STROKE_COLOUR_RED,
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
+  START_MARKER_ARROW_TAIL_W4_H4,
   PATH_OPEN_INVERTED_V,
   WORK_AREA,
 } = require('../shared-objects');
-const { createArtworks } = require('../record-creators');
 
-const MARKER_END = RecordMarkerEnd.builder()
-  .unknown4(Constants.UNKNOWN_4_BIT_0)
-  .markerStyle(Constants.MARKER_CIRCLE)
-  .markerWidth(0x10000 * 6)
-  .markerHeight(0x10000 * 4)
-  .build();
+const { createArtworks } = require('../record-creators');
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  List.of(MARKER_END),
+  List.of(START_MARKER_ARROW_TAIL_W4_H4),
   List.of(LAYER_FOREGROUND, PATH_OPEN_INVERTED_V),
   List.of(WORK_AREA),
 );
