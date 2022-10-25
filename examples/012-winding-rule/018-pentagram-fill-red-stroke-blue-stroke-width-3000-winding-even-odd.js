@@ -8,10 +8,7 @@ To demonstrate the even-odd winding rule
 const {
   Builders: {
     List,
-
-    RecordWindingRule,
   },
-  Constants,
 } = require('../../src').Artworks;
 
 const {
@@ -20,20 +17,17 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_PENTAGRAM,
+  WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } = require('../shared-objects');
-const { createArtworks } = require('../record-creators');
 
-const WINDING_RULE = RecordWindingRule.of(
-  Constants.UNKNOWN_4_BIT_0,
-  Constants.WINDING_RULE_EVEN_ODD,
-);
+const { createArtworks } = require('../record-creators');
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_RED),
   List.of(STROKE_COLOUR_BLUE),
   List.of(STROKE_WIDTH_3000),
-  List.of(WINDING_RULE),
+  List.of(WINDING_RULE_EVEN_ODD),
   List.of(LAYER_FOREGROUND, PATH_PENTAGRAM),
   List.of(WORK_AREA),
 );
