@@ -5,25 +5,51 @@ const path = require('path');
 
 const { Artworks } = require('../src');
 
+const ARTWORKS_FILE_EXTENSION = 'd94';
+const DEFAULT_OUTPUT_DIRECTORY = './examples-output';
+const EXAMPLES_BASE_DIRECTORY = './examples';
+const EXAMPLE_DIRECTORIES = [
+  '000-simple',
+  '027-join-style',
+  '028-end-caps',
+  '029-start-caps',
+  '02A-winding-rule',
+  '02B-dash-pattern',
+  '03A-blend-groups',
+  '03E-start-markers',
+  '03F-end-markers',
+  '100-attribute-propagation',
+];
+
+function createSubdirectory(parent, child) {
+  const subdirectory = path.join(parent, child);
+  if (!fs.existsSync(subdirectory)) {
+    fs.mkdirSync(subdirectory);
+  }
+  return subdirectory;
+}
+
 function loadExamples(directory) {
   const resolved = path.resolve(directory);
   const examples = [];
-  const dirents = fs.readdirSync(resolved);
+  const dirents = fs.readdirSync(resolved, { withFileTypes: true });
   for (let i = 0; i < dirents.length; i += 1) {
-    const basename = path.basename(dirents[i], '.js');
-    const artworks = require(path.join(resolved, basename));
-    examples.push({ basename, artworks });
+    const dirent = dirents[i];
+    if (dirent.isFile()) {
+      const basename = path.basename(dirent.name, '.js');
+      const artworks = require(path.join(resolved, basename));
+      examples.push({ basename, artworks });
+    }
   }
   return examples;
 }
 
-function processExamplesDirectory(directory, examplesDirectory) {
-  const examples = loadExamples(examplesDirectory);
+function processExamples(examples, outputDirectory) {
   for (let i = 0; i < examples.length; i += 1) {
     const { basename, artworks } = examples[i];
     const filename = path.join(
-      directory,
-      `${path.basename(basename, '.js')},d94`,
+      outputDirectory,
+      `${basename},${ARTWORKS_FILE_EXTENSION}`,
     );
     const array = Artworks.toUint8Array(artworks);
     fs.writeFileSync(filename, array);
@@ -31,15 +57,13 @@ function processExamplesDirectory(directory, examplesDirectory) {
 }
 
 (function main() {
-  const directory = process.argv[2] || './examples-output';
-  processExamplesDirectory(directory, './examples/000-simple');
-  processExamplesDirectory(directory, './examples/009-join-style');
-  processExamplesDirectory(directory, './examples/010-end-caps');
-  processExamplesDirectory(directory, './examples/011-start-caps');
-  processExamplesDirectory(directory, './examples/012-winding-rule');
-  processExamplesDirectory(directory, './examples/013-dash-pattern');
-  processExamplesDirectory(directory, './examples/03E-start-markers');
-  processExamplesDirectory(directory, './examples/03F-end-markers');
-  processExamplesDirectory(directory, './examples/100-attribute-propagation');
-  processExamplesDirectory(directory, './examples/200-blends');
+  const baseOutputDirectory = process.argv[2] || DEFAULT_OUTPUT_DIRECTORY;
+  for (let i = 0; i < EXAMPLE_DIRECTORIES.length; i += 1) {
+    const examplesDirectory = EXAMPLE_DIRECTORIES[i];
+    const examples = loadExamples(
+        path.join(EXAMPLES_BASE_DIRECTORY, examplesDirectory)
+    );
+    const outputDirectory = createSubdirectory(baseOutputDirectory, examplesDirectory);
+    processExamples(examples, outputDirectory);
+  }
 }());
