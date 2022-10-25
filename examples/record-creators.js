@@ -1,5 +1,6 @@
 const {
   Builders: {
+    Artworks,
     Lists,
     List,
     ColourIndex,
@@ -28,6 +29,12 @@ const {
   },
 
 } = require('../src').Artworks;
+
+function createArtworks(...lists) {
+  return Artworks.builder()
+    .lists(Lists.of(...lists))
+    .build();
+}
 
 function createColourIndex(colour) {
   return ColourIndex.of(colour);
@@ -147,6 +154,7 @@ function createRecordBlendPath(path, padding) {
 }
 
 module.exports = {
+  createArtworks,
   createRecordPath,
   createRecordLayer,
   createRecordWorkArea,

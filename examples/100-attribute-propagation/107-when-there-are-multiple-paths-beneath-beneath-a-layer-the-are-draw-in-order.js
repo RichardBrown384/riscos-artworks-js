@@ -13,8 +13,6 @@ To demonstrate the order in which objects beneath a layer are rendered.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
   Constants,
@@ -40,6 +38,7 @@ const {
 } = require('../path-creators');
 
 const {
+  createArtworks,
   createRecordPath,
   createRecordLayer,
 } = require('../record-creators');
@@ -67,13 +66,9 @@ const LAYER = createRecordLayer(
   List.of(PATH_HEXAGON, STROKE_COLOUR_MAGENTA),
 );
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_BLACK_30),
-      List.of(STROKE_COLOUR_RED),
-      List.of(LAYER, PATH_TRIANGLE, STROKE_WIDTH_3000),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_BLACK_30),
+  List.of(STROKE_COLOUR_RED),
+  List.of(LAYER, PATH_TRIANGLE, STROKE_WIDTH_3000),
+  List.of(WORK_AREA),
+);

@@ -7,11 +7,11 @@ To demonstrate the minimum file that will actually render something in !AWViewer
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
 } = require('../../src').Artworks;
+
+const { createArtworks } = require('../record-creators');
 
 const {
   FILL_FLAT_RED,
@@ -20,12 +20,8 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_RED),
-      List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_RED),
+  List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
+  List.of(WORK_AREA),
+);

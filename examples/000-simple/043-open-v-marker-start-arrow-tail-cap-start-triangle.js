@@ -7,8 +7,6 @@ Demonstrates the interaction between start line caps and start line markers.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
 
     RecordLineCapStart,
@@ -26,6 +24,8 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
+const { createArtworks } = require('../record-creators');
+
 const START_CAP = RecordLineCapStart.of(
   Constants.UNKNOWN_4_BIT_0,
   Constants.CAP_TRIANGLE,
@@ -39,16 +39,12 @@ const MARKER_START = RecordMarkerStart.builder()
   .markerHeight(0x10000 * 4)
   .build();
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_TRANSPARENT),
-      List.of(STROKE_COLOUR_RED),
-      List.of(STROKE_WIDTH_3000),
-      List.of(START_CAP),
-      List.of(MARKER_START),
-      List.of(LAYER_FOREGROUND, PATH_OPEN_INVERTED_V),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_TRANSPARENT),
+  List.of(STROKE_COLOUR_RED),
+  List.of(STROKE_WIDTH_3000),
+  List.of(START_CAP),
+  List.of(MARKER_START),
+  List.of(LAYER_FOREGROUND, PATH_OPEN_INVERTED_V),
+  List.of(WORK_AREA),
+);

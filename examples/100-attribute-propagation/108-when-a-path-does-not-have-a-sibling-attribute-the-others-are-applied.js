@@ -14,8 +14,6 @@ Some observations:
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
   Constants,
@@ -44,6 +42,7 @@ const {
 } = require('../path-creators');
 
 const {
+  createArtworks,
   createRecordPath,
   createRecordLayer,
 } = require('../record-creators');
@@ -82,14 +81,10 @@ const LAYER = createRecordLayer(
   List.of(PATH_HEXAGON_8, STROKE_COLOUR_BLUE),
 );
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_BLACK_30),
-      List.of(STROKE_COLOUR_RED),
-      List.of(STROKE_WIDTH_1500),
-      List.of(LAYER, PATH_TRIANGLE, STROKE_WIDTH_3000),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_BLACK_30),
+  List.of(STROKE_COLOUR_RED),
+  List.of(STROKE_WIDTH_1500),
+  List.of(LAYER, PATH_TRIANGLE, STROKE_WIDTH_3000),
+  List.of(WORK_AREA),
+);

@@ -7,8 +7,6 @@ To demonstrate the linear gradient fills !AWViewer
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
 } = require('../../src').Artworks;
@@ -20,12 +18,10 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_LINEAR_YELLOW_RED),
-      List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+const { createArtworks } = require('../record-creators');
+
+module.exports = createArtworks(
+  List.of(FILL_LINEAR_YELLOW_RED),
+  List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
+  List.of(WORK_AREA),
+);

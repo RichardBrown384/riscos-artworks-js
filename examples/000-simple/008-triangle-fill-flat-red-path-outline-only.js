@@ -10,8 +10,6 @@ Example 046 tests this example more fully.
 
 const {
   Builders: {
-    Artworks,
-    Lists,
     List,
   },
 } = require('../../src').Artworks;
@@ -29,6 +27,7 @@ const {
 } = require('../path-creators');
 
 const {
+  createArtworks,
   createRecordPath,
 } = require('../record-creators');
 
@@ -39,14 +38,10 @@ const PATH = createRecordPath(
   10_000,
 );
 
-module.exports = Artworks.builder()
-  .lists(
-    Lists.of(
-      List.of(FILL_FLAT_RED),
-      List.of(STROKE_COLOUR_BLUE),
-      List.of(STROKE_WIDTH_1280),
-      List.of(LAYER_FOREGROUND, PATH),
-      List.of(WORK_AREA),
-    ),
-  )
-  .build();
+module.exports = createArtworks(
+  List.of(FILL_FLAT_RED),
+  List.of(STROKE_COLOUR_BLUE),
+  List.of(STROKE_WIDTH_1280),
+  List.of(LAYER_FOREGROUND, PATH),
+  List.of(WORK_AREA),
+);
