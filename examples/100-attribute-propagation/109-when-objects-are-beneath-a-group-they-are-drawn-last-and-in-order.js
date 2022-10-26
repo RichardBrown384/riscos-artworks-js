@@ -15,12 +15,8 @@ are drawn in order.
 const {
   Builders: {
     BoundingBox,
-    Lists,
     List,
-
-    RecordGroup,
   },
-  Constants,
 } = require('../../src').Artworks;
 
 const {
@@ -41,7 +37,7 @@ const {
 } = require('../path-creators');
 
 const {
-  createRecordPath, createArtworks,
+  createArtworks, createRecordPath, createRecordGroup,
 } = require('../record-creators');
 
 const HEXAGON_RADIUS = 40_000;
@@ -56,24 +52,18 @@ const PATH_HEXAGON_1 = createHexagon(50_000, 50_000);
 const PATH_HEXAGON_2 = createHexagon(100_000, 75_000, FILL_FLAT_RED);
 const PATH_HEXAGON_3 = createHexagon(150_000, 50_000, FILL_RADIAL_RED_YELLOW);
 
-const GROUP = RecordGroup.builder()
-  .unknown4(Constants.UNKNOWN_4_BIT_1)
-  .boundingBox(BoundingBox.builder()
-    .minX(0)
-    .minY(0)
-    .maxX(200_000)
-    .maxY(120_000)
-    .build())
-  .unknown24(0)
-  .unknown28(0)
-  .unknown32(0)
-  .lists(
-    Lists.of(
-      List.of(PATH_HEXAGON_2, STROKE_WIDTH_6000),
-      List.of(PATH_HEXAGON_3, STROKE_COLOUR_BLUE),
-    ),
-  )
+const GROUP_BOUNDING_BOX = BoundingBox.builder()
+  .minX(0)
+  .minY(0)
+  .maxX(200_000)
+  .maxY(120_000)
   .build();
+
+const GROUP = createRecordGroup(
+  GROUP_BOUNDING_BOX,
+  List.of(PATH_HEXAGON_2, STROKE_WIDTH_6000),
+  List.of(PATH_HEXAGON_3, STROKE_COLOUR_BLUE),
+);
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_BLACK_30),
