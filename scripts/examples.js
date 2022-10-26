@@ -10,6 +10,7 @@ const DEFAULT_OUTPUT_DIRECTORY = './examples-output';
 const EXAMPLES_BASE_DIRECTORY = './examples';
 const EXAMPLE_DIRECTORIES = [
   '000-simple',
+  '00A-layer',
   '027-join-style',
   '028-end-caps',
   '029-start-caps',
@@ -61,7 +62,7 @@ function processExamples(examples, outputDirectory) {
   for (let i = 0; i < EXAMPLE_DIRECTORIES.length; i += 1) {
     const examplesDirectory = EXAMPLE_DIRECTORIES[i];
     const examples = loadExamples(
-        path.join(EXAMPLES_BASE_DIRECTORY, examplesDirectory)
+      path.join(EXAMPLES_BASE_DIRECTORY, examplesDirectory),
     );
     const outputDirectory = createSubdirectory(baseOutputDirectory, examplesDirectory);
     processExamples(examples, outputDirectory);

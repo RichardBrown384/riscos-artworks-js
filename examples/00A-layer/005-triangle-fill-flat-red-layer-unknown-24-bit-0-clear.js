@@ -8,10 +8,7 @@ To demonstrate that if you don't set bit 0 of a layer's unknown 24 then the laye
 const {
   Builders: {
     List,
-
-    RecordLayer,
   },
-
   Constants,
 } = require('../../src').Artworks;
 
@@ -21,13 +18,9 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-const { createArtworks } = require('../record-creators');
+const { createArtworks, createRecordLayer } = require('../record-creators');
 
-const LAYER = RecordLayer
-  .builder()
-  .unknown24(Constants.LAYER_UNKNOWN_24_BIT_3)
-  .name('Foreground')
-  .build();
+const LAYER = createRecordLayer(Constants.LAYER_UNKNOWN_24_BIT_3, 'Foreground');
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_RED),
