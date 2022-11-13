@@ -8,6 +8,7 @@ const {
     Polyline,
 
     RecordPath,
+    RecordGroup,
     RecordLayer,
     RecordWorkArea,
     RecordStrokeColour,
@@ -60,6 +61,15 @@ function createRecordPath(path, padding, ...attributes) {
     .boundingBox(PathBoundingBox.of(path, padding))
     .path(path)
     .lists(createAttributeLists(attributes))
+    .build();
+  return Object.freeze(record);
+}
+
+function createRecordGroup(boundingBox, ...lists) {
+  const record = RecordGroup.builder()
+    .unknown4(UNKNOWN_4_BIT_1)
+    .boundingBox(boundingBox)
+    .lists(Lists.of(...lists))
     .build();
   return Object.freeze(record);
 }
@@ -205,6 +215,7 @@ function createRecordEndMarker(markerStyle, width = 0, height = 0) {
 module.exports = {
   createArtworks,
   createRecordPath,
+  createRecordGroup,
   createRecordLayer,
   createRecordWorkArea,
   createRecordStrokeWidth,
