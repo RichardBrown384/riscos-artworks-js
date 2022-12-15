@@ -1,5 +1,5 @@
 /*
-Example: 028-open-v-stroke-red-stroke-width-3000-cap-start-open-v-2-4
+Example: 004-cap-start-triangle-2-4
 
 Purpose:
 To demonstrate triangle start caps (width 2x stroke width, height 4x)

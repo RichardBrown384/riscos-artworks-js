@@ -1,5 +1,5 @@
 /*
-Example: 026-open-v-stroke-red-stroke-width-3000-cap-start-round
+Example: 002-cap-start-round
 
 Purpose:
 To demonstrate round start caps.
