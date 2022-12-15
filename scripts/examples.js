@@ -13,6 +13,7 @@ const EXAMPLE_DIRECTORIES = [
   '00A-layer',
   '024-stroke-colour',
   '025-stroke-width',
+  '026-fill-colour',
   '027-join-style',
   '028-end-caps',
   '029-start-caps',
