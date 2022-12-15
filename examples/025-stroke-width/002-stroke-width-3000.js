@@ -1,5 +1,5 @@
 /*
-Example: 010-triangle-fill-flat-black-30-stroke-blue-stroke-width-3000
+Example: 002-stroke-width-3000
 
 Purpose:
 To demonstrate setting the stroke width.
