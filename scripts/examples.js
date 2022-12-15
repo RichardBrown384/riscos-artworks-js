@@ -11,6 +11,7 @@ const EXAMPLES_BASE_DIRECTORY = './examples';
 const EXAMPLE_DIRECTORIES = [
   '000-simple',
   '00A-layer',
+  '024-stroke-colour',
   '027-join-style',
   '028-end-caps',
   '029-start-caps',
