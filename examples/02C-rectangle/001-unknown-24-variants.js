@@ -1,5 +1,5 @@
 /*
-Example: 045-record-rectangle-unknown-24-variants
+Example: 001-unknown-24-variants
 
 Purpose:
 
@@ -9,12 +9,15 @@ All the available files have zero at this offset.
 
 In Outline mode !AWViewer will error with the message
 'Path elements out of order (1100)'.
+
 In other modes !AWViewer will only draw a single row
 of red squares. The second row will not be drawn.
 
-It's still not known how to order the path elements correctly.
-However, any non-zero value appears to introduce problems with
+Any non-zero value appears to introduce problems with
 the rendering.
+
+It's an outstanding task to determine the winding order of
+the path elements in the files.
 
 */
 
