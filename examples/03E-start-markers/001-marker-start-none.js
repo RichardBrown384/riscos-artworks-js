@@ -1,8 +1,8 @@
 /*
-Example: 039-open-v-marker-start-triangle
+Example: 001-marker-start-none
 
 Purpose:
-Demonstrates triangle start markers
+Demonstrates no start markers.
  */
 
 const {
@@ -17,7 +17,7 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_OPEN_INVERTED_V,
-  START_MARKER_TRIANGLE_W4_H4,
+  START_MARKER_NONE,
   WORK_AREA,
 } = require('../shared-objects');
 
@@ -27,7 +27,7 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  List.of(START_MARKER_TRIANGLE_W4_H4),
+  List.of(START_MARKER_NONE),
   List.of(LAYER_FOREGROUND, PATH_OPEN_INVERTED_V),
   List.of(WORK_AREA),
 );

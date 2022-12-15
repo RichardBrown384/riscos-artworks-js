@@ -1,8 +1,8 @@
 /*
-Example: 038-open-v-marker-start-none
+Example: 006-marker-start-arrow-tail-cap-start-triangle
 
 Purpose:
-Demonstrates no start markers.
+Demonstrates the interaction between start line caps and start line markers.
  */
 
 const {
@@ -17,7 +17,8 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_OPEN_INVERTED_V,
-  START_MARKER_NONE,
+  START_MARKER_ARROW_TAIL_W4_H4,
+  START_CAP_TRIANGLE_W10_H10,
   WORK_AREA,
 } = require('../shared-objects');
 
@@ -27,7 +28,8 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  List.of(START_MARKER_NONE),
+  List.of(START_CAP_TRIANGLE_W10_H10),
+  List.of(START_MARKER_ARROW_TAIL_W4_H4),
   List.of(LAYER_FOREGROUND, PATH_OPEN_INVERTED_V),
   List.of(WORK_AREA),
 );
