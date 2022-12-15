@@ -1,5 +1,5 @@
 /*
-Example: 013-triangle-stroke-red-stroke-width-3000-join-bevel
+Example: 003-join-bevel
 
 Purpose:
 To demonstrate bevelled joins

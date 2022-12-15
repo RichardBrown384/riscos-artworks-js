@@ -1,5 +1,5 @@
 /*
-Example: 011-triangle-stroke-red-stroke-width-3000-join-mitre
+Example: 001-join-mitre
 
 Purpose:
 To demonstrate mitred joins

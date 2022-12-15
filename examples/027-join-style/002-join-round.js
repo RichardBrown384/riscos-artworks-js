@@ -1,5 +1,5 @@
 /*
-Example: 012-triangle-stroke-red-stroke-width-3000-join-round
+Example: 002-join-round
 
 Purpose:
 To demonstrate rounded joins
