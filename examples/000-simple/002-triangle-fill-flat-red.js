@@ -1,5 +1,5 @@
 /*
-Example: 001-triangle-fill-flat-red
+Example: 002-triangle-fill-flat-red
 
 Purpose:
 To demonstrate the minimum file that will actually render something in !AWViewer
