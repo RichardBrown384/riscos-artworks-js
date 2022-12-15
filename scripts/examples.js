@@ -16,6 +16,8 @@ const EXAMPLE_DIRECTORIES = [
   '029-start-caps',
   '02A-winding-rule',
   '02B-dash-pattern',
+  '02C-rectangle',
+  '034-ellipse',
   '03A-blend-groups',
   '03E-start-markers',
   '03F-end-markers',
