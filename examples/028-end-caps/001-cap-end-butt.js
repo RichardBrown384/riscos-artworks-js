@@ -1,5 +1,5 @@
 /*
-Example: 020-open-v-stroke-red-stroke-width-3000-cap-end-butt
+Example: 001-cap-end-butt
 
 Purpose:
 To demonstrate butt end caps.
