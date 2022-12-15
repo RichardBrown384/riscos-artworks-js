@@ -1,5 +1,5 @@
 /*
-Example: 044-record-ellipse-triangle-variants
+Example: 001-triangle-variants
 
 Purpose:
 
