@@ -1,5 +1,5 @@
 /*
-Example: 016-triangle-stroke-red-stroke-width-3000-dash-pattern-offset-5000
+Example: 003-dash-pattern-offset-5000
 
 Purpose:
 To demonstrate dash patterns with non-zero offset.
