@@ -1,8 +1,8 @@
 /*
-Example: 017-pentagram-fill-red-stroke-blue-stroke-width-3000-winding-none
+Example: 002-winding-even-odd
 
 Purpose:
-To demonstrate that the default winding rule is even-odd
+To demonstrate the even-odd winding rule
  */
 
 const {
@@ -17,6 +17,7 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_PENTAGRAM,
+  WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } = require('../shared-objects');
 
@@ -26,6 +27,7 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_RED),
   List.of(STROKE_COLOUR_BLUE),
   List.of(STROKE_WIDTH_3000),
+  List.of(WINDING_RULE_EVEN_ODD),
   List.of(LAYER_FOREGROUND, PATH_PENTAGRAM),
   List.of(WORK_AREA),
 );

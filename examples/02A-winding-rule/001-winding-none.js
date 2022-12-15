@@ -1,8 +1,8 @@
 /*
-Example: 019-pentagram-fill-red-stroke-blue-stroke-width-3000-winding-non-zero
+Example: 001-winding-none
 
 Purpose:
-To demonstrate the non-zero winding rule
+To demonstrate that the default winding rule is even-odd
  */
 
 const {
@@ -17,7 +17,6 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_PENTAGRAM,
-  WINDING_RULE_NON_ZERO,
   WORK_AREA,
 } = require('../shared-objects');
 
@@ -27,7 +26,6 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_RED),
   List.of(STROKE_COLOUR_BLUE),
   List.of(STROKE_WIDTH_3000),
-  List.of(WINDING_RULE_NON_ZERO),
   List.of(LAYER_FOREGROUND, PATH_PENTAGRAM),
   List.of(WORK_AREA),
 );
