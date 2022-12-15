@@ -1,8 +1,8 @@
 /*
-Example: 037-open-v-marker-end-arrow-tail-cap-end-triangle
+Example: 002-marker-end-triangle
 
 Purpose:
-Demonstrates the interaction between end line caps and end line markers.
+Demonstrates triangle end markers
  */
 
 const {
@@ -17,8 +17,7 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_OPEN_INVERTED_V,
-  END_MARKER_ARROW_TAIL_W4_H4,
-  END_CAP_TRIANGLE_W10_H10,
+  END_MARKER_TRIANGLE_W4_H4,
   WORK_AREA,
 } = require('../shared-objects');
 
@@ -28,8 +27,7 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  List.of(END_CAP_TRIANGLE_W10_H10),
-  List.of(END_MARKER_ARROW_TAIL_W4_H4),
+  List.of(END_MARKER_TRIANGLE_W4_H4),
   List.of(LAYER_FOREGROUND, PATH_OPEN_INVERTED_V),
   List.of(WORK_AREA),
 );

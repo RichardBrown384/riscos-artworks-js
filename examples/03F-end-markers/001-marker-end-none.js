@@ -1,8 +1,8 @@
 /*
-Example: 036-open-v-marker-end-arrow-tail
+Example: 001-marker-end-none
 
 Purpose:
-Demonstrates arrow tail end markers
+Demonstrates no end markers.
  */
 
 const {
@@ -17,7 +17,7 @@ const {
   STROKE_WIDTH_3000,
   LAYER_FOREGROUND,
   PATH_OPEN_INVERTED_V,
-  END_MARKER_ARROW_TAIL_W4_H4,
+  END_MARKER_NONE,
   WORK_AREA,
 } = require('../shared-objects');
 
@@ -27,7 +27,7 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  List.of(END_MARKER_ARROW_TAIL_W4_H4),
+  List.of(END_MARKER_NONE),
   List.of(LAYER_FOREGROUND, PATH_OPEN_INVERTED_V),
   List.of(WORK_AREA),
 );

@@ -1,5 +1,5 @@
 /*
-Example: 034-open-v-marker-end-arrow-head
+Example: 003-marker-end-arrow-head
 
 Purpose:
 Demonstrates arrow head end markers

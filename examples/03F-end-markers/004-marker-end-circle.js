@@ -1,5 +1,5 @@
 /*
-Example: 035-open-v-marker-end-circle
+Example: 004-marker-end-circle
 
 Purpose:
 Demonstrates circle end markers
