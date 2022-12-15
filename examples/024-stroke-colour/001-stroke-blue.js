@@ -1,5 +1,5 @@
 /*
-Example: 009-triangle-fill-flat-red-stroke-blue
+Example: 001-stroke-blue
 
 Purpose:
 To demonstrate setting the stroke colour.
@@ -13,6 +13,7 @@ const {
 
 const {
   FILL_FLAT_BLACK_30,
+  STROKE_WIDTH_1500,
   STROKE_COLOUR_BLUE,
   LAYER_FOREGROUND,
   PATH_TRIANGLE,
@@ -23,6 +24,7 @@ const { createArtworks } = require('../record-creators');
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_BLACK_30),
+  List.of(STROKE_WIDTH_1500),
   List.of(STROKE_COLOUR_BLUE),
   List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
   List.of(WORK_AREA),
