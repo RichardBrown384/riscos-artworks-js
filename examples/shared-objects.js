@@ -83,6 +83,7 @@ module.exports.LAYER_FOREGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Foregroun
 
 module.exports.WORK_AREA = createRecordWorkArea(DEFAULT_PALETTE);
 
+module.exports.STROKE_COLOUR_BLACK = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_BLACK);
 module.exports.STROKE_COLOUR_RED = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_RED);
 module.exports.STROKE_COLOUR_BLUE = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_BLUE);
 module.exports.STROKE_COLOUR_MAGENTA = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_MAGENTA);

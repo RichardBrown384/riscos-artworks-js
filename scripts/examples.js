@@ -9,7 +9,7 @@ const ARTWORKS_FILE_EXTENSION = 'd94';
 const DEFAULT_OUTPUT_DIRECTORY = './examples-output';
 const EXAMPLES_BASE_DIRECTORY = './examples';
 const EXAMPLE_DIRECTORIES = [
-  '000-simple',
+  '002-path',
   '00A-layer',
   '024-stroke-colour',
   '025-stroke-width',
@@ -24,7 +24,9 @@ const EXAMPLE_DIRECTORIES = [
   '03A-blend-groups',
   '03E-start-markers',
   '03F-end-markers',
-  '100-attribute-propagation',
+  '100-smallest-file',
+  '101-palette',
+  '102-attribute-propagation',
 ];
 
 function createSubdirectory(parent, child) {
