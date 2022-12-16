@@ -1,5 +1,5 @@
 /*
-Example: 046-path-initial-move-bit-31-variants
+Example: 005-path-initial-move-bit-31-variants
 
 Purpose:
 

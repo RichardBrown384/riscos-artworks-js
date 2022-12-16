@@ -1,11 +1,10 @@
 /*
-Example: 008-triangle-fill-flat-red-path-outline-only
+Example: 004-path-initial-move-bit-31-clear
 
 Purpose:
-To demonstrate that if you don't set bit 31 of the initial move then the path
-isn't filled.
+To demonstrate that if bit 31 of the initial move is clear then the path isn't filled.
 
-Example 046 tests this example more fully.
+Example 005 tests this example more fully.
  */
 
 const {
