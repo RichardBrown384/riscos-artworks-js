@@ -8,9 +8,6 @@ To demonstrate that if bit 1 of unknown4 is clear then the path doesn't get draw
 const {
   Builders: {
     List,
-    PathBoundingBox,
-
-    RecordPath,
   },
 } = require('../../src').Artworks;
 
@@ -21,20 +18,17 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-const { createArtworks } = require('../record-creators');
+const { createArtworks, createRecordPathFull } = require('../record-creators');
 
 const {
   createClosedEquilateralTriangle,
 } = require('../path-creators');
 
-const PATH = (function p() {
-  const path = createClosedEquilateralTriangle(10_000, 10_000, 100_000);
-  return RecordPath.builder()
-    .unknown4(0)
-    .boundingBox(PathBoundingBox.of(path, 10_000))
-    .path(path)
-    .build();
-}());
+const PATH = createRecordPathFull(
+  0,
+  createClosedEquilateralTriangle(10_000, 10_000, 100_000),
+  10_000,
+);
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),

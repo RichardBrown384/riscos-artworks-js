@@ -33,6 +33,9 @@ const {
   Constants: {
     UNKNOWN_4_BIT_0,
     UNKNOWN_4_BIT_1,
+
+    LAYER_UNKNOWN_24_BIT_0,
+    LAYER_UNKNOWN_24_BIT_3,
   },
 
 } = require('../src').Artworks;
@@ -55,9 +58,9 @@ function createAttributeLists(attributes) {
   return Object.freeze(listsBuilder.build());
 }
 
-function createRecordPath(path, padding, ...attributes) {
+function createRecordPathFull(unknown4, path, padding, ...attributes) {
   const record = RecordPath.builder()
-    .unknown4(UNKNOWN_4_BIT_1)
+    .unknown4(unknown4)
     .boundingBox(PathBoundingBox.of(path, padding))
     .path(path)
     .lists(createAttributeLists(attributes))
@@ -65,22 +68,38 @@ function createRecordPath(path, padding, ...attributes) {
   return Object.freeze(record);
 }
 
-function createRecordGroup(boundingBox, ...lists) {
+function createRecordPath(path, padding, ...attributes) {
+  return createRecordPathFull(UNKNOWN_4_BIT_1, path, padding, ...attributes);
+}
+
+function createRecordGroupFull(unknown4, boundingBox, ...lists) {
   const record = RecordGroup.builder()
-    .unknown4(UNKNOWN_4_BIT_1)
+    .unknown4(unknown4)
     .boundingBox(boundingBox)
     .lists(Lists.of(...lists))
     .build();
   return Object.freeze(record);
 }
 
-function createRecordLayer(unknown24, name, ...lists) {
+function createRecordGroup(boundingBox, ...lists) {
+  return createRecordGroupFull(UNKNOWN_4_BIT_1, boundingBox, ...lists);
+}
+
+function createRecordLayerFull(unknown24, name, ...lists) {
   const record = RecordLayer.builder()
     .unknown24(unknown24)
     .name(name)
     .lists(Lists.of(...lists))
     .build();
   return Object.freeze(record);
+}
+
+function createRecordLayer(name, ...lists) {
+  return createRecordLayerFull(
+    LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3,
+    name,
+    ...lists,
+  );
 }
 
 function createRecordWorkArea(palette) {
@@ -215,8 +234,11 @@ function createRecordEndMarker(markerStyle, width = 0, height = 0) {
 module.exports = {
   createArtworks,
   createRecordPath,
+  createRecordPathFull,
   createRecordGroup,
+  createRecordGroupFull,
   createRecordLayer,
+  createRecordLayerFull,
   createRecordWorkArea,
   createRecordStrokeWidth,
   createRecordStrokeColour,
