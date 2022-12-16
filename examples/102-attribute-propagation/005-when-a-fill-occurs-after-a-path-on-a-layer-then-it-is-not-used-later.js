@@ -1,5 +1,5 @@
 /*
-Example: 105-when-a-fill-occurs-after-a-path-on-a-layer-then-it-is-not-used-later
+Example: 005-when-a-fill-occurs-after-a-path-on-a-layer-then-it-is-not-used-later
 
 Purpose:
 

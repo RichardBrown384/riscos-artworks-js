@@ -1,5 +1,5 @@
 /*
-Example: 104-when-a-fill-occurs-after-a-path-then-it-is-not-used-later
+Example: 004-when-a-fill-occurs-after-a-path-then-it-is-not-used-later
 
 Purpose:
 

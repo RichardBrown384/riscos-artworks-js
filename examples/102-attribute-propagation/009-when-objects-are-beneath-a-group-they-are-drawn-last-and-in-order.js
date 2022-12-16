@@ -1,5 +1,5 @@
 /*
-Example: 109-when-objects-are-beneath-a-group-they-are-drawn-last-and-in-order
+Example: 009-when-objects-are-beneath-a-group-they-are-drawn-last-and-in-order
 
 Purpose:
 

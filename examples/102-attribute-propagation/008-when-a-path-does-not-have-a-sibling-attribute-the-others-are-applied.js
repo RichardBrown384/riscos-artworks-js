@@ -1,5 +1,5 @@
 /*
-Example: 108-when-a-path-does-not-have-a-sibling-attribute-the-others-are-applied
+Example: 008-when-a-path-does-not-have-a-sibling-attribute-the-others-are-applied
 
 Purpose:
 

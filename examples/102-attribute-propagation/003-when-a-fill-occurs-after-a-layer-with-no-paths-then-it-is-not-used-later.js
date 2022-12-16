@@ -1,11 +1,11 @@
 /*
-Example: 102-when-a-fill-occurs-after-a-path-then-it-is-used
+Example: 003-when-a-fill-occurs-after-a-layer-with-no-paths-then-it-is-not-used-later
 
 Purpose:
-To demonstrate that if a style attribute appears after a path
-then that overrides the preceding attribute.
+To demonstrate that if a style attribute appears after a layer with no paths
+then it is not used on subsequent paths on following layers.
 
-!AWViewer renders a 30% black triangle, not red.
+!AWViewer renders a red triangle, not 30% black.
  */
 
 const {
@@ -26,6 +26,7 @@ const { createArtworks } = require('../record-creators');
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_RED),
-  List.of(LAYER_FOREGROUND, PATH_TRIANGLE, FILL_FLAT_BLACK_30),
+  List.of(LAYER_FOREGROUND, FILL_FLAT_BLACK_30),
+  List.of(PATH_TRIANGLE),
   List.of(WORK_AREA),
 );

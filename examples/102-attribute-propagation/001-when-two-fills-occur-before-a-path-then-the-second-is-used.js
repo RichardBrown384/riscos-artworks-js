@@ -1,11 +1,12 @@
 /*
-Example: 103-when-a-fill-occurs-after-a-layer-with-no-paths-then-it-is-not-used-later
+Example: 001-when-two-fills-occur-before-a-path-then-the-second-is-used
 
 Purpose:
-To demonstrate that if a style attribute appears after a layer with no paths
-then it is not used on subsequent paths on following layers.
 
-!AWViewer renders a red triangle, not 30% black.
+To demonstrate that when two fills occur before a path then the path is shaded
+using the second colour.
+
+!AWViewer should render a 30% black triangle, not red.
  */
 
 const {
@@ -26,7 +27,7 @@ const { createArtworks } = require('../record-creators');
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_RED),
-  List.of(LAYER_FOREGROUND, FILL_FLAT_BLACK_30),
-  List.of(PATH_TRIANGLE),
+  List.of(FILL_FLAT_BLACK_30),
+  List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
   List.of(WORK_AREA),
 );
