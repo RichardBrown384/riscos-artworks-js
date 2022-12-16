@@ -91,12 +91,22 @@ npm run examples target_directory
 
 ## Project status
 
-Large parts of the file format aren't well understood. Therefore, the library and documentation are offered
-as works in progress and there isn't much emphasis on the software engineering fundamentals
-such as testing.
+Some parts of the file format are now thought to be understood to an acceptable level. However,
+there are some areas that are likely to remain poorly supported without some additional effort.
+They are,
 
-Writing ArtWorks files is experimental and only a limited subset of features is supported. Typically, only
-those features that are well understood are supported, such as fills and strokes.
+1. Text objects - the reason is that these have a dependency on RISC OS fonts
+2. Blend groups - these require additional effort on trying to understand on how ArtWorks interpolates attributes and geometry
+3. Distortion and perspective groups - while they are trivial to render, it's not understood how ArtWorks applies the transforms
+4. Sprite objects - these could theoretically be supported but would require improvements in the supporting libraries
+
+The library and documentation are offered  as works in progress and there isn't much emphasis
+on the software engineering fundamentals such as testing.
+
+Writing ArtWorks files is experimental and only a limited feature subset is supported. Typically, only features
+that are well understood are supported, such as fills and strokes. It should also be noted 
+that the main motivation for writing files was to further the deductive process in a way
+that lends itself to documentation (the provided examples).
 
 ---
 [artworks-wikipedia]: https://en.wikipedia.org/wiki/ArtWorks
