@@ -1,5 +1,5 @@
 /*
-Example: 003-unknown-24-bit-3-set
+Example: 003-unknown-24-only-bit-3-set
 
 Purpose:
 To demonstrate that if only set bit 3 of unknown 24 then the layer isn't drawn.
