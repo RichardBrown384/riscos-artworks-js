@@ -1,3 +1,4 @@
+const { RecordRoundedRectangle } = require('../src/builders/records');
 const {
   Builders: {
     Artworks,
@@ -174,10 +175,22 @@ function createRecordRectangle(path, padding, unknown24, ...attributes) {
   return Object.freeze(record);
 }
 
-function createRecordEllipse(path, padding, triangle, ...attributes) {
+function createRecordEllipse(triangle, path, padding, ...attributes) {
   const record = RecordEllipse.builder()
     .unknown4(UNKNOWN_4_BIT_1)
     .boundingBox(PathBoundingBox.of(path, 10_000))
+    .triangle(triangle)
+    .path(path)
+    .lists(createAttributeLists(attributes))
+    .build();
+  return Object.freeze(record);
+}
+
+function createRecordRoundedRectangle(cornerRadius, triangle, path, padding, ...attributes) {
+  const record = RecordRoundedRectangle.builder()
+    .unknown4(UNKNOWN_4_BIT_1)
+    .boundingBox(PathBoundingBox.of(path, 10_000))
+    .cornerRadius(cornerRadius)
     .triangle(triangle)
     .path(path)
     .lists(createAttributeLists(attributes))
@@ -252,6 +265,7 @@ module.exports = {
   createRecordDashPattern,
   createRecordRectangle,
   createRecordEllipse,
+  createRecordRoundedRectangle,
   createRecordBlendGroup,
   createRecordBlendOptions,
   createRecordBlendPath,

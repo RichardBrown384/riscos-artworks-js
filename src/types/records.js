@@ -448,12 +448,26 @@ function writeRecordEllipse(view, { triangle, path }) {
   writePath(view, path);
 }
 
+function createRecordRoundedRectangle(cornerRadius, triangle, path) {
+  return {
+    cornerRadius,
+    triangle,
+    path,
+  };
+}
+
 function readRecordRoundedRectangle(view) {
   return {
     cornerRadius: view.readUint32(),
     triangle: readPolyline(view, 3),
     path: readPath(view),
   };
+}
+
+function writeRecordRoundedRectangle(view, { cornerRadius, triangle, path }) {
+  view.writeUint32(cornerRadius);
+  writePolyline(view, triangle);
+  writePath(view, path);
 }
 
 function readRecordDistortionGroup(view) {
@@ -826,6 +840,9 @@ function writeRecordBody(view, record) {
     case Constants.RECORD_34_ELLIPSE:
       writeRecordEllipse(view, record);
       break;
+    case Constants.RECORD_35_ROUNDED_RECTANGLE:
+      writeRecordRoundedRectangle(view, record);
+      break;
     case Constants.RECORD_3A_BLEND_GROUP:
       writeRecordBlendGroup(view, record);
       break;
@@ -931,7 +948,10 @@ module.exports = {
   readRecordEllipse,
   writeRecordEllipse,
 
+  createRecordRoundedRectangle,
   readRecordRoundedRectangle,
+  writeRecordRoundedRectangle,
+
   readRecordDistortionGroup,
   readRecordPerspectiveGroup,
   readRecordFileInfo,

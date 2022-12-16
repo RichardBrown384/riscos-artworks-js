@@ -5,6 +5,10 @@ const {
   },
 } = require('../src').Artworks;
 
+function degreesToRadians(d) {
+  return (d * Math.PI) / 180.0;
+}
+
 class AffineTransform {
   #a;
 
@@ -39,14 +43,20 @@ class AffineTransform {
     this.#f = b * t + d * u + f;
   }
 
+  concatenateTransform(other) {
+    this.concatenate(other.#a, other.#b, other.#c, other.#d, other.#e, other.#f);
+    return this;
+  }
+
   translate(x, y) {
     this.concatenate(1, 0, 0, 1, x, y);
     return this;
   }
 
   rotate(angle) {
-    const c = Math.cos(angle);
-    const s = Math.sin(angle);
+    const radians = degreesToRadians(angle);
+    const c = Math.cos(radians);
+    const s = Math.sin(radians);
     this.concatenate(c, s, -s, c, 0, 0);
     return this;
   }
