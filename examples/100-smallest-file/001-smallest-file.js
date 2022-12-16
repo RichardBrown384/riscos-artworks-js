@@ -1,8 +1,8 @@
 /*
-Example: 007-triangle-fill-flat-red-no-layer.
+Example: 001-smallest-file
 
 Purpose:
-To demonstrate that a layer isn't required for !AWViewer to render a triangle
+To demonstrate the smallest file that will render something in !AWViewer
  */
 
 const {
