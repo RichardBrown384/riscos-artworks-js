@@ -1,5 +1,5 @@
 /*
-Example: 006-gradient-fills-with-point-gradient-lines
+Example: 007-fill-gradients-with-point-gradient-lines
 
 Purpose:
 

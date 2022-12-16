@@ -1,5 +1,5 @@
 /*
-Example: 002-fill-flat-bluex
+Example: 002-fill-flat-blue
 
 Purpose:
 To demonstrate flat fills !AWViewer

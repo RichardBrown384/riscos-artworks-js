@@ -1,5 +1,5 @@
 /*
-Example: 004-triangle-fill-linear-yellow-red
+Example: 005-fill-linear-yellow-red
 
 Purpose:
 To demonstrate the linear gradient fills !AWViewer

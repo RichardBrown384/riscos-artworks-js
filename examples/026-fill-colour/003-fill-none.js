@@ -1,5 +1,5 @@
 /*
-Example: 001-triangle-fill-none
+Example: 003-fill-none
 
 Purpose:
 To demonstrate that !AWViewer crashes when a file doesn't contain a fill record
