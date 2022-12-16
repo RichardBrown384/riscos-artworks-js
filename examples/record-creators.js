@@ -72,13 +72,17 @@ function createRecordPath(path, padding, ...attributes) {
   return createRecordPathFull(UNKNOWN_4_BIT_1, path, padding, ...attributes);
 }
 
-function createRecordGroup(boundingBox, ...lists) {
+function createRecordGroupFull(unknown4, boundingBox, ...lists) {
   const record = RecordGroup.builder()
-    .unknown4(UNKNOWN_4_BIT_1)
+    .unknown4(unknown4)
     .boundingBox(boundingBox)
     .lists(Lists.of(...lists))
     .build();
   return Object.freeze(record);
+}
+
+function createRecordGroup(boundingBox, ...lists) {
+  return createRecordGroupFull(UNKNOWN_4_BIT_1, boundingBox, ...lists);
 }
 
 function createRecordLayerFull(unknown24, name, ...lists) {
@@ -232,6 +236,7 @@ module.exports = {
   createRecordPath,
   createRecordPathFull,
   createRecordGroup,
+  createRecordGroupFull,
   createRecordLayer,
   createRecordLayerFull,
   createRecordWorkArea,
