@@ -33,6 +33,9 @@ const {
   Constants: {
     UNKNOWN_4_BIT_0,
     UNKNOWN_4_BIT_1,
+
+    LAYER_UNKNOWN_24_BIT_0,
+    LAYER_UNKNOWN_24_BIT_3,
   },
 
 } = require('../src').Artworks;
@@ -66,7 +69,7 @@ function createRecordPathFull(unknown4, path, padding, ...attributes) {
 }
 
 function createRecordPath(path, padding, ...attributes) {
-  return createRecordPathFull(UNKNOWN_4_BIT_1, path, padding, attributes);
+  return createRecordPathFull(UNKNOWN_4_BIT_1, path, padding, ...attributes);
 }
 
 function createRecordGroup(boundingBox, ...lists) {
@@ -78,13 +81,21 @@ function createRecordGroup(boundingBox, ...lists) {
   return Object.freeze(record);
 }
 
-function createRecordLayer(unknown24, name, ...lists) {
+function createRecordLayerFull(unknown24, name, ...lists) {
   const record = RecordLayer.builder()
     .unknown24(unknown24)
     .name(name)
     .lists(Lists.of(...lists))
     .build();
   return Object.freeze(record);
+}
+
+function createRecordLayer(name, ...lists) {
+  return createRecordLayerFull(
+    LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3,
+    name,
+    ...lists,
+  );
 }
 
 function createRecordWorkArea(palette) {
@@ -222,6 +233,7 @@ module.exports = {
   createRecordPathFull,
   createRecordGroup,
   createRecordLayer,
+  createRecordLayerFull,
   createRecordWorkArea,
   createRecordStrokeWidth,
   createRecordStrokeColour,

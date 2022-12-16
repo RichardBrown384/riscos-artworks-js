@@ -18,9 +18,9 @@ const {
   WORK_AREA,
 } = require('../shared-objects');
 
-const { createArtworks, createRecordLayer } = require('../record-creators');
+const { createArtworks, createRecordLayerFull } = require('../record-creators');
 
-const LAYER = createRecordLayer(Constants.LAYER_UNKNOWN_24_BIT_0, 'Foreground');
+const LAYER = createRecordLayerFull(Constants.LAYER_UNKNOWN_24_BIT_0, 'Foreground');
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_RED),

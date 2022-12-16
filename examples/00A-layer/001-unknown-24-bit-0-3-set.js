@@ -9,7 +9,6 @@ const {
   Builders: {
     List,
   },
-  Constants,
 } = require('../../src').Artworks;
 
 const {
@@ -20,7 +19,7 @@ const {
 
 const { createArtworks, createRecordLayer } = require('../record-creators');
 
-const LAYER = createRecordLayer(Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3, 'Foreground');
+const LAYER = createRecordLayer('Foreground');
 
 module.exports = createArtworks(
   List.of(FILL_FLAT_RED),

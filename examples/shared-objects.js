@@ -1,7 +1,5 @@
 const {
   Constants: {
-    LAYER_UNKNOWN_24_BIT_0,
-    LAYER_UNKNOWN_24_BIT_3,
 
     FILL_LINEAR,
     FILL_RADIAL,
@@ -77,9 +75,8 @@ module.exports.PATH_PENTAGRAM = createRecordPath(
   10_000,
 );
 
-const LAYER_UNKNOWN_24 = LAYER_UNKNOWN_24_BIT_0 + LAYER_UNKNOWN_24_BIT_3;
-module.exports.LAYER_BACKGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Background');
-module.exports.LAYER_FOREGROUND = createRecordLayer(LAYER_UNKNOWN_24, 'Foreground');
+module.exports.LAYER_BACKGROUND = createRecordLayer('Background');
+module.exports.LAYER_FOREGROUND = createRecordLayer('Foreground');
 
 module.exports.WORK_AREA = createRecordWorkArea(DEFAULT_PALETTE);
 

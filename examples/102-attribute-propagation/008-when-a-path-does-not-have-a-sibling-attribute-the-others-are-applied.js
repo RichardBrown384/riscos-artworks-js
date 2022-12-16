@@ -16,7 +16,6 @@ const {
   Builders: {
     List,
   },
-  Constants,
 } = require('../../src').Artworks;
 
 const {
@@ -68,7 +67,6 @@ const PATH_HEXAGON_7 = createHexagon(250_000, 250_000, FILL_FLAT_RED, STROKE_WID
 const PATH_HEXAGON_8 = createHexagon(300_000, 250_000, FILL_FLAT_RED, STROKE_WIDTH_3000);
 
 const LAYER = createRecordLayer(
-  Constants.LAYER_UNKNOWN_24_BIT_0 + Constants.LAYER_UNKNOWN_24_BIT_3,
   'Foreground',
   List.of(PATH_PENTAGRAM, STROKE_COLOUR_BLUE),
   List.of(PATH_HEXAGON_1),
