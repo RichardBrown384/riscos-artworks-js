@@ -1,8 +1,8 @@
 /*
-Example: 030-triangle-fill-linear-yellow-red
+Example: 002-fill-flat-bluex
 
 Purpose:
-To demonstrate the linear gradient fills !AWViewer
+To demonstrate flat fills !AWViewer
  */
 
 const {
@@ -11,17 +11,17 @@ const {
   },
 } = require('../../src').Artworks;
 
+const { createArtworks } = require('../record-creators');
+
 const {
-  FILL_LINEAR_YELLOW_RED,
+  FILL_FLAT_BLUE,
   LAYER_FOREGROUND,
   PATH_TRIANGLE,
   WORK_AREA,
 } = require('../shared-objects');
 
-const { createArtworks } = require('../record-creators');
-
 module.exports = createArtworks(
-  List.of(FILL_LINEAR_YELLOW_RED),
+  List.of(FILL_FLAT_BLUE),
   List.of(LAYER_FOREGROUND, PATH_TRIANGLE),
   List.of(WORK_AREA),
 );

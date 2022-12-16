@@ -1,8 +1,8 @@
 /*
-Example: 003-triangle-fill-flat-red-fill-bit-0-clear
+Example: 003-fill-flat-red-fill-unknown-4-bit-0-clear
 
 Purpose:
-To demonstrate that if you don't set the fill's bit 0 of unknown4 then the fill doesn't get applied
+To demonstrate that if bit 0 of unknown4 is clear then the fill doesn't get applied
 and crashes !AWViewer.
  */
 

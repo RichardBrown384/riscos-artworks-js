@@ -1,18 +1,20 @@
 /*
-Example: 048-gradient-fills-with-point-gradient-lines
+Example: 006-gradient-fills-with-point-gradient-lines
 
 Purpose:
 
 To demonstrate what happens when you have gradient lines that point
 
-1. A path filled with a flat path
+Contains the following objects
+
+1. A path filled with a flat fill
 2. A path filled with a linear gradient with a gradient line of length zero (i.e. a point)
 3. A path filled with a linear gradient with a gradient line of length 5000
 4. A path filled with a linear gradient with a gradient line of length 100
 5. A path filled with a redial gradient with a gradient line of length zero (i.e. a point)
 6. A path filled with a redial gradient with a gradient line of length 5000
 7. A path filled with a redial gradient with a gradient line of length 100
-8. A path filled with a flat path.
+8. A path filled with a flat fill
 
 All elements render indicating that having gradient lines of length zero is tolerated by !AWViewer.
 
