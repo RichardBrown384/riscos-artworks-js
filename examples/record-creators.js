@@ -55,14 +55,18 @@ function createAttributeLists(attributes) {
   return Object.freeze(listsBuilder.build());
 }
 
-function createRecordPath(path, padding, ...attributes) {
+function createRecordPathFull(unknown4, path, padding, ...attributes) {
   const record = RecordPath.builder()
-    .unknown4(UNKNOWN_4_BIT_1)
+    .unknown4(unknown4)
     .boundingBox(PathBoundingBox.of(path, padding))
     .path(path)
     .lists(createAttributeLists(attributes))
     .build();
   return Object.freeze(record);
+}
+
+function createRecordPath(path, padding, ...attributes) {
+  return createRecordPathFull(UNKNOWN_4_BIT_1, path, padding, attributes);
 }
 
 function createRecordGroup(boundingBox, ...lists) {
@@ -215,6 +219,7 @@ function createRecordEndMarker(markerStyle, width = 0, height = 0) {
 module.exports = {
   createArtworks,
   createRecordPath,
+  createRecordPathFull,
   createRecordGroup,
   createRecordLayer,
   createRecordWorkArea,
