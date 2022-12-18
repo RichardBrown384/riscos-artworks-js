@@ -715,6 +715,8 @@ The points are specified in anti-clockwise fashion.
 
 !AWViewer ignores the 'triangle' points when rendering and instead relies on the path data.
 
+!AWViewer doesn't draw the rectangle when the corner radius is zero.
+
 | Offset | Length | Content                                                                  |
 |--------|--------|--------------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                          |
