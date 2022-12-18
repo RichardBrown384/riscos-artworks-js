@@ -21,6 +21,7 @@ const EXAMPLE_DIRECTORIES = [
   '02B-dash-pattern',
   '02C-rectangle',
   '034-ellipse',
+  '035-rounded-rectangle',
   '03A-blend-groups',
   '03E-start-markers',
   '03F-end-markers',

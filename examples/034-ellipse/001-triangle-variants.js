@@ -13,6 +13,12 @@ Draws several ellipses shaded from white to black.
 The fill's gradient line is superimposed in blue.
 The 'triangles' are superimposed in red.
 
+Points to note:
+
+1. The position and orientation of the triangle do not impact the rendering of the ellipse
+2. The position and the orientation of the triangle do not impact the
+   radial fill (as was originally thought to be the case)
+
  */
 
 const {
@@ -121,13 +127,14 @@ const ORIGINAL_PATH_ELLIPSE = Path.builder()
   .end()
   .build();
 
-function degreesToRadians(d) {
-  return (d * Math.PI) / 180.0;
-}
+function createGeometry(dx, dy, untranslatedTriangleTransform) {
+  const translationTransform = new AffineTransform().translate(dx, dy);
+  const triangleTransform = new AffineTransform()
+    .concatenateTransform(untranslatedTriangleTransform)
+    .translate(dx, dy);
 
-function createGeometry(baseTransform, triangleTransform) {
-  const [x0, y0] = baseTransform.transformCoordinate(FILL_START_X, FILL_START_Y);
-  const [x1, y1] = baseTransform.transformCoordinate(FILL_END_X, FILL_END_Y);
+  const [x0, y0] = translationTransform.transformCoordinate(FILL_START_X, FILL_START_Y);
+  const [x1, y1] = translationTransform.transformCoordinate(FILL_END_X, FILL_END_Y);
 
   const fillGradient = createRecordFillColourGradient(
     Constants.FILL_RADIAL,
@@ -139,20 +146,20 @@ function createGeometry(baseTransform, triangleTransform) {
     DEFAULT_PALETTE_INDEX_BLACK,
   );
 
-  const pathEllipse = baseTransform.transformPath(ORIGINAL_PATH_ELLIPSE);
+  const pathEllipse = translationTransform.transformPath(ORIGINAL_PATH_ELLIPSE);
 
   const polylineTriangle = triangleTransform.transformPolyline(ORIGINAL_POLYLINE_TRIANGLE);
 
   const recordEllipse = createRecordEllipse(
+    polylineTriangle,
     pathEllipse,
     10_000,
-    polylineTriangle,
     fillGradient,
     STROKE_WIDTH_1280,
   );
 
   const recordPathFillLine = createRecordPath(
-    baseTransform.transformPath(ORIGINAL_PATH_FILL_LINE),
+    translationTransform.transformPath(ORIGINAL_PATH_FILL_LINE),
     10_000,
   );
 
@@ -168,50 +175,45 @@ function createGeometry(baseTransform, triangleTransform) {
   ];
 }
 
-const GEOMETRY_0 = createGeometry(new AffineTransform(), new AffineTransform());
+const GEOMETRY_0 = createGeometry(0, 0, new AffineTransform());
 const GEOMETRY_1 = createGeometry(
-  new AffineTransform()
-    .translate(400_000, 0),
+  400_000,
+  0,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
-    .rotate(degreesToRadians(-30))
-    .translate(TRIANGLE_X1, TRIANGLE_Y1)
-    .translate(400_000, 0),
+    .rotate(-30)
+    .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 const GEOMETRY_2 = createGeometry(
-  new AffineTransform()
-    .translate(800_000, 0),
+  800_000,
+  0,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
-    .rotate(degreesToRadians(30))
-    .translate(TRIANGLE_X1, TRIANGLE_Y1)
-    .translate(800_000, 0),
+    .rotate(30)
+    .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 
 const GEOMETRY_3 = createGeometry(
-  new AffineTransform()
-    .translate(0, 200_000),
+  0,
+  200_000,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
     .scale(0.5, 3.0)
-    .translate(TRIANGLE_X1, TRIANGLE_Y1)
-    .translate(0, 200_000),
+    .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 const GEOMETRY_4 = createGeometry(
+  400_000,
+  200_000,
   new AffineTransform()
-    .translate(400_000, 200_000),
-  new AffineTransform()
-    .translate(0.5 * (TRIANGLE_X2 - TRIANGLE_X0), 0.5 * (TRIANGLE_Y2 - TRIANGLE_Y0))
-    .translate(400_000, 200_000),
+    .translate(0.5 * (TRIANGLE_X2 - TRIANGLE_X0), 0.5 * (TRIANGLE_Y2 - TRIANGLE_Y0)),
 );
 const GEOMETRY_5 = createGeometry(
-  new AffineTransform()
-    .translate(800_000, 200_000),
+  800_000,
+  200_000,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
-    .rotate(degreesToRadians(225))
-    .translate(TRIANGLE_X1, TRIANGLE_Y1)
-    .translate(800_000, 200_000),
+    .rotate(225)
+    .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 
 module.exports = createArtworks(
