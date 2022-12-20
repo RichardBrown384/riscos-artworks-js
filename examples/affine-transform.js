@@ -53,8 +53,12 @@ class AffineTransform {
     return this;
   }
 
-  rotate(angle) {
-    const radians = degreesToRadians(angle);
+  rotateDegrees(angle) {
+   this.rotate(degreesToRadians(angle));
+   return this;
+  }
+
+  rotate(radians) {
     const c = Math.cos(radians);
     const s = Math.sin(radians);
     this.concatenate(c, s, -s, c, 0, 0);

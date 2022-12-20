@@ -56,7 +56,7 @@ const GEOMETRY_1 = createGeometry(
   0,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
-    .rotate(-30)
+    .rotateDegrees(-30)
     .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 const GEOMETRY_2 = createGeometry(
@@ -65,7 +65,7 @@ const GEOMETRY_2 = createGeometry(
   0,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
-    .rotate(30)
+    .rotateDegrees(30)
     .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 
@@ -91,7 +91,7 @@ const GEOMETRY_5 = createGeometry(
   200_000,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
-    .rotate(225)
+    .rotateDegrees(225)
     .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 
