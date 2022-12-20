@@ -122,13 +122,13 @@ function createRecordFillColourGradientTransformed(transform) {
   const [x1, y1] = transform.transformCoordinate(FILL_END_X, FILL_END_Y);
 
   return createRecordFillColourGradient(
-      Constants.FILL_RADIAL,
-      x0,
-      y0,
-      x1,
-      y1,
-      DEFAULT_PALETTE_INDEX_WHITE,
-      DEFAULT_PALETTE_INDEX_BLACK,
+    Constants.FILL_RADIAL,
+    x0,
+    y0,
+    x1,
+    y1,
+    DEFAULT_PALETTE_INDEX_WHITE,
+    DEFAULT_PALETTE_INDEX_BLACK,
   );
 }
 
