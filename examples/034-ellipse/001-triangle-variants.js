@@ -127,24 +127,28 @@ const ORIGINAL_PATH_ELLIPSE = Path.builder()
   .end()
   .build();
 
+function createRecordFillColourGradientTransformed(transform) {
+  const [x0, y0] = transform.transformCoordinate(FILL_START_X, FILL_START_Y);
+  const [x1, y1] = transform.transformCoordinate(FILL_END_X, FILL_END_Y);
+
+  return createRecordFillColourGradient(
+      Constants.FILL_RADIAL,
+      x0,
+      y0,
+      x1,
+      y1,
+      DEFAULT_PALETTE_INDEX_WHITE,
+      DEFAULT_PALETTE_INDEX_BLACK,
+  );
+}
+
 function createGeometry(dx, dy, untranslatedTriangleTransform) {
   const translationTransform = new AffineTransform().translate(dx, dy);
   const triangleTransform = new AffineTransform()
     .concatenateTransform(untranslatedTriangleTransform)
     .translate(dx, dy);
 
-  const [x0, y0] = translationTransform.transformCoordinate(FILL_START_X, FILL_START_Y);
-  const [x1, y1] = translationTransform.transformCoordinate(FILL_END_X, FILL_END_Y);
-
-  const fillGradient = createRecordFillColourGradient(
-    Constants.FILL_RADIAL,
-    x0,
-    y0,
-    x1,
-    y1,
-    DEFAULT_PALETTE_INDEX_WHITE,
-    DEFAULT_PALETTE_INDEX_BLACK,
-  );
+  const fillGradient = createRecordFillColourGradientTransformed(translationTransform);
 
   const pathEllipse = translationTransform.transformPath(ORIGINAL_PATH_ELLIPSE);
 
@@ -181,7 +185,7 @@ const GEOMETRY_1 = createGeometry(
   0,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
-    .rotate(-30)
+    .rotateDegrees(-30)
     .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 const GEOMETRY_2 = createGeometry(
@@ -189,7 +193,7 @@ const GEOMETRY_2 = createGeometry(
   0,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
-    .rotate(30)
+    .rotateDegrees(30)
     .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 
@@ -212,7 +216,7 @@ const GEOMETRY_5 = createGeometry(
   200_000,
   new AffineTransform()
     .translate(-TRIANGLE_X1, -TRIANGLE_Y1)
-    .rotate(225)
+    .rotateDegrees(225)
     .translate(TRIANGLE_X1, TRIANGLE_Y1),
 );
 
