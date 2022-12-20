@@ -32,6 +32,7 @@ const {
   DEFAULT_PALETTE_INDEX_WHITE,
   DEFAULT_PALETTE_INDEX_RED,
   DEFAULT_PALETTE_INDEX_BLUE,
+  DEFAULT_PALETTE_INDEX_CYAN,
   DEFAULT_PALETTE_INDEX_MAGENTA,
   DEFAULT_PALETTE_INDEX_YELLOW,
 } = require('./default-palette');
@@ -101,6 +102,7 @@ module.exports.FILL_FLAT_BLACK_30 = createRecordFillColourFlat(
 module.exports.FILL_FLAT_WHITE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_WHITE);
 module.exports.FILL_FLAT_RED = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_RED);
 module.exports.FILL_FLAT_BLUE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_BLUE);
+module.exports.FILL_FLAT_CYAN = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_CYAN);
 
 module.exports.FILL_LINEAR_YELLOW_RED = createRecordFillColourGradient(
   FILL_LINEAR,

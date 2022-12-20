@@ -10,9 +10,9 @@ It appears, that unless we're missing some hidden option, stroke widths aren't i
 The file deals with five cases
 
 1. Attempt to blend from width 6000 to width 3000
-2. Attempt to blend from width 6000 to width 0
-3. Attempt to blend from width 0 to width 3000
-4. Attempt to blend from width 0 to width 0
+2. Attempt to blend from width 6000 to width none
+3. Attempt to blend from width none to width 3000
+4. Attempt to blend from width none to width none
 5. Attempt to blend from width 6000 to width 6000
 
 In all five cases the stroke is absent from the intermediate steps.
