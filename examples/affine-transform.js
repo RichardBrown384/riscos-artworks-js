@@ -54,8 +54,8 @@ class AffineTransform {
   }
 
   rotateDegrees(angle) {
-   this.rotate(degreesToRadians(angle));
-   return this;
+    this.rotate(degreesToRadians(angle));
+    return this;
   }
 
   rotate(angle) {
