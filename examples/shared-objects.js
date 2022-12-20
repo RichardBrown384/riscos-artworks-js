@@ -86,6 +86,7 @@ module.exports.STROKE_COLOUR_BLUE = createRecordStrokeColour(DEFAULT_PALETTE_IND
 module.exports.STROKE_COLOUR_MAGENTA = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_MAGENTA);
 module.exports.STROKE_COLOUR_TRANSPARENT = createRecordStrokeColour(PALETTE_INDEX_TRANSPARENT);
 
+module.exports.STROKE_WIDTH_NONE = createRecordStrokeWidth(-1);
 module.exports.STROKE_WIDTH_960 = createRecordStrokeWidth(960);
 module.exports.STROKE_WIDTH_1280 = createRecordStrokeWidth(1280);
 module.exports.STROKE_WIDTH_1500 = createRecordStrokeWidth(1500);
