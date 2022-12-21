@@ -7,7 +7,7 @@ const {
 } = require('../../../src').Artworks;
 
 const {
-  createClosedRectangle,
+  createClosedRectangle, createOpenInvertedV,
 } = require('../../path-creators');
 
 const {
@@ -16,12 +16,6 @@ const {
   createRecordBlendOptions,
   createRecordBlendPath,
 } = require('../../record-creators');
-
-function createRectangle(x, y, w, h) {
-  return {
-    x, y, w, h,
-  };
-}
 
 function createSimpleBlendGroup(
   startPath,
@@ -60,6 +54,12 @@ function createSimpleBlendGroup(
   return List.of(recordBlendGroup, startRecordPath, startAttributeRecord);
 }
 
+function createRectangle(x, y, w, h) {
+  return {
+    x, y, w, h,
+  };
+}
+
 function createSimpleRectangleBlendGroup(
   startRectangle,
   startAttributeRecord,
@@ -90,7 +90,43 @@ function createSimpleRectangleBlendGroup(
   );
 }
 
+function createInvertedV(x, y, l) {
+  return { x, y, l };
+}
+
+function createSimpleOpenInvertedVBlendGroup(
+  startOpenInvertedV,
+  startAttributeRecord,
+  endOpenInvertedV,
+  endAttributeRecord,
+  blendSteps,
+) {
+  const {
+    x: sx, y: sy, l: sl,
+  } = startOpenInvertedV;
+  const startPath = createOpenInvertedV(sx, sy, sl);
+  const startBlendPath = createOpenInvertedV(sx, sy, sl, 0);
+
+  const {
+    x: ex, y: ey, l: el,
+  } = endOpenInvertedV;
+  const endPath = createOpenInvertedV(ex, ey, el);
+  const endBlendPath = createOpenInvertedV(ex, ey, el, 0);
+
+  return createSimpleBlendGroup(
+    startPath,
+    startBlendPath,
+    startAttributeRecord,
+    endPath,
+    endBlendPath,
+    endAttributeRecord,
+    blendSteps,
+  );
+}
+
 module.exports = {
   createRectangle,
   createSimpleRectangleBlendGroup,
+  createInvertedV,
+  createSimpleOpenInvertedVBlendGroup,
 };
