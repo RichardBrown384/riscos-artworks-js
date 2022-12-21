@@ -1,27 +1,32 @@
 /*
-Example: 005-blend-fill-start-linear
+Example: 006-blend-fill-start-radial
 
 Purpose:
 
-To demonstrate how linear fills are interpolated with blend groups.
+To demonstrate how radial fills are interpolated with blend groups.
 
 This file demonstrates a number of cases
 
-1. Linear fill cyan + white to linear fill yellow + red.
-2. Linear fill cyan + white to flat fill red.
-3. Linear fill cyan + white to radial fill yellow + red. In this case the fill end point
-   is within the bounds of the final shape.
-4. Linear fill cyan + white to radial fill yellow + red. In this case the fill end point
-   is within the bounds of the final shape, and close to the centre.
-5. Linear fill cyan + white to radial fill yellow + red. In this case the fill end point
-   is outside the bounds of the final shape.
-6. Linear fill cyan + red to flat fill transparent. Note that the colours tend to
+1. Radial fill cyan + white to radial fill yellow + red.
+2. Radial fill cyan + white to flat fill red.
+3. Radial fill cyan + white to linear fill yellow + red. In this case the fill end point
+   is within the bounds of the start shape.
+4. Radial fill cyan + white to linear fill yellow + red. In this case the fill end point
+   is within the bounds of the start shape, and close to the centre.
+5. Radial fill cyan + white to linear fill yellow + red. In this case the fill end point
+   is outside the bounds of the start shape.
+6. Radial fill cyan + red to flat fill transparent. Note that the colours tend to
    interpolate to white.
-7. Flat fill transparent to linear fill cyan + red.
+7. Flat fill transparent to radial fill cyan + red.
 
-Cases 3, 4, and 5 demonstrate that ArtWorks doesn't interpolate linear and radial fills properly.
-The rule appears to be that before the halfway mark use the linear fill
-and beyond that use the radial fill.
+Case 1 is not straight forward. It looks like the start and end points
+of the fills are translated with the interpolated geometry.
+
+Cases 3, 4, and 5 demonstrate that ArtWorks doesn't appear to interpolate radial and fills.
+The rule appears to be that before the halfway mark use the radial fill and beyond that use the linear fill.
+
+Cases 6 and 7 demonstrate that if either the source or target is transparent
+then only then end colour is used.
  */
 
 const {
@@ -68,21 +73,21 @@ const {
 const GROUP_0 = createSimpleRectangleBlendGroup(
   createStartRectangle(100_000, 100_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_LINEAR,
+    Constants.FILL_RADIAL,
     150_000,
-    100_000,
     150_000,
-    170_000,
+    800_000,
+    150_000,
     DEFAULT_PALETTE_INDEX_CYAN,
     DEFAULT_PALETTE_INDEX_WHITE,
   ),
   createEndRectangle(1_000_000, 100_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_LINEAR,
-    1_000_000,
-    100_000,
-    1_100_000,
-    200_000,
+    Constants.FILL_RADIAL,
+    1_050_000,
+    150_000,
+    600_000,
+    150_000,
     DEFAULT_PALETTE_INDEX_YELLOW,
     DEFAULT_PALETTE_INDEX_RED,
   ),
@@ -92,11 +97,11 @@ const GROUP_0 = createSimpleRectangleBlendGroup(
 const GROUP_1 = createSimpleRectangleBlendGroup(
   createStartRectangle(100_000, 250_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_LINEAR,
+    Constants.FILL_RADIAL,
     150_000,
-    250_000,
-    150_000,
-    320_000,
+    300_000,
+    200_000,
+    300_000,
     DEFAULT_PALETTE_INDEX_CYAN,
     DEFAULT_PALETTE_INDEX_WHITE,
   ),
@@ -108,21 +113,21 @@ const GROUP_1 = createSimpleRectangleBlendGroup(
 const GROUP_2 = createSimpleRectangleBlendGroup(
   createStartRectangle(100_000, 400_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_LINEAR,
+    Constants.FILL_RADIAL,
     150_000,
-    400_000,
-    150_000,
-    470_000,
+    450_000,
+    200_000,
+    450_000,
     DEFAULT_PALETTE_INDEX_CYAN,
     DEFAULT_PALETTE_INDEX_WHITE,
   ),
   createEndRectangle(1_000_000, 400_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_RADIAL,
-    1_050_000,
-    450_000,
+    Constants.FILL_LINEAR,
     1_050_000,
     400_000,
+    1_050_000,
+    470_000,
     DEFAULT_PALETTE_INDEX_YELLOW,
     DEFAULT_PALETTE_INDEX_RED,
   ),
@@ -132,21 +137,21 @@ const GROUP_2 = createSimpleRectangleBlendGroup(
 const GROUP_3 = createSimpleRectangleBlendGroup(
   createStartRectangle(100_000, 550_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_LINEAR,
+    Constants.FILL_RADIAL,
     150_000,
-    550_000,
-    150_000,
-    620_000,
+    600_000,
+    160_000,
+    600_000,
     DEFAULT_PALETTE_INDEX_CYAN,
     DEFAULT_PALETTE_INDEX_WHITE,
   ),
   createEndRectangle(1_000_000, 550_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_RADIAL,
+    Constants.FILL_LINEAR,
     1_050_000,
-    600_000,
+    550_000,
     1_050_000,
-    590_000,
+    620_000,
     DEFAULT_PALETTE_INDEX_YELLOW,
     DEFAULT_PALETTE_INDEX_RED,
   ),
@@ -156,35 +161,36 @@ const GROUP_3 = createSimpleRectangleBlendGroup(
 const GROUP_4 = createSimpleRectangleBlendGroup(
   createStartRectangle(100_000, 700_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_LINEAR,
+    Constants.FILL_RADIAL,
     150_000,
-    700_000,
-    150_000,
-    770_000,
+    750_000,
+    800_000,
+    750_000,
     DEFAULT_PALETTE_INDEX_CYAN,
     DEFAULT_PALETTE_INDEX_WHITE,
   ),
   createEndRectangle(1_000_000, 700_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_RADIAL,
+    Constants.FILL_LINEAR,
     1_050_000,
-    750_000,
-    300_000,
-    750_000,
+    700_000,
+    1_050_000,
+    770_000,
     DEFAULT_PALETTE_INDEX_YELLOW,
     DEFAULT_PALETTE_INDEX_RED,
   ),
+  8,
   8,
 );
 
 const GROUP_5 = createSimpleRectangleBlendGroup(
   createStartRectangle(100_000, 850_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_LINEAR,
+    Constants.FILL_RADIAL,
     150_000,
-    850_000,
-    150_000,
-    920_000,
+    900_000,
+    200_000,
+    900_000,
     DEFAULT_PALETTE_INDEX_CYAN,
     DEFAULT_PALETTE_INDEX_RED,
   ),
@@ -198,11 +204,11 @@ const GROUP_6 = createSimpleRectangleBlendGroup(
   FILL_FLAT_TRANSPARENT,
   createEndRectangle(1_000_000, 1_000_000, 100_000, 100_000),
   createRecordFillColourGradient(
-    Constants.FILL_LINEAR,
+    Constants.FILL_RADIAL,
     1_050_000,
-    1_000_000,
     1_050_000,
-    1_097_000,
+    1_100_000,
+    1_050_000,
     DEFAULT_PALETTE_INDEX_CYAN,
     DEFAULT_PALETTE_INDEX_RED,
   ),
