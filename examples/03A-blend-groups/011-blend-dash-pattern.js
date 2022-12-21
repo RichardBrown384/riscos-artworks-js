@@ -20,7 +20,7 @@ When a join type is specified the viewport is filled with blue (the stroke colou
 When a join type isn't specified everything renders as expected,
 except of course the intermediate shapes aren't stroked.
 
-The only case to render properly when on its own with the file is case 2.
+Case 2 is the only case that render properly when on its own within the file.
  */
 
 const {
