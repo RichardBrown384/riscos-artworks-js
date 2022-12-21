@@ -7,7 +7,9 @@ const {
 } = require('../../../src').Artworks;
 
 const {
-  createClosedRectangle, createOpenInvertedV,
+  createClosedRectangle,
+  createOpenInvertedV,
+  createClosedPentagram,
 } = require('../../path-creators');
 
 const {
@@ -124,9 +126,45 @@ function createSimpleOpenInvertedVBlendGroup(
   );
 }
 
+function createPentagram(x, y, r) {
+  return { x, y, r };
+}
+
+function createSimpleClosedPentagramBlendGroup(
+  startPentagram,
+  startAttributeRecord,
+  endPentagram,
+  endAttributeRecord,
+  blendSteps,
+) {
+  const {
+    x: sx, y: sy, r: sr,
+  } = startPentagram;
+  const startPath = createClosedPentagram(sx, sy, sr);
+  const startBlendPath = createClosedPentagram(sx, sy, sr, 0);
+
+  const {
+    x: ex, y: ey, r: er,
+  } = endPentagram;
+  const endPath = createClosedPentagram(ex, ey, er);
+  const endBlendPath = createClosedPentagram(ex, ey, er, 0);
+
+  return createSimpleBlendGroup(
+    startPath,
+    startBlendPath,
+    startAttributeRecord,
+    endPath,
+    endBlendPath,
+    endAttributeRecord,
+    blendSteps,
+  );
+}
+
 module.exports = {
   createRectangle,
   createSimpleRectangleBlendGroup,
   createInvertedV,
   createSimpleOpenInvertedVBlendGroup,
+  createPentagram,
+  createSimpleClosedPentagramBlendGroup,
 };

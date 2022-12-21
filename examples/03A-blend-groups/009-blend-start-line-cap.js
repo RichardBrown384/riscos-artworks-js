@@ -1,5 +1,5 @@
 /*
-Example: 009-blend-start-line-cap.
+Example: 009-blend-start-line-cap
 
 Purpose:
 
