@@ -1,9 +1,9 @@
 /*
-Example: 012-blend-end-marker
+Example: 013-blend-start-marker
 
 Purpose:
 
-To demonstrate how end markers are interpolated with blend groups.
+To demonstrate how start markers are interpolated with blend groups.
 
 The file deals with five cases
 
@@ -13,7 +13,7 @@ The file deals with five cases
 4. Attempt to blend from triangle 4,4 to arrow tail 4,4
 5. Attempt to blend from arrow tail 4,4 to triangle 4,4
 
-The end markers are only applied for the start and end states.
+The start markers are only applied for the start and end states.
 
 The intermediate states draw a closed contour.
  */
