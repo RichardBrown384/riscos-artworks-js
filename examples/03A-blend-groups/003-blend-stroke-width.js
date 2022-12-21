@@ -40,47 +40,46 @@ const {
 } = require('../record-creators');
 
 const {
-  createStartRectangle,
-  createEndRectangle,
+  createRectangle,
   createSimpleRectangleBlendGroup,
 } = require('./shared');
 
 const GROUP_0 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 100_000, 100_000, 100_000),
+  createRectangle(100_000, 100_000, 100_000, 100_000),
   STROKE_WIDTH_6000,
-  createEndRectangle(500_000, 100_000, 100_000, 100_000),
+  createRectangle(500_000, 100_000, 100_000, 100_000),
   STROKE_WIDTH_3000,
   3,
 );
 
 const GROUP_1 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 250_000, 100_000, 100_000),
+  createRectangle(100_000, 250_000, 100_000, 100_000),
   STROKE_WIDTH_6000,
-  createEndRectangle(500_000, 250_000, 100_000, 100_000),
+  createRectangle(500_000, 250_000, 100_000, 100_000),
   STROKE_WIDTH_NONE,
   3,
 );
 
 const GROUP_2 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 400_000, 100_000, 100_000),
+  createRectangle(100_000, 400_000, 100_000, 100_000),
   STROKE_WIDTH_NONE,
-  createEndRectangle(500_000, 400_000, 100_000, 100_000),
+  createRectangle(500_000, 400_000, 100_000, 100_000),
   STROKE_WIDTH_3000,
   3,
 );
 
 const GROUP_3 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 550_000, 100_000, 100_000),
+  createRectangle(100_000, 550_000, 100_000, 100_000),
   STROKE_WIDTH_NONE,
-  createEndRectangle(500_000, 550_000, 100_000, 100_000),
+  createRectangle(500_000, 550_000, 100_000, 100_000),
   STROKE_WIDTH_NONE,
   3,
 );
 
 const GROUP_4 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 550_000, 100_000, 100_000),
+  createRectangle(100_000, 550_000, 100_000, 100_000),
   STROKE_WIDTH_6000,
-  createEndRectangle(500_000, 550_000, 100_000, 100_000),
+  createRectangle(500_000, 550_000, 100_000, 100_000),
   STROKE_WIDTH_6000,
   3,
 );

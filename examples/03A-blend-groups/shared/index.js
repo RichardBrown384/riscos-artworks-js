@@ -17,15 +17,9 @@ const {
   createRecordBlendPath,
 } = require('../../record-creators');
 
-function createStartRectangle(sx, sy, sw, sh) {
+function createRectangle(x, y, w, h) {
   return {
-    sx, sy, sw, sh,
-  };
-}
-
-function createEndRectangle(ex, ey, ew, eh) {
-  return {
-    ex, ey, ew, eh,
+    x, y, w, h,
   };
 }
 
@@ -37,7 +31,7 @@ function createSimpleRectangleBlendGroup(
   blendSteps,
 ) {
   const {
-    sx, sy, sw, sh,
+    x: sx, y: sy, w: sw, h: sh,
   } = startRectangle;
   const startPath = createClosedRectangle(sx, sy, sw, sh);
   const startBlendPath = createClosedRectangle(sx, sy, sw, sh, 0);
@@ -49,7 +43,7 @@ function createSimpleRectangleBlendGroup(
   );
 
   const {
-    ex, ey, ew, eh,
+    x: ex, y: ey, w: ew, h: eh,
   } = endRectangle;
   const endPath = createClosedRectangle(ex, ey, ew, eh);
   const endBlendPath = createClosedRectangle(ex, ey, ew, eh, 0);
@@ -77,7 +71,6 @@ function createSimpleRectangleBlendGroup(
 }
 
 module.exports = {
-  createStartRectangle,
-  createEndRectangle,
+  createRectangle,
   createSimpleRectangleBlendGroup,
 };

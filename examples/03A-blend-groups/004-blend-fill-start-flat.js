@@ -51,8 +51,7 @@ const {
 } = require('../record-creators');
 
 const {
-  createStartRectangle,
-  createEndRectangle,
+  createRectangle,
   createSimpleRectangleBlendGroup,
 } = require('./shared');
 
@@ -66,17 +65,17 @@ const {
 } = require('../path-creators');
 
 const GROUP_0 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 100_000, 100_000, 100_000),
+  createRectangle(100_000, 100_000, 100_000, 100_000),
   FILL_FLAT_RED,
-  createEndRectangle(1_000_000, 100_000, 100_000, 100_000),
+  createRectangle(1_000_000, 100_000, 100_000, 100_000),
   FILL_FLAT_CYAN,
   8,
 );
 
 const GROUP_1 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 250_000, 100_000, 100_000),
+  createRectangle(100_000, 250_000, 100_000, 100_000),
   FILL_FLAT_RED,
-  createEndRectangle(1_000_000, 250_000, 100_000, 100_000),
+  createRectangle(1_000_000, 250_000, 100_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_LINEAR,
     1_050_000,
@@ -90,9 +89,9 @@ const GROUP_1 = createSimpleRectangleBlendGroup(
 );
 
 const GROUP_2 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 400_000, 100_000, 100_000),
+  createRectangle(100_000, 400_000, 100_000, 100_000),
   FILL_FLAT_RED,
-  createEndRectangle(1_000_000, 400_000, 100_000, 100_000),
+  createRectangle(1_000_000, 400_000, 100_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_RADIAL,
     1_050_000,
@@ -106,9 +105,9 @@ const GROUP_2 = createSimpleRectangleBlendGroup(
 );
 
 const GROUP_3 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 550_000, 100_000, 100_000),
+  createRectangle(100_000, 550_000, 100_000, 100_000),
   FILL_FLAT_RED,
-  createEndRectangle(1_000_000, 550_000, 100_000, 100_000),
+  createRectangle(1_000_000, 550_000, 100_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_RADIAL,
     1_050_000,
@@ -122,9 +121,9 @@ const GROUP_3 = createSimpleRectangleBlendGroup(
 );
 
 const GROUP_4 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 700_000, 100_000, 100_000),
+  createRectangle(100_000, 700_000, 100_000, 100_000),
   FILL_FLAT_RED,
-  createEndRectangle(1_000_000, 700_000, 100_000, 100_000),
+  createRectangle(1_000_000, 700_000, 100_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_RADIAL,
     1_050_000,
@@ -138,25 +137,25 @@ const GROUP_4 = createSimpleRectangleBlendGroup(
 );
 
 const GROUP_5 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 850_000, 100_000, 100_000),
+  createRectangle(100_000, 850_000, 100_000, 100_000),
   FILL_FLAT_RED,
-  createEndRectangle(1_000_000, 850_000, 100_000, 100_000),
+  createRectangle(1_000_000, 850_000, 100_000, 100_000),
   FILL_FLAT_TRANSPARENT,
   8,
 );
 
 const GROUP_6 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 1_000_000, 100_000, 100_000),
+  createRectangle(100_000, 1_000_000, 100_000, 100_000),
   FILL_FLAT_TRANSPARENT,
-  createEndRectangle(1_000_000, 1_000_000, 100_000, 100_000),
+  createRectangle(1_000_000, 1_000_000, 100_000, 100_000),
   FILL_FLAT_RED,
   8,
 );
 
 const GROUP_7 = createSimpleRectangleBlendGroup(
-  createStartRectangle(100_000, 1_150_000, 100_000, 100_000),
+  createRectangle(100_000, 1_150_000, 100_000, 100_000),
   FILL_FLAT_TRANSPARENT,
-  createEndRectangle(1_000_000, 1_150_000, 100_000, 100_000),
+  createRectangle(1_000_000, 1_150_000, 100_000, 100_000),
   FILL_FLAT_TRANSPARENT,
   8,
 );

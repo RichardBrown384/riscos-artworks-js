@@ -32,8 +32,7 @@ const {
 } = require('../record-creators');
 
 const {
-  createStartRectangle,
-  createEndRectangle,
+  createRectangle,
   createSimpleRectangleBlendGroup,
 } = require('./shared');
 
@@ -42,13 +41,13 @@ function createSimpleRectangleBlendGroups() {
   for (let row = 0; row < 4; row += 1) {
     for (let col = 0; col < 4; col += 1) {
       const steps = 4 * row + col + 1;
-      const startRectangle = createStartRectangle(
+      const startRectangle = createRectangle(
         10_000 + 100_000 * col,
         10_000 + 100_000 * row,
         50_000,
         50_000,
       );
-      const endRectangle = createEndRectangle(
+      const endRectangle = createRectangle(
         30_000 + 100_000 * col,
         30_000 + 100_000 * row,
         20_000,
