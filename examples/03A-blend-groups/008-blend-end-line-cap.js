@@ -43,47 +43,46 @@ const {
   createArtworks,
 } = require('../record-creators');
 
-const {
-  createInvertedV,
-  createSimpleOpenInvertedVBlendGroup,
-} = require('./shared');
+const { createOpenInvertedV } = require('../path-creators');
 
-const GROUP_0 = createSimpleOpenInvertedVBlendGroup(
-  createInvertedV(100_000, 100_000, 100_000),
+const createSimpleBlendGroup = require('./shared');
+
+const GROUP_0 = createSimpleBlendGroup(
+  createOpenInvertedV(100_000, 100_000, 100_000),
   END_CAP_BUTT,
-  createInvertedV(500_000, 100_000, 100_000),
+  createOpenInvertedV(500_000, 100_000, 100_000),
   END_CAP_ROUND,
   3,
 );
 
-const GROUP_1 = createSimpleOpenInvertedVBlendGroup(
-  createInvertedV(100_000, 250_000, 100_000),
+const GROUP_1 = createSimpleBlendGroup(
+  createOpenInvertedV(100_000, 250_000, 100_000),
   END_CAP_BUTT,
-  createInvertedV(500_000, 250_000, 100_000),
+  createOpenInvertedV(500_000, 250_000, 100_000),
   END_CAP_SQUARE,
   3,
 );
 
-const GROUP_2 = createSimpleOpenInvertedVBlendGroup(
-  createInvertedV(100_000, 400_000, 100_000),
+const GROUP_2 = createSimpleBlendGroup(
+  createOpenInvertedV(100_000, 400_000, 100_000),
   END_CAP_BUTT,
-  createInvertedV(500_000, 400_000, 100_000),
+  createOpenInvertedV(500_000, 400_000, 100_000),
   END_CAP_BUTT,
   3,
 );
 
-const GROUP_3 = createSimpleOpenInvertedVBlendGroup(
-  createInvertedV(100_000, 550_000, 100_000),
+const GROUP_3 = createSimpleBlendGroup(
+  createOpenInvertedV(100_000, 550_000, 100_000),
   END_CAP_BUTT,
-  createInvertedV(500_000, 550_000, 100_000),
+  createOpenInvertedV(500_000, 550_000, 100_000),
   END_CAP_TRIANGLE_W2_H4,
   3,
 );
 
-const GROUP_4 = createSimpleOpenInvertedVBlendGroup(
-  createInvertedV(100_000, 700_000, 100_000),
+const GROUP_4 = createSimpleBlendGroup(
+  createOpenInvertedV(100_000, 700_000, 100_000),
   END_CAP_TRIANGLE_W2_H4,
-  createInvertedV(500_000, 700_000, 100_000),
+  createOpenInvertedV(500_000, 700_000, 100_000),
   END_CAP_BUTT,
   3,
 );

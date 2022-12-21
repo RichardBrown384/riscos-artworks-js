@@ -45,47 +45,46 @@ const {
   createArtworks,
 } = require('../record-creators');
 
-const {
-  createRectangle,
-  createSimpleRectangleBlendGroup,
-} = require('./shared');
+const { createClosedRectangle } = require('../path-creators');
 
-const GROUP_0 = createSimpleRectangleBlendGroup(
-  createRectangle(100_000, 100_000, 100_000, 100_000),
+const createSimpleBlendGroup = require('./shared');
+
+const GROUP_0 = createSimpleBlendGroup(
+  createClosedRectangle(100_000, 100_000, 100_000, 100_000),
   DASH_PATTERN_EMPTY,
-  createRectangle(500_000, 100_000, 100_000, 100_000),
+  createClosedRectangle(500_000, 100_000, 100_000, 100_000),
   DASH_PATTERN_OFFSET_0,
   3,
 );
 
-const GROUP_1 = createSimpleRectangleBlendGroup(
-  createRectangle(100_000, 250_000, 100_000, 100_000),
+const GROUP_1 = createSimpleBlendGroup(
+  createClosedRectangle(100_000, 250_000, 100_000, 100_000),
   DASH_PATTERN_EMPTY,
-  createRectangle(500_000, 250_000, 100_000, 100_000),
-  DASH_PATTERN_EMPTY,
-  3,
-);
-
-const GROUP_2 = createSimpleRectangleBlendGroup(
-  createRectangle(100_000, 400_000, 100_000, 100_000),
-  DASH_PATTERN_OFFSET_0,
-  createRectangle(500_000, 400_000, 100_000, 100_000),
+  createClosedRectangle(500_000, 250_000, 100_000, 100_000),
   DASH_PATTERN_EMPTY,
   3,
 );
 
-const GROUP_3 = createSimpleRectangleBlendGroup(
-  createRectangle(100_000, 550_000, 100_000, 100_000),
+const GROUP_2 = createSimpleBlendGroup(
+  createClosedRectangle(100_000, 400_000, 100_000, 100_000),
   DASH_PATTERN_OFFSET_0,
-  createRectangle(500_000, 550_000, 100_000, 100_000),
+  createClosedRectangle(500_000, 400_000, 100_000, 100_000),
+  DASH_PATTERN_EMPTY,
+  3,
+);
+
+const GROUP_3 = createSimpleBlendGroup(
+  createClosedRectangle(100_000, 550_000, 100_000, 100_000),
+  DASH_PATTERN_OFFSET_0,
+  createClosedRectangle(500_000, 550_000, 100_000, 100_000),
   DASH_PATTERN_OFFSET_5000,
   3,
 );
 
-const GROUP_4 = createSimpleRectangleBlendGroup(
-  createRectangle(100_000, 700_000, 100_000, 100_000),
+const GROUP_4 = createSimpleBlendGroup(
+  createClosedRectangle(100_000, 700_000, 100_000, 100_000),
   DASH_PATTERN_OFFSET_0,
-  createRectangle(500_000, 700_000, 100_000, 100_000),
+  createClosedRectangle(500_000, 700_000, 100_000, 100_000),
   DASH_PATTERN_OFFSET_0,
   3,
 );

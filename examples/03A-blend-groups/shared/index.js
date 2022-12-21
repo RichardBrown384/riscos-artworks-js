@@ -3,14 +3,9 @@ const {
     List,
     BoundingBox,
     PathBoundingBox,
+    PathElement,
   },
 } = require('../../../src').Artworks;
-
-const {
-  createClosedRectangle,
-  createOpenInvertedV,
-  createClosedPentagram,
-} = require('../../path-creators');
 
 const {
   createRecordPath,
@@ -19,25 +14,29 @@ const {
   createRecordBlendPath,
 } = require('../../record-creators');
 
+function createBlendPath(path) {
+  return path.map(
+    ({ tag, points }) => PathElement.of(tag % 256, points),
+  );
+}
+
 function createSimpleBlendGroup(
   startPath,
-  startBlendPath,
   startAttributeRecord,
   endPath,
-  endBlendPath,
   endAttributeRecord,
   blendSteps,
 ) {
   const startRecordPath = createRecordPath(
     startPath,
     10_000,
-    createRecordBlendPath(startBlendPath, 10_000),
+    createRecordBlendPath(createBlendPath(startPath), 10_000),
   );
 
   const endRecordPath = createRecordPath(
     endPath,
     10_000,
-    createRecordBlendPath(endBlendPath, 10_000),
+    createRecordBlendPath(createBlendPath(endPath), 10_000),
   );
 
   const blendGroupBoundingBox = BoundingBox.union(
@@ -56,115 +55,4 @@ function createSimpleBlendGroup(
   return List.of(recordBlendGroup, startRecordPath, startAttributeRecord);
 }
 
-function createRectangle(x, y, w, h) {
-  return {
-    x, y, w, h,
-  };
-}
-
-function createSimpleRectangleBlendGroup(
-  startRectangle,
-  startAttributeRecord,
-  endRectangle,
-  endAttributeRecord,
-  blendSteps,
-) {
-  const {
-    x: sx, y: sy, w: sw, h: sh,
-  } = startRectangle;
-  const startPath = createClosedRectangle(sx, sy, sw, sh);
-  const startBlendPath = createClosedRectangle(sx, sy, sw, sh, 0);
-
-  const {
-    x: ex, y: ey, w: ew, h: eh,
-  } = endRectangle;
-  const endPath = createClosedRectangle(ex, ey, ew, eh);
-  const endBlendPath = createClosedRectangle(ex, ey, ew, eh, 0);
-
-  return createSimpleBlendGroup(
-    startPath,
-    startBlendPath,
-    startAttributeRecord,
-    endPath,
-    endBlendPath,
-    endAttributeRecord,
-    blendSteps,
-  );
-}
-
-function createInvertedV(x, y, l) {
-  return { x, y, l };
-}
-
-function createSimpleOpenInvertedVBlendGroup(
-  startOpenInvertedV,
-  startAttributeRecord,
-  endOpenInvertedV,
-  endAttributeRecord,
-  blendSteps,
-) {
-  const {
-    x: sx, y: sy, l: sl,
-  } = startOpenInvertedV;
-  const startPath = createOpenInvertedV(sx, sy, sl);
-  const startBlendPath = createOpenInvertedV(sx, sy, sl, 0);
-
-  const {
-    x: ex, y: ey, l: el,
-  } = endOpenInvertedV;
-  const endPath = createOpenInvertedV(ex, ey, el);
-  const endBlendPath = createOpenInvertedV(ex, ey, el, 0);
-
-  return createSimpleBlendGroup(
-    startPath,
-    startBlendPath,
-    startAttributeRecord,
-    endPath,
-    endBlendPath,
-    endAttributeRecord,
-    blendSteps,
-  );
-}
-
-function createPentagram(x, y, r) {
-  return { x, y, r };
-}
-
-function createSimpleClosedPentagramBlendGroup(
-  startPentagram,
-  startAttributeRecord,
-  endPentagram,
-  endAttributeRecord,
-  blendSteps,
-) {
-  const {
-    x: sx, y: sy, r: sr,
-  } = startPentagram;
-  const startPath = createClosedPentagram(sx, sy, sr);
-  const startBlendPath = createClosedPentagram(sx, sy, sr, 0);
-
-  const {
-    x: ex, y: ey, r: er,
-  } = endPentagram;
-  const endPath = createClosedPentagram(ex, ey, er);
-  const endBlendPath = createClosedPentagram(ex, ey, er, 0);
-
-  return createSimpleBlendGroup(
-    startPath,
-    startBlendPath,
-    startAttributeRecord,
-    endPath,
-    endBlendPath,
-    endAttributeRecord,
-    blendSteps,
-  );
-}
-
-module.exports = {
-  createRectangle,
-  createSimpleRectangleBlendGroup,
-  createInvertedV,
-  createSimpleOpenInvertedVBlendGroup,
-  createPentagram,
-  createSimpleClosedPentagramBlendGroup,
-};
+module.exports = createSimpleBlendGroup;

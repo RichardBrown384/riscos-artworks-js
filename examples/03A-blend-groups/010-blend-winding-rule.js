@@ -38,39 +38,38 @@ const {
   createArtworks,
 } = require('../record-creators');
 
-const {
-  createPentagram,
-  createSimpleClosedPentagramBlendGroup,
-} = require('./shared');
+const { createClosedPentagram } = require('../path-creators');
 
-const GROUP_0 = createSimpleClosedPentagramBlendGroup(
-  createPentagram(100_000, 100_000, 60_000),
+const createSimpleBlendGroup = require('./shared');
+
+const GROUP_0 = createSimpleBlendGroup(
+  createClosedPentagram(100_000, 100_000, 60_000),
   WINDING_RULE_EVEN_ODD,
-  createPentagram(500_000, 100_000, 60_000),
+  createClosedPentagram(500_000, 100_000, 60_000),
   WINDING_RULE_NON_ZERO,
   3,
 );
 
-const GROUP_1 = createSimpleClosedPentagramBlendGroup(
-  createPentagram(100_000, 250_000, 60_000),
+const GROUP_1 = createSimpleBlendGroup(
+  createClosedPentagram(100_000, 250_000, 60_000),
   WINDING_RULE_EVEN_ODD,
-  createPentagram(500_000, 250_000, 60_000),
+  createClosedPentagram(500_000, 250_000, 60_000),
   WINDING_RULE_EVEN_ODD,
   3,
 );
 
-const GROUP_2 = createSimpleClosedPentagramBlendGroup(
-  createPentagram(100_000, 400_000, 60_000),
+const GROUP_2 = createSimpleBlendGroup(
+  createClosedPentagram(100_000, 400_000, 60_000),
   WINDING_RULE_NON_ZERO,
-  createPentagram(500_000, 400_000, 60_000),
+  createClosedPentagram(500_000, 400_000, 60_000),
   WINDING_RULE_NON_ZERO,
   3,
 );
 
-const GROUP_3 = createSimpleClosedPentagramBlendGroup(
-  createPentagram(100_000, 550_000, 60_000),
+const GROUP_3 = createSimpleBlendGroup(
+  createClosedPentagram(100_000, 550_000, 60_000),
   WINDING_RULE_NON_ZERO,
-  createPentagram(500_000, 550_000, 60_000),
+  createClosedPentagram(500_000, 550_000, 60_000),
   WINDING_RULE_EVEN_ODD,
   3,
 );

@@ -31,29 +31,28 @@ const {
   createArtworks,
 } = require('../record-creators');
 
-const {
-  createRectangle,
-  createSimpleRectangleBlendGroup,
-} = require('./shared');
+const { createClosedRectangle } = require('../path-creators');
 
-function createSimpleRectangleBlendGroups() {
+const createSimpleBlendGroup = require('./shared');
+
+function createSimpleBlendGroups() {
   const groups = [];
   for (let row = 0; row < 4; row += 1) {
     for (let col = 0; col < 4; col += 1) {
       const steps = 4 * row + col + 1;
-      const startRectangle = createRectangle(
+      const startRectangle = createClosedRectangle(
         10_000 + 100_000 * col,
         10_000 + 100_000 * row,
         50_000,
         50_000,
       );
-      const endRectangle = createRectangle(
+      const endRectangle = createClosedRectangle(
         30_000 + 100_000 * col,
         30_000 + 100_000 * row,
         20_000,
         20_000,
       );
-      const group = createSimpleRectangleBlendGroup(
+      const group = createSimpleBlendGroup(
         startRectangle,
         FILL_FLAT_RED,
         endRectangle,
@@ -70,6 +69,6 @@ module.exports = createArtworks(
   List.of(WINDING_RULE_EVEN_ODD),
   List.of(DASH_PATTERN_EMPTY),
   List.of(STROKE_COLOUR_TRANSPARENT),
-  ...createSimpleRectangleBlendGroups(),
+  ...createSimpleBlendGroups(),
   List.of(WORK_AREA),
 );
