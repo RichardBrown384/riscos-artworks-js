@@ -5,8 +5,6 @@ Purpose:
 
 To demonstrate how stroke widths are interpolated with blend groups.
 
-It appears, that unless we're missing some hidden option, stroke widths aren't interpolated.
-
 The file deals with five cases
 
 1. Attempt to blend from width 6000 to width 3000
@@ -15,7 +13,11 @@ The file deals with five cases
 4. Attempt to blend from width none to width none
 5. Attempt to blend from width 6000 to width 6000
 
-In all five cases the stroke is absent from the intermediate steps.
+Important point to note:
+
+If the join style is missing from the file then the interpolated shapes are not stroked.
+
+If the join style is present then the attribute is interpolated as expected.
  */
 
 const {
@@ -31,6 +33,7 @@ const {
   STROKE_WIDTH_6000,
   WINDING_RULE_EVEN_ODD,
   DASH_PATTERN_EMPTY,
+  JOIN_BEVEL,
   WORK_AREA,
   FILL_FLAT_BLACK_30,
 } = require('../shared-objects');
@@ -77,9 +80,9 @@ const GROUP_3 = createSimpleRectangleBlendGroup(
 );
 
 const GROUP_4 = createSimpleRectangleBlendGroup(
-  createRectangle(100_000, 550_000, 100_000, 100_000),
+  createRectangle(100_000, 700_000, 100_000, 100_000),
   STROKE_WIDTH_6000,
-  createRectangle(500_000, 550_000, 100_000, 100_000),
+  createRectangle(500_000, 700_000, 100_000, 100_000),
   STROKE_WIDTH_6000,
   3,
 );
@@ -90,6 +93,7 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_BLACK_30),
   List.of(STROKE_COLOUR_BLUE),
   List.of(STROKE_WIDTH_6000),
+  List.of(JOIN_BEVEL),
   GROUP_0,
   GROUP_1,
   GROUP_2,

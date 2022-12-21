@@ -38,6 +38,7 @@ const {
   STROKE_COLOUR_BLACK,
   STROKE_WIDTH_3000,
   WINDING_RULE_EVEN_ODD,
+  JOIN_BEVEL,
   DASH_PATTERN_EMPTY,
   WORK_AREA,
 } = require('../shared-objects');
@@ -218,6 +219,7 @@ module.exports = createArtworks(
   List.of(DASH_PATTERN_EMPTY),
   List.of(STROKE_COLOUR_BLACK),
   List.of(STROKE_WIDTH_3000),
+  List.of(JOIN_BEVEL),
   List.of(TRANSPARENT_BLEND_BACKGROUND, FILL_FLAT_BLUE),
   GROUP_0,
   GROUP_1,
