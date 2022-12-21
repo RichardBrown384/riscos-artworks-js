@@ -32,6 +32,7 @@ const {
   DEFAULT_PALETTE_INDEX_WHITE,
   DEFAULT_PALETTE_INDEX_RED,
   DEFAULT_PALETTE_INDEX_BLUE,
+  DEFAULT_PALETTE_INDEX_CYAN,
   DEFAULT_PALETTE_INDEX_MAGENTA,
   DEFAULT_PALETTE_INDEX_YELLOW,
 } = require('./default-palette');
@@ -86,6 +87,7 @@ module.exports.STROKE_COLOUR_BLUE = createRecordStrokeColour(DEFAULT_PALETTE_IND
 module.exports.STROKE_COLOUR_MAGENTA = createRecordStrokeColour(DEFAULT_PALETTE_INDEX_MAGENTA);
 module.exports.STROKE_COLOUR_TRANSPARENT = createRecordStrokeColour(PALETTE_INDEX_TRANSPARENT);
 
+module.exports.STROKE_WIDTH_NONE = createRecordStrokeWidth(-1);
 module.exports.STROKE_WIDTH_960 = createRecordStrokeWidth(960);
 module.exports.STROKE_WIDTH_1280 = createRecordStrokeWidth(1280);
 module.exports.STROKE_WIDTH_1500 = createRecordStrokeWidth(1500);
@@ -100,6 +102,7 @@ module.exports.FILL_FLAT_BLACK_30 = createRecordFillColourFlat(
 module.exports.FILL_FLAT_WHITE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_WHITE);
 module.exports.FILL_FLAT_RED = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_RED);
 module.exports.FILL_FLAT_BLUE = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_BLUE);
+module.exports.FILL_FLAT_CYAN = createRecordFillColourFlat(DEFAULT_PALETTE_INDEX_CYAN);
 
 module.exports.FILL_LINEAR_YELLOW_RED = createRecordFillColourGradient(
   FILL_LINEAR,
