@@ -1,5 +1,5 @@
 /*
-Example: 001-blend-step-variants
+Example: 003-blend-step-variants
 
 Purpose:
 
