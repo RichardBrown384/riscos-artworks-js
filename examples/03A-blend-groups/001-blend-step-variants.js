@@ -31,7 +31,7 @@ const {
   createArtworks,
 } = require('../record-creators');
 
-const { createClosedRectangle } = require('../path-creators');
+const { createClosedSquare } = require('../path-creators');
 
 const createSimpleBlendGroup = require('./shared');
 
@@ -40,16 +40,14 @@ function createSimpleBlendGroups() {
   for (let row = 0; row < 4; row += 1) {
     for (let col = 0; col < 4; col += 1) {
       const steps = 4 * row + col + 1;
-      const startRectangle = createClosedRectangle(
+      const startRectangle = createClosedSquare(
         10_000 + 100_000 * col,
         10_000 + 100_000 * row,
         50_000,
-        50_000,
       );
-      const endRectangle = createClosedRectangle(
+      const endRectangle = createClosedSquare(
         30_000 + 100_000 * col,
         30_000 + 100_000 * row,
-        20_000,
         20_000,
       );
       const group = createSimpleBlendGroup(
