@@ -1,5 +1,5 @@
 /*
-Example: 010-blend-winding-rule
+Example: 009-blend-winding-rule
 
 Purpose:
 
@@ -40,7 +40,7 @@ const {
 
 const { createClosedPentagram } = require('../path-creators');
 
-const createSimpleBlendGroup = require('./shared');
+const createSimpleBlendGroup = require('../simple-blend-group');
 
 const GROUP_0 = createSimpleBlendGroup(
   createClosedPentagram(100_000, 100_000, 60_000),

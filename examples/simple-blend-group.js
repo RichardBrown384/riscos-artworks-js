@@ -5,14 +5,14 @@ const {
     PathBoundingBox,
     PathElement,
   },
-} = require('../../../src').Artworks;
+} = require('../src').Artworks;
 
 const {
   createRecordPath,
   createRecordBlendGroup,
   createRecordBlendOptions,
   createRecordBlendPath,
-} = require('../../record-creators');
+} = require('./record-creators');
 
 function createBlendPath(path) {
   return path.map(

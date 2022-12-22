@@ -1,5 +1,5 @@
 /*
-Example: 005-blend-fill-start-linear
+Example: 004-blend-fill-start-linear
 
 Purpose:
 
@@ -51,7 +51,7 @@ const {
 
 const { createClosedSquare, createClosedRectangle } = require('../path-creators');
 
-const createSimpleBlendGroup = require('./shared');
+const createSimpleBlendGroup = require('../simple-blend-group');
 
 const {
   DEFAULT_PALETTE_INDEX_YELLOW,

@@ -1,5 +1,5 @@
 /*
-Example: 008-blend-end-line-cap
+Example: 007-blend-end-line-cap
 
 Purpose:
 
@@ -45,7 +45,7 @@ const {
 
 const { createOpenInvertedV } = require('../path-creators');
 
-const createSimpleBlendGroup = require('./shared');
+const createSimpleBlendGroup = require('../simple-blend-group');
 
 const GROUP_0 = createSimpleBlendGroup(
   createOpenInvertedV(100_000, 100_000, 100_000),

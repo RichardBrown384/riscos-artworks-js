@@ -33,7 +33,7 @@ const {
 
 const { createClosedSquare } = require('../path-creators');
 
-const createSimpleBlendGroup = require('./shared');
+const createSimpleBlendGroup = require('../simple-blend-group');
 
 function createSimpleBlendGroups() {
   const groups = [];
