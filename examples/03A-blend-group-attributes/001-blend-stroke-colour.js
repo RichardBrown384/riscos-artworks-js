@@ -47,9 +47,9 @@ const {
 
 const { createClosedSquare } = require('../path-creators');
 
-const createSimpleBlendGroup = require('../simple-blend-group');
+const { createSimpleAttributeBlendGroup } = require('../simple-blend-group');
 
-const GROUP_0 = createSimpleBlendGroup(
+const GROUP_0 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 100_000, 100_000),
   STROKE_COLOUR_BLUE,
   createClosedSquare(500_000, 100_000, 100_000),
@@ -57,7 +57,7 @@ const GROUP_0 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_1 = createSimpleBlendGroup(
+const GROUP_1 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 250_000, 100_000),
   STROKE_COLOUR_BLUE,
   createClosedSquare(500_000, 250_000, 100_000),
@@ -65,7 +65,7 @@ const GROUP_1 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_2 = createSimpleBlendGroup(
+const GROUP_2 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 400_000, 100_000),
   STROKE_COLOUR_TRANSPARENT,
   createClosedSquare(500_000, 400_000, 100_000),
@@ -73,7 +73,7 @@ const GROUP_2 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_3 = createSimpleBlendGroup(
+const GROUP_3 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 550_000, 100_000),
   STROKE_COLOUR_TRANSPARENT,
   createClosedSquare(500_000, 550_000, 100_000),
@@ -81,7 +81,7 @@ const GROUP_3 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_4 = createSimpleBlendGroup(
+const GROUP_4 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 700_000, 100_000),
   STROKE_COLOUR_BLUE,
   createClosedSquare(500_000, 700_000, 100_000),

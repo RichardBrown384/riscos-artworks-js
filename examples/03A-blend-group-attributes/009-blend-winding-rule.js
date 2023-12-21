@@ -40,9 +40,9 @@ const {
 
 const { createClosedPentagram } = require('../path-creators');
 
-const createSimpleBlendGroup = require('../simple-blend-group');
+const { createSimpleAttributeBlendGroup } = require('../simple-blend-group');
 
-const GROUP_0 = createSimpleBlendGroup(
+const GROUP_0 = createSimpleAttributeBlendGroup(
   createClosedPentagram(100_000, 100_000, 60_000),
   WINDING_RULE_EVEN_ODD,
   createClosedPentagram(500_000, 100_000, 60_000),
@@ -50,7 +50,7 @@ const GROUP_0 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_1 = createSimpleBlendGroup(
+const GROUP_1 = createSimpleAttributeBlendGroup(
   createClosedPentagram(100_000, 250_000, 60_000),
   WINDING_RULE_EVEN_ODD,
   createClosedPentagram(500_000, 250_000, 60_000),
@@ -58,7 +58,7 @@ const GROUP_1 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_2 = createSimpleBlendGroup(
+const GROUP_2 = createSimpleAttributeBlendGroup(
   createClosedPentagram(100_000, 400_000, 60_000),
   WINDING_RULE_NON_ZERO,
   createClosedPentagram(500_000, 400_000, 60_000),
@@ -66,7 +66,7 @@ const GROUP_2 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_3 = createSimpleBlendGroup(
+const GROUP_3 = createSimpleAttributeBlendGroup(
   createClosedPentagram(100_000, 550_000, 60_000),
   WINDING_RULE_NON_ZERO,
   createClosedPentagram(500_000, 550_000, 60_000),

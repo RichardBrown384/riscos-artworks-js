@@ -33,9 +33,9 @@ const {
 
 const { createClosedSquare } = require('../path-creators');
 
-const createSimpleBlendGroup = require('../simple-blend-group');
+const { createSimpleAttributeBlendGroup } = require('../simple-blend-group');
 
-function createSimpleBlendGroups() {
+function createSimpleAttributeBlendGroups() {
   const groups = [];
   for (let row = 0; row < 4; row += 1) {
     for (let col = 0; col < 4; col += 1) {
@@ -50,7 +50,7 @@ function createSimpleBlendGroups() {
         30_000 + 100_000 * row,
         20_000,
       );
-      const group = createSimpleBlendGroup(
+      const group = createSimpleAttributeBlendGroup(
         startRectangle,
         FILL_FLAT_RED,
         endRectangle,
@@ -67,6 +67,6 @@ module.exports = createArtworks(
   List.of(WINDING_RULE_EVEN_ODD),
   List.of(DASH_PATTERN_EMPTY),
   List.of(STROKE_COLOUR_TRANSPARENT),
-  ...createSimpleBlendGroups(),
+  ...createSimpleAttributeBlendGroups(),
   List.of(WORK_AREA),
 );

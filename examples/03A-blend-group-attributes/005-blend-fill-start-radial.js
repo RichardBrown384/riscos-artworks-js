@@ -57,7 +57,7 @@ const {
 
 const { createClosedSquare, createClosedRectangle } = require('../path-creators');
 
-const createSimpleBlendGroup = require('../simple-blend-group');
+const { createSimpleAttributeBlendGroup } = require('../simple-blend-group');
 
 const {
   DEFAULT_PALETTE_INDEX_YELLOW,
@@ -66,7 +66,7 @@ const {
   DEFAULT_PALETTE_INDEX_WHITE,
 } = require('../default-palette');
 
-const GROUP_0 = createSimpleBlendGroup(
+const GROUP_0 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 100_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_RADIAL,
@@ -90,7 +90,7 @@ const GROUP_0 = createSimpleBlendGroup(
   8,
 );
 
-const GROUP_1 = createSimpleBlendGroup(
+const GROUP_1 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 250_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_RADIAL,
@@ -106,7 +106,7 @@ const GROUP_1 = createSimpleBlendGroup(
   8,
 );
 
-const GROUP_2 = createSimpleBlendGroup(
+const GROUP_2 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 400_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_RADIAL,
@@ -130,7 +130,7 @@ const GROUP_2 = createSimpleBlendGroup(
   8,
 );
 
-const GROUP_3 = createSimpleBlendGroup(
+const GROUP_3 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 550_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_RADIAL,
@@ -154,7 +154,7 @@ const GROUP_3 = createSimpleBlendGroup(
   8,
 );
 
-const GROUP_4 = createSimpleBlendGroup(
+const GROUP_4 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 700_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_RADIAL,
@@ -179,7 +179,7 @@ const GROUP_4 = createSimpleBlendGroup(
   8,
 );
 
-const GROUP_5 = createSimpleBlendGroup(
+const GROUP_5 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 850_000, 100_000),
   createRecordFillColourGradient(
     Constants.FILL_RADIAL,
@@ -195,7 +195,7 @@ const GROUP_5 = createSimpleBlendGroup(
   8,
 );
 
-const GROUP_6 = createSimpleBlendGroup(
+const GROUP_6 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 1_000_000, 100_000),
   FILL_FLAT_TRANSPARENT,
   createClosedSquare(1_000_000, 1_000_000, 100_000),

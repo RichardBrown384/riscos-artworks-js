@@ -24,6 +24,7 @@ const EXAMPLE_DIRECTORIES = [
   '035-rounded-rectangle',
   '03A-blend-group',
   '03A-blend-group-attributes',
+  '03A-blend-group-simple-geometry',
   '03E-start-markers',
   '03F-end-markers',
   '100-smallest-file',

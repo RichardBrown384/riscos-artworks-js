@@ -14,29 +14,35 @@ const {
   createRecordBlendPath,
 } = require('./record-creators');
 
+const {
+  DASH_PATTERN_EMPTY,
+} = require('./shared-objects');
+
 function createBlendPath(path) {
   return path.map(
     ({ tag, points }) => PathElement.of(tag % 256, points),
   );
 }
 
-function createSimpleBlendGroup(
+function createSimpleBlendGroup({
   startPath,
-  startAttributeRecord,
+  startBlendPath = startPath,
+  startAttributeRecord = DASH_PATTERN_EMPTY,
   endPath,
-  endAttributeRecord,
+  endBlendPath = endPath,
+  endAttributeRecord = DASH_PATTERN_EMPTY,
   blendSteps,
-) {
+}) {
   const startRecordPath = createRecordPath(
     startPath,
     10_000,
-    createRecordBlendPath(createBlendPath(startPath), 10_000),
+    createRecordBlendPath(createBlendPath(startBlendPath), 10_000),
   );
 
   const endRecordPath = createRecordPath(
     endPath,
     10_000,
-    createRecordBlendPath(createBlendPath(endPath), 10_000),
+    createRecordBlendPath(createBlendPath(endBlendPath), 10_000),
   );
 
   const blendGroupBoundingBox = BoundingBox.union(
@@ -55,4 +61,36 @@ function createSimpleBlendGroup(
   return List.of(recordBlendGroup, startRecordPath, startAttributeRecord);
 }
 
-module.exports = createSimpleBlendGroup;
+function createSimpleAttributeBlendGroup(
+  startPath,
+  startAttributeRecord,
+  endPath,
+  endAttributeRecord,
+  blendSteps,
+) {
+  return createSimpleBlendGroup({
+    startPath,
+    startAttributeRecord,
+    endPath,
+    endAttributeRecord,
+    blendSteps,
+  });
+}
+
+function createSimpleGeometryBlendGroup(
+  startPath,
+  endPath,
+  blendSteps,
+) {
+  return createSimpleBlendGroup({
+    startPath,
+    endPath,
+    blendSteps,
+  });
+}
+
+module.exports = {
+  createSimpleBlendGroup,
+  createSimpleAttributeBlendGroup,
+  createSimpleGeometryBlendGroup,
+};

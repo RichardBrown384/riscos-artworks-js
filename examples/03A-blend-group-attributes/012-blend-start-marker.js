@@ -45,9 +45,9 @@ const {
 
 const { createOpenInvertedV } = require('../path-creators');
 
-const createSimpleBlendGroup = require('../simple-blend-group');
+const { createSimpleAttributeBlendGroup } = require('../simple-blend-group');
 
-const GROUP_0 = createSimpleBlendGroup(
+const GROUP_0 = createSimpleAttributeBlendGroup(
   createOpenInvertedV(100_000, 100_000, 100_000),
   START_MARKER_TRIANGLE_W4_H4,
   createOpenInvertedV(500_000, 100_000, 100_000),
@@ -55,7 +55,7 @@ const GROUP_0 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_1 = createSimpleBlendGroup(
+const GROUP_1 = createSimpleAttributeBlendGroup(
   createOpenInvertedV(100_000, 250_000, 100_000),
   START_MARKER_TRIANGLE_W4_H4,
   createOpenInvertedV(500_000, 250_000, 100_000),
@@ -63,7 +63,7 @@ const GROUP_1 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_2 = createSimpleBlendGroup(
+const GROUP_2 = createSimpleAttributeBlendGroup(
   createOpenInvertedV(100_000, 400_000, 100_000),
   START_MARKER_TRIANGLE_W4_H4,
   createOpenInvertedV(500_000, 400_000, 100_000),
@@ -71,7 +71,7 @@ const GROUP_2 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_3 = createSimpleBlendGroup(
+const GROUP_3 = createSimpleAttributeBlendGroup(
   createOpenInvertedV(100_000, 550_000, 100_000),
   START_MARKER_TRIANGLE_W4_H4,
   createOpenInvertedV(500_000, 550_000, 100_000),
@@ -79,7 +79,7 @@ const GROUP_3 = createSimpleBlendGroup(
   3,
 );
 
-const GROUP_4 = createSimpleBlendGroup(
+const GROUP_4 = createSimpleAttributeBlendGroup(
   createOpenInvertedV(100_000, 700_000, 100_000),
   START_MARKER_ARROW_TAIL_W4_H4,
   createOpenInvertedV(500_000, 700_000, 100_000),

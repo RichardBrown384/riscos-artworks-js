@@ -28,9 +28,9 @@ const {
 
 const { createClosedSquare } = require('../path-creators');
 
-const createSimpleBlendGroup = require('../simple-blend-group');
+const { createSimpleAttributeBlendGroup } = require('../simple-blend-group');
 
-const GROUP_0 = createSimpleBlendGroup(
+const GROUP_0 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 100_000, 100_000),
   FILL_FLAT_BLUE,
   createClosedSquare(1_000_000, 100_000, 50_000),
