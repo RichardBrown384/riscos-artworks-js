@@ -5,6 +5,9 @@ const {
     PathBoundingBox,
     PathElement,
   },
+  Blenders: {
+    pathBlender,
+  },
 } = require('../src').Artworks;
 
 const {
@@ -89,8 +92,19 @@ function createSimpleGeometryBlendGroup(
   });
 }
 
+function createBlendedGeometry(startPath, endPath, steps) {
+  const builder = List.builder();
+  for (let i = 0; i < steps + 1; i += 1) {
+    const weight = i / steps;
+    const blended = pathBlender(startPath, endPath, weight);
+    builder.push(createRecordPath(blended, 10_000));
+  }
+  return builder.build();
+}
+
 module.exports = {
   createSimpleBlendGroup,
   createSimpleAttributeBlendGroup,
   createSimpleGeometryBlendGroup,
+  createBlendedGeometry,
 };
