@@ -65,19 +65,19 @@ function blendBezierPaths(startPath, endPath, weight) {
   const builder = Path.builder();
   for (let i = 0; i < startPath.length; i += 1) {
     const { tag, points: startPoints = [] } = startPath[i];
-    const { points: endPaths = [] } = endPath[i];
+    const { points: endPoints = [] } = endPath[i];
     const maskedTag = maskTag(tag);
     if (maskedTag === Constants.TAG_END) {
       builder.end();
     } else if (maskedTag === Constants.TAG_MOVE) {
-      const p = interpolatePoints(startPoints[0], endPaths[0], weight);
+      const p = interpolatePoints(startPoints[0], endPoints[0], weight);
       builder.moveTo(p.x, p.y, Constants.TAG_BIT_31);
     } else if (maskedTag === Constants.TAG_CLOSE_SUB_PATH) {
       builder.closeSubPath();
     } else if (maskedTag === Constants.TAG_BEZIER) {
-      const b0 = interpolatePoints(startPoints[0], endPaths[0], weight);
-      const b1 = interpolatePoints(startPoints[1], endPaths[1], weight);
-      const b2 = interpolatePoints(startPoints[2], endPaths[2], weight);
+      const b0 = interpolatePoints(startPoints[0], endPoints[0], weight);
+      const b1 = interpolatePoints(startPoints[1], endPoints[1], weight);
+      const b2 = interpolatePoints(startPoints[2], endPoints[2], weight);
       builder.bezierTo(b0.x, b0.y, b1.x, b1.y, b2.x, b2.y);
     }
   }
