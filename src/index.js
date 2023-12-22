@@ -2,7 +2,7 @@ const Constants = require('./constants');
 const PrimitiveBuilders = require('./builders/primitives');
 const RecordBuilders = require('./builders/records');
 const StructureBuilders = require('./builders/structures');
-const pathBlender = require('./blenders/path');
+const Blenders = require('./blenders/path');
 
 const {
   ArtworksView,
@@ -25,9 +25,7 @@ module.exports = {
       ...RecordBuilders,
       ...StructureBuilders,
     },
-    Blenders: {
-      pathBlender,
-    },
+    Blenders,
     isHeaderPresent(array) {
       const view = new ArtworksView(array.buffer);
       return isArtworksHeaderPresent(view);

@@ -6,6 +6,8 @@ the paths you wish to blend have
 1. The number of segments AND
 2. Moves/sub-path closures are in the same positions
 
+Adding additional points only works for poly-lines, Beziers are not yet supported.
+
 It's here rather than in the /examples folder because it's possible this might evolve
 into a path blender that supports all the necessary operations.
 
@@ -34,7 +36,7 @@ function interpolatePoints(a, b, weight) {
 
 function convertLinesToBeziers(path) {
   const builder = Path.builder();
-  let last = { x: 0, y: 0 };
+  let last = Point.of(0, 0);
   for (let i = 0; i < path.length; i += 1) {
     const { tag, points = [] } = path[i];
     const maskedTag = maskTag(tag);
@@ -84,6 +86,42 @@ function blendBezierPaths(startPath, endPath, weight) {
   return builder.build();
 }
 
+function insertAdditionalLines(builder, inserts, start, end) {
+  for (let j = 0; j < inserts; j += 1) {
+    const weight = (j + 1) / (inserts + 1);
+    const q = interpolatePoints(start, end, weight);
+    builder.lineTo(q.x, q.y);
+  }
+}
+
+function insertAdditionalPoints(path, insertsList) {
+  const builder = Path.builder();
+  let start = Point.of(0, 0);
+  let last = Point.of(0, 0);
+  for (let i = 0; i < path.length; i += 1) {
+    const { tag, points = [] } = path[i];
+    const inserts = insertsList[i];
+    const maskedTag = maskTag(tag);
+    if (maskedTag === Constants.TAG_END) {
+      builder.end();
+    } else if (maskedTag === Constants.TAG_MOVE) {
+      const p = points[0];
+      builder.moveTo(p.x, p.y, Constants.TAG_BIT_31);
+      start = p;
+      last = p;
+    } else if (maskedTag === Constants.TAG_CLOSE_SUB_PATH) {
+      insertAdditionalLines(builder, inserts, last, start);
+      builder.closeSubPath();
+    } else if (maskedTag === Constants.TAG_LINE) {
+      const p = points[0];
+      insertAdditionalLines(builder, inserts, last, p);
+      builder.lineTo(p.x, p.y);
+      last = p;
+    }
+  }
+  return builder.build();
+}
+
 function blendPaths(startPath, endPath, weight) {
   return blendBezierPaths(
     convertLinesToBeziers(startPath),
@@ -92,4 +130,7 @@ function blendPaths(startPath, endPath, weight) {
   );
 }
 
-module.exports = blendPaths;
+module.exports = {
+  blendPaths,
+  insertAdditionalPoints,
+};
