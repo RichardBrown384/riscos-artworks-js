@@ -86,21 +86,37 @@ function blendBezierPaths(startPath, endPath, weight) {
   return builder.build();
 }
 
-function insertAdditionalLines(builder, inserts, start, end) {
-  for (let j = 0; j < inserts; j += 1) {
-    const weight = (j + 1) / (inserts + 1);
+function convertInsertsToWeights(inserts) {
+  const weights = [];
+  for (let i = 0; i < inserts; i += 1) {
+    weights.push((i + 1) / (inserts + 1));
+  }
+  return weights;
+}
+
+function convertInsertsListToWeightsList(insertsList) {
+  const weightsList = [];
+  for (let i = 0; i < insertsList.length; i += 1) {
+    weightsList.push(convertInsertsToWeights(insertsList[i]));
+  }
+  return weightsList;
+}
+
+function divideLineByWeights(builder, weights, start, end) {
+  for (let i = 0; i < weights.length; i += 1) {
+    const weight = weights[i];
     const q = interpolatePoints(start, end, weight);
     builder.lineTo(q.x, q.y);
   }
 }
 
-function insertAdditionalPoints(path, insertsList) {
+function createPathWithAdditionalPoints(path, weightsList) {
   const builder = Path.builder();
   let start = Point.of(0, 0);
   let last = Point.of(0, 0);
   for (let i = 0; i < path.length; i += 1) {
     const { tag, points = [] } = path[i];
-    const inserts = insertsList[i];
+    const weights = weightsList[i];
     const maskedTag = maskTag(tag);
     if (maskedTag === Constants.TAG_END) {
       builder.end();
@@ -110,11 +126,11 @@ function insertAdditionalPoints(path, insertsList) {
       start = p;
       last = p;
     } else if (maskedTag === Constants.TAG_CLOSE_SUB_PATH) {
-      insertAdditionalLines(builder, inserts, last, start);
+      divideLineByWeights(builder, weights, last, start);
       builder.closeSubPath();
     } else if (maskedTag === Constants.TAG_LINE) {
       const p = points[0];
-      insertAdditionalLines(builder, inserts, last, p);
+      divideLineByWeights(builder, weights, last, p);
       builder.lineTo(p.x, p.y);
       last = p;
     }
@@ -132,5 +148,6 @@ function blendPaths(startPath, endPath, weight) {
 
 module.exports = {
   blendPaths,
-  insertAdditionalPoints,
+  createPathWithAdditionalPoints,
+  convertInsertsListToWeightsList,
 };

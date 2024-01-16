@@ -7,7 +7,8 @@ const {
   },
   Blenders: {
     blendPaths,
-    insertAdditionalPoints,
+    createPathWithAdditionalPoints,
+    convertInsertsListToWeightsList,
   },
 } = require('../src').Artworks;
 
@@ -103,8 +104,21 @@ function createBlendedGeometry(startPath, endPath, steps) {
   return result;
 }
 
+function createBlendedGeometryWithWeights(startPath, endPath, weightsList, steps) {
+  return createBlendedGeometry(
+    startPath,
+    createPathWithAdditionalPoints(endPath, weightsList),
+    steps,
+  );
+}
+
 function createBlendedGeometryWithInserts(startPath, endPath, insertsList, steps) {
-  return createBlendedGeometry(startPath, insertAdditionalPoints(endPath, insertsList), steps);
+  return createBlendedGeometryWithWeights(
+    startPath,
+    endPath,
+    convertInsertsListToWeightsList(insertsList),
+    steps,
+  );
 }
 
 module.exports = {
@@ -112,5 +126,6 @@ module.exports = {
   createSimpleAttributeBlendGroup,
   createSimpleGeometryBlendGroup,
   createBlendedGeometry,
+  createBlendedGeometryWithWeights,
   createBlendedGeometryWithInserts,
 };

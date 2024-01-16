@@ -60,6 +60,16 @@ const GROUP_7_END_PATH = createClosedNSidedPolygon(4, 1_050_000, 2_250_000, 50_0
 const GROUP_8_START_PATH = createClosedNSidedPolygon(12, 150_000, 2_550_000, 50_000);
 const GROUP_8_END_PATH = createClosedNSidedPolygon(4, 1_050_000, 2_550_000, 50_000);
 
+const INSERTS_0 = [0, 0, 0, 0, 0, 0];
+const INSERTS_1 = [0, 0, 1, 0, 0, 0];
+const INSERTS_2 = [0, 1, 0, 1, 0, 0];
+const INSERTS_3 = [0, 1, 1, 0, 1, 0];
+const INSERTS_4 = [0, 1, 1, 1, 1, 0];
+const INSERTS_5 = [0, 1, 2, 1, 1, 0];
+const INSERTS_6 = [0, 1, 2, 2, 1, 0];
+const INSERTS_7 = [0, 2, 2, 1, 2, 0];
+const INSERTS_8 = [0, 2, 2, 2, 2, 0];
+
 module.exports = createArtworks(
   List.of(WINDING_RULE_EVEN_ODD),
   List.of(DASH_PATTERN_EMPTY),
@@ -67,15 +77,15 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  ...createBlendedGeometryWithInserts(GROUP_0_START_PATH, GROUP_0_END_PATH, [0, 0, 0, 0, 0, 0], 8),
-  ...createBlendedGeometryWithInserts(GROUP_1_START_PATH, GROUP_1_END_PATH, [0, 0, 1, 0, 0, 0], 8),
-  ...createBlendedGeometryWithInserts(GROUP_2_START_PATH, GROUP_2_END_PATH, [0, 1, 0, 1, 0, 0], 8),
-  ...createBlendedGeometryWithInserts(GROUP_3_START_PATH, GROUP_3_END_PATH, [0, 1, 1, 0, 1, 0], 8),
-  ...createBlendedGeometryWithInserts(GROUP_4_START_PATH, GROUP_4_END_PATH, [0, 1, 1, 1, 1, 0], 8),
-  ...createBlendedGeometryWithInserts(GROUP_5_START_PATH, GROUP_5_END_PATH, [0, 1, 2, 1, 1, 0], 8),
-  ...createBlendedGeometryWithInserts(GROUP_6_START_PATH, GROUP_6_END_PATH, [0, 1, 2, 2, 1, 0], 8),
-  ...createBlendedGeometryWithInserts(GROUP_7_START_PATH, GROUP_7_END_PATH, [0, 2, 2, 1, 2, 0], 8),
-  ...createBlendedGeometryWithInserts(GROUP_8_START_PATH, GROUP_8_END_PATH, [0, 2, 2, 2, 2, 0], 8),
+  ...createBlendedGeometryWithInserts(GROUP_0_START_PATH, GROUP_0_END_PATH, INSERTS_0, 8),
+  ...createBlendedGeometryWithInserts(GROUP_1_START_PATH, GROUP_1_END_PATH, INSERTS_1, 8),
+  ...createBlendedGeometryWithInserts(GROUP_2_START_PATH, GROUP_2_END_PATH, INSERTS_2, 8),
+  ...createBlendedGeometryWithInserts(GROUP_3_START_PATH, GROUP_3_END_PATH, INSERTS_3, 8),
+  ...createBlendedGeometryWithInserts(GROUP_4_START_PATH, GROUP_4_END_PATH, INSERTS_4, 8),
+  ...createBlendedGeometryWithInserts(GROUP_5_START_PATH, GROUP_5_END_PATH, INSERTS_5, 8),
+  ...createBlendedGeometryWithInserts(GROUP_6_START_PATH, GROUP_6_END_PATH, INSERTS_6, 8),
+  ...createBlendedGeometryWithInserts(GROUP_7_START_PATH, GROUP_7_END_PATH, INSERTS_7, 8),
+  ...createBlendedGeometryWithInserts(GROUP_8_START_PATH, GROUP_8_END_PATH, INSERTS_8, 8),
   List.of(STROKE_COLOUR_BLACK),
   List.of(STROKE_WIDTH_1280),
   createSimpleGeometryBlendGroup(GROUP_0_START_PATH, GROUP_0_END_PATH, 8),
