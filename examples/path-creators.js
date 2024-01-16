@@ -63,12 +63,12 @@ function createClosedPentagram(x, y, radius, moveOptions = TAG_BIT_31) {
     .build();
 }
 
-function createClosedNSidedPolygon(n, x, y, radius, moveOptions = TAG_BIT_31) {
+function createClosedNSidedPolygon(n, x, y, radius, rotation = 0, moveOptions = TAG_BIT_31) {
   function xp(p) {
-    return x + radius * Math.sin((2 * p * Math.PI) / n);
+    return x + radius * Math.sin(rotation + (2 * p * Math.PI) / n);
   }
   function yp(p) {
-    return y + radius * Math.cos((2 * p * Math.PI) / n);
+    return y + radius * Math.cos(rotation + (2 * p * Math.PI) / n);
   }
   const builder = Path.builder();
   builder.moveTo(xp(0), yp(0), moveOptions);
