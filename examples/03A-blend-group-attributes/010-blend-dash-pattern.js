@@ -1,5 +1,5 @@
 /*
-Example: 011-blend-dash-pattern
+Example: 010-blend-dash-pattern
 
 Purpose:
 
@@ -45,46 +45,46 @@ const {
   createArtworks,
 } = require('../record-creators');
 
-const { createClosedRectangle } = require('../path-creators');
+const { createClosedSquare } = require('../path-creators');
 
-const createSimpleBlendGroup = require('./shared');
+const { createSimpleAttributeBlendGroup } = require('../simple-blend-group');
 
-const GROUP_0 = createSimpleBlendGroup(
-  createClosedRectangle(100_000, 100_000, 100_000, 100_000),
+const GROUP_0 = createSimpleAttributeBlendGroup(
+  createClosedSquare(100_000, 100_000, 100_000),
   DASH_PATTERN_EMPTY,
-  createClosedRectangle(500_000, 100_000, 100_000, 100_000),
+  createClosedSquare(500_000, 100_000, 100_000),
   DASH_PATTERN_OFFSET_0,
   3,
 );
 
-const GROUP_1 = createSimpleBlendGroup(
-  createClosedRectangle(100_000, 250_000, 100_000, 100_000),
+const GROUP_1 = createSimpleAttributeBlendGroup(
+  createClosedSquare(100_000, 250_000, 100_000),
   DASH_PATTERN_EMPTY,
-  createClosedRectangle(500_000, 250_000, 100_000, 100_000),
-  DASH_PATTERN_EMPTY,
-  3,
-);
-
-const GROUP_2 = createSimpleBlendGroup(
-  createClosedRectangle(100_000, 400_000, 100_000, 100_000),
-  DASH_PATTERN_OFFSET_0,
-  createClosedRectangle(500_000, 400_000, 100_000, 100_000),
+  createClosedSquare(500_000, 250_000, 100_000),
   DASH_PATTERN_EMPTY,
   3,
 );
 
-const GROUP_3 = createSimpleBlendGroup(
-  createClosedRectangle(100_000, 550_000, 100_000, 100_000),
+const GROUP_2 = createSimpleAttributeBlendGroup(
+  createClosedSquare(100_000, 400_000, 100_000),
   DASH_PATTERN_OFFSET_0,
-  createClosedRectangle(500_000, 550_000, 100_000, 100_000),
+  createClosedSquare(500_000, 400_000, 100_000),
+  DASH_PATTERN_EMPTY,
+  3,
+);
+
+const GROUP_3 = createSimpleAttributeBlendGroup(
+  createClosedSquare(100_000, 550_000, 100_000),
+  DASH_PATTERN_OFFSET_0,
+  createClosedSquare(500_000, 550_000, 100_000),
   DASH_PATTERN_OFFSET_5000,
   3,
 );
 
-const GROUP_4 = createSimpleBlendGroup(
-  createClosedRectangle(100_000, 700_000, 100_000, 100_000),
+const GROUP_4 = createSimpleAttributeBlendGroup(
+  createClosedSquare(100_000, 700_000, 100_000),
   DASH_PATTERN_OFFSET_0,
-  createClosedRectangle(500_000, 700_000, 100_000, 100_000),
+  createClosedSquare(500_000, 700_000, 100_000),
   DASH_PATTERN_OFFSET_0,
   3,
 );

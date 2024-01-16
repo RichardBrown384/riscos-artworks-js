@@ -1,5 +1,5 @@
 /*
-Example: 001-blend-step-variants
+Example: 003-blend-step-variants
 
 Purpose:
 
@@ -31,28 +31,26 @@ const {
   createArtworks,
 } = require('../record-creators');
 
-const { createClosedRectangle } = require('../path-creators');
+const { createClosedSquare } = require('../path-creators');
 
-const createSimpleBlendGroup = require('./shared');
+const { createSimpleAttributeBlendGroup } = require('../simple-blend-group');
 
-function createSimpleBlendGroups() {
+function createSimpleAttributeBlendGroups() {
   const groups = [];
   for (let row = 0; row < 4; row += 1) {
     for (let col = 0; col < 4; col += 1) {
       const steps = 4 * row + col + 1;
-      const startRectangle = createClosedRectangle(
+      const startRectangle = createClosedSquare(
         10_000 + 100_000 * col,
         10_000 + 100_000 * row,
         50_000,
-        50_000,
       );
-      const endRectangle = createClosedRectangle(
+      const endRectangle = createClosedSquare(
         30_000 + 100_000 * col,
         30_000 + 100_000 * row,
         20_000,
-        20_000,
       );
-      const group = createSimpleBlendGroup(
+      const group = createSimpleAttributeBlendGroup(
         startRectangle,
         FILL_FLAT_RED,
         endRectangle,
@@ -69,6 +67,6 @@ module.exports = createArtworks(
   List.of(WINDING_RULE_EVEN_ODD),
   List.of(DASH_PATTERN_EMPTY),
   List.of(STROKE_COLOUR_TRANSPARENT),
-  ...createSimpleBlendGroups(),
+  ...createSimpleAttributeBlendGroups(),
   List.of(WORK_AREA),
 );
