@@ -7,6 +7,8 @@ To demonstrate what happens when you blend between shapes that have a different 
 
 The weights were worked out by hand by using a tape measure placed up against the screen.
 
+See the documentation on blends for the calculated values.
+
  */
 
 const {
@@ -46,7 +48,7 @@ const GROUP_0_START_PATH = Path.builder()
   .lineTo(200_000, 500_000)
   .lineTo(150_000, 90_000)
   .lineTo(130_000, 120_000)
-  .lineTo(120_000, 110_00)
+  .lineTo(120_000, 11_000)
   .closeSubPath()
   .end()
   .build();
@@ -69,9 +71,9 @@ module.exports = createArtworks(
   List.of(STROKE_WIDTH_3000),
   ...createBlendedGeometryWithWeights(GROUP_0_START_PATH, GROUP_0_END_PATH, [
     [],
-    [0.67, 0.73],
+    [0.67, 0.73], // calculated [0.6735, 0.7310]
     [],
-    [0.92],
+    [0.92], // calculated  [0.9197]
     [],
     [],
     [],
