@@ -1,6 +1,6 @@
 # riscos-artworks-js
 
-A JavaScript library with file format [documentation](docs/README.md) for Computer Concepts era 
+A JavaScript library with file format [documentation][file-format] for Computer Concepts era 
 RISC OS [ArtWorks][artworks-wikipedia] files.
 
 ## About
@@ -96,7 +96,7 @@ there are some areas that are likely to remain poorly supported without some add
 They are,
 
 1. Text objects - the reason is that these have a dependency on RISC OS fonts
-2. Blend groups - these require additional effort on trying to understand on how ArtWorks interpolates attributes and geometry
+2. [Blend groups][blend-groups] - these require additional effort on trying to understand on how ArtWorks interpolates attributes and geometry
 3. Distortion and perspective groups - while they are trivial to render, it's not understood how ArtWorks applies the transforms
 4. Sprite objects - these could theoretically be supported but would require improvements in the supporting libraries
 
@@ -111,3 +111,5 @@ that lends itself to documentation (the provided examples).
 ---
 [artworks-wikipedia]: https://en.wikipedia.org/wiki/ArtWorks
 [host]: http://richardbrown384.github.io/riscos-file-viewer
+[file-format]: docs/file-format/README.md
+[blend-groups]: docs/blend-groups/README.md
