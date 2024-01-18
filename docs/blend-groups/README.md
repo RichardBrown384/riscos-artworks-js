@@ -122,13 +122,19 @@ the blending to work at all.
 
 The following discoveries were made by setting up test files programmatically.
 
-The test files contained one-or-more blend groups drawn on top of simulated blend groups.
+The test files contained one or more blend groups drawn in black on top of simulated blend groups drawn in red.
+For example,
 
-The simulated blend groups are generated with relatively simple linear interpolation routines.
+![Methodology](./media/methodology.png)
+
+The simulated blend groups are generated with relatively simple linear interpolation routines which 
+appear, for the given set of test cases, to approximate what !AWViewer is doing reasonably well.
 
 When there is mismatch between the number of points there are routines that support the 
-manual insertion of additional points into the target geometry. It's currently possible to either split a 
-line segment into a number of equal length segments or to split a line segment at given parametric distances.
+manual insertion of additional points into the target geometry (currently just for line segments).
+
+With additional points placed in appropriate, but not necessarily correct, positions it seems that 
+the simple linear interpolation approximates what !AWViewer is doing internally.
 
 ### Equal number of points
 
@@ -159,14 +165,18 @@ Evidence for point (1) comes from experiments with a square being blended with a
 at ten degree increments and at no time did !AWViewer choose to insert the required point on the triangle 
 in a different location. It was always inserted at the midpoint of the second triangle edge.
 
-(2) and (3) are demonstrated but not proven with a proposed methodology for (3) in the example below.
+(2) and (3) are demonstrated but not proven with a proposed methodology for (3) in the examples below.
 
-#### Example
+#### Example 1
 
-From one of the example files we take a source non-convex polygon with 8 points 
+From one of the example files we take a source non-convex polygon with 8 points
 and a target convex polygon with 5 points.
 
-We label the points of the target polygon **A**, **B**, **C**, **D**, and **E**.
+![Blend Group Polyline](./media/blend-group-polyline.png)
+
+We label the points of the target polygon **A**, **B**, **C**, **D**, and **E**. It should be noted
+that the points are defined in this clockwise order in the file. The target's points are also defined 
+in a clockwise order.
 
 How those points are mapped back onto the source polygon is shown in the figure below.
 
@@ -211,8 +221,53 @@ Z' = d(C, Z) / (d(C, Z) + d(Z, D))
 The values computed in this fashion agree broadly with what was estimated visually in !AWViewer
 for this particular example.
 
+#### Example 2
+
+For a second example we take a minor variation on the first and replace the first line segment in the source
+geometry with a cusp Bézier.
+
+![Blend Group Polyline](./media/blend-group-polyline-with-cusp-bezier.png)
+
+Sticking with the previous convention the mapping appears to be 
+
+![Polyline With Cusp Bezier Blend](./media/blend-group-polyline-with-cusp-bezier.svg)
+
+with the two green dots indicating the approximate positions of the cubic Bézier's control points.
+
+The Bézier's arc length is 315.2378 (computed using [Pomax's Bezier JS][bezier-js]).
+
+In order to work with Béziers we're going to have to modify the meaning of the `d` function in the previous
+example. Let `d(P, Q)` mean the arc length of the segment defined by endpoints **P** and **Q**.
+
+For straight line segments this definition of `d` retains is previous meaning.
+
+Thus,
+
+```text
+X' = d(A, X) / (d(A, X) + d(X, B))
+```
+
+```text
+Y' = d(B, Y) / (d(B, Y) + d(Y, C))
+```
+
+and
+
+```text
+Z' = d(C, Z) / (d(C, Z) + d(Z, D))
+```
+
+The major, perhaps key difference, between this result and the previous is that the line segment
+**AB** only receives **one** additional point **X'**, with **Y'** being placed on the line
+segment **BC**.
+
+The point **Z'** remains in the same position in relation to the previous example.
 #### Note
 
 Self-intersecting geometry with a differing number of points haven't been considered.
 
 Geometry with Béziers and differing number of points haven't been considered.
+
+***
+
+[bezier-js]: https://github.com/Pomax/bezierjs
