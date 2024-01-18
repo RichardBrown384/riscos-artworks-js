@@ -18,6 +18,10 @@
 * [Geometry](#geometry)
   * [Equal number of points](#equal-number-of-points)
   * [Differing number of points](#differing-number-of-points)
+    * [Example 1](#example-1)
+    * [Example 2](#example-2)
+    * [Example 3](#example-3)
+    * [Example 4](#example-4)
 
 ## Quirks
 
@@ -200,7 +204,7 @@ should be between **D** and **E** and not **C** and **D**.
 
 Let `d(P, Q)` denote the distance between two points **P** and **Q**.
 
-Therefore, parametric distance at which **X'** is inserted into the line segment **AB*, is
+Therefore, parametric distance at which **X'** is inserted into the line segment **AB**, is
 
 ```text
 X' = d(A, X) / (d(A, X) + d(X, Y) + d(Y, B))
@@ -230,11 +234,11 @@ geometry with a cusp Bézier.
 
 Sticking with the previous convention the mapping appears to be 
 
-![Polyline With Cusp Bezier Blend](./media/blend-group-polyline-with-cusp-bezier.svg)
+![Polyline With Cusp Bézier Blend](./media/blend-group-polyline-with-cusp-bezier.svg)
 
 with the two green dots indicating the approximate positions of the cubic Bézier's control points.
 
-The Bézier's arc length is 315.2378 (computed using [Pomax's Bezier JS][bezier-js]).
+The Bézier's arc length is 315.2378 (computed using [Pomax's Bézier JS][bezier-js]).
 
 In order to work with Béziers we're going to have to modify the meaning of the `d` function in the previous
 example. Let `d(P, Q)` mean the arc length of the segment defined by endpoints **P** and **Q**.
@@ -262,11 +266,83 @@ The major, perhaps key difference, between this result and the previous is that 
 segment **BC**.
 
 The point **Z'** remains in the same position in relation to the previous example.
-#### Note
 
-Self-intersecting geometry with a differing number of points haven't been considered.
+#### Example 3
 
-Geometry with Béziers and differing number of points haven't been considered.
+Motivated by the previous example and wishing to eliminate the introduction of a Bézier segment 
+as the reason for the change in the inserted point distribution we replace the first cusp Bézier 
+with a straight Bézier. Visually this identical to the first example.
+
+![Blend Group Polyline](./media/blend-group-polyline-with-straight-bezier.png)
+
+Therefore, with the green dots representing the control points as before,
+
+![Polyline With Straight Bézier Blend](./media/blend-group-polyline-with-straight-bezier.svg)
+
+The point distribution is the same as the first example.
+
+### Example 4
+
+We now ask ourselves the question of what happens for concave and convex Béziers as the first segment.
+
+For symmetrical concave and convex Béziers with the control points evenly spaced vertically and both
+control points the same distance from the vertical line defined by the start and end points of the first
+segment the behaviour, up to a given distance from the aforementioned vertical line is as follows,
+
+![Blend Group Polyline](./media/blend-group-with-convex-bezier-correct.png)
+![Blend Group Polyline](./media/blend-group-with-concave-bezier-correct.png)
+
+However, there appears to be a tipping point of one !AWViewer unit, beyond which the point distribution behaviour
+changes. For the convex case, whose control points only differ by one unit from the above, the result is as follows.
+The incorrect simulated blending is shown to help illustrate the problem.
+
+![Blend Group Polyline](./media/blend-group-with-convex-bezier-incorrect.png)
+
+Initially the arc length of the Bézier was though to perhaps be influencing the result. This may not be the case.
+Consider the following diagram. 
+
+![Blend Group Polyline With Convex Bezier Parametric](./media/blend-group-with-convex-bezier-parametric-distances.svg)
+
+The upper left contour is the source contour in the original point distribution regime and the lower left contour
+is the source contour in the alternate point distribution regime.
+
+Each point in each contour is labelled with its parametric distance along its respective curve. We use parametric 
+distances rather than absolute distances because we currently assume for the moment that the algorithm !AWViewer uses,
+up to given tolerances, is independent of scale. In any case, the arc length of the first source segment is greater 
+than the length of the first target segment.
+
+The first thing to note that the parametric distances on the source contours have not changed significantly.
+One would perhaps hope compared to the original regime point **Y**'s parametric distance might have advanced beyond
+the parametric distance (0.3038) of point **B** on the target contour, but is hasn't. This potentially rules out a
+simple linear sweep assignment approach based on parametric distances.
+
+Broadly, in the example given, a linear sweep might make a note of **B**'s target parametric distance and then loop
+over the points in the source contour. While the points in the source contour have a parametric distance than that
+of **B** add those points to the first edge of the target contour. Once the source parametric distance exceeds that
+of **B** we then might then move to comparing against **C** and inserting points into the second target edge and so on.
+
+This approach might work for the first two points in the original case it however fails in alternate case.
+
+It's also worth noting at this point that both the convex and concave Bézier curves change the point distribution behaviour
+when the arc length is greater than approximately 314.1592. However, the [cusp](#example-2) Bézier's point 
+distribution behaviour changes when the arc length exceeds approximately 314.2051. Although it's possible !AWViewer's 
+Bézier arc length calculation (if it has one) is approximate and the two values given here are within its tolerances 
+for changing the regime it seems unlikely that !AWViewer uses arc lengths alone to determine the point distributions. 
+
+#### Notes
+
+The current thought is that !AWViewer uses some process other than relying on parametric distances and arc lengths
+to determine how to distribute points on the target contour.
+
+Current idea: Given that there appears to be a step for testing self-intersection and compensatory steps
+are taken if one is found it's possible that the algorithm uses area (since it's probably easier to compute
+the area of a contour if it's not degenerate). Perhaps, in the case of the examples above, it decides to remove
+the three edges that change the area of the source contour least.
+
+
+Self-intersecting geometry with a differing number of points hasn't been considered.
+
+Target geometry with Béziers and differing number of points hasn't been considered.
 
 ***
 

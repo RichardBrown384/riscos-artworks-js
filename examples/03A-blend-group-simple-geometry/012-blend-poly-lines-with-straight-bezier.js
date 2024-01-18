@@ -1,17 +1,11 @@
 /*
-Example: 011-blend-poly-lines-with-cusp-bezier
+Example: 012-blend-poly-lines-with-straight-bezier
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by introducing a solitary cusp bezier segment
-
-// The change over in the point distribution regime occurs when
-// the displacement is below 47_712
-// displacement to arc length
-// 47.711 = 314.2051
-// 47.712 = 314.2056
+This differs from 010-blend-poly-lines by introducing a solitary straight bezier segment
 
  */
 
@@ -44,18 +38,9 @@ const {
   createBlendedGeometryWithWeights,
 } = require('../simple-blend-group');
 
-const CONTROL_X_DISPLACEMENT = 50_000;
-
 const GROUP_0_START_PATH = Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .bezierTo(
-    100_000 - CONTROL_X_DISPLACEMENT,
-    100_000,
-    100_000 + CONTROL_X_DISPLACEMENT,
-    400_000,
-    100_000,
-    400_000,
-  )
+  .bezierTo(100_000, 200_000, 100_000, 300_000, 100_000, 400_000)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
@@ -84,8 +69,8 @@ module.exports = createArtworks(
   List.of(STROKE_WIDTH_3000),
   ...createBlendedGeometryWithWeights(GROUP_0_START_PATH, GROUP_0_END_PATH, [
     [],
-    [0.93], // calculated [0.9249]
-    [0.37], // calculated [0.3676]
+    [0.67, 0.73], // calculated [0.6735, 0.7310]
+    [],
     [0.92], // calculated  [0.9197]
     [],
     [],

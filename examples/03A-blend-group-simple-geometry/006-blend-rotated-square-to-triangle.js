@@ -3,7 +3,8 @@ Example: 006-blend-rotated-squares-to-triangle
 
 Purpose:
 
-To demonstrate what happens when you blend between a square rotated through various angles to a triangle.
+To demonstrate what happens when you blend between a square rotated through
+various angles to a triangle.
 
 What's surprising about this is that regardless of the degree of rotation !AWViewer decides to
 split the triangle at the same point (midway along the second edge).
