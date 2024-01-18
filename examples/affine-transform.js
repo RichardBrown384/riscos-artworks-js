@@ -5,9 +5,7 @@ const {
   },
 } = require('../src').Artworks;
 
-function degreesToRadians(d) {
-  return (d * Math.PI) / 180.0;
-}
+const { degreesToRadians } = require('./util');
 
 class AffineTransform {
   #a;
@@ -65,7 +63,7 @@ class AffineTransform {
     return this;
   }
 
-  scale(sx, sy) {
+  scale(sx, sy = sx) {
     this.concatenate(sx, 0, 0, sy, 0, 0);
     return this;
   }

@@ -1,19 +1,13 @@
 /*
-Example: 011-blend-poly-lines-with-cusp-bezier
+Example: 015-blend-poly-lines-scale-target
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by introducing a solitary cusp bezier segment
+This differs from 010-blend-poly-lines by allowing the target geometry to be scaled.
 
-The change over in the point distribution regime occurs when
-the displacement is greater than or equal to 47_712
-
-displacement to arc length
-
-47.711 = 314.2051
-47.712 = 314.2056
+Between scales 0.0 and 25.0 it appears the point distribution is unchanged.
 
  */
 
@@ -46,18 +40,16 @@ const {
   createBlendedGeometryWithWeights,
 } = require('../simple-blend-group');
 
-const CONTROL_X_DISPLACEMENT = 47_712;
+const AffineTransform = require('../affine-transform');
+
+const GROUP_0_END_PATH_TRANSFORM = new AffineTransform()
+  .translate(-1_000_000, -100_000)
+  .scale(0.05)
+  .translate(1_000_000, 100_000);
 
 const GROUP_0_START_PATH = Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .bezierTo(
-    100_000 - CONTROL_X_DISPLACEMENT,
-    100_000,
-    100_000 + CONTROL_X_DISPLACEMENT,
-    400_000,
-    100_000,
-    400_000,
-  )
+  .lineTo(100_000, 400_000)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
@@ -67,7 +59,7 @@ const GROUP_0_START_PATH = Path.builder()
   .closeSubPath()
   .end()
   .build();
-const GROUP_0_END_PATH = Path.builder()
+const GROUP_0_END_PATH = GROUP_0_END_PATH_TRANSFORM.transformPath(Path.builder()
   .moveTo(1_000_000, 100_000, Constants.TAG_BIT_31)
   .lineTo(1_010_000, 370_000)
   .lineTo(1_100_000, 450_000)
@@ -75,7 +67,7 @@ const GROUP_0_END_PATH = Path.builder()
   .lineTo(1_110_000, 70_000)
   .closeSubPath()
   .end()
-  .build();
+  .build());
 
 module.exports = createArtworks(
   List.of(WINDING_RULE_EVEN_ODD),
@@ -86,8 +78,8 @@ module.exports = createArtworks(
   List.of(STROKE_WIDTH_3000),
   ...createBlendedGeometryWithWeights(GROUP_0_START_PATH, GROUP_0_END_PATH, [
     [],
-    [0.93], // calculated [0.9249]
-    [0.37], // calculated [0.3676]
+    [0.67, 0.73], // calculated [0.6735, 0.7310]
+    [],
     [0.92], // calculated  [0.9197]
     [],
     [],
