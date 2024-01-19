@@ -44,9 +44,11 @@ const {
 
 const AffineTransform = require('../affine-transform');
 
+const SCALE = 0.4;
+
 const GROUP_0_START_PATH_TRANSFORM = new AffineTransform()
   .translate(-100_000, -100_000)
-  .scale(0.4)
+  .scale(SCALE)
   .translate(100_000, 100_000);
 
 const GROUP_0_START_PATH = GROUP_0_START_PATH_TRANSFORM.transformPath(Path.builder()

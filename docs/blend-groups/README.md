@@ -24,6 +24,7 @@
     * [Example 4](#example-4)
     * [Example 5](#example-5)
     * [Example 6](#example-6)
+    * [Example 7](#example-7)
 
 ## Quirks
 
@@ -342,7 +343,19 @@ for changing the regime it seems unlikely that !AWViewer uses arc lengths alone 
 
 #### Example 5
 
-In the previous example we stated an unverified assumption that the blend groups work independently of scale.
+The previous examples with Bézier were helpful in determining that changing the shape of the first segment can
+alter the point distribution. However, in order to reduce complexity and the requirement to work with Bézier arc lengths
+we revert to using a straight line for the first segment. We now investigate if moving the second vertex
+(labelled **X** in the diagram below) vertically upwards can result in the point distribution changing.
+
+![Blend Group Polyline Moved Second Points](./media/polyline-moving-second-source-vertex.svg)
+
+The answer is broadly yes. Once the vertex **X** moves above 419.468 (giving a line length of 319.468, which
+is greater than the lengths of the  Bézier segments mentioned in the previous example) the point distribution changes.
+
+#### Example 6
+
+In a previous example we stated an unverified assumption that the blend groups work independently of scale.
 
 In this example we observe what happens when we scale the target path. For a scale factor of 5% the result as follows
 
@@ -355,17 +368,18 @@ is when the target scale is set to zero
 
 ![Blend Group Polyline](./media/polyline-scale-target-0-00.png)
 
-The distribution has remained unchanged. 
+In this case the inserted points could be anywhere on the source curve. They shouldn't influence
+the interpolation.
 
-This implies that we can almost definitely exclude the parameter sweep idea since all the points
-in this scaled target path are coincident and the path length is zero. This then makes parameterised
-distances meaningless.
+This implies that either !AWViewer detects degenerate target path and handles it appropriately, or, 
+the only information !AWViewer uses from the target paths is the number of edges/points. 
 
-We can also infer that perhaps the only information that the algorithm uses from the target paths
-is the number of edges/points. We can also potentially rule out other ideas like the point
-distribution algorithm using other features of the target path (area, convexity) when making decisions.
+In the latter case we can potentially rule out ideas like the point distribution algorithm using 
+other features of the target path (area, convexity) when making decisions and can almost definitely 
+exclude the parameter sweep idea since all the points in this scaled target path are coincident 
+and the path length is zero making the parameterised distances meaningless.
 
-#### Example 6
+#### Example 7
 
 This example is further motivated by the previous example. We investigate what happens when we scale 
 the source path. For a scale factor of 40% the result is follows 
@@ -374,7 +388,7 @@ the source path. For a scale factor of 40% the result is follows
 
 and the point distribution is unchanged.
 
-Scale factors up to 30 were tried and the result remained unchanged. What's perhaps more interesting
+Scale factors up to 30 were tried and the result remained unchanged. What's again perhaps more interesting
 is when the source scale is set to zero
 
 ![Blend Group Polyline](./media/polyline-scale-source-0-00.png)
@@ -393,6 +407,9 @@ are taken if one is found it's possible that the algorithm uses area (since it's
 the area of a path if it's not degenerate). Perhaps, in the case of the examples above, it decides to remove
 the three edges that change the area of the source path least.
 
+Might be worth investigating [Ramer-Douglas-Peucker][ramer-douglas-peucker] and 
+[Visvalingam–Whyatt][visvalingam–whyatt]
+
 Self-intersecting paths with a differing number of points hasn't been considered.
 
 Target paths with Béziers and differing number of points hasn't been considered.
@@ -400,3 +417,5 @@ Target paths with Béziers and differing number of points hasn't been considered
 ***
 
 [bezier-js]: https://github.com/Pomax/bezierjs
+[ramer-douglas-peucker]: https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm
+[visvalingam–whyatt]: https://en.wikipedia.org/wiki/Visvalingam–Whyatt_algorithm
