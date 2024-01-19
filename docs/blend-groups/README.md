@@ -372,6 +372,8 @@ the source path. For a scale factor of 40% the result is follows
 
 ![Blend Group Polyline](./media/polyline-scale-source-0-40.png)
 
+and the point distribution is unchanged.
+
 Scale factors up to 30 were tried and the result remained unchanged. What's perhaps more interesting
 is when the source scale is set to zero
 
