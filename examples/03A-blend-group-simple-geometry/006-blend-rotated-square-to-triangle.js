@@ -36,45 +36,114 @@ const {
 const { createClosedNSidedPolygon } = require('../path-creators');
 
 const { createSimpleGeometryBlendGroup, createBlendedGeometryWithInserts } = require('../simple-blend-group');
+const { degreesToRadians } = require('../util');
 
-function degToRad(degrees) {
-  return degrees * (Math.PI / 180);
-}
-
-const GROUP_0_START_PATH = createClosedNSidedPolygon(4, 150_000, 150_000, 50_000, degToRad(0));
+const GROUP_0_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  150_000,
+  50_000,
+  degreesToRadians(0),
+);
 const GROUP_0_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 150_000, 50_000);
 
-const GROUP_1_START_PATH = createClosedNSidedPolygon(4, 150_000, 450_000, 50_000, degToRad(10));
+const GROUP_1_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  450_000,
+  50_000,
+  degreesToRadians(10),
+);
 const GROUP_1_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 450_000, 50_000);
 
-const GROUP_2_START_PATH = createClosedNSidedPolygon(4, 150_000, 750_000, 50_000, degToRad(20));
+const GROUP_2_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  750_000,
+  50_000,
+  degreesToRadians(20),
+);
 const GROUP_2_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 750_000, 50_000);
 
-const GROUP_3_START_PATH = createClosedNSidedPolygon(4, 150_000, 1_050_000, 50_000, degToRad(30));
+const GROUP_3_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  1_050_000,
+  50_000,
+  degreesToRadians(30),
+);
 const GROUP_3_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 1_050_000, 50_000);
 
-const GROUP_4_START_PATH = createClosedNSidedPolygon(4, 150_000, 1_350_000, 50_000, degToRad(40));
+const GROUP_4_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  1_350_000,
+  50_000,
+  degreesToRadians(40),
+);
 const GROUP_4_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 1_350_000, 50_000);
 
-const GROUP_5_START_PATH = createClosedNSidedPolygon(4, 150_000, 1_650_000, 50_000, degToRad(50));
+const GROUP_5_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  1_650_000,
+  50_000,
+  degreesToRadians(50),
+);
 const GROUP_5_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 1_650_000, 50_000);
 
-const GROUP_6_START_PATH = createClosedNSidedPolygon(4, 150_000, 1_950_000, 50_000, degToRad(60));
+const GROUP_6_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  1_950_000,
+  50_000,
+  degreesToRadians(60),
+);
 const GROUP_6_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 1_950_000, 50_000);
 
-const GROUP_7_START_PATH = createClosedNSidedPolygon(4, 150_000, 2_250_000, 50_000, degToRad(70));
+const GROUP_7_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  2_250_000,
+  50_000,
+  degreesToRadians(70),
+);
 const GROUP_7_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 2_250_000, 50_000);
 
-const GROUP_8_START_PATH = createClosedNSidedPolygon(4, 150_000, 2_550_000, 50_000, degToRad(80));
+const GROUP_8_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  2_550_000,
+  50_000,
+  degreesToRadians(80),
+);
 const GROUP_8_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 2_550_000, 50_000);
 
-const GROUP_9_START_PATH = createClosedNSidedPolygon(4, 150_000, 2_850_000, 50_000, degToRad(90));
+const GROUP_9_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  2_850_000,
+  50_000,
+  degreesToRadians(90),
+);
 const GROUP_9_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 2_850_000, 50_000);
 
-const GROUP_10_START_PATH = createClosedNSidedPolygon(4, 150_000, 3_150_000, 50_000, degToRad(100));
+const GROUP_10_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  3_150_000,
+  50_000,
+  degreesToRadians(100),
+);
 const GROUP_10_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 3_150_000, 50_000);
 
-const GROUP_11_START_PATH = createClosedNSidedPolygon(4, 150_000, 3_450_000, 50_000, degToRad(110));
+const GROUP_11_START_PATH = createClosedNSidedPolygon(
+  4,
+  150_000,
+  3_450_000,
+  50_000,
+  degreesToRadians(110),
+);
 const GROUP_11_END_PATH = createClosedNSidedPolygon(3, 1_050_000, 3_450_000, 50_000);
 
 const INSERTS = [0, 0, 1, 0, 0];

@@ -1,6 +1,6 @@
 # RISC OS ArtWorks Blend Groups
 
-⚠️️ Blend Groups are not very well understood and this document may contain errors ⚠️️
+⚠️️ Blend Groups are not very well understood and this document may contain omissions and errors ⚠️️
 
 ## Table of contents
 
@@ -22,6 +22,7 @@
     * [Example 2](#example-2)
     * [Example 3](#example-3)
     * [Example 4](#example-4)
+    * [Example 5](#example-5)
 
 ## Quirks
 
@@ -29,14 +30,15 @@ Early experiments with blends have shown that a file must specify a dash pattern
 !AWViewer crashes.
 
 However, attempting to blend a dash pattern results in !AWViewer filling the viewport with the stroke colour.
+See the section on [dash patterns](#dash-pattern).
 
 ## Attributes
 
 Object attributes to can be split into two broad categories _continuous_ and _discrete_.
 
-Continuous attributes are things like stroke width while discrete attributes are things like winding rule.
+Continuous attributes are things like stroke width and discrete attributes are things like winding rule.
 
-Continuous attributes blend more-or-less as you would expect and discrete ones are usually get
+Continuous attributes blend more or less as you would expect and discrete ones are usually get
 swapped over around the halfway mark.
 
 General findings:
@@ -95,7 +97,7 @@ and the target winding is used for the second half.
 
 Dash patterns exhibit strange behaviours.
 
-When there is no active join style the intermediate geometries are unstroked and what is rendered is sensible if 
+When there is no active join style the intermediate paths are unstroked and what is rendered is sensible if 
 not exactly what you might expect (either an interpolated dash pattern or a discrete switchover).
 
 When there is an active join style then an empty dash pattern is the only thing that gets rendered correctly.
@@ -114,10 +116,12 @@ are closed.
 
 It's not fully understood how !AWViewer blends geometry. There are a number of cases to consider
 
-1. Source and target geometry having an equal number of segments/points
-2. Source and target geometry having an equal number of segments/points but the geometry is degenerate (i.e. self-intersecting)
-3. Source and target geometry having a differing number of segments/points
-4. Source and target geometry having a differing number of segments/points and the geometry is degenerate
+1. Source and target paths having an equal number of segments/points
+2. Source and target paths having an equal number of segments/points but the paths are degenerate
+3. Source and target paths having a differing number of segments/points
+4. Source and target paths having a differing number of segments/points and the paths are degenerate
+
+Degeneracy means that the paths possible self intersect or have coincident points.
 
 The points in the source and target paths must be defined in the same order (clockwise or anti-clockwise) for
 the blending to work at all.
@@ -135,35 +139,36 @@ The simulated blend groups are generated with relatively simple linear interpola
 appear, for the given set of test cases, to approximate what !AWViewer is doing reasonably well.
 
 When there is mismatch between the number of points there are routines that support the 
-manual insertion of additional points into the target geometry (currently just for line segments).
+manual insertion of additional points into the target path (currently just for line segments).
 
 With additional points placed in appropriate, but not necessarily correct, positions it seems that 
 the simple linear interpolation approximates what !AWViewer is doing internally.
 
 ### Equal number of points
 
-From the trivial cases examined this appears to work as one would expect. The geometry is simply linearly interpolated.
+From the trivial cases examined this appears to work as one would expect. 
+That is, the path is linearly interpolated.
 
 Line segments paired with Béziers appear to be converted to Béziers with the control points
 at a third and two-thirds of the way along the original line. Moving the control
-points away from these offsets results in the simulated blend geometry being visually wrong.
+points away from these offsets results in the simulated blend paths being visibly wrong.
 
-!AWViewer appears to make some attempt to detect self-intersecting geometry prior to blending. In the test
+!AWViewer appears to make some attempt to detect self-intersecting paths prior to blending. In the test
 cases examined to date a self-intersecting Bézier segment is sufficient for the blending to deviate from the 
 best case behaviour.
 
 ### Differing number of points
 
-When the geometry is not degenerate the approach appears to be to add more points to the geometry with the least
-number of points so that the two geometries can be linearly interpolated easily.
+When the paths are not degenerate the approach appears to be to add more points to the path with the least
+number of points so that the two paths can be linearly interpolated easily.
 
 How !AWViewer decides to do this isn't really understood. 
 
 We can however make the following observations (assuming the target has fewer points than the source)
 
 1. The order of the points in the file is probably more important than the location of the points in space
-2. There's probably a process that decides which points in the source geometry map onto those _existing_ in the target geometry
-3. Once that mapping has been decided the unmapped points are used to insert points into the target geometry
+2. There's probably a process that decides which points in the source path map onto those existing in the target
+3. Once that mapping has been decided the source unmapped points are used to insert points into the target
 
 Evidence for point (1) comes from experiments with a square being blended with a triangle. The square was rotated
 at ten degree increments and at no time did !AWViewer choose to insert the required point on the triangle 
@@ -186,15 +191,15 @@ How those points are mapped back onto the source polygon is shown in the figure 
 
 ![Polyline blend](./media/blend-group-polyline.svg)
 
-At this time it is not understood how !AWViewer arrives at mapping.
-
 The source polygon's three additional points we label **X**, **Y** and **Z**.
+
+At this time it is not understood how !AWViewer arrives at mapping.
 
 In order to interpolate between the two polygons easily !AWViewer appears to insert three new points into the
 target polygon at **X'**, **Y'** and **Z'** (their parametric distances along their respective
 line segments are shown in the diagram).
 
-Two options came to mind as to how !AWViewer decides to place **X'**, **Y'** and **Z'**.
+Two options come to mind as to how !AWViewer decides to place **X'**, **Y'** and **Z'**.
 
 1. Projection. For example by projecting the line segment **AX** onto the line between **AB**.
 2. By using the lengths of the 'discarded' line segments to work out a parametric distances for the new points.
@@ -228,7 +233,7 @@ for this particular example.
 #### Example 2
 
 For a second example we take a minor variation on the first and replace the first line segment in the source
-geometry with a cusp Bézier.
+polygon with a cusp Bézier.
 
 ![Blend Group Polyline](./media/blend-group-polyline-with-cusp-bezier.png)
 
@@ -281,7 +286,7 @@ Therefore, with the green dots representing the control points as before,
 
 The point distribution is the same as the first example.
 
-### Example 4
+#### Example 4
 
 We now ask ourselves the question of what happens for concave and convex Béziers as the first segment.
 
@@ -289,36 +294,41 @@ For symmetrical concave and convex Béziers with the control points evenly space
 control points the same distance from the vertical line defined by the start and end points of the first
 segment the behaviour, up to a given distance from the aforementioned vertical line is as follows,
 
-![Blend Group Polyline](./media/blend-group-with-convex-bezier-correct.png)
-![Blend Group Polyline](./media/blend-group-with-concave-bezier-correct.png)
+![Blend Group Polyline](./media/blend-group-convex-bezier-correct.png)
+![Blend Group Polyline](./media/blend-group-concave-bezier-correct.png)
 
 However, there appears to be a tipping point of one !AWViewer unit, beyond which the point distribution behaviour
-changes. For the convex case, whose control points only differ by one unit from the above, the result is as follows.
+changes. For both convex and concave cases, whose control points only differ by one horizonatl unit from the above
+(to the left and right respectively), the result is as follows.
+
 The incorrect simulated blending is shown to help illustrate the problem.
 
-![Blend Group Polyline](./media/blend-group-with-convex-bezier-incorrect.png)
+![Blend Group Polyline](./media/blend-group-convex-bezier-incorrect.png)
+![Blend Group Polyline](./media/blend-group-concave-bezier-incorrect.png)
 
-Initially the arc length of the Bézier was though to perhaps be influencing the result. This may not be the case.
+It is possible the arc length of the Bézier is influencing the result. However,
+it seems that this may not be the case.
+
 Consider the following diagram. 
 
-![Blend Group Polyline With Convex Bezier Parametric](./media/blend-group-with-convex-bezier-parametric-distances.svg)
+![Blend Group Polyline With Convex Bezier Parametric](./media/blend-group-convex-bezier-parametric-distances.svg)
 
-The upper left contour is the source contour in the original point distribution regime and the lower left contour
-is the source contour in the alternate point distribution regime.
+The upper left path is the source path in the original point distribution regime and the lower left path
+is the source path in the alternate point distribution regime.
 
-Each point in each contour is labelled with its parametric distance along its respective curve. We use parametric 
+Each point in each path is labelled with its parametric distance along its respective curve. We use parametric 
 distances rather than absolute distances because we currently assume for the moment that the algorithm !AWViewer uses,
 up to given tolerances, is independent of scale. In any case, the arc length of the first source segment is greater 
 than the length of the first target segment.
 
-The first thing to note that the parametric distances on the source contours have not changed significantly.
+The first thing to note that the parametric distances on the source paths have not changed significantly.
 One would perhaps hope compared to the original regime point **Y**'s parametric distance might have advanced beyond
-the parametric distance (0.3038) of point **B** on the target contour, but is hasn't. This potentially rules out a
+the parametric distance (0.3038) of point **B** on the target path, but is hasn't. This potentially rules out a
 simple linear sweep assignment approach based on parametric distances.
 
 Broadly, in the example given, a linear sweep might make a note of **B**'s target parametric distance and then loop
-over the points in the source contour. While the points in the source contour have a parametric distance than that
-of **B** add those points to the first edge of the target contour. Once the source parametric distance exceeds that
+over the points in the source path. While the points in the source path have a parametric distance less than that
+of **B** add those points to the first edge of the target path. Once the source parametric distance exceeds that
 of **B** we then might then move to comparing against **C** and inserting points into the second target edge and so on.
 
 This approach might work for the first two points in the original case it however fails in alternate case.
@@ -329,20 +339,44 @@ distribution behaviour changes when the arc length exceeds approximately 314.205
 Bézier arc length calculation (if it has one) is approximate and the two values given here are within its tolerances 
 for changing the regime it seems unlikely that !AWViewer uses arc lengths alone to determine the point distributions. 
 
+#### Example 5
+
+In the previous example we stated an unverified assumption that the blend groups work independently of scale.
+
+In this example we observe what happens when we scale the target path. For a scale factor of 5% the result as follows
+
+![Blend Group Polyline](./media/blend-group-polyline-scale-target-0-05.png)
+
+and the point distribution remains unchanged.
+
+Scale factors up to 30 were tried and the result remained unchanged. What's perhaps more interesting
+is when the target scale is set to zero
+
+![Blend Group Polyline](./media/blend-group-polyline-scale-target-0-00.png)
+
+The distribution has remained unchanged. 
+
+This implies that we can almost definitely exclude the parameter sweep idea since all the points
+in this scaled target path are coincident and the path length is zero. This then makes parameterised
+distances meaningless.
+
+We can also infer that perhaps the only information that the algorithm uses from the target paths
+is the number of edges/points. We can also potentially rule out other ideas like the point
+distribution algorithm using other features of the target path (area, convexity) when making decisions.
+
 #### Notes
 
 The current thought is that !AWViewer uses some process other than relying on parametric distances and arc lengths
-to determine how to distribute points on the target contour.
+to determine how to distribute points on the target path.
 
 Current idea: Given that there appears to be a step for testing self-intersection and compensatory steps
 are taken if one is found it's possible that the algorithm uses area (since it's probably easier to compute
-the area of a contour if it's not degenerate). Perhaps, in the case of the examples above, it decides to remove
-the three edges that change the area of the source contour least.
+the area of a path if it's not degenerate). Perhaps, in the case of the examples above, it decides to remove
+the three edges that change the area of the source path least.
 
+Self-intersecting paths with a differing number of points hasn't been considered.
 
-Self-intersecting geometry with a differing number of points hasn't been considered.
-
-Target geometry with Béziers and differing number of points hasn't been considered.
+Target paths with Béziers and differing number of points hasn't been considered.
 
 ***
 
