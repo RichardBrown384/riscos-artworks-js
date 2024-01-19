@@ -23,6 +23,7 @@
     * [Example 3](#example-3)
     * [Example 4](#example-4)
     * [Example 5](#example-5)
+    * [Example 6](#example-6)
 
 ## Quirks
 
@@ -38,7 +39,7 @@ Object attributes to can be split into two broad categories _continuous_ and _di
 
 Continuous attributes are things like stroke width and discrete attributes are things like winding rule.
 
-Continuous attributes blend more or less as you would expect and discrete ones are usually get
+Continuous attributes blend as you would expect and discrete ones are usually get
 swapped over around the halfway mark.
 
 General findings:
@@ -181,7 +182,7 @@ in a different location. It was always inserted at the midpoint of the second tr
 From one of the example files we take a source non-convex polygon with 8 points
 and a target convex polygon with 5 points.
 
-![Blend Group Polyline](./media/blend-group-polyline.png)
+![Blend Group Polyline](./media/polyline.png)
 
 We label the points of the target polygon **A**, **B**, **C**, **D**, and **E**. It should be noted
 that the points are defined in this clockwise order in the file. The target's points are also defined 
@@ -189,7 +190,7 @@ in a clockwise order.
 
 How those points are mapped back onto the source polygon is shown in the figure below.
 
-![Polyline blend](./media/blend-group-polyline.svg)
+![Polyline blend](./media/polyline.svg)
 
 The source polygon's three additional points we label **X**, **Y** and **Z**.
 
@@ -235,11 +236,11 @@ for this particular example.
 For a second example we take a minor variation on the first and replace the first line segment in the source
 polygon with a cusp Bézier.
 
-![Blend Group Polyline](./media/blend-group-polyline-with-cusp-bezier.png)
+![Blend Group Polyline](./media/polyline-with-cusp-bezier.png)
 
 Sticking with the previous convention the mapping appears to be 
 
-![Polyline With Cusp Bézier Blend](./media/blend-group-polyline-with-cusp-bezier.svg)
+![Polyline With Cusp Bézier Blend](./media/polyline-with-cusp-bezier.svg)
 
 with the two green dots indicating the approximate positions of the cubic Bézier's control points.
 
@@ -278,11 +279,11 @@ Motivated by the previous example and wishing to eliminate the introduction of a
 as the reason for the change in the inserted point distribution we replace the first cusp Bézier 
 with a straight Bézier. Visually this identical to the first example.
 
-![Blend Group Polyline](./media/blend-group-polyline-with-straight-bezier.png)
+![Blend Group Polyline](./media/polyline-with-straight-bezier.png)
 
 Therefore, with the green dots representing the control points as before,
 
-![Polyline With Straight Bézier Blend](./media/blend-group-polyline-with-straight-bezier.svg)
+![Polyline With Straight Bézier Blend](./media/polyline-with-straight-bezier.svg)
 
 The point distribution is the same as the first example.
 
@@ -294,8 +295,8 @@ For symmetrical concave and convex Béziers with the control points evenly space
 control points the same distance from the vertical line defined by the start and end points of the first
 segment the behaviour, up to a given distance from the aforementioned vertical line, the result is as follows,
 
-![Blend Group Polyline](./media/blend-group-convex-bezier-correct.png)
-![Blend Group Polyline](./media/blend-group-concave-bezier-correct.png)
+![Blend Group Polyline](./media/polyline-convex-bezier-correct.png)
+![Blend Group Polyline](./media/polyline-concave-bezier-correct.png)
 
 However, there appears to be a tipping point of one !AWViewer unit, beyond which the point distribution behaviour
 changes. For both convex and concave cases, whose control points only differ by one horizontal unit from the above
@@ -303,15 +304,15 @@ changes. For both convex and concave cases, whose control points only differ by 
 
 The incorrect simulated blending is shown to help illustrate the problem.
 
-![Blend Group Polyline](./media/blend-group-convex-bezier-incorrect.png)
-![Blend Group Polyline](./media/blend-group-concave-bezier-incorrect.png)
+![Blend Group Polyline](./media/polyline-convex-bezier-incorrect.png)
+![Blend Group Polyline](./media/polyline-concave-bezier-incorrect.png)
 
 It is possible the arc length of the Bézier is influencing the result. However,
 it seems that this may not be the case.
 
 Consider the following diagram. 
 
-![Blend Group Polyline With Convex Bezier Parametric](./media/blend-group-convex-bezier-parametric-distances.svg)
+![Blend Group Polyline With Convex Bezier Parametric](./media/polyline-convex-bezier-parametric-distances.svg)
 
 The upper left path is the source path in the original point distribution regime and the lower left path
 is the source path in the alternate point distribution regime.
@@ -345,14 +346,14 @@ In the previous example we stated an unverified assumption that the blend groups
 
 In this example we observe what happens when we scale the target path. For a scale factor of 5% the result as follows
 
-![Blend Group Polyline](./media/blend-group-polyline-scale-target-0-05.png)
+![Blend Group Polyline](./media/polyline-scale-target-0-05.png)
 
 and the point distribution remains unchanged.
 
 Scale factors up to 30 were tried and the result remained unchanged. What's perhaps more interesting
 is when the target scale is set to zero
 
-![Blend Group Polyline](./media/blend-group-polyline-scale-target-0-00.png)
+![Blend Group Polyline](./media/polyline-scale-target-0-00.png)
 
 The distribution has remained unchanged. 
 
@@ -363,6 +364,22 @@ distances meaningless.
 We can also infer that perhaps the only information that the algorithm uses from the target paths
 is the number of edges/points. We can also potentially rule out other ideas like the point
 distribution algorithm using other features of the target path (area, convexity) when making decisions.
+
+#### Example 6
+
+This example is further motivated by the previous example. We investigate what happens when we scale 
+the source path. For a scale factor of 40% the result is follows 
+
+![Blend Group Polyline](./media/polyline-scale-source-0-40.png)
+
+Scale factors up to 30 were tried and the result remained unchanged. What's perhaps more interesting
+is when the source scale is set to zero
+
+![Blend Group Polyline](./media/polyline-scale-source-0-00.png)
+
+Contrary to our expectations !AWViewer actually outputs something. The simulated blend group is using the same 
+parametric split points but one would expect in this case they could be completely arbitrary and not make a
+difference.
 
 #### Notes
 
