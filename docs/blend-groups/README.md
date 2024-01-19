@@ -292,13 +292,13 @@ We now ask ourselves the question of what happens for concave and convex Bézier
 
 For symmetrical concave and convex Béziers with the control points evenly spaced vertically and both
 control points the same distance from the vertical line defined by the start and end points of the first
-segment the behaviour, up to a given distance from the aforementioned vertical line is as follows,
+segment the behaviour, up to a given distance from the aforementioned vertical line, the result is as follows,
 
 ![Blend Group Polyline](./media/blend-group-convex-bezier-correct.png)
 ![Blend Group Polyline](./media/blend-group-concave-bezier-correct.png)
 
 However, there appears to be a tipping point of one !AWViewer unit, beyond which the point distribution behaviour
-changes. For both convex and concave cases, whose control points only differ by one horizonatl unit from the above
+changes. For both convex and concave cases, whose control points only differ by one horizontal unit from the above
 (to the left and right respectively), the result is as follows.
 
 The incorrect simulated blending is shown to help illustrate the problem.
