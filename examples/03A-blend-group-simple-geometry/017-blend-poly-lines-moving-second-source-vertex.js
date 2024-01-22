@@ -61,25 +61,18 @@ const {
   createArtworks,
 } = require('../record-creators');
 
-const {
-  createSimpleGeometryBlendGroup,
-  createBlendedGeometryWithWeights,
-} = require('../simple-blend-group');
-
-function length(x0, y0, x1, y1) {
-    const x = x1 - x0;
-    const y = y1 - y0;
-    return Math.sqrt(x * x + y * y);
-}
+const { createSimplePathBlendGroup } = require('../simple-blend-group');
+const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
+const { lineLength } = require('../util');
 
 const THRESHOLD_Y = 419_469;
 
 const Y = THRESHOLD_Y;
 
-const L1 = length(100_000, 100_000, 100_000, Y);
-const L2 = length(100_000, Y, 120_000, 416_000);
-const L3 = length(120_000, 416_000, 150_000, 300_000);
-const L4 = length(150_000, 300_000, 200_000, 500_000)
+const L1 = lineLength(100_000, 100_000, 100_000, Y);
+const L2 = lineLength(100_000, Y, 120_000, 416_000);
+const L3 = lineLength(120_000, 416_000, 150_000, 300_000);
+const L4 = lineLength(150_000, 300_000, 200_000, 500_000);
 
 const P1 = L1 / (L1 + L2 + L3);
 const P2 = (L1 + L2) / (L1 + L2 + L3);
@@ -122,17 +115,22 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  ...createBlendedGeometryWithWeights(GROUP_0_START_PATH, GROUP_0_END_PATH, [
-    [],
-    W1,
-    W2,
-    W3,
-    W4,
-    W5,
-    [],
-  ], 7),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_0_START_PATH,
+    endPath: GROUP_0_END_PATH,
+    endWeights: [
+      [],
+      W1,
+      W2,
+      W3,
+      W4,
+      W5,
+      [],
+    ],
+    steps: 7,
+  }),
   List.of(STROKE_COLOUR_BLACK),
   List.of(STROKE_WIDTH_1280),
-  createSimpleGeometryBlendGroup(GROUP_0_START_PATH, GROUP_0_END_PATH, 7),
+  createSimplePathBlendGroup(GROUP_0_START_PATH, GROUP_0_END_PATH, 7),
   List.of(WORK_AREA),
 );

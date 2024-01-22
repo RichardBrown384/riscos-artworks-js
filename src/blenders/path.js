@@ -86,22 +86,6 @@ function blendBezierPaths(startPath, endPath, weight) {
   return builder.build();
 }
 
-function convertInsertsToWeights(inserts) {
-  const weights = [];
-  for (let i = 0; i < inserts; i += 1) {
-    weights.push((i + 1) / (inserts + 1));
-  }
-  return weights;
-}
-
-function convertInsertsListToWeightsList(insertsList) {
-  const weightsList = [];
-  for (let i = 0; i < insertsList.length; i += 1) {
-    weightsList.push(convertInsertsToWeights(insertsList[i]));
-  }
-  return weightsList;
-}
-
 function divideLineByWeights(builder, weights, start, end) {
   for (let i = 0; i < weights.length; i += 1) {
     const weight = weights[i];
@@ -149,5 +133,4 @@ function blendPaths(startPath, endPath, weight) {
 module.exports = {
   blendPaths,
   createPathWithAdditionalPoints,
-  convertInsertsListToWeightsList,
 };

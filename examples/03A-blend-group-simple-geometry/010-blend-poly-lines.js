@@ -35,10 +35,8 @@ const {
   createArtworks,
 } = require('../record-creators');
 
-const {
-  createSimpleGeometryBlendGroup,
-  createBlendedGeometryWithWeights,
-} = require('../simple-blend-group');
+const { createSimplePathBlendGroup } = require('../simple-blend-group');
+const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
 
 const GROUP_0_START_PATH = Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
@@ -69,17 +67,22 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  ...createBlendedGeometryWithWeights(GROUP_0_START_PATH, GROUP_0_END_PATH, [
-    [],
-    [0.67, 0.73], // calculated [0.6735, 0.7310]
-    [],
-    [0.92], // calculated  [0.9197]
-    [],
-    [],
-    [],
-  ], 7),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_0_START_PATH,
+    endPath: GROUP_0_END_PATH,
+    endWeights: [
+      [],
+      [0.67, 0.73], // calculated [0.6735, 0.7310]
+      [],
+      [0.92], // calculated  [0.9197]
+      [],
+      [],
+      [],
+    ],
+    steps: 7,
+  }),
   List.of(STROKE_COLOUR_BLACK),
   List.of(STROKE_WIDTH_1280),
-  createSimpleGeometryBlendGroup(GROUP_0_START_PATH, GROUP_0_END_PATH, 7),
+  createSimplePathBlendGroup(GROUP_0_START_PATH, GROUP_0_END_PATH, 7),
   List.of(WORK_AREA),
 );

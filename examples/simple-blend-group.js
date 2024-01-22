@@ -5,11 +5,6 @@ const {
     PathBoundingBox,
     PathElement,
   },
-  Blenders: {
-    blendPaths,
-    createPathWithAdditionalPoints,
-    convertInsertsListToWeightsList,
-  },
 } = require('../src').Artworks;
 
 const {
@@ -82,7 +77,7 @@ function createSimpleAttributeBlendGroup(
   });
 }
 
-function createSimpleGeometryBlendGroup(
+function createSimplePathBlendGroup(
   startPath,
   endPath,
   blendSteps,
@@ -94,38 +89,8 @@ function createSimpleGeometryBlendGroup(
   });
 }
 
-function createBlendedGeometry(startPath, endPath, steps) {
-  const result = [];
-  for (let i = 0; i < steps + 1; i += 1) {
-    const weight = i / steps;
-    const blended = blendPaths(startPath, endPath, weight);
-    result.push(List.of(createRecordPath(blended, 10_000)));
-  }
-  return result;
-}
-
-function createBlendedGeometryWithWeights(startPath, endPath, weightsList, steps) {
-  return createBlendedGeometry(
-    startPath,
-    createPathWithAdditionalPoints(endPath, weightsList),
-    steps,
-  );
-}
-
-function createBlendedGeometryWithInserts(startPath, endPath, insertsList, steps) {
-  return createBlendedGeometryWithWeights(
-    startPath,
-    endPath,
-    convertInsertsListToWeightsList(insertsList),
-    steps,
-  );
-}
-
 module.exports = {
   createSimpleBlendGroup,
   createSimpleAttributeBlendGroup,
-  createSimpleGeometryBlendGroup,
-  createBlendedGeometry,
-  createBlendedGeometryWithWeights,
-  createBlendedGeometryWithInserts,
+  createSimplePathBlendGroup,
 };
