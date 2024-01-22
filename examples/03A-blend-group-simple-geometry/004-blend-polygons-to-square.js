@@ -31,7 +31,8 @@ const {
 
 const { createClosedNSidedPolygon } = require('../path-creators');
 
-const { createSimpleGeometryBlendGroup, createBlendedGeometryWithInserts } = require('../simple-blend-group');
+const { createSimplePathBlendGroup } = require('../simple-blend-group');
+const { createBlendedPathRecordsWithWeights, convertInsertsListToWeightsList } = require('../simulated-blend-group');
 
 const GROUP_0_START_PATH = createClosedNSidedPolygon(4, 150_000, 150_000, 50_000);
 const GROUP_0_END_PATH = createClosedNSidedPolygon(4, 1_050_000, 150_000, 50_000);
@@ -77,25 +78,70 @@ module.exports = createArtworks(
   List.of(FILL_FLAT_TRANSPARENT),
   List.of(STROKE_COLOUR_RED),
   List.of(STROKE_WIDTH_3000),
-  ...createBlendedGeometryWithInserts(GROUP_0_START_PATH, GROUP_0_END_PATH, INSERTS_0, 8),
-  ...createBlendedGeometryWithInserts(GROUP_1_START_PATH, GROUP_1_END_PATH, INSERTS_1, 8),
-  ...createBlendedGeometryWithInserts(GROUP_2_START_PATH, GROUP_2_END_PATH, INSERTS_2, 8),
-  ...createBlendedGeometryWithInserts(GROUP_3_START_PATH, GROUP_3_END_PATH, INSERTS_3, 8),
-  ...createBlendedGeometryWithInserts(GROUP_4_START_PATH, GROUP_4_END_PATH, INSERTS_4, 8),
-  ...createBlendedGeometryWithInserts(GROUP_5_START_PATH, GROUP_5_END_PATH, INSERTS_5, 8),
-  ...createBlendedGeometryWithInserts(GROUP_6_START_PATH, GROUP_6_END_PATH, INSERTS_6, 8),
-  ...createBlendedGeometryWithInserts(GROUP_7_START_PATH, GROUP_7_END_PATH, INSERTS_7, 8),
-  ...createBlendedGeometryWithInserts(GROUP_8_START_PATH, GROUP_8_END_PATH, INSERTS_8, 8),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_0_START_PATH,
+    endPath: GROUP_0_END_PATH,
+    endWeights: convertInsertsListToWeightsList(INSERTS_0),
+    steps: 8,
+  }),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_1_START_PATH,
+    endPath: GROUP_1_END_PATH,
+    endWeights: convertInsertsListToWeightsList(INSERTS_1),
+    steps: 8,
+  }),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_2_START_PATH,
+    endPath: GROUP_2_END_PATH,
+    endWeights: convertInsertsListToWeightsList(INSERTS_2),
+    steps: 8,
+  }),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_3_START_PATH,
+    endPath: GROUP_3_END_PATH,
+    endWeights: convertInsertsListToWeightsList(INSERTS_3),
+    steps: 8,
+  }),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_4_START_PATH,
+    endPath: GROUP_4_END_PATH,
+    endWeights: convertInsertsListToWeightsList(INSERTS_4),
+    steps: 8,
+  }),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_5_START_PATH,
+    endPath: GROUP_5_END_PATH,
+    endWeights: convertInsertsListToWeightsList(INSERTS_5),
+    steps: 8,
+  }),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_6_START_PATH,
+    endPath: GROUP_6_END_PATH,
+    endWeights: convertInsertsListToWeightsList(INSERTS_6),
+    steps: 8,
+  }),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_7_START_PATH,
+    endPath: GROUP_7_END_PATH,
+    endWeights: convertInsertsListToWeightsList(INSERTS_7),
+    steps: 8,
+  }),
+  ...createBlendedPathRecordsWithWeights({
+    startPath: GROUP_8_START_PATH,
+    endPath: GROUP_8_END_PATH,
+    endWeights: convertInsertsListToWeightsList(INSERTS_8),
+    steps: 8,
+  }),
   List.of(STROKE_COLOUR_BLACK),
   List.of(STROKE_WIDTH_1280),
-  createSimpleGeometryBlendGroup(GROUP_0_START_PATH, GROUP_0_END_PATH, 8),
-  createSimpleGeometryBlendGroup(GROUP_1_START_PATH, GROUP_1_END_PATH, 8),
-  createSimpleGeometryBlendGroup(GROUP_2_START_PATH, GROUP_2_END_PATH, 8),
-  createSimpleGeometryBlendGroup(GROUP_3_START_PATH, GROUP_3_END_PATH, 8),
-  createSimpleGeometryBlendGroup(GROUP_4_START_PATH, GROUP_4_END_PATH, 8),
-  createSimpleGeometryBlendGroup(GROUP_5_START_PATH, GROUP_5_END_PATH, 8),
-  createSimpleGeometryBlendGroup(GROUP_6_START_PATH, GROUP_6_END_PATH, 8),
-  createSimpleGeometryBlendGroup(GROUP_7_START_PATH, GROUP_7_END_PATH, 8),
-  createSimpleGeometryBlendGroup(GROUP_8_START_PATH, GROUP_8_END_PATH, 8),
+  createSimplePathBlendGroup(GROUP_0_START_PATH, GROUP_0_END_PATH, 8),
+  createSimplePathBlendGroup(GROUP_1_START_PATH, GROUP_1_END_PATH, 8),
+  createSimplePathBlendGroup(GROUP_2_START_PATH, GROUP_2_END_PATH, 8),
+  createSimplePathBlendGroup(GROUP_3_START_PATH, GROUP_3_END_PATH, 8),
+  createSimplePathBlendGroup(GROUP_4_START_PATH, GROUP_4_END_PATH, 8),
+  createSimplePathBlendGroup(GROUP_5_START_PATH, GROUP_5_END_PATH, 8),
+  createSimplePathBlendGroup(GROUP_6_START_PATH, GROUP_6_END_PATH, 8),
+  createSimplePathBlendGroup(GROUP_7_START_PATH, GROUP_7_END_PATH, 8),
+  createSimplePathBlendGroup(GROUP_8_START_PATH, GROUP_8_END_PATH, 8),
   List.of(WORK_AREA),
 );
