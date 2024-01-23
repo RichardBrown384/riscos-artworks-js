@@ -462,10 +462,10 @@ and !AWViewer no longer inserts points on the source path.
 
 #### Example 9
 
-In the following example we rotate the order of the vertices of the source path by one. Up until now vertex labelled
-**A** has represented the first vertex defined in both the source and target paths.
+In the following example we rotate the order of the vertices of the source path by one. Let the vertex labelled
+**A** represent the first vertex defined in both the source and target paths (as in all previous examples).
 
-We begin by now by labelling the leftmost upper vertex **A** and observe the interpolation
+We begin by labelling the leftmost upper vertex **A** instead of the lower leftmost and observe the interpolation
 
 ![Blend Group Polyline](./media/polyline-rotate-source-vertex-order.png)
 
@@ -484,7 +484,7 @@ first vertex of each path.
 #### Example 10
 
 In this example we rotate the original source path through 180 degrees. The point mappings 
-remain unchanged and the simulated interpolation code appears to agree with !AWViewer
+remain unchanged and the simulated interpolation appears to agree with !AWViewer
 even though the intermediate steps are less than aesthetically pleasing
 
 ![Blend Group Polyline](./media/polyline-rotate-source-path-180.png)
