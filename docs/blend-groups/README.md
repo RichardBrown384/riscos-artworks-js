@@ -26,6 +26,8 @@
     * [Example 6](#example-6)
     * [Example 7](#example-7)
     * [Example 8](#example-8)
+    * [Example 9](#example-9)
+    * [Example 10](#example-10)
 * [Notes](#notes)
 
 ## Quirks
@@ -457,6 +459,38 @@ below the line **AC** the point distribution changes
 ![Blend Group Polyline](./media/polyline-moving-second-target-vertex-2.svg)
 
 and !AWViewer no longer inserts points on the source path.
+
+#### Example 9
+
+In the following example we rotate the order of the vertices of the source path by one. Up until now vertex labelled
+**A** has represented the first vertex defined in both the source and target paths.
+
+We begin by now by labelling the leftmost upper vertex **A** and observe the interpolation
+
+![Blend Group Polyline](./media/polyline-rotate-source-vertex-order.png)
+
+It's hopefully possible to observe that the leftmost upper vertex of the source path tracks slowly downward
+and towards the position of the vertex **A** of the target path (the lower leftmost).
+
+The vertex mapping looks as follows
+
+![Blend Group Polyline](./media/polyline-rotate-source-vertex-order.svg)
+
+with this example requiring the vertex **E'** to be inserted into the source path.
+
+This example, while not conclusive, suggests that !AWViewer has a fixed mapping between the
+first vertex of each path.
+
+#### Example 10
+
+In this example we rotate the original source path through 180 degrees. The point mappings 
+remain unchanged and the simulated interpolation code appears to agree with !AWViewer
+even though the intermediate steps are less than aesthetically pleasing
+
+![Blend Group Polyline](./media/polyline-rotate-source-path-180.png)
+
+This example suggests that the order in which the vertices are defined in the file is more important
+than their relative spacial locations.
 
 ## Notes
 
