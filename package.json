@@ -32,6 +32,6 @@
     "eslint-plugin-import": "^2.26.0"
   },
   "dependencies": {
-    "riscos-support": "github:RichardBrown384/riscos-support-js"
+    "riscos-support": "git+https://git@github.com/RichardBrown384/riscos-support-js.git"
   }
 }

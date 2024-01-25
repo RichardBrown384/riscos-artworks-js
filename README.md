@@ -16,7 +16,7 @@ A work-in-progress online viewer is hosted [here][host].
 ## Installation
 
 ```bash
-npm install git+https://github.com/RichardBrown384/riscos-artworks-js.git
+npm install git+https://git@github.com/RichardBrown384/riscos-artworks-js.git
 ```
 
 ## Usage
