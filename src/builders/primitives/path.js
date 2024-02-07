@@ -25,9 +25,11 @@ class Path {
   }
 
   moveTo(x0, y0, options = 0) {
-    this.push(Constants.TAG_MOVE + options, [
-      createPoint(x0, y0),
-    ]);
+    return this.moveToWithPoint(createPoint(x0, y0), options);
+  }
+
+  moveToWithPoint(p0, options = 0) {
+    this.push(Constants.TAG_MOVE + options, [p0]);
     return this;
   }
 
@@ -37,18 +39,25 @@ class Path {
   }
 
   bezierTo(x0, y0, x1, y1, x2, y2, options = 0) {
-    this.push(Constants.TAG_BEZIER + options, [
+    return this.bezierToWithPoints(
       createPoint(x0, y0),
       createPoint(x1, y1),
       createPoint(x2, y2),
-    ]);
+      options,
+    );
+  }
+
+  bezierToWithPoints(p0, p1, p2, options = 0) {
+    this.push(Constants.TAG_BEZIER + options, [p0, p1, p2]);
     return this;
   }
 
   lineTo(x0, y0, options = 0) {
-    this.push(Constants.TAG_LINE + options, [
-      createPoint(x0, y0),
-    ]);
+    return this.lineToWithPoint(createPoint(x0, y0), options);
+  }
+
+  lineToWithPoint(p0, options = 0) {
+    this.push(Constants.TAG_LINE + options, [p0]);
     return this;
   }
 

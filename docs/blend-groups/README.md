@@ -44,9 +44,6 @@ Object attributes to can be split into two broad categories _continuous_ and _di
 
 Continuous attributes are things like stroke width and discrete attributes are things like winding rule.
 
-Continuous attributes blend as you would expect and discrete ones are usually get
-swapped over around the halfway mark.
-
 General findings:
 
 1. Stroke attributes aren't interpolated unless a join style is specified with the file.
@@ -134,18 +131,20 @@ the blending to work at all.
 
 ### Methodology
 
-The following discoveries were made by setting up test files programmatically.
+The following discoveries were made by setting up test files programmatically. No attempt
+has been made to disassemble the !AWViewer or ArtWorks binaries.
 
-The test files contained one or more blend groups drawn in black on top of simulated 
+The test files contain one or more blend groups drawn in black on top of simulated 
 blend groups drawn in red. For example,
 
 ![Methodology](./media/methodology.png)
 
 The simulated blend groups are generated with relatively simple linear interpolation routines which 
 appear, for the given set of test cases, to approximate what !AWViewer is doing reasonably well.
+In order to make our blending code simpler we convert line segments into Béziers prior to interpolation.
 
 When there is mismatch between the number of points there are routines that support the 
-manual insertion of additional points into the source and target paths (currently just for line segments).
+manual insertion of additional points into the source and target paths.
 
 With additional points placed in appropriate, but not necessarily correct, positions it seems that 
 the simple linear interpolation approximates what !AWViewer is doing internally.
@@ -153,9 +152,9 @@ the simple linear interpolation approximates what !AWViewer is doing internally.
 #### Problems with the methodology 
 
 The process of working out how !AWViewer blends paths by only feeding it handwritten
-files does have its problems.
+files can be problematic.
 
-As an example, it was originally thought based on a small number of examples that
+For example, it was originally thought that based on a small number of examples that
 !AWViewer only inserted additional points into the path with the least number of points.
 A chance experiment disproved this statement and forced a re-evaluation of the approach.
 
@@ -164,19 +163,15 @@ of cases but there will always exist the possibility that there is an unknown co
 paths that will make !AWViewer fall into an exception handling case.
 
 In order to reduce scope the current exploratory approach has hitherto focused on analysing
-cases that are well-behaved. It should be noted there is possibly some benefit in analysing cases 
+cases that are well-behaved. There is probably some benefit in analysing cases 
 that are not well-behaved, for example by presenting !AWViewer with two paths 
-defined in opposing winding directions.
+defined in opposing winding directions, since these cases might lead us to make
+further deductions about the inner workings.
 
 #### Outstanding topics 
 
-Self-intersecting paths generally haven't been considered beyond a
+Self-intersecting and otherwise degenerate paths generally haven't been considered beyond a
 solitary self-intersecting Bézier segment.
-
-Target paths with Béziers and differing number of points that require a
-Bézier split haven't been considered.
-
-Degenerate blends.
 
 ### Equal number of points
 
@@ -202,21 +197,13 @@ How !AWViewer decides to do this isn't really understood.
 We can however make the following observations
 
 1. The order of the points in the file is probably more important than the location of the points in space
-2. There's a process that maps points between the source and target and vice-versa
-3. Points that don't get mapped to other points end up being inserted as extra points on both paths
+2. There's probably a process that maps source points onto a target points and segments and vice versa
+3. Points that get mapped onto segments get inserted into the source or target paths
+4. Whatever algorithm is used appears to work independently of scale
+5. The algorithm doesn't appear to project the source and target points onto a circle and use 
+a simple sweeping comparison based on parametric distances to do the assignment
 
-Evidence for point (1) comes from experiments with a square being blended with a triangle. The square was rotated
-at ten degree increments and at no time did !AWViewer choose to insert the required point on the triangle 
-in a different location. It was always inserted at the midpoint of the second triangle edge.
-
-For point (2) it appears that !AWViewer uses the points existing on the target and source when deciding to
-insert a new point on either the target or source. Hitherto !AWViewer hasn't been seen introducing new points 
-that are unrelated to the existing points.
-
-(2) and (3) are demonstrated but not proven with a proposed methodology for (3) in the examples below.
-
-At this time we mostly (but not entirely) discount the idea that !AWViewer uses sorted parametric distances
-to decide as to where it should be inserting the points.
+Evidence, but not proof for the above statements, is presented below in a series of examples.
 
 #### Example 1
 
@@ -332,9 +319,9 @@ The point distribution is the same as the first example.
 
 We now ask ourselves the question of what happens for concave and convex Béziers as the first segment.
 
-For symmetrical concave and convex Béziers with the control points evenly spaced vertically and both
-control points the same distance from the vertical line defined by the start and end points of the first
-segment the behaviour, up to a given distance from the aforementioned vertical line, the result is as follows,
+Considering symmetrical concave and convex Béziers, with the control points spaced evenly vertically and both
+control points at the same horizontal distance from the vertical line defined by the start and end points,
+the behaviour up to a given distance from the aforementioned vertical line, the result is as follows,
 
 ![Blend Group Polyline](./media/polyline-convex-bezier-correct.png)
 ![Blend Group Polyline](./media/polyline-concave-bezier-correct.png)
@@ -348,9 +335,6 @@ The incorrect simulated blending is shown to help illustrate the problem.
 ![Blend Group Polyline](./media/polyline-convex-bezier-incorrect.png)
 ![Blend Group Polyline](./media/polyline-concave-bezier-incorrect.png)
 
-It is possible the arc length of the Bézier is influencing the result. However,
-it seems that this may not be the case.
-
 Consider the following diagram. 
 
 ![Blend Group Polyline With Convex Bezier Parametric](./media/polyline-convex-bezier-parametric-distances.svg)
@@ -360,7 +344,7 @@ is the source path in the alternate point distribution regime.
 
 Each point in each path is labelled with its parametric distance along its respective curve. We use parametric 
 distances rather than absolute distances because we currently assume for the moment that the algorithm !AWViewer uses,
-up to given tolerances, is independent of scale. In any case, the arc length of the first source segment is greater 
+up to given tolerances, is independent of scale. In either case, the arc length of the first source segment is greater 
 than the length of the first target segment.
 
 The first thing to note that the parametric distances on the source paths have not changed significantly.
@@ -368,7 +352,7 @@ One would perhaps hope compared to the original regime point **Y**'s parametric 
 the parametric distance (0.3038) of point **B** on the target path, but is hasn't. This potentially rules out a
 simple linear sweep assignment approach based on parametric distances.
 
-Broadly, in the example given, a linear sweep might make a note of **B**'s target parametric distance and then loop
+A linear sweep might make a note of **B**'s target parametric distance and then loop
 over the points in the source path. While the points in the source path have a parametric distance less than that
 of **B** add those points to the first edge of the target path. Once the source parametric distance exceeds that
 of **B** we then might then move to comparing against **C** and inserting points into the second target edge and so on.
@@ -463,8 +447,8 @@ and !AWViewer no longer inserts points on the source path.
 
 #### Example 9
 
-In the following example we rotate the order of the vertices of the source path by one. Let the vertex labelled
-**A** represent the first vertex defined in both the source and target paths (as in all previous examples).
+In the following example we rotate the order of the vertices of the source path by one. The vertex labelled
+**A** represents the first vertex defined in both the source and target paths (as in all previous examples).
 
 We begin by labelling the leftmost upper vertex **A** instead of the lower leftmost and observe the interpolation
 
@@ -496,18 +480,19 @@ than their relative spacial locations.
 ## Notes
 
 Current idea: Given that there appears to be a step for testing self-intersection and compensatory steps
-are taken if one is found it's possible that the algorithm uses area (since it's probably easier to compute
-the area of a path if it's not degenerate). In the case of the examples above, it perhaps decides to remove
-the three edges that change the area of the source path least.
+are taken if one is found it's possible that the algorithm uses relative area (since it's probably easier to compute
+the area of a path if it's not degenerate). Possibly something along the lines of which point mapping changes
+the relative area least. Failing that it could be due to angles.
 
 Might be worth investigating [Ramer-Douglas-Peucker][ramer-douglas-peucker] and 
 [Visvalingam–Whyatt][visvalingam–whyatt]
 
-Morphing Using Curves and Shape Interpolation Techniques by Henry Johan, Yuichi Koiso, and Tomoyuki Nishita
+### Papers
+
+1. **Morphing Using Curves and Shape Interpolation Techniques by Henry Johan, Yuichi Koiso, and Tomoyuki Nishita**
 is an interesting read that handles Béziers. It was published in 2000 which is a bit later 
 than the versions of !AWViewer we're using but does cite a number of papers from around 1990.
-
-A Physically Based Approach to 2–D Shape Blending by Thomas W. Sederberg and Eugene Greenwood
+2. **A Physically Based Approach to 2–D Shape Blending by Thomas W. Sederberg and Eugene Greenwood**
 (cited in the above paper) was published in 1992 so is contemporaneous with !AWViewer,
 and it does discuss the idea of introducing points in the source and target paths. 
 Importantly it does mention that introducing arbitrary points is computationally expensive. However,
