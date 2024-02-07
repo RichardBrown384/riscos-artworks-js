@@ -193,12 +193,13 @@ best case behaviour.
 
 ### Differing number of points
 
-When the paths are not degenerate !AWViewer appears to add points to **both** paths. The
-resulting paths then have an equal number points so that they can be linearly interpolated easily.
+When the paths are not degenerate !AWViewer appears to add points to **both** the source
+and target paths. The resulting paths then have an equal number points and can be 
+linearly interpolated easily.
 
 How !AWViewer decides to do this isn't really understood. 
 
-We can however make the following observations (assuming the target has fewer points than the source)
+We can however make the following observations
 
 1. The order of the points in the file is probably more important than the location of the points in space
 2. There's a process that maps points between the source and target and vice-versa
