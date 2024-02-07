@@ -193,8 +193,8 @@ best case behaviour.
 
 ### Differing number of points
 
-When the paths are not degenerate the approach appears to be to add more points to the path with the least
-number of points so that the two paths can be linearly interpolated easily.
+When the paths are not degenerate !AWViewer appears to add points to **both** paths. The
+resulting paths then have an equal number points so that they can be linearly interpolated easily.
 
 How !AWViewer decides to do this isn't really understood. 
 
