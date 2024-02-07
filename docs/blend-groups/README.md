@@ -511,7 +511,8 @@ A Physically Based Approach to 2–D Shape Blending by Thomas W. Sederberg and E
 (cited in the above paper) was published in 1992 so is contemporaneous with !AWViewer,
 and it does discuss the idea of introducing points in the source and target paths. 
 Importantly it does mention that introducing arbitrary points is computationally expensive. However,
-it doesn't handle Béziers.
+it doesn't handle Béziers. Figure 25 and the surrounding discussion around optimising a cost
+function might be of use.
 
 These papers both mentions that angles formed between the edges are important so that might be worth 
 investigating.
