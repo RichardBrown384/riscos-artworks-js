@@ -161,7 +161,7 @@ A chance experiment disproved this statement and forced a re-evaluation of the a
 
 It might also be possible to eventually deduce an algorithm that works for a large number
 of cases but there will always exist the possibility that there is an unknown combination of
-paths will make !AWViewer fall into an exception handling case.
+paths that will make !AWViewer fall into an exception handling case.
 
 In order to reduce scope the current exploratory approach has hitherto focused on analysing
 cases that are well-behaved. It should be noted there is possibly some benefit in analysing cases 
