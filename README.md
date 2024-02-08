@@ -5,7 +5,7 @@ RISC OS [ArtWorks][artworks-wikipedia] files.
 
 ## About
 
-riscos-artworks-js is a JavaScript library for reading and writing ArtWorks files.
+**riscos-artworks-js** is a JavaScript library for reading and writing ArtWorks files.
 
 The project was started in the aim of preserving the content of these files.
 
@@ -108,8 +108,13 @@ that are well understood are supported, such as fills and strokes. It should als
 that the main motivation for writing files was to further the deductive process in a way
 that lends itself to documentation (the provided examples).
 
+## Contributing
+
+If you would like contribute to the project then check out our [contribution guide][contributing].
+
 ---
 [artworks-wikipedia]: https://en.wikipedia.org/wiki/ArtWorks
 [host]: http://richardbrown384.github.io/riscos-file-viewer
 [file-format]: docs/file-format/README.md
 [blend-groups]: docs/blend-groups/README.md
+[contributing]: CONTRIBUTING.md
