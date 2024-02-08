@@ -1,39 +1,19 @@
 /*
-Example: 017-blend-poly-lines-moving-second-vertex
+Example: 101-blend-poly-lines-with-cusp-bezier
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by allowing the second source vertex to be moved vertically.
+This differs from 010-blend-poly-lines by introducing a solitary cusp bezier segment
 
-The first two insertion weights are computed by using the actual vertex coordinates.
+The change over in the point distribution regime occurs when
+the displacement is greater than or equal to 47_712
 
-This file is only valid for the y coordinate range of [400_000, 420_000]. Values outside this
-range will probably produce different results.
+displacement to arc length
 
-Behaviour for various second source vertex y coordinates:
-
-First regime means point distribution is A X' Y' B C
-Second regime means point distribution is A X' B Y' C
-
-400_000 first regime
-410_000 first regime
-415_000 first regime
-417_500 first regime
-418_750 first regime
-419_375 first regime
-419_454 first regime
-419_464 first regime
-419_466 first regime
-419_467 first regime
-419_468 first regime
-419_469 second regime
-419_474 second regime
-419_493 second regime
-419_532 second regime
-419_688 second regime
-420_000 second regime
+47.711 = 314.2051
+47.712 = 314.2056
 
  */
 
@@ -63,32 +43,19 @@ const {
 
 const { createSimplePathBlendGroup } = require('../simple-blend-group');
 const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
-const { lineLength } = require('../util');
 
-const THRESHOLD_Y = 419_469;
-
-const Y = THRESHOLD_Y;
-
-const L1 = lineLength(100_000, 100_000, 100_000, Y);
-const L2 = lineLength(100_000, Y, 120_000, 416_000);
-const L3 = lineLength(120_000, 416_000, 150_000, 300_000);
-const L4 = lineLength(150_000, 300_000, 200_000, 500_000);
-
-const P1 = L1 / (L1 + L2 + L3);
-const P2 = (L1 + L2) / (L1 + L2 + L3);
-
-const Q1 = L1 / (L1 + L2);
-const Q2 = L3 / (L3 + L4);
-
-const W1 = (Y < THRESHOLD_Y) ? [P1, P2] : [Q1];
-const W2 = (Y < THRESHOLD_Y) ? [] : [Q2];
-const W3 = [0.92]; // calculated  [0.9197]
-const W4 = [];
-const W5 = [];
+const CONTROL_X_DISPLACEMENT = 50_000;
 
 const GROUP_0_START_PATH = Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .lineTo(100_000, Y)
+  .bezierTo(
+    100_000 - CONTROL_X_DISPLACEMENT,
+    100_000,
+    100_000 + CONTROL_X_DISPLACEMENT,
+    400_000,
+    100_000,
+    400_000,
+  )
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
@@ -120,11 +87,11 @@ module.exports = createArtworks(
     endPath: GROUP_0_END_PATH,
     endWeights: [
       [],
-      W1,
-      W2,
-      W3,
-      W4,
-      W5,
+      [0.93], // calculated [0.9249]
+      [0.37], // calculated [0.3676]
+      [0.92], // calculated  [0.9197]
+      [],
+      [],
       [],
     ],
     steps: 7,

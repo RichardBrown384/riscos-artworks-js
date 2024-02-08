@@ -1,13 +1,17 @@
 /*
-Example: 010-blend-poly-lines
+Example: 109-blend-poly-lines-rotate-source-vertex-order
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-The weights were worked out by hand by using a tape measure placed up against the screen.
+This differs from 010-blend-poly-lines by making the second vertex in the original
+source path the first vertex.
 
-See the documentation on blends for the calculated values.
+This example suggests that !AWViewer maps the first vertex of the source path
+to the first vertex of the target path.
+
+The weights were computed by line length ratios.
 
  */
 
@@ -39,14 +43,14 @@ const { createSimplePathBlendGroup } = require('../simple-blend-group');
 const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
 
 const GROUP_0_START_PATH = Path.builder()
-  .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .lineTo(100_000, 400_000)
+  .moveTo(100_000, 400_000, Constants.TAG_BIT_31)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
   .lineTo(150_000, 90_000)
   .lineTo(130_000, 120_000)
   .lineTo(120_000, 11_000)
+  .lineTo(100_000, 100_000)
   .closeSubPath()
   .end()
   .build();
@@ -69,12 +73,24 @@ module.exports = createArtworks(
   List.of(STROKE_WIDTH_3000),
   ...createBlendedPathRecordsWithWeights({
     startPath: GROUP_0_START_PATH,
+    startWeights: [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [0.1103],
+      [],
+    ],
     endPath: GROUP_0_END_PATH,
     endWeights: [
       [],
-      [0.67, 0.73], // calculated [0.6735, 0.7310]
+      [0.0728, 0.4136],
       [],
-      [0.92], // calculated  [0.9197]
+      [0.1523, 0.6147],
       [],
       [],
       [],

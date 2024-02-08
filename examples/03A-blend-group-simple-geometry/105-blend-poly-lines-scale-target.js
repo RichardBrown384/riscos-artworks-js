@@ -1,35 +1,13 @@
 /*
-Example: 013-blend-poly-lines-with-convex-bezier
+Example:105-blend-poly-lines-scale-target
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by introducing a solitary convex bezier segment
+This differs from 010-blend-poly-lines by allowing the target geometry to be scaled.
 
-We tabulate here the x-coordinates of the control points (divided by 1000) and the arc length
-of the bezier segment (similarly divided by 1000).
-
-60.000 = 307.8182
-50.000 = 312.0686
-48.000 = 313.0185
-46.000 = 314.0006
-45.750 = 314.1256
-45.713 = 314.1441
-45.694 = 314.1537
-45.685 = 314.1582
-45.684 = 314.1587
-45.683 = 314.1592
-45.682 = 314.1597 (point distribution changes)
-45.681 = 314.1602
-45.680 = 314.1607
-45.675 = 314.1632
-45.500 = 314.2511
-45.000 = 314.5035
-40.000 = 317.1348
-
-When the x coordinate is less than or equal to 45_682 point distribution regime
-changes in the interpolated shape.
+Between scales 0.0 and 25.0 it appears the point distribution is unchanged.
 
  */
 
@@ -60,11 +38,18 @@ const {
 const { createSimplePathBlendGroup } = require('../simple-blend-group');
 const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
 
-const CONTROL_POINT_X = 45_683;
+const AffineTransform = require('../affine-transform');
+
+const SCALE = 0.05;
+
+const GROUP_0_END_PATH_TRANSFORM = new AffineTransform()
+  .translate(-1_000_000, -100_000)
+  .scale(SCALE)
+  .translate(1_000_000, 100_000);
 
 const GROUP_0_START_PATH = Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .bezierTo(CONTROL_POINT_X, 200_000, CONTROL_POINT_X, 300_000, 100_000, 400_000)
+  .lineTo(100_000, 400_000)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
@@ -74,7 +59,7 @@ const GROUP_0_START_PATH = Path.builder()
   .closeSubPath()
   .end()
   .build();
-const GROUP_0_END_PATH = Path.builder()
+const GROUP_0_END_PATH = GROUP_0_END_PATH_TRANSFORM.transformPath(Path.builder()
   .moveTo(1_000_000, 100_000, Constants.TAG_BIT_31)
   .lineTo(1_010_000, 370_000)
   .lineTo(1_100_000, 450_000)
@@ -82,7 +67,7 @@ const GROUP_0_END_PATH = Path.builder()
   .lineTo(1_110_000, 70_000)
   .closeSubPath()
   .end()
-  .build();
+  .build());
 
 module.exports = createArtworks(
   List.of(WINDING_RULE_EVEN_ODD),
@@ -96,7 +81,7 @@ module.exports = createArtworks(
     endPath: GROUP_0_END_PATH,
     endWeights: [
       [],
-      [0.6835666886895685, 0.7392959168293128],
+      [0.67, 0.73], // calculated [0.6735, 0.7310]
       [],
       [0.92], // calculated  [0.9197]
       [],

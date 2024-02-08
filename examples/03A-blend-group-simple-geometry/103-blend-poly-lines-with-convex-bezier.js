@@ -1,17 +1,35 @@
 /*
-Example: 019-blend-poly-lines-rotate-source-vertex-order
+Example: 103-blend-poly-lines-with-convex-bezier
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by making the second vertex in the original
-source path the first vertex.
+This differs from 010-blend-poly-lines by introducing a solitary convex bezier segment
 
-This example suggests that !AWViewer maps the first vertex of the source path
-to the first vertex of the target path.
+We tabulate here the x-coordinates of the control points (divided by 1000) and the arc length
+of the bezier segment (similarly divided by 1000).
 
-The weights were computed by line length ratios.
+60.000 = 307.8182
+50.000 = 312.0686
+48.000 = 313.0185
+46.000 = 314.0006
+45.750 = 314.1256
+45.713 = 314.1441
+45.694 = 314.1537
+45.685 = 314.1582
+45.684 = 314.1587
+45.683 = 314.1592
+45.682 = 314.1597 (point distribution changes)
+45.681 = 314.1602
+45.680 = 314.1607
+45.675 = 314.1632
+45.500 = 314.2511
+45.000 = 314.5035
+40.000 = 317.1348
+
+When the x coordinate is less than or equal to 45_682 point distribution regime
+changes in the interpolated shape.
 
  */
 
@@ -42,15 +60,17 @@ const {
 const { createSimplePathBlendGroup } = require('../simple-blend-group');
 const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
 
+const CONTROL_POINT_X = 45_683;
+
 const GROUP_0_START_PATH = Path.builder()
-  .moveTo(100_000, 400_000, Constants.TAG_BIT_31)
+  .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
+  .bezierTo(CONTROL_POINT_X, 200_000, CONTROL_POINT_X, 300_000, 100_000, 400_000)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
   .lineTo(150_000, 90_000)
   .lineTo(130_000, 120_000)
   .lineTo(120_000, 11_000)
-  .lineTo(100_000, 100_000)
   .closeSubPath()
   .end()
   .build();
@@ -73,24 +93,12 @@ module.exports = createArtworks(
   List.of(STROKE_WIDTH_3000),
   ...createBlendedPathRecordsWithWeights({
     startPath: GROUP_0_START_PATH,
-    startWeights: [
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [0.1103],
-      [],
-    ],
     endPath: GROUP_0_END_PATH,
     endWeights: [
       [],
-      [0.0728, 0.4136],
+      [0.6835666886895685, 0.7392959168293128],
       [],
-      [0.1523, 0.6147],
+      [0.92], // calculated  [0.9197]
       [],
       [],
       [],

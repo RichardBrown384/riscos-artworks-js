@@ -1,35 +1,15 @@
 /*
-Example: 014-blend-poly-lines-with-concave-bezier
+Example: 106-blend-poly-lines-scale-source
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by introducing a solitary concave bezier segment
+This differs from 010-blend-poly-lines by allowing the source geometry to be scaled.
 
-We tabulate here the x-coordinates of the control points (divided by 1000) and the arc length
-of the bezier segment (similarly divided by 1000).
+For scales up to 25.0 it appears the point distribution is unchanged.
 
-140.000 = 307.8182
-150.000 = 312.0686
-152.000 = 313.0185
-154.000 = 314.0006
-154.250 = 314.1256
-154.287 = 314.1441
-154.306 = 314.1537
-154.315 = 314.1582
-154.316 = 314.1587
-154.317 = 314.1592
-154.318 = 314.1597 (point distribution changes)
-154.319 = 314.1602
-154.320 = 314.1607
-154.325 = 314.1632
-154.500 = 314.2511
-155.000 = 314.5035
-160.000 = 317.1348
-
-When the x coordinate is greater than or equal to 154318 point distribution regime
-changes in the interpolated shape.
+Interestingly, for a scale of 0 the routine doesn't crash and appears to work.
 
  */
 
@@ -59,12 +39,18 @@ const {
 
 const { createSimplePathBlendGroup } = require('../simple-blend-group');
 const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
+const AffineTransform = require('../affine-transform');
 
-const CONTROL_POINT_X = 154_317;
+const SCALE = 0.4;
 
-const GROUP_0_START_PATH = Path.builder()
+const GROUP_0_START_PATH_TRANSFORM = new AffineTransform()
+  .translate(-100_000, -100_000)
+  .scale(SCALE)
+  .translate(100_000, 100_000);
+
+const GROUP_0_START_PATH = GROUP_0_START_PATH_TRANSFORM.transformPath(Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .bezierTo(CONTROL_POINT_X, 200_000, CONTROL_POINT_X, 300_000, 100_000, 400_000)
+  .lineTo(100_000, 400_000)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
@@ -73,7 +59,7 @@ const GROUP_0_START_PATH = Path.builder()
   .lineTo(120_000, 11_000)
   .closeSubPath()
   .end()
-  .build();
+  .build());
 const GROUP_0_END_PATH = Path.builder()
   .moveTo(1_000_000, 100_000, Constants.TAG_BIT_31)
   .lineTo(1_010_000, 370_000)
@@ -96,7 +82,7 @@ module.exports = createArtworks(
     endPath: GROUP_0_END_PATH,
     endWeights: [
       [],
-      [0.6835666886895685, 0.7392959168293128],
+      [0.67, 0.73], // calculated [0.6735, 0.7310]
       [],
       [0.92], // calculated  [0.9197]
       [],

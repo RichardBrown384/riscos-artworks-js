@@ -1,15 +1,39 @@
 /*
-Example: 016-blend-poly-lines-scale-source
+Example: 107-blend-poly-lines-moving-second-vertex
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by allowing the source geometry to be scaled.
+This differs from 010-blend-poly-lines by allowing the second source vertex to be moved vertically.
 
-For scales up to 25.0 it appears the point distribution is unchanged.
+The first two insertion weights are computed by using the actual vertex coordinates.
 
-Interestingly, for a scale of 0 the routine doesn't crash and appears to work.
+This file is only valid for the y coordinate range of [400_000, 420_000]. Values outside this
+range will probably produce different results.
+
+Behaviour for various second source vertex y coordinates:
+
+First regime means point distribution is A X' Y' B C
+Second regime means point distribution is A X' B Y' C
+
+400_000 first regime
+410_000 first regime
+415_000 first regime
+417_500 first regime
+418_750 first regime
+419_375 first regime
+419_454 first regime
+419_464 first regime
+419_466 first regime
+419_467 first regime
+419_468 first regime
+419_469 second regime
+419_474 second regime
+419_493 second regime
+419_532 second regime
+419_688 second regime
+420_000 second regime
 
  */
 
@@ -39,18 +63,32 @@ const {
 
 const { createSimplePathBlendGroup } = require('../simple-blend-group');
 const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
-const AffineTransform = require('../affine-transform');
+const { lineLength } = require('../util');
 
-const SCALE = 0.4;
+const THRESHOLD_Y = 419_469;
 
-const GROUP_0_START_PATH_TRANSFORM = new AffineTransform()
-  .translate(-100_000, -100_000)
-  .scale(SCALE)
-  .translate(100_000, 100_000);
+const Y = THRESHOLD_Y;
 
-const GROUP_0_START_PATH = GROUP_0_START_PATH_TRANSFORM.transformPath(Path.builder()
+const L1 = lineLength(100_000, 100_000, 100_000, Y);
+const L2 = lineLength(100_000, Y, 120_000, 416_000);
+const L3 = lineLength(120_000, 416_000, 150_000, 300_000);
+const L4 = lineLength(150_000, 300_000, 200_000, 500_000);
+
+const P1 = L1 / (L1 + L2 + L3);
+const P2 = (L1 + L2) / (L1 + L2 + L3);
+
+const Q1 = L1 / (L1 + L2);
+const Q2 = L3 / (L3 + L4);
+
+const W1 = (Y < THRESHOLD_Y) ? [P1, P2] : [Q1];
+const W2 = (Y < THRESHOLD_Y) ? [] : [Q2];
+const W3 = [0.92]; // calculated  [0.9197]
+const W4 = [];
+const W5 = [];
+
+const GROUP_0_START_PATH = Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .lineTo(100_000, 400_000)
+  .lineTo(100_000, Y)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
@@ -59,7 +97,7 @@ const GROUP_0_START_PATH = GROUP_0_START_PATH_TRANSFORM.transformPath(Path.build
   .lineTo(120_000, 11_000)
   .closeSubPath()
   .end()
-  .build());
+  .build();
 const GROUP_0_END_PATH = Path.builder()
   .moveTo(1_000_000, 100_000, Constants.TAG_BIT_31)
   .lineTo(1_010_000, 370_000)
@@ -82,11 +120,11 @@ module.exports = createArtworks(
     endPath: GROUP_0_END_PATH,
     endWeights: [
       [],
-      [0.67, 0.73], // calculated [0.6735, 0.7310]
-      [],
-      [0.92], // calculated  [0.9197]
-      [],
-      [],
+      W1,
+      W2,
+      W3,
+      W4,
+      W5,
       [],
     ],
     steps: 7,
