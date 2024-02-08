@@ -1,13 +1,11 @@
 /*
-Example: 015-blend-poly-lines-scale-target
+Example: 102-blend-poly-lines-with-straight-bezier
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by allowing the target geometry to be scaled.
-
-Between scales 0.0 and 25.0 it appears the point distribution is unchanged.
+This differs from 010-blend-poly-lines by introducing a solitary straight bezier segment
 
  */
 
@@ -38,18 +36,9 @@ const {
 const { createSimplePathBlendGroup } = require('../simple-blend-group');
 const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
 
-const AffineTransform = require('../affine-transform');
-
-const SCALE = 0.05;
-
-const GROUP_0_END_PATH_TRANSFORM = new AffineTransform()
-  .translate(-1_000_000, -100_000)
-  .scale(SCALE)
-  .translate(1_000_000, 100_000);
-
 const GROUP_0_START_PATH = Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .lineTo(100_000, 400_000)
+  .bezierTo(100_000, 200_000, 100_000, 300_000, 100_000, 400_000)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
@@ -59,7 +48,7 @@ const GROUP_0_START_PATH = Path.builder()
   .closeSubPath()
   .end()
   .build();
-const GROUP_0_END_PATH = GROUP_0_END_PATH_TRANSFORM.transformPath(Path.builder()
+const GROUP_0_END_PATH = Path.builder()
   .moveTo(1_000_000, 100_000, Constants.TAG_BIT_31)
   .lineTo(1_010_000, 370_000)
   .lineTo(1_100_000, 450_000)
@@ -67,7 +56,7 @@ const GROUP_0_END_PATH = GROUP_0_END_PATH_TRANSFORM.transformPath(Path.builder()
   .lineTo(1_110_000, 70_000)
   .closeSubPath()
   .end()
-  .build());
+  .build();
 
 module.exports = createArtworks(
   List.of(WINDING_RULE_EVEN_ODD),

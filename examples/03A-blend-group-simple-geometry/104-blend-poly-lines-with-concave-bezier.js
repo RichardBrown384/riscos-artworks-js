@@ -1,19 +1,35 @@
 /*
-Example: 011-blend-poly-lines-with-cusp-bezier
+Example: 104-blend-poly-lines-with-concave-bezier
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by introducing a solitary cusp bezier segment
+This differs from 010-blend-poly-lines by introducing a solitary concave bezier segment
 
-The change over in the point distribution regime occurs when
-the displacement is greater than or equal to 47_712
+We tabulate here the x-coordinates of the control points (divided by 1000) and the arc length
+of the bezier segment (similarly divided by 1000).
 
-displacement to arc length
+140.000 = 307.8182
+150.000 = 312.0686
+152.000 = 313.0185
+154.000 = 314.0006
+154.250 = 314.1256
+154.287 = 314.1441
+154.306 = 314.1537
+154.315 = 314.1582
+154.316 = 314.1587
+154.317 = 314.1592
+154.318 = 314.1597 (point distribution changes)
+154.319 = 314.1602
+154.320 = 314.1607
+154.325 = 314.1632
+154.500 = 314.2511
+155.000 = 314.5035
+160.000 = 317.1348
 
-47.711 = 314.2051
-47.712 = 314.2056
+When the x coordinate is greater than or equal to 154318 point distribution regime
+changes in the interpolated shape.
 
  */
 
@@ -44,18 +60,11 @@ const {
 const { createSimplePathBlendGroup } = require('../simple-blend-group');
 const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-group');
 
-const CONTROL_X_DISPLACEMENT = 50_000;
+const CONTROL_POINT_X = 154_317;
 
 const GROUP_0_START_PATH = Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .bezierTo(
-    100_000 - CONTROL_X_DISPLACEMENT,
-    100_000,
-    100_000 + CONTROL_X_DISPLACEMENT,
-    400_000,
-    100_000,
-    400_000,
-  )
+  .bezierTo(CONTROL_POINT_X, 200_000, CONTROL_POINT_X, 300_000, 100_000, 400_000)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
@@ -87,8 +96,8 @@ module.exports = createArtworks(
     endPath: GROUP_0_END_PATH,
     endWeights: [
       [],
-      [0.93], // calculated [0.9249]
-      [0.37], // calculated [0.3676]
+      [0.6835666886895685, 0.7392959168293128],
+      [],
       [0.92], // calculated  [0.9197]
       [],
       [],

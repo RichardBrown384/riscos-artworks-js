@@ -1,5 +1,5 @@
 /*
-Example: 018-blend-poly-lines-moving-second-target-vertex
+Example: 108-blend-poly-lines-moving-second-target-vertex
 
 Purpose:
 

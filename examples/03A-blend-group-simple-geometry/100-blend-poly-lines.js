@@ -1,11 +1,13 @@
 /*
-Example: 012-blend-poly-lines-with-straight-bezier
+Example: 100-blend-poly-lines
 
 Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
-This differs from 010-blend-poly-lines by introducing a solitary straight bezier segment
+The weights were worked out by hand by using a tape measure placed up against the screen.
+
+See the documentation on blends for the calculated values.
 
  */
 
@@ -38,7 +40,7 @@ const { createBlendedPathRecordsWithWeights } = require('../simulated-blend-grou
 
 const GROUP_0_START_PATH = Path.builder()
   .moveTo(100_000, 100_000, Constants.TAG_BIT_31)
-  .bezierTo(100_000, 200_000, 100_000, 300_000, 100_000, 400_000)
+  .lineTo(100_000, 400_000)
   .lineTo(120_000, 416_000)
   .lineTo(150_000, 300_000)
   .lineTo(200_000, 500_000)
