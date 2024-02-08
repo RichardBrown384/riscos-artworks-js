@@ -28,6 +28,7 @@
     * [Example 8](#example-8)
     * [Example 9](#example-9)
     * [Example 10](#example-10)
+    * [Example 11](#example-11)
 * [Notes](#notes)
 
 ## Quirks
@@ -476,6 +477,23 @@ even though the intermediate steps are less than aesthetically pleasing
 
 This example suggests that the order in which the vertices are defined in the file is more important
 than their relative spacial locations.
+
+##### Example 11
+
+In this example we simplify the paths to examine what happens when !AWViewer is required to split
+a Bézier segment. Consider the two cases below,
+
+![Blend Group Bezier Single Split](./media/bezier-single-split.png)
+![Blend Group Bezier Double Split](./media/bezier-double-split.png)
+
+In the first case, the Bézier on the target path is only split once. !AWViewer chose to assign
+the second potential split point to the rightmost upper point on the target path instead.
+
+In the second case, with a more symmetric upper section on the source path, the Bézier is split twice
+into three sections.
+
+In both cases the positions of the split points are computed in the same manner as the previous examples
+by taking ratios of arc lengths.
 
 ## Notes
 
