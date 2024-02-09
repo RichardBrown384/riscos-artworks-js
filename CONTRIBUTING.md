@@ -38,7 +38,7 @@ but not **how**.
 ### If you would like to use riscos-artworks-js in your own project or generally improve it...
 
 **riscos-artworks-js** was developed as the result of a desire to try and preserve information
-about an uncommon 1990s vector graphics file format (originating from the UK). It wasn't developed 
+about an unusual 1990s vector graphics file format. It wasn't developed 
 with end users in mind and there are definitely areas for improvement. E.g.,
 
 * Reworking the library's interface so that it's possible to integrate with other JS 
