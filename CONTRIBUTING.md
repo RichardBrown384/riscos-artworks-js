@@ -41,9 +41,9 @@ but not **how**.
 about an unusual 1990s vector graphics file format. It wasn't developed 
 with end users in mind and there are definitely areas for improvement. E.g.,
 
-* Reworking the library's interface so that it's possible to integrate with other JS 
-vector graphics libraries
-* Cleaning up the codebase to make it more idiomatically JavaScript
+* Reworking the library's interface so that it's possible to integrate with other 
+JavaScript vector graphics libraries
+* Cleaning up the codebase to make the JavaScript idiomatic
 * Cleaning up the codebase to remove the research and development elements
 * Introducing a testing regime
 * Deploying to npm
