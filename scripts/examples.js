@@ -10,6 +10,7 @@ const DEFAULT_OUTPUT_DIRECTORY = './examples-output';
 const EXAMPLES_BASE_DIRECTORY = './examples';
 const EXAMPLE_DIRECTORIES = [
   '002-path',
+  '006-group',
   '00A-layer',
   '024-stroke-colour',
   '025-stroke-width',
