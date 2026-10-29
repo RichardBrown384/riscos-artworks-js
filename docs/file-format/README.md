@@ -399,6 +399,8 @@ The function of the unknowns in the record body aren't understood. Various value
 | 28     | 32     | Layer name, null terminated. The length stated here is a guess.                              |
 | 60     | 8      | [SubLists pointer](#sublists)                                                                |
 
+In the corpus of files available the bounding box entries are all zero, in contrast to groups records. 
+
 #### Type 0x21: Work Area
 
 This record is thought to always occur at the end of the file. The record will always contain
