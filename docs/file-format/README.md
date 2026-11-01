@@ -1070,7 +1070,7 @@ which is usually is).
 
 It's not entirely clear how ArtWorks renders a file. There are a couple of 
 informed guesses that allow us to speculate, but it's not known with 100% certainty
-if these guesses apply in call cases.
+if these guesses apply in all cases.
 
 ### Example image
 
