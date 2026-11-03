@@ -1,37 +1,63 @@
 {
-  "name": "riscos-artworks",
-  "version": "1.0.0",
-  "description": "Library for loading RISC OS Artworks files",
-  "main": "src/index.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "lint": "npx eslint examples scripts src",
-    "lint:fix": "npx eslint examples scripts src --fix",
-    "examples": "node scripts/examples.js",
-    "trawl": "node scripts/trawler.js",
-    "unpack": "node scripts/unpack.js",
-    "pack": "node scripts/pack.js",
-    "stats": "node scripts/stats.js",
-    "svg": "node scripts/svg.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/RichardBrown384/riscos-artworks-js.git"
-  },
-  "author": "",
+  "name": "@rbrown/riscos-file-viewer",
+  "version": "0.0.0",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/RichardBrown384/riscos-artworks-js/issues"
+  "scripts": {
+    "build": "npx nx build web",
+    "dev": "npx nx serve web",
+    "prettier": "prettier --write packages apps scripts",
+    "typecheck": "npx nx run-many -t typecheck --no-tui",
+    "lint": "npx nx run-many -t lint --no-tui",
+    "examples:generate": "tsx scripts/mts/generate-examples.mts",
+    "examples:compare": "bash scripts/bash/compare-directories.sh",
+    "unpack": "tsx scripts/mts/unpack.mts",
+    "pack": "tsx scripts/mts/pack.mts",
+    "trawl": "tsx scripts/mts/trawl.mts",
+    "stats": "tsx scripts/mts/stats.mts",
+    "svg": "tsx scripts/mts/svg.mts"
   },
-  "homepage": "https://github.com/RichardBrown384/riscos-artworks-js#readme",
+  "private": true,
   "devDependencies": {
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.32.0"
+    "@eslint/js": "^10.0.1",
+    "@nx/eslint": "24.0.3",
+    "@nx/js": "24.0.3",
+    "@nx/react": "24.0.3",
+    "@nx/vite": "24.0.3",
+    "@nx/vitest": "24.0.3",
+    "@nx/web": "24.0.3",
+    "@swc-node/register": "1.12.1",
+    "@swc/core": "1.16.13",
+    "@swc/helpers": "0.5.23",
+    "@types/node": "24.13.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.0",
+    "@vitest/ui": "5.0.5",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-dom": "^5.7.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "jiti": "2.7.0",
+    "jsdom": "~22.1.0",
+    "nx": "24.0.3",
+    "prettier": "^3.8.1",
+    "tslib": "^2.3.0",
+    "tsx": "^4.22.4",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.59.2",
+    "vite": "^8.0.0",
+    "vitest": "5.0.5"
   },
   "dependencies": {
-    "riscos-support": "git+https://git@github.com/RichardBrown384/riscos-support-js.git"
-  }
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-error-boundary": "^6.1.1"
+  },
+  "workspaces": [
+    "packages/*",
+    "packages/file-formats/*",
+    "apps/*"
+  ]
 }

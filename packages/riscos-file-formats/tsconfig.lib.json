@@ -1,0 +1,41 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
+    "emitDeclarationOnly": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../file-formats/computer-concepts-artworks-intermediate/tsconfig.lib.json"
+    },
+    {
+      "path": "../file-formats/riscos-font-outlines-intermediate/tsconfig.lib.json"
+    },
+    {
+      "path": "../file-formats/riscos-sprite-intermediate/tsconfig.lib.json"
+    },
+    {
+      "path": "../file-formats/riscos-draw-intermediate/tsconfig.lib.json"
+    },
+    {
+      "path": "../file-formats/computer-concepts-artworks/tsconfig.lib.json"
+    },
+    {
+      "path": "../file-formats/riscos-sprite/tsconfig.lib.json"
+    },
+    {
+      "path": "../file-formats/riscos-font-outlines/tsconfig.lib.json"
+    },
+    {
+      "path": "../file-formats/riscos-draw/tsconfig.lib.json"
+    },
+    {
+      "path": "../intermediate/tsconfig.lib.json"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/riscos-file-formats"
+    },
+    {
+      "path": "./apps/web"
+    },
+    {
+      "path": "./packages/file-formats/riscos-sprite"
+    },
+    {
+      "path": "./packages/file-formats/riscos-draw"
+    },
+    {
+      "path": "./packages/file-formats/riscos-font-metrics"
+    },
+    {
+      "path": "./packages/file-formats/computer-concepts-artworks"
+    },
+    {
+      "path": "./packages/io"
+    },
+    {
+      "path": "./packages/geometry"
+    },
+    {
+      "path": "./packages/check"
+    },
+    {
+      "path": "./packages/file-formats/riscos-font-outlines"
+    },
+    {
+      "path": "./packages/imaging"
+    },
+    {
+      "path": "./packages/file-formats/computer-concepts-artworks-examples"
+    },
+    {
+      "path": "./scripts"
+    },
+    {
+      "path": "./packages/file-formats/computer-concepts-artworks-intermediate"
+    },
+    {
+      "path": "./packages/intermediate"
+    },
+    {
+      "path": "./packages/file-formats/riscos-draw-intermediate"
+    },
+    {
+      "path": "./packages/file-formats/riscos-font-outlines-intermediate"
+    },
+    {
+      "path": "./packages/file-formats/riscos-sprite-intermediate"
+    },
+    {
+      "path": "./packages/png"
+    },
+    {
+      "path": "./packages/svg"
+    }
+  ]
+}

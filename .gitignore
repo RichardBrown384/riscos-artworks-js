@@ -1,4 +1,22 @@
-.idea
-.DS_Store
+# compiled output
+dist
+tmp
+out-tsc
+
+# dependencies
 node_modules
-jsons
+
+# IDEs and editors
+/.idea
+
+# System Files
+.DS_Store
+Thumbs.db
+
+
+.nx/cache
+.nx/workspace-data
+.nx/polygraph
+.nx/self-healing
+.nx/migrate-runs
+vite.config.*.timestamp*
