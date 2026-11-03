@@ -1,11 +1,16 @@
 # riscos-artworks-js
 
-A JavaScript library with file format [documentation][file-format] for Computer Concepts era 
+A TypeScript project with file format [documentation][file-format] for Computer Concepts era 
 RISC OS [ArtWorks][artworks-wikipedia] files.
+
+Update 03.11.2026: The project was updated to TypeScript and also incorporated support for
+Draw, Sprite, and Font Outline files. The motivation for this was to consolidate the codebase
+and reduce the number of repositories I have to resolve Dependabot issues for. At the 
+same time, in order to make it easier to deploy changes, the Web viewer was also incorporated.
 
 ## About
 
-**riscos-artworks-js** is a JavaScript library for reading and writing ArtWorks files.
+**riscos-artworks-js** is a TypeScript project for reading and writing ArtWorks files.
 
 The project was started in the aim of preserving the content of these files.
 
@@ -13,21 +18,20 @@ A work-in-progress online viewer is hosted [here][host].
 
 ![The ArtWorks Apple](./media/apple4.svg)
 
-## Installation
+## Development
+
+### Starting the web server
 
 ```bash
-npm install git+https://git@github.com/RichardBrown384/riscos-artworks-js.git
+npm run dev
 ```
 
-## Usage
+### Linting, typechecking and prettier 
 
-To use in code
-
-```javascript
-const {Artworks} = require('riscos-artworks');
-
-const artworks = Artworks.fromUint8Array(array);
-const array = Artworks.toUint8Array(artworks);
+```bash
+npm run lint
+npm run typecheck
+npm run prettier
 ```
 
 ## Scripts
@@ -36,11 +40,11 @@ The library has some scripts that can be used to aid with the deciphering proces
 
 ### svg
 
-To convert an ArtWorks file to an SVG you can use the following commands
+To convert an ArtWorks (or Draw) file to an SVG you can use the following commands
 
 ```bash
-npm run svg source,d94 target.svg
-npm run svg source,d94 target.svg outline
+npm run svg -- source,d94 target.svg
+npm run svg -- source,aff target.svg
 ```
 
 The later form produces an outline only representation of the original file.
@@ -54,13 +58,13 @@ are not supported._
 To unpack the contents of an ArtWorks file into a JSON structure you can use the following command
 
 ```bash
-npm run unpack source,d94 target.json
+npm run unpack -- source,d94 target.json
 ```
 
 To pack a JSON structure into an ArtWorks file you can use
 
 ```bash
-npm run pack source.json target,d94
+npm run pack -- source.json target,d94
 ```
 
 ### trawl
@@ -68,7 +72,7 @@ npm run pack source.json target,d94
 To recursively trawl a directory of ArtWorks files and have a summary of any problems you can use
 
 ```bash
-npm run trawl directory
+npm run trawl -- directory
 ```
 
 ### stats
@@ -78,7 +82,7 @@ Modify the read process to log any data you're interested in, such as record bod
 This script will then work out how many values appear in a given field for that set of records.
 
 ```bash
-npm run stats json-per-line
+npm run stats -- json-per-line
 ```
 
 ### examples
@@ -86,7 +90,7 @@ npm run stats json-per-line
 To generate example ArtWorks files held in examples directory to a destination of your choice use
 
 ```bash
-npm run examples target_directory
+npm run examples -- target_directory
 ```
 
 ## Project status
@@ -114,7 +118,7 @@ If you would like contribute to the project then check out our [contribution gui
 
 ---
 [artworks-wikipedia]: https://en.wikipedia.org/wiki/ArtWorks
-[host]: http://richardbrown384.github.io/riscos-file-viewer
+[host]: http://richardbrown384.github.io/riscos-artworks-js
 [file-format]: docs/file-format/README.md
 [blend-groups]: docs/blend-groups/README.md
 [contributing]: CONTRIBUTING.md
