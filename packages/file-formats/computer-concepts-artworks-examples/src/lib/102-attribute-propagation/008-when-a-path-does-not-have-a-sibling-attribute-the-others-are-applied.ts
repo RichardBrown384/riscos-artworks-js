@@ -1,0 +1,101 @@
+/*
+Example: 008-when-a-path-does-not-have-a-sibling-attribute-the-others-are-applied
+
+Purpose:
+
+File to draw multiple hexagons with varying number of attributes.
+
+Some observations:
+
+1. The placement of layer objects within the tree doesn't cause immediate problems for the viewer
+2. When paths don't have style siblings their style children are applied.
+
+ */
+
+import {
+  FILL_FLAT_BLACK_30,
+  FILL_FLAT_RED,
+  FILL_RADIAL_RED_YELLOW,
+  LAYER_FOREGROUND,
+  PATH_TRIANGLE,
+  STROKE_COLOUR_BLUE,
+  STROKE_COLOUR_MAGENTA,
+  STROKE_COLOUR_RED,
+  STROKE_WIDTH_1500,
+  STROKE_WIDTH_3000,
+  STROKE_WIDTH_6000,
+  WORK_AREA,
+} from '../shared-objects.js';
+
+import {
+  createClosedNSidedPolygon,
+  createClosedPentagram,
+} from '../path-creators.js';
+
+import {
+  createArtworks,
+  createList,
+  createRecordLayer,
+  createRecordPath,
+} from '../record-creators.js';
+import { ArtworksRecord } from '@rbrown/computer-concepts-artworks';
+
+const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
+const PATH_PENTAGRAM = createRecordPath(
+  PENTAGRAM,
+  10_000,
+  STROKE_WIDTH_6000,
+  FILL_FLAT_RED,
+);
+
+const HEXAGON_RADIUS = 40_000;
+const HEXAGON_PADDING = 10_000;
+
+function createHexagon(
+  x: number,
+  y: number,
+  ...attributes: ArtworksRecord[]
+): ArtworksRecord {
+  const path = createClosedNSidedPolygon(6, x, y, HEXAGON_RADIUS);
+  return createRecordPath(path, HEXAGON_PADDING, ...attributes);
+}
+
+const PATH_HEXAGON_1 = createHexagon(150_000, 50_000);
+const PATH_HEXAGON_2 = createHexagon(200_000, 50_000);
+const PATH_HEXAGON_3 = createHexagon(250_000, 50_000, FILL_FLAT_RED);
+const PATH_HEXAGON_4 = createHexagon(300_000, 50_000, FILL_FLAT_RED);
+const PATH_HEXAGON_5 = createHexagon(150_000, 250_000, STROKE_COLOUR_MAGENTA);
+const PATH_HEXAGON_6 = createHexagon(200_000, 250_000, STROKE_COLOUR_MAGENTA);
+const PATH_HEXAGON_7 = createHexagon(
+  250_000,
+  250_000,
+  FILL_FLAT_RED,
+  STROKE_WIDTH_3000,
+);
+const PATH_HEXAGON_8 = createHexagon(
+  300_000,
+  250_000,
+  FILL_FLAT_RED,
+  STROKE_WIDTH_3000,
+);
+
+const LAYER = createRecordLayer(
+  'Foreground',
+  createList(PATH_PENTAGRAM, STROKE_COLOUR_BLUE),
+  createList(PATH_HEXAGON_1),
+  createList(PATH_HEXAGON_2, STROKE_COLOUR_BLUE),
+  createList(PATH_HEXAGON_3, LAYER_FOREGROUND),
+  createList(PATH_HEXAGON_4, STROKE_COLOUR_MAGENTA),
+  createList(PATH_HEXAGON_5, LAYER_FOREGROUND),
+  createList(PATH_HEXAGON_6, FILL_RADIAL_RED_YELLOW),
+  createList(PATH_HEXAGON_7, LAYER_FOREGROUND),
+  createList(PATH_HEXAGON_8, STROKE_COLOUR_BLUE),
+);
+
+export default createArtworks(
+  createList(FILL_FLAT_BLACK_30),
+  createList(STROKE_COLOUR_RED),
+  createList(STROKE_WIDTH_1500),
+  createList(LAYER, PATH_TRIANGLE, STROKE_WIDTH_3000),
+  createList(WORK_AREA),
+);

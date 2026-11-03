@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* ---------- Language / runtime target ---------- */
+    "target": "es2023",
+    "lib": ["es2023"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+
+    /* ---------- Interop / build behaviour ---------- */
+    "composite": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "noEmitOnError": true,
+    "skipLibCheck": true,
+
+    /* ---------- Strictness / correctness ---------- */
+    "strict": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "customConditions": ["@rbrown/riscos-file-viewer"]
+  }
+}

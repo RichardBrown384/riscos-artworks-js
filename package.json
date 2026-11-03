@@ -1,0 +1,63 @@
+{
+  "name": "@rbrown/riscos-file-viewer",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "npx nx build web",
+    "dev": "npx nx serve web",
+    "prettier": "prettier --write packages apps scripts",
+    "typecheck": "npx nx run-many -t typecheck --no-tui",
+    "lint": "npx nx run-many -t lint --no-tui",
+    "examples:generate": "tsx scripts/mts/generate-examples.mts",
+    "examples:compare": "bash scripts/bash/compare-directories.sh",
+    "unpack": "tsx scripts/mts/unpack.mts",
+    "pack": "tsx scripts/mts/pack.mts",
+    "trawl": "tsx scripts/mts/trawl.mts",
+    "stats": "tsx scripts/mts/stats.mts",
+    "svg": "tsx scripts/mts/svg.mts"
+  },
+  "private": true,
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@nx/eslint": "24.0.3",
+    "@nx/js": "24.0.3",
+    "@nx/react": "24.0.3",
+    "@nx/vite": "24.0.3",
+    "@nx/vitest": "24.0.3",
+    "@nx/web": "24.0.3",
+    "@swc-node/register": "1.12.1",
+    "@swc/core": "1.16.13",
+    "@swc/helpers": "0.5.23",
+    "@types/node": "24.13.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.0",
+    "@vitest/ui": "5.0.5",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-dom": "^5.7.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "jiti": "2.7.0",
+    "jsdom": "~22.1.0",
+    "nx": "24.0.3",
+    "prettier": "^3.8.1",
+    "tslib": "^2.3.0",
+    "tsx": "^4.22.4",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.59.2",
+    "vite": "^8.0.0",
+    "vitest": "5.0.5"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-error-boundary": "^6.1.1"
+  },
+  "workspaces": [
+    "packages/*",
+    "packages/file-formats/*",
+    "apps/*"
+  ]
+}

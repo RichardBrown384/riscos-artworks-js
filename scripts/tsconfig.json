@@ -1,0 +1,27 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "types": ["node"]
+  },
+  "include": ["./**/*.mts"],
+  "references": [
+    {
+      "path": "../packages/svg"
+    },
+    {
+      "path": "../packages/riscos-file-formats"
+    },
+    {
+      "path": "../packages/file-formats/computer-concepts-artworks"
+    },
+    {
+      "path": "../packages/file-formats/computer-concepts-artworks-examples"
+    }
+  ]
+}

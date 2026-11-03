@@ -1,0 +1,26 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
+    "emitDeclarationOnly": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../../geometry/tsconfig.lib.json"
+    },
+    {
+      "path": "../riscos-sprite/tsconfig.lib.json"
+    },
+    {
+      "path": "../../intermediate/tsconfig.lib.json"
+    },
+    {
+      "path": "../riscos-draw/tsconfig.lib.json"
+    }
+  ]
+}
