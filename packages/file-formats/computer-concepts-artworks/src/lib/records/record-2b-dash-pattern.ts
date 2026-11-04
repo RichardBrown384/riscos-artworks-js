@@ -1,13 +1,14 @@
+import { check } from '@rbrown/check';
+import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ARTWORKS_RECORD_UNKNOWN_4_BIT_0,
-  ArtworksRecordDashPattern,
   ArtworksDashElements,
+  ArtworksRecordDashPattern,
   DashPattern,
   RecordBodyDashPattern,
 } from '../types/index.js';
-import { BinaryReader, BinaryWriter } from '@rbrown/io';
-import { check } from '@rbrown/check';
 import { ZERO_BOUNDING_BOX } from './record-creation-helpers.js';
 
 function readDashPattern(reader: BinaryReader): DashPattern {

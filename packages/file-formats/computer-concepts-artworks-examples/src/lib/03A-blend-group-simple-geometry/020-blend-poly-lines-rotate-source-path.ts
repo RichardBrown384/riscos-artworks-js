@@ -12,6 +12,13 @@ The vertex mapping appears to be unchanged.
  */
 
 import {
+  ARTWORKS_PATH_TAG_BIT_31,
+  PathBuilder,
+} from '@rbrown/computer-concepts-artworks';
+
+import { AffineTransform } from '../affine-transform.js';
+import { createArtworks, createList } from '../record-creators.js';
+import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,
   JOIN_BEVEL,
@@ -22,16 +29,8 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
 import { createSimplePathBlendGroup } from '../simple-blend-group.js';
 import { createBlendedPathRecordsWithWeights } from '../simulated-blend-group.js';
-import { AffineTransform } from '../affine-transform.js';
-import {
-  PathBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
-} from '@rbrown/computer-concepts-artworks';
 
 const SOURCE_TRANSFORM = new AffineTransform()
   .translate(-150_000, -255_500)

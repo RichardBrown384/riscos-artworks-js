@@ -37,13 +37,13 @@ with the start colour irrespective of the zoom level.
 
  */
 
-import {
-  FILL_FLAT_RED,
-  STROKE_COLOUR_BLUE,
-  STROKE_WIDTH_1280,
-  WORK_AREA,
-} from '../shared-objects.js';
+import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
 
+import {
+  DEFAULT_PALETTE_INDEX_BLACK,
+  DEFAULT_PALETTE_INDEX_MAGENTA,
+  DEFAULT_PALETTE_INDEX_YELLOW,
+} from '../default-palette.js';
 import { createClosedSquare } from '../path-creators.js';
 import {
   createArtworks,
@@ -52,11 +52,11 @@ import {
   createRecordPath,
 } from '../record-creators.js';
 import {
-  DEFAULT_PALETTE_INDEX_BLACK,
-  DEFAULT_PALETTE_INDEX_MAGENTA,
-  DEFAULT_PALETTE_INDEX_YELLOW,
-} from '../default-palette.js';
-import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
+  FILL_FLAT_RED,
+  STROKE_COLOUR_BLUE,
+  STROKE_WIDTH_1280,
+  WORK_AREA,
+} from '../shared-objects.js';
 
 const SIDE_LENGTH = 500_000;
 const OBJECT_SPACING = 50_000;

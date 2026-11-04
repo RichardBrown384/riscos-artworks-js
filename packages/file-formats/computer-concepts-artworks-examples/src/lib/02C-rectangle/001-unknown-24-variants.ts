@@ -22,25 +22,24 @@ the path elements in the files.
 */
 
 import {
-  FILL_FLAT_TRANSPARENT,
-  STROKE_COLOUR_RED,
-  STROKE_WIDTH_960,
-  WORK_AREA,
-} from '../shared-objects.js';
+  ARTWORKS_PATH_TAG_BIT_31,
+  ArtworksPath,
+  List,
+  PathBuilder,
+} from '@rbrown/computer-concepts-artworks';
 
+import { AffineTransform } from '../affine-transform.js';
 import {
   createArtworks,
   createList,
   createRecordRectangle,
 } from '../record-creators.js';
-
-import { AffineTransform } from '../affine-transform.js';
 import {
-  ArtworksPath,
-  List,
-  PathBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
-} from '@rbrown/computer-concepts-artworks';
+  FILL_FLAT_TRANSPARENT,
+  STROKE_COLOUR_RED,
+  STROKE_WIDTH_960,
+  WORK_AREA,
+} from '../shared-objects.js';
 
 const RECTANGLE_PATH: ArtworksPath = new PathBuilder()
   .moveTo(10_000, 10_000, ARTWORKS_PATH_TAG_BIT_31)

@@ -20,8 +20,8 @@ If the join style is missing from the file then the interpolated shapes are not 
 If the join style is present then the attribute is interpolated as expected.
  */
 
+import { createClosedSquare } from '../path-creators.js';
 import { createArtworks, createList } from '../record-creators.js';
-
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_BLACK_30,
@@ -33,9 +33,6 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createClosedSquare } from '../path-creators.js';
-
 import { createSimpleAttributeBlendGroup } from '../simple-blend-group.js';
 
 const GROUP_0 = createSimpleAttributeBlendGroup(

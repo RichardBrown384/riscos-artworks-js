@@ -1,5 +1,14 @@
+import { makeCheckEnumValue } from '@rbrown/check';
+import type { BoundingBox, Point } from '@rbrown/geometry';
+import { BinaryReader } from '@rbrown/io';
+import { spriteFromArrayBuffer } from '@rbrown/riscos-sprite';
+
 import {
   CAP_TAG,
+  JOIN_TAG,
+  OBJECT_TAG,
+  PATH_TAG,
+  WINDING_RULE_TAG,
   type CapTag,
   type DrawDashPattern,
   type DrawFile,
@@ -14,19 +23,10 @@ import {
   type DrawSpriteObject,
   type DrawSpriteRotatedObject,
   type DrawTransform,
-  JOIN_TAG,
   type JoinTag,
-  OBJECT_TAG,
-  PATH_TAG,
   type PathTag,
-  WINDING_RULE_TAG,
   type WindingRuleTag,
 } from './draw-types.js';
-
-import { BinaryReader } from '@rbrown/io';
-import { makeCheckEnumValue } from '@rbrown/check';
-import type { BoundingBox, Point } from '@rbrown/geometry';
-import { spriteFromArrayBuffer } from '@rbrown/riscos-sprite';
 
 const checkJoinTag: (
   value: unknown,

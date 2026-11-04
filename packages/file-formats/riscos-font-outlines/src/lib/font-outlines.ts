@@ -1,14 +1,15 @@
 import { check } from '@rbrown/check';
-import { BinaryReader } from '@rbrown/io';
 import type { BoundingBox, Point } from '@rbrown/geometry';
+import { BinaryReader } from '@rbrown/io';
+
 import {
+  OUTLINE_SEGMENT_TAG,
   type Character,
   type Characters,
   type Chunk,
   type Chunks,
   type Composite,
   type FontPathSegment,
-  OUTLINE_SEGMENT_TAG,
   type Outlines,
   type OutlinesHeader,
   type Scaffold,

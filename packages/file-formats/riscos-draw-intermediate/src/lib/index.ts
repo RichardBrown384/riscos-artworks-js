@@ -1,22 +1,9 @@
 import {
-  CAP_TAG,
-  type CapTag,
-  type DrawFile,
-  type DrawGroupObject,
-  type DrawJpegObject,
-  type DrawObject,
-  type DrawPathObject,
-  type DrawPathSegment,
-  type DrawSpriteObject,
-  type DrawSpriteRotatedObject,
-  type DrawTransform,
-  JOIN_TAG,
-  type JoinTag,
-  OBJECT_TAG,
-  PATH_TAG,
-  WINDING_RULE_TAG,
-  type WindingRuleTag,
-} from '@rbrown/riscos-draw';
+  bboxHeight,
+  bboxWidth,
+  transformTranslate,
+  type Transform,
+} from '@rbrown/geometry';
 import type {
   IrColour,
   IrFill,
@@ -30,14 +17,30 @@ import type {
   IrPathSegment,
   IrRootNode,
 } from '@rbrown/intermediate';
-import { spriteToImageSource } from '@rbrown/riscos-sprite';
 import {
-  bboxHeight,
-  bboxWidth,
-  type Transform,
-  transformTranslate,
-} from '@rbrown/geometry';
-import { spriteOsUnitHeight, spriteOsUnitWidth } from '@rbrown/riscos-sprite';
+  CAP_TAG,
+  JOIN_TAG,
+  OBJECT_TAG,
+  PATH_TAG,
+  WINDING_RULE_TAG,
+  type CapTag,
+  type DrawFile,
+  type DrawGroupObject,
+  type DrawJpegObject,
+  type DrawObject,
+  type DrawPathObject,
+  type DrawPathSegment,
+  type DrawSpriteObject,
+  type DrawSpriteRotatedObject,
+  type DrawTransform,
+  type JoinTag,
+  type WindingRuleTag,
+} from '@rbrown/riscos-draw';
+import {
+  spriteOsUnitHeight,
+  spriteOsUnitWidth,
+  spriteToImageSource,
+} from '@rbrown/riscos-sprite';
 
 const TRANSFORM_DIVISOR = 65536.0;
 

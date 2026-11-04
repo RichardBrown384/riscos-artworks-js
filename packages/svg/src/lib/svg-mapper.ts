@@ -1,30 +1,32 @@
 import {
-  irBoundingBox,
-  type IrColour,
-  IrFill,
-  IrGradientStop,
-  type IrGroupNode,
-  type IrImage,
-  type IrImageNode,
-  IrLinearFill,
-  type IrLineCap,
-  type IrNode,
-  type IrPathNode,
-  type IrPathSegment,
-  IrRadialFill,
-  type IrRootNode,
-} from '@rbrown/intermediate';
-import {
   bboxEmpty,
   bboxHeight,
   bboxWidth,
   IDENTITY_TRANSFORM,
-  type Point,
-  type Transform,
   transformConcatenate,
   transformScale,
   transformTranslate,
+  type Point,
+  type Transform,
 } from '@rbrown/geometry';
+import {
+  irBoundingBox,
+  IrFill,
+  IrGradientStop,
+  IrLinearFill,
+  IrRadialFill,
+  type IrColour,
+  type IrGroupNode,
+  type IrImage,
+  type IrImageNode,
+  type IrLineCap,
+  type IrNode,
+  type IrPathNode,
+  type IrPathSegment,
+  type IrRootNode,
+} from '@rbrown/intermediate';
+import { pngCreateImage } from '@rbrown/png';
+
 import {
   SvgDefinitionNode,
   SvgGradientStopNode,
@@ -36,7 +38,6 @@ import {
   SvgRadialGradientNode,
   SvgRootNode,
 } from './svg-types.js';
-import { pngCreateImage } from '@rbrown/png';
 
 interface SvgContext {
   defs: SvgDefinitionNode[];

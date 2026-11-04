@@ -1,7 +1,8 @@
+import { ImageSource } from '@rbrown/imaging';
 import { BinaryWriter } from '@rbrown/io';
+
 import { zlibFromArray } from '../zlib/index.js';
 import { crc } from './crc-32.js';
-import { ImageSource } from '@rbrown/imaging';
 
 const FILE_HEADER = new Uint8Array([
   0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,

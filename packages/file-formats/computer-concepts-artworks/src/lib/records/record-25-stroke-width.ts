@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ARTWORKS_RECORD_UNKNOWN_4_BIT_0,

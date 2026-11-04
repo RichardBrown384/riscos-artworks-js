@@ -8,6 +8,8 @@ To demonstrate the smallest possible blend group without a dash pattern crashes
 
  */
 
+import { createClosedSquare } from '../path-creators.js';
+import { createArtworks, createList } from '../record-creators.js';
 import {
   FILL_FLAT_BLUE,
   FILL_FLAT_RED,
@@ -15,9 +17,6 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-import { createClosedSquare } from '../path-creators.js';
 import { createSimpleAttributeBlendGroup } from '../simple-blend-group.js';
 
 const GROUP_0 = createSimpleAttributeBlendGroup(

@@ -6,7 +6,6 @@ To demonstrate paths !AWViewer
  */
 
 import { createArtworks, createList } from '../record-creators.js';
-
 import {
   FILL_FLAT_TRANSPARENT,
   LAYER_FOREGROUND,

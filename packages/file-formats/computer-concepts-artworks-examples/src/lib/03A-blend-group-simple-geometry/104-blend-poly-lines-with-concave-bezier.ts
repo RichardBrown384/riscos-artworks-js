@@ -34,6 +34,12 @@ changes in the interpolated shape.
  */
 
 import {
+  ARTWORKS_PATH_TAG_BIT_31,
+  PathBuilder,
+} from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks, createList } from '../record-creators.js';
+import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,
   JOIN_BEVEL,
@@ -44,14 +50,7 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
 import { createSimplePathBlendGroup } from '../simple-blend-group.js';
-import {
-  PathBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
-} from '@rbrown/computer-concepts-artworks';
 import { createBlendedPathRecordsWithWeights } from '../simulated-blend-group.js';
 
 const CONTROL_POINT_X = 154_317;

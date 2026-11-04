@@ -5,6 +5,7 @@ Purpose:
 To demonstrate dash patterns with offset zero.
  */
 
+import { createArtworks, createList } from '../record-creators.js';
 import {
   DASH_PATTERN_OFFSET_0,
   FILL_FLAT_TRANSPARENT,
@@ -14,8 +15,6 @@ import {
   STROKE_WIDTH_3000,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
 
 export default createArtworks(
   createList(FILL_FLAT_TRANSPARENT),

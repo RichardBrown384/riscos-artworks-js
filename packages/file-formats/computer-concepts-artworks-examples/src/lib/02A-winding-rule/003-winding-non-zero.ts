@@ -5,6 +5,7 @@ Purpose:
 To demonstrate the non-zero winding rule
  */
 
+import { createArtworks, createList } from '../record-creators.js';
 import {
   FILL_FLAT_RED,
   LAYER_FOREGROUND,
@@ -14,8 +15,6 @@ import {
   WINDING_RULE_NON_ZERO,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
 
 export default createArtworks(
   createList(FILL_FLAT_RED),

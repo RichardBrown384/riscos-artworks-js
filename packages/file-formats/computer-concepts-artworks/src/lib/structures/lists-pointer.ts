@@ -1,6 +1,7 @@
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
-import { checkPointer } from './check-pointer.js';
+
 import { FilePointer } from '../types/index.js';
+import { checkPointer } from './check-pointer.js';
 
 export function readListsPointer(reader: BinaryReader): FilePointer {
   const position = reader.tell();

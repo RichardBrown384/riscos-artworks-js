@@ -1,21 +1,21 @@
-import { IrRootNode } from '@rbrown/intermediate';
-import { drawIsHeaderPresent, drawFromArrayBuffer } from '@rbrown/riscos-draw';
-import {
-  fontOutlinesIsHeaderPresent,
-  fontOutlinesFromArrayBuffer,
-} from '@rbrown/riscos-font-outlines';
-import {
-  spriteAreaFromArrayBuffer,
-  spriteAreaIsHeaderPresent,
-} from '@rbrown/riscos-sprite';
 import {
   artworksFromArrayBuffer,
   artworksIsHeaderPresent,
 } from '@rbrown/computer-concepts-artworks';
-import { drawMapToIntermediate } from '@rbrown/riscos-draw-intermediate';
-import { spriteAreaMapToIntermediate } from '@rbrown/riscos-sprite-intermediate';
-import { fontOutlinesMapToIntermediate } from '@rbrown/riscos-font-outlines-intermediate';
 import { artworksMapToIntermediate } from '@rbrown/computer-concepts-artworks-intermediate';
+import { IrRootNode } from '@rbrown/intermediate';
+import { drawFromArrayBuffer, drawIsHeaderPresent } from '@rbrown/riscos-draw';
+import { drawMapToIntermediate } from '@rbrown/riscos-draw-intermediate';
+import {
+  fontOutlinesFromArrayBuffer,
+  fontOutlinesIsHeaderPresent,
+} from '@rbrown/riscos-font-outlines';
+import { fontOutlinesMapToIntermediate } from '@rbrown/riscos-font-outlines-intermediate';
+import {
+  spriteAreaFromArrayBuffer,
+  spriteAreaIsHeaderPresent,
+} from '@rbrown/riscos-sprite';
+import { spriteAreaMapToIntermediate } from '@rbrown/riscos-sprite-intermediate';
 
 // TODO the plan here is to pass the buffer directly to
 // the *MapToIntermediate

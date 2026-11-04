@@ -24,6 +24,21 @@ linear and radial fills properly. The rule appears to be that before
 the halfway mark use the linear fill and beyond that use the radial fill.
  */
 
+import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
+
+import {
+  DEFAULT_PALETTE_INDEX_CYAN,
+  DEFAULT_PALETTE_INDEX_RED,
+  DEFAULT_PALETTE_INDEX_WHITE,
+  DEFAULT_PALETTE_INDEX_YELLOW,
+} from '../default-palette.js';
+import { createClosedRectangle, createClosedSquare } from '../path-creators.js';
+import {
+  createArtworks,
+  createList,
+  createRecordFillColourGradient,
+  createRecordPath,
+} from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_BLUE,
@@ -35,25 +50,7 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import {
-  createArtworks,
-  createList,
-  createRecordFillColourGradient,
-  createRecordPath,
-} from '../record-creators.js';
-
-import { createClosedRectangle, createClosedSquare } from '../path-creators.js';
-
 import { createSimpleAttributeBlendGroup } from '../simple-blend-group.js';
-
-import {
-  DEFAULT_PALETTE_INDEX_CYAN,
-  DEFAULT_PALETTE_INDEX_RED,
-  DEFAULT_PALETTE_INDEX_WHITE,
-  DEFAULT_PALETTE_INDEX_YELLOW,
-} from '../default-palette.js';
-import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
 
 const GROUP_0 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 100_000, 100_000),

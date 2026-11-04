@@ -5,6 +5,7 @@ Purpose:
 To demonstrate that the default winding rule is even-odd
  */
 
+import { createArtworks, createList } from '../record-creators.js';
 import {
   FILL_FLAT_RED,
   LAYER_FOREGROUND,
@@ -13,7 +14,6 @@ import {
   STROKE_WIDTH_3000,
   WORK_AREA,
 } from '../shared-objects.js';
-import { createArtworks, createList } from '../record-creators.js';
 
 export default createArtworks(
   createList(FILL_FLAT_RED),

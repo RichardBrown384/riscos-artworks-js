@@ -1,10 +1,11 @@
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ARTWORKS_RECORD_UNKNOWN_4_BIT_0,
   ArtworksRecordWindingRule,
-  RecordBodyWindingRule,
   ArtworksWindingRule,
+  RecordBodyWindingRule,
 } from '../types/index.js';
 import { ZERO_BOUNDING_BOX } from './record-creation-helpers.js';
 

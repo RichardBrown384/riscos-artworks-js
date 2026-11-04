@@ -1,18 +1,17 @@
-import {
-  type Character,
-  type Chunks,
-  type FontPathSegment,
-  OUTLINE_SEGMENT_TAG,
-  type Outlines,
-} from '@rbrown/riscos-font-outlines';
-
+import { transformTranslate, type Transform } from '@rbrown/geometry';
 import type {
   IrGroupNode,
   IrPathNode,
   IrPathSegment,
   IrRootNode,
 } from '@rbrown/intermediate';
-import { type Transform, transformTranslate } from '@rbrown/geometry';
+import {
+  OUTLINE_SEGMENT_TAG,
+  type Character,
+  type Chunks,
+  type FontPathSegment,
+  type Outlines,
+} from '@rbrown/riscos-font-outlines';
 
 function mapFillPathDefinition(fillPath: FontPathSegment[]): IrPathSegment[] {
   const segments: IrPathSegment[] = [];

@@ -30,6 +30,21 @@ Cases 6 and 7 demonstrate that if either the source or target is transparent
 then only then end colour is used.
  */
 
+import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
+
+import {
+  DEFAULT_PALETTE_INDEX_CYAN,
+  DEFAULT_PALETTE_INDEX_RED,
+  DEFAULT_PALETTE_INDEX_WHITE,
+  DEFAULT_PALETTE_INDEX_YELLOW,
+} from '../default-palette.js';
+import { createClosedRectangle, createClosedSquare } from '../path-creators.js';
+import {
+  createArtworks,
+  createList,
+  createRecordFillColourGradient,
+  createRecordPath,
+} from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_BLUE,
@@ -41,25 +56,7 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import {
-  createArtworks,
-  createList,
-  createRecordFillColourGradient,
-  createRecordPath,
-} from '../record-creators.js';
-
-import { createClosedRectangle, createClosedSquare } from '../path-creators.js';
-
 import { createSimpleAttributeBlendGroup } from '../simple-blend-group.js';
-
-import {
-  DEFAULT_PALETTE_INDEX_CYAN,
-  DEFAULT_PALETTE_INDEX_RED,
-  DEFAULT_PALETTE_INDEX_WHITE,
-  DEFAULT_PALETTE_INDEX_YELLOW,
-} from '../default-palette.js';
-import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
 
 const GROUP_0 = createSimpleAttributeBlendGroup(
   createClosedSquare(100_000, 100_000, 100_000),

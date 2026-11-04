@@ -1,4 +1,5 @@
 import { BinaryReader } from '@rbrown/io';
+
 import { Sprite, SpriteArea, SpriteAreaControlBlock } from '../sprite-types.js';
 import { spriteFromArrayBuffer } from '../sprite/index.js';
 

@@ -1,19 +1,19 @@
 import {
-  createList,
-  createRecordBlendGroup,
-  createRecordBlendGroupOptions,
-  createRecordBlendPath,
-  createRecordPath,
-} from './record-creators.js';
-
-import { DASH_PATTERN_EMPTY } from './shared-objects.js';
-import {
   ArtworksPath,
   ArtworksRecord,
   List,
   pathBoundingBox,
 } from '@rbrown/computer-concepts-artworks';
 import { bboxUnion } from '@rbrown/geometry';
+
+import {
+  createList,
+  createRecordBlendGroup,
+  createRecordBlendGroupOptions,
+  createRecordBlendPath,
+  createRecordPath,
+} from './record-creators.js';
+import { DASH_PATTERN_EMPTY } from './shared-objects.js';
 
 function createBlendPath(path: ArtworksPath): ArtworksPath {
   return path.map((x) => {

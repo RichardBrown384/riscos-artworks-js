@@ -1,18 +1,19 @@
-import {
-  ARTWORKS_PATH_TAG,
-  ArtworksPath,
-  ArtworksPathSegment,
-  ArtworksPathTag,
-} from '../types/index.js';
-import { BinaryReader, BinaryWriter } from '@rbrown/io';
 import { makeCheckEnumValue } from '@rbrown/check';
-import { readPoint, writePoint } from './point.js';
 import {
   bboxFromPoints,
   bboxInflate,
   BoundingBox,
   Point,
 } from '@rbrown/geometry';
+import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
+import {
+  ARTWORKS_PATH_TAG,
+  ArtworksPath,
+  ArtworksPathSegment,
+  ArtworksPathTag,
+} from '../types/index.js';
+import { readPoint, writePoint } from './point.js';
 
 const checkPathTag: (
   value: unknown,

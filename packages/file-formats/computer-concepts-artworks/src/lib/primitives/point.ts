@@ -1,5 +1,5 @@
-import { BinaryReader, BinaryWriter } from '@rbrown/io';
 import { Point } from '@rbrown/geometry';
+import { BinaryReader, BinaryWriter } from '@rbrown/io';
 
 export function readPoint(reader: BinaryReader): Point {
   reader.aligned(4, 'misaligned point');

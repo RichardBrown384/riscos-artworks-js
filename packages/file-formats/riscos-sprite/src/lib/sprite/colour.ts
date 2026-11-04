@@ -1,5 +1,6 @@
-import { Sprite, SpritePaletteFormat } from '../sprite-types.js';
 import { packRGBA32 } from '@rbrown/imaging';
+
+import { Sprite, SpritePaletteFormat } from '../sprite-types.js';
 
 function expand5to8(v: number): number {
   return (v << 3) | ((v >>> 2) & 0xff);

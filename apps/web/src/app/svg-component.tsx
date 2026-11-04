@@ -1,4 +1,3 @@
-import React from 'react';
 import { intermediateFromArrayBuffer } from '@rbrown/riscos-file-formats';
 import {
   svgFromIntermediate,
@@ -6,6 +5,7 @@ import {
   type SvgNode,
   type SvgRootNode,
 } from '@rbrown/svg';
+import React from 'react';
 
 function useObjectURL(blob: Blob): string {
   const url = React.useMemo(() => URL.createObjectURL(blob), [blob]);

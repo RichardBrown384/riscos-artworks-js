@@ -12,6 +12,8 @@ Note a couple of issues:
 
  */
 
+import { createClosedSquare } from '../path-creators.js';
+import { createArtworks, createList } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_BLUE,
@@ -20,11 +22,6 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
-import { createClosedSquare } from '../path-creators.js';
-
 import { createSimpleAttributeBlendGroup } from '../simple-blend-group.js';
 
 function createSimpleAttributeBlendGroups() {

@@ -11,6 +11,10 @@ split the triangle at the same point (midway along the second edge).
 
  */
 
+import { degreesToRadians } from '@rbrown/geometry';
+
+import { createClosedNSidedPolygon } from '../path-creators.js';
+import { createArtworks, createList } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,
@@ -22,17 +26,11 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
-import { createClosedNSidedPolygon } from '../path-creators.js';
-
 import { createSimplePathBlendGroup } from '../simple-blend-group.js';
 import {
   convertInsertsListToWeightsList,
   createBlendedPathRecordsWithWeights,
 } from '../simulated-blend-group.js';
-import { degreesToRadians } from '@rbrown/geometry';
 
 const GROUP_0_START_PATH = createClosedNSidedPolygon(
   4,

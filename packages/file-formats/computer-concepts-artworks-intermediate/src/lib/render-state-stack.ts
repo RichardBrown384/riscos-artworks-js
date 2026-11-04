@@ -8,6 +8,7 @@ import {
   ArtworksRecordStrokeWidth,
   ArtworksRecordWindingRule,
 } from '@rbrown/computer-concepts-artworks';
+
 import { preprocessEdgeCaseFills } from './preprocess-edge-case-fills.js';
 import { RenderState } from './render-state.js';
 

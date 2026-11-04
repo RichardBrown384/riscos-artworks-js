@@ -15,6 +15,13 @@ interpolated using the normal code.
  */
 
 import {
+  ARTWORKS_PATH_TAG_BIT_31,
+  PathBuilder,
+} from '@rbrown/computer-concepts-artworks';
+
+import { createClosedSquare } from '../path-creators.js';
+import { createArtworks, createList } from '../record-creators.js';
+import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,
   JOIN_BEVEL,
@@ -25,17 +32,8 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
-import { createClosedSquare } from '../path-creators.js';
-
 import { createSimplePathBlendGroup } from '../simple-blend-group.js';
 import { createBlendedPathRecordsWithWeights } from '../simulated-blend-group.js';
-import {
-  PathBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
-} from '@rbrown/computer-concepts-artworks';
 
 const GROUP_0_START_PATH = createClosedSquare(100_000, 100_000, 100_000);
 const GROUP_0_END_PATH = createClosedSquare(1_000_000, 100_000, 100_000);

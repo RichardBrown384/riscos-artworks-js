@@ -6,7 +6,6 @@ To demonstrate that an empty dash pattern does nothing
  */
 
 import { createArtworks, createList } from '../record-creators.js';
-
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,

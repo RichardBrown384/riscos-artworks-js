@@ -1,8 +1,9 @@
-import { Sprite } from '../sprite-types.js';
-import { PixelSampler } from './sampler/index.js';
-import { createColourCodec } from './colour.js';
 import { check } from '@rbrown/check';
 import { ImageSource } from '@rbrown/imaging';
+
+import { Sprite } from '../sprite-types.js';
+import { createColourCodec } from './colour.js';
+import { PixelSampler } from './sampler/index.js';
 
 export function spriteToImageSource(sprite: Sprite): ImageSource {
   const sampler = new PixelSampler(sprite);

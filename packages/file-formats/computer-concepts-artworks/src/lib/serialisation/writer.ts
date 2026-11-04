@@ -1,13 +1,7 @@
-import { BinaryWriter } from '@rbrown/io';
 import { check } from '@rbrown/check';
+import { BinaryWriter } from '@rbrown/io';
 
-import {
-  ArtworksFile,
-  ArtworksHeader,
-  ArtworksRecord,
-  List,
-} from '../types/index.js';
-
+import { writeRecordBody, writeRecordHeader } from '../records/index.js';
 import {
   createListPointer,
   createListsPointer,
@@ -17,9 +11,12 @@ import {
   writeListsPointer,
   writeRecordPointer,
 } from '../structures/index.js';
-
-import { writeRecordBody, writeRecordHeader } from '../records/index.js';
-
+import {
+  ArtworksFile,
+  ArtworksHeader,
+  ArtworksRecord,
+  List,
+} from '../types/index.js';
 import { SubLists, SubListsElement } from './sublists.js';
 
 export class ArtworksWriter {

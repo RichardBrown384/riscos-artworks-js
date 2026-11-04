@@ -1,4 +1,5 @@
 import { BinaryReader } from '@rbrown/io';
+
 import { RecordBodySprite, SpritePalette } from '../types/index.js';
 
 function readSpritePalette(reader: BinaryReader): SpritePalette {

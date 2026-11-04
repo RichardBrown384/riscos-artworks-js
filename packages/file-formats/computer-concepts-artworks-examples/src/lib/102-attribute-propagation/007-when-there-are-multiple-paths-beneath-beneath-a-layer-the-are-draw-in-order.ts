@@ -12,6 +12,16 @@ To demonstrate the order in which objects beneath a layer are rendered.
  */
 
 import {
+  createClosedNSidedPolygon,
+  createClosedPentagram,
+} from '../path-creators.js';
+import {
+  createArtworks,
+  createList,
+  createRecordLayer,
+  createRecordPath,
+} from '../record-creators.js';
+import {
   FILL_FLAT_BLACK_30,
   FILL_FLAT_RED,
   FILL_RADIAL_RED_YELLOW,
@@ -24,18 +34,6 @@ import {
   STROKE_WIDTH_6000,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import {
-  createClosedNSidedPolygon,
-  createClosedPentagram,
-} from '../path-creators.js';
-
-import {
-  createArtworks,
-  createList,
-  createRecordLayer,
-  createRecordPath,
-} from '../record-creators.js';
 
 const PENTAGRAM = createClosedPentagram(100_000, 100_000, 80_000);
 const PATH_PENTAGRAM = createRecordPath(

@@ -1,7 +1,8 @@
+import { Point } from '@rbrown/geometry';
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import { ArtworksPolyline } from '../types/index.js';
 import { readPoint, writePoint } from './point.js';
-import { Point } from '@rbrown/geometry';
 
 export function readPolyline(
   reader: BinaryReader,

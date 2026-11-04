@@ -5,6 +5,7 @@ Purpose:
 Demonstrates arrow head end markers
  */
 
+import { createArtworks, createList } from '../record-creators.js';
 import {
   END_MARKER_ARROW_HEAD_W4_H6,
   FILL_FLAT_TRANSPARENT,
@@ -14,8 +15,6 @@ import {
   STROKE_WIDTH_3000,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
 
 export default createArtworks(
   createList(FILL_FLAT_TRANSPARENT),

@@ -16,6 +16,8 @@ The rule appears to be that before the halfway point use the start rule and
 beyond that the end rule.
  */
 
+import { createClosedPentagram } from '../path-creators.js';
+import { createArtworks, createList } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   END_CAP_BUTT,
@@ -27,11 +29,6 @@ import {
   WINDING_RULE_NON_ZERO,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
-import { createClosedPentagram } from '../path-creators.js';
-
 import { createSimpleAttributeBlendGroup } from '../simple-blend-group.js';
 
 const GROUP_0 = createSimpleAttributeBlendGroup(

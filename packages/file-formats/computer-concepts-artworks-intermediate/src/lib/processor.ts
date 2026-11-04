@@ -1,15 +1,14 @@
 import {
   ARTWORKS_RECORD_TYPE_TAG,
-  ArtworksRecord,
-  List,
   ArtworksPath,
+  ArtworksRecord,
   ArtworksRecordWithPath,
+  List,
 } from '@rbrown/computer-concepts-artworks';
 
 import { Mapper } from './mapper.js';
-
-import { RECORD_FILL_FLAT_TRANSPARENT, RenderState } from './render-state.js';
 import { RenderStateStack } from './render-state-stack.js';
+import { RECORD_FILL_FLAT_TRANSPARENT, RenderState } from './render-state.js';
 
 function isBitSet(v: number, n: number): boolean {
   return ((v >>> n) & 1) !== 0;

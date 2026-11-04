@@ -13,8 +13,9 @@ import {
   Palette,
 } from '@rbrown/computer-concepts-artworks';
 import { IrRootNode } from '@rbrown/intermediate';
-import { denormalise } from './normalisation.js';
+
 import { Mapper } from './mapper.js';
+import { denormalise } from './normalisation.js';
 import { artworksProcess } from './processor.js';
 import { RECORD_FILL_FLAT_TRANSPARENT, RenderState } from './render-state.js';
 

@@ -5,6 +5,7 @@ Purpose:
 To demonstrate setting the stroke width.
  */
 
+import { createArtworks, createList } from '../record-creators.js';
 import {
   FILL_FLAT_BLACK_30,
   LAYER_FOREGROUND,
@@ -13,8 +14,6 @@ import {
   STROKE_WIDTH_1500,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
 
 export default createArtworks(
   createList(FILL_FLAT_BLACK_30),

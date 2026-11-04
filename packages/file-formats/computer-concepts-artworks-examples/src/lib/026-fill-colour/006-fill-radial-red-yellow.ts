@@ -5,6 +5,7 @@ Purpose:
 To demonstrate the radial gradient fills !AWViewer
  */
 
+import { createArtworks, createList } from '../record-creators.js';
 import {
   FILL_RADIAL_RED_YELLOW,
   LAYER_FOREGROUND,
@@ -13,8 +14,6 @@ import {
   STROKE_WIDTH_3000,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
 
 export default createArtworks(
   createList(FILL_RADIAL_RED_YELLOW),

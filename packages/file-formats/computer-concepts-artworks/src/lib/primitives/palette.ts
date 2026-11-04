@@ -1,5 +1,6 @@
-import { Palette, PaletteEntry } from '../types/index.js';
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
+import { Palette, PaletteEntry } from '../types/index.js';
 
 const DEFAULT_FLAG_BITS = 0x24; // Not sure why these are often set, maybe UI options
 

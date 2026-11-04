@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+
 import { artworksFromArrayBuffer } from '@rbrown/computer-concepts-artworks';
 
 function getFilesRecursively(directory: string): string[] {

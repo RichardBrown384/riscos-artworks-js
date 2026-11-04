@@ -1,5 +1,6 @@
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+
 import { ErrorFallbackComponent } from './error-fallback-component';
 import { SVGComponent } from './svg-component';
 import { useFileBuffer } from './use-file-buffer';

@@ -10,6 +10,7 @@ the butt and square caps with the opposite end without the need of another refer
 It's then also possible to infer the default (butt caps)
  */
 
+import { createArtworks, createList } from '../record-creators.js';
 import {
   END_CAP_ROUND,
   FILL_FLAT_TRANSPARENT,
@@ -19,7 +20,6 @@ import {
   STROKE_WIDTH_3000,
   WORK_AREA,
 } from '../shared-objects.js';
-import { createArtworks, createList } from '../record-creators.js';
 
 export default createArtworks(
   createList(FILL_FLAT_TRANSPARENT),

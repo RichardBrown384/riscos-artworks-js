@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import {
   ARTWORKS_RECORD_BODY_LAYER_UNKNOWN_24_BIT_0,
   ARTWORKS_RECORD_BODY_LAYER_UNKNOWN_24_BIT_3,

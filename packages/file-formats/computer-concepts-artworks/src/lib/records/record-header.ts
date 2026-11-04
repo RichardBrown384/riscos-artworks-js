@@ -1,11 +1,12 @@
+import { makeCheckEnumValue } from '@rbrown/check';
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import { readBoundingBox, writeBoundingBox } from '../primitives/index.js';
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ArtworksRecordHeader,
   ArtworksRecordType,
 } from '../types/index.js';
-import { makeCheckEnumValue } from '@rbrown/check';
 
 const checkArtworksRecordType: (
   value: unknown,

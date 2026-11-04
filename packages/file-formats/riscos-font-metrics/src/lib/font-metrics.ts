@@ -1,12 +1,13 @@
 import { check } from '@rbrown/check';
+import { BoundingBox } from '@rbrown/geometry';
 import { BinaryReader } from '@rbrown/io';
+
 import {
   FontMetricKerningPair,
   FontMetrics,
   FontMetricsKerningPairs,
   FontMetricsMiscellaneous,
 } from './font-metrics-types.js';
-import { BoundingBox } from '@rbrown/geometry';
 
 function isBitClear(v: number, n: number): boolean {
   return ((v >>> n) & 1) === 0;

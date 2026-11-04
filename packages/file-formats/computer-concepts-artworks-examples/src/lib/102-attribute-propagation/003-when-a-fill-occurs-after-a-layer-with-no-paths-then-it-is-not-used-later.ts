@@ -8,6 +8,7 @@ then it is not used on subsequent paths on following layers.
 !AWViewer renders a red triangle, not 30% black.
  */
 
+import { createArtworks, createList } from '../record-creators.js';
 import {
   FILL_FLAT_BLACK_30,
   FILL_FLAT_RED,
@@ -15,8 +16,6 @@ import {
   PATH_TRIANGLE,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
 
 export default createArtworks(
   createList(FILL_FLAT_RED),

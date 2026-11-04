@@ -1,32 +1,30 @@
 import {
-  STROKE_COLOUR_BLUE,
-  STROKE_COLOUR_TRANSPARENT,
-  STROKE_WIDTH_1280,
-} from '../../shared-objects.js';
-
-import {
-  DEFAULT_PALETTE_INDEX_BLACK,
-  DEFAULT_PALETTE_INDEX_WHITE,
-} from '../../default-palette.js';
-
-import {
-  createList,
-  createRecordFillColourGradient,
-  createRecordPath,
-  createRecordRoundedRectangle,
-} from '../../record-creators.js';
-
-import { AffineTransform } from '../../affine-transform.js';
-import {
   ARTWORKS_FILL_TYPE_TAG,
+  ARTWORKS_PATH_TAG_BIT_31,
   ArtworksPath,
   ArtworksPolyline,
   ArtworksRecord,
   List,
   PathBuilder,
   PolylineBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
 } from '@rbrown/computer-concepts-artworks';
+
+import { AffineTransform } from '../../affine-transform.js';
+import {
+  DEFAULT_PALETTE_INDEX_BLACK,
+  DEFAULT_PALETTE_INDEX_WHITE,
+} from '../../default-palette.js';
+import {
+  createList,
+  createRecordFillColourGradient,
+  createRecordPath,
+  createRecordRoundedRectangle,
+} from '../../record-creators.js';
+import {
+  STROKE_COLOUR_BLUE,
+  STROKE_COLOUR_TRANSPARENT,
+  STROKE_WIDTH_1280,
+} from '../../shared-objects.js';
 
 const FILL_START_X = 360000;
 const FILL_START_Y = 194900;

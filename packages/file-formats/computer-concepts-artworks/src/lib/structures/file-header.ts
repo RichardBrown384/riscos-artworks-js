@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import { ArtworksHeader } from '../types/index.js';
 
 export const HEADER_IDENTIFIER = 'Top!';

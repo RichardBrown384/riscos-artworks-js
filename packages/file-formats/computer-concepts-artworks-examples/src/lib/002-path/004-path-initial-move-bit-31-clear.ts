@@ -7,6 +7,12 @@ To demonstrate that if bit 31 of the initial move is clear then the path isn't f
 Example 005 tests this example more fully.
  */
 
+import { createClosedEquilateralTriangle } from '../path-creators.js';
+import {
+  createArtworks,
+  createList,
+  createRecordPath,
+} from '../record-creators.js';
 import {
   FILL_FLAT_RED,
   LAYER_FOREGROUND,
@@ -14,14 +20,6 @@ import {
   STROKE_WIDTH_1280,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createClosedEquilateralTriangle } from '../path-creators.js';
-
-import {
-  createArtworks,
-  createList,
-  createRecordPath,
-} from '../record-creators.js';
 
 const MOVE_OPTIONS = 0;
 

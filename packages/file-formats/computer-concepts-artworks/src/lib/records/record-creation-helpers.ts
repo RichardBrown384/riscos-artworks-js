@@ -1,6 +1,7 @@
 import { BoundingBox } from '@rbrown/geometry';
-import { ArtworksRecord, List } from '../types/index.js';
+
 import { createList } from '../structures/index.js';
+import { ArtworksRecord, List } from '../types/index.js';
 
 export const ZERO_BOUNDING_BOX: BoundingBox = {
   minX: 0,

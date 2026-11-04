@@ -1,11 +1,12 @@
-import { Sprite, SpriteArea } from '@rbrown/riscos-sprite';
+import { transformTranslate } from '@rbrown/geometry';
+import { IrImage, IrImageNode, IrRootNode } from '@rbrown/intermediate';
 import {
-  spriteToImageSource,
+  Sprite,
+  SpriteArea,
   spriteOsUnitHeight,
   spriteOsUnitWidth,
+  spriteToImageSource,
 } from '@rbrown/riscos-sprite';
-import { IrImage, IrImageNode, IrRootNode } from '@rbrown/intermediate';
-import { transformTranslate } from '@rbrown/geometry';
 
 function mapSprites(sprites: Sprite[]): IrImageNode[] {
   const nodes: IrImageNode[] = [];

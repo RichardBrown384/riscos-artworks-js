@@ -1,6 +1,7 @@
 import { BinaryReader } from '@rbrown/io';
-import { RecordBodyPerspectiveGroup } from '../types/index.js';
+
 import { readBoundingBox, readPath } from '../primitives/index.js';
+import { RecordBodyPerspectiveGroup } from '../types/index.js';
 
 export function readRecordBodyPerspectiveGroup(
   reader: BinaryReader,
