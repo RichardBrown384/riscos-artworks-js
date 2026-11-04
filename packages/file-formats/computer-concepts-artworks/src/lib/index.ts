@@ -1,10 +1,11 @@
-import { ArtworksFile } from './types/index.js';
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import { ArtworksReader, ArtworksWriter } from './serialisation/index.js';
 import {
   isArtworksHeaderValid,
   readArtworksHeader,
 } from './structures/index.js';
+import { ArtworksFile } from './types/index.js';
 
 export * from './types/artworks-types.js';
 export {

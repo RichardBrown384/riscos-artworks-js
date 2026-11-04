@@ -1,11 +1,12 @@
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
+import { pathBoundingBox, readPath, writePath } from '../primitives/index.js';
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ArtworksPath,
   ArtworksRecord,
   RecordBodyBlendPath,
 } from '../types/index.js';
-import { pathBoundingBox, readPath, writePath } from '../primitives/index.js';
 
 export function readRecordBodyBlendPath(
   reader: BinaryReader,

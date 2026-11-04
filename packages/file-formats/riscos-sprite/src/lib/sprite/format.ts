@@ -1,10 +1,11 @@
+import { check, checkIf } from '@rbrown/check';
+import { BitField } from '@rbrown/io';
+
 import type {
   SpriteControlBlock,
   SpriteFormat,
   SpritePaletteEntry,
 } from '../sprite-types.js';
-import { check, checkIf } from '@rbrown/check';
-import { BitField } from '@rbrown/io';
 
 type RiscOsModeProperties = {
   xEigenFactor: number;

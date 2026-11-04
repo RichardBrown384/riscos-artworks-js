@@ -10,6 +10,7 @@ Therefore, !AWViewer should render a 30% black pentagram in the background
 and a red triangle on top.
  */
 
+import { createArtworks, createList } from '../record-creators.js';
 import {
   FILL_FLAT_BLACK_30,
   FILL_FLAT_RED,
@@ -18,8 +19,6 @@ import {
   STROKE_COLOUR_BLUE,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
 
 export default createArtworks(
   createList(FILL_FLAT_RED),

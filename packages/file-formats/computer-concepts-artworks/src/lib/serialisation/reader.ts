@@ -1,8 +1,8 @@
-import { BinaryReader } from '@rbrown/io';
 import { check } from '@rbrown/check';
+import { BinaryReader } from '@rbrown/io';
 
-import { ArtworksFile, ArtworksRecord, List, Palette } from '../types/index.js';
-
+import { readPalette } from '../primitives/index.js';
+import { readRecordBody, readRecordHeader } from '../records/index.js';
 import {
   createListWithPointer,
   readArtworksHeader,
@@ -10,10 +10,7 @@ import {
   readListsPointer,
   readRecordPointer,
 } from '../structures/index.js';
-
-import { readRecordBody, readRecordHeader } from '../records/index.js';
-
-import { readPalette } from '../primitives/index.js';
+import { ArtworksFile, ArtworksRecord, List, Palette } from '../types/index.js';
 
 export class ArtworksReader {
   private readonly reader: BinaryReader;

@@ -1,5 +1,6 @@
-import { BinaryReader } from '@rbrown/io';
 import { check } from '@rbrown/check';
+import { BinaryReader } from '@rbrown/io';
+
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ArtworksRecordBody,
@@ -7,11 +8,22 @@ import {
   FilePointer,
 } from '../types/index.js';
 import { readRecordBody00 } from './record-00.js';
+import { readRecordBodyLayer } from './record-0a-layer.js';
 import { readRecordBodyText } from './record-01-text.js';
 import { readRecordBodyPath } from './record-02-path.js';
+import { readRecordBodyWindingRule } from './record-2a-winding-rule.js';
+import { readRecordBodyDashPattern } from './record-2b-dash-pattern.js';
+import { readRecordBodyRectangle } from './record-2c-rectangle.js';
+import { readRecordBodyCharacter } from './record-2d-character.js';
+import { readRecordBody2E } from './record-2e.js';
+import { readRecordBodyFontName } from './record-2f-font-name.js';
+import { readRecordBodyBlendGroup } from './record-3a-blend-group.js';
+import { readRecordBodyBlendGroupOptions } from './record-3b-blend-group-options.js';
+import { readRecordBodyBlendPath } from './record-3d-blend-path.js';
+import { readRecordBodyMarkerStart } from './record-3e-marker-start.js';
+import { readRecordBodyMarkerEnd } from './record-3f-marker-end.js';
 import { readRecordBodySprite } from './record-05-sprite.js';
 import { readRecordBodyGroup } from './record-06-group.js';
-import { readRecordBodyLayer } from './record-0a-layer.js';
 import { readRecordBodyWorkArea } from './record-21-work-area.js';
 import { readRecordBody22 } from './record-22.js';
 import { readRecordBodySaveLocation } from './record-23-save-location.js';
@@ -21,12 +33,6 @@ import { readRecordBodyFillColour } from './record-26-fill-colour.js';
 import { readRecordBodyJoinStyle } from './record-27-join-style.js';
 import { readRecordBodyLineCapEnd } from './record-28-line-cap-end.js';
 import { readRecordBodyLineCapStart } from './record-29-line-cap-start.js';
-import { readRecordBodyWindingRule } from './record-2a-winding-rule.js';
-import { readRecordBodyDashPattern } from './record-2b-dash-pattern.js';
-import { readRecordBodyRectangle } from './record-2c-rectangle.js';
-import { readRecordBodyCharacter } from './record-2d-character.js';
-import { readRecordBody2E } from './record-2e.js';
-import { readRecordBodyFontName } from './record-2f-font-name.js';
 import { readRecordBodyFontSize } from './record-30-font-size.js';
 import { readRecordBody31 } from './record-31.js';
 import { readRecordBody32 } from './record-32.js';
@@ -36,11 +42,6 @@ import { readRecordBodyRoundedRectangle } from './record-35-rounded-rectangle.js
 import { readRecordBodyDistortionGroup } from './record-37-distortion-group.js';
 import { readRecordBodyPerspectiveGroup } from './record-38-perspective-group.js';
 import { readRecordBodyFileInfo } from './record-39-file-info.js';
-import { readRecordBodyBlendGroup } from './record-3a-blend-group.js';
-import { readRecordBodyBlendGroupOptions } from './record-3b-blend-group-options.js';
-import { readRecordBodyBlendPath } from './record-3d-blend-path.js';
-import { readRecordBodyMarkerStart } from './record-3e-marker-start.js';
-import { readRecordBodyMarkerEnd } from './record-3f-marker-end.js';
 import { readRecordBodyDistortionSubgroup } from './record-42-distortion-subgroup.js';
 
 function unsupportedErrorMessage(type: number): string {

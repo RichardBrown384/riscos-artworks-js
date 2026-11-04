@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import { ArtworksColourIndex } from '../types/index.js';
 
 export function createColourIndex(colour: number): ArtworksColourIndex {

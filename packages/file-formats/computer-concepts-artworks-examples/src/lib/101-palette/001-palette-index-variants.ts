@@ -14,13 +14,6 @@ Note: it appears that once !AWViewer encounters and invalid index it stops rende
 The fourth square in this example is sometimes partially drawn or not at all.
  */
 
-import {
-  FILL_FLAT_RED,
-  STROKE_COLOUR_BLUE,
-  STROKE_WIDTH_1280,
-  WORK_AREA,
-} from '../shared-objects.js';
-
 import { createClosedSquare } from '../path-creators.js';
 import {
   createArtworks,
@@ -28,6 +21,12 @@ import {
   createRecordFillColourFlat,
   createRecordPath,
 } from '../record-creators.js';
+import {
+  FILL_FLAT_RED,
+  STROKE_COLOUR_BLUE,
+  STROKE_WIDTH_1280,
+  WORK_AREA,
+} from '../shared-objects.js';
 
 const SIDE_LENGTH = 50_000;
 const VERTICAL_SPACING = 20_000;

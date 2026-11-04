@@ -12,6 +12,15 @@ be wrong.
  */
 
 import { ArtworksRecord } from '@rbrown/computer-concepts-artworks';
+import { BoundingBox } from '@rbrown/geometry';
+
+import { createClosedNSidedPolygon } from '../path-creators.js';
+import {
+  createArtworks,
+  createList,
+  createRecordGroupFull,
+  createRecordPath,
+} from '../record-creators.js';
 import {
   FILL_FLAT_TRANSPARENT,
   LAYER_FOREGROUND,
@@ -19,15 +28,6 @@ import {
   STROKE_WIDTH_1500,
   WORK_AREA,
 } from '../shared-objects.js';
-import { createClosedNSidedPolygon } from '../path-creators.js';
-
-import {
-  createArtworks,
-  createList,
-  createRecordGroupFull,
-  createRecordPath,
-} from '../record-creators.js';
-import { BoundingBox } from '@rbrown/geometry';
 
 const PENTAGON_RADIUS = 40_000;
 const PENTAGON_PADDING = 10_000;

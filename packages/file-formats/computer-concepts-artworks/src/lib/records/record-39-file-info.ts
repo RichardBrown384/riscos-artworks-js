@@ -1,4 +1,5 @@
 import { BinaryReader } from '@rbrown/io';
+
 import { RecordBodyFileInfo } from '../types/index.js';
 
 export function readRecordBodyFileInfo(

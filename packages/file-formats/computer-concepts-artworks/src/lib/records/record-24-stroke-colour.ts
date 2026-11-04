@@ -1,12 +1,13 @@
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
+import { readColourIndex, writeColourIndex } from '../primitives/index.js';
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ARTWORKS_RECORD_UNKNOWN_4_BIT_0,
-  ArtworksRecordStrokeColour,
   ArtworksColourIndex,
+  ArtworksRecordStrokeColour,
   RecordBodyStrokeColour,
 } from '../types/index.js';
-import { readColourIndex, writeColourIndex } from '../primitives/index.js';
 import { ZERO_BOUNDING_BOX } from './record-creation-helpers.js';
 
 export function readRecordBodyStrokeColour(

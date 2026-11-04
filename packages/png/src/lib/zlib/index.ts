@@ -40,9 +40,10 @@ TRAILER (4 bytes)
   Adler-32 checksum of the original uncompressed input.
 */
 
-import { deflate } from './deflate.js';
-import { adler32 } from './adler-32.js';
 import { BinaryWriter } from '@rbrown/io';
+
+import { adler32 } from './adler-32.js';
+import { deflate } from './deflate.js';
 
 const CMF = 0x78;
 const FLG = 0x9c;

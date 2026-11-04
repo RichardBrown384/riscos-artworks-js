@@ -21,11 +21,10 @@ For two sub paths we try setting bit 31 for the first and second move respective
 */
 
 import {
-  FILL_FLAT_RED,
-  STROKE_COLOUR_BLUE,
-  STROKE_WIDTH_960,
-  WORK_AREA,
-} from '../shared-objects.js';
+  ARTWORKS_PATH_TAG_BIT_31,
+  ArtworksPath,
+  PathBuilder,
+} from '@rbrown/computer-concepts-artworks';
 
 import {
   createArtworks,
@@ -33,10 +32,11 @@ import {
   createRecordPath,
 } from '../record-creators.js';
 import {
-  ArtworksPath,
-  PathBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
-} from '@rbrown/computer-concepts-artworks';
+  FILL_FLAT_RED,
+  STROKE_COLOUR_BLUE,
+  STROKE_WIDTH_960,
+  WORK_AREA,
+} from '../shared-objects.js';
 
 const CLOSED_SQUARE_FILLED: ArtworksPath = new PathBuilder()
   .moveTo(10_000, 10_000, ARTWORKS_PATH_TAG_BIT_31)

@@ -5,20 +5,18 @@ Purpose:
 To demonstrate that if bit 1 of unknown4 is clear then the path doesn't get drawn
  */
 
+import { createClosedEquilateralTriangle } from '../path-creators.js';
+import {
+  createArtworks,
+  createList,
+  createRecordPathFull,
+} from '../record-creators.js';
 import {
   FILL_FLAT_TRANSPARENT,
   LAYER_FOREGROUND,
   STROKE_COLOUR_BLACK,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import {
-  createArtworks,
-  createList,
-  createRecordPathFull,
-} from '../record-creators.js';
-
-import { createClosedEquilateralTriangle } from '../path-creators.js';
 
 const PATH = createRecordPathFull(
   0,

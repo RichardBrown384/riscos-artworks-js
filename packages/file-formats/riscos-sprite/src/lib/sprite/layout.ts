@@ -1,10 +1,11 @@
+import { check } from '@rbrown/check';
+
 import {
   SpriteBitmapLayout,
   SpriteControlBlock,
-  SpriteLayout,
   SpriteFormat,
+  SpriteLayout,
 } from '../sprite-types.js';
-import { check } from '@rbrown/check';
 
 function checkLayout({
   bitsPerLine,

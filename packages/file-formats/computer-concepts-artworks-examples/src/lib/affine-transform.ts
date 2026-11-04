@@ -5,14 +5,14 @@ import {
   ArtworksPolyline,
 } from '@rbrown/computer-concepts-artworks';
 import {
-  Point,
-  Transform,
   IDENTITY_TRANSFORM,
+  Point,
+  pointTransform,
+  Transform,
   transformConcatenate,
-  transformTranslate,
   transformRotateDeg,
   transformScale,
-  pointTransform,
+  transformTranslate,
 } from '@rbrown/geometry';
 
 // This wraps the transform from the geometry lib

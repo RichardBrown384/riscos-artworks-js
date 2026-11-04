@@ -1,5 +1,5 @@
-import { BinaryReader, BinaryWriter } from '@rbrown/io';
 import { BoundingBox } from '@rbrown/geometry';
+import { BinaryReader, BinaryWriter } from '@rbrown/io';
 
 export function readBoundingBox(reader: BinaryReader): BoundingBox {
   reader.aligned(4, 'misaligned bounding box');

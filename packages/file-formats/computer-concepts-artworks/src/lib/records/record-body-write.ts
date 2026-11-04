@@ -1,7 +1,16 @@
 import { BinaryWriter } from '@rbrown/io';
+
 import { ARTWORKS_RECORD_TYPE_TAG, ArtworksRecord } from '../types/index.js';
-import { writeRecordBodyPath } from './record-02-path.js';
 import { writeRecordBodyLayer } from './record-0a-layer.js';
+import { writeRecordBodyPath } from './record-02-path.js';
+import { writeRecordBodyWindingRule } from './record-2a-winding-rule.js';
+import { writeRecordBodyDashPattern } from './record-2b-dash-pattern.js';
+import { writeRecordBodyRectangle } from './record-2c-rectangle.js';
+import { writeRecordBodyBlendGroup } from './record-3a-blend-group.js';
+import { writeRecordBodyBlendGroupOptions } from './record-3b-blend-group-options.js';
+import { writeRecordBodyBlendPath } from './record-3d-blend-path.js';
+import { writeRecordBodyMarkerStart } from './record-3e-marker-start.js';
+import { writeRecordBodyMarkerEnd } from './record-3f-marker-end.js';
 import { writeRecordBodyGroup } from './record-06-group.js';
 import { writeRecordBodyWorkArea } from './record-21-work-area.js';
 import { writeRecordBodyStrokeColour } from './record-24-stroke-colour.js';
@@ -10,16 +19,8 @@ import { writeRecordBodyFillColour } from './record-26-fill-colour.js';
 import { writeRecordBodyJoinStyle } from './record-27-join-style.js';
 import { writeRecordBodyLineCapEnd } from './record-28-line-cap-end.js';
 import { writeRecordBodyLineCapStart } from './record-29-line-cap-start.js';
-import { writeRecordBodyWindingRule } from './record-2a-winding-rule.js';
-import { writeRecordBodyDashPattern } from './record-2b-dash-pattern.js';
-import { writeRecordBodyRectangle } from './record-2c-rectangle.js';
 import { writeRecordBodyEllipse } from './record-34-ellipse.js';
 import { writeRecordBodyRoundedRectangle } from './record-35-rounded-rectangle.js';
-import { writeRecordBodyBlendGroup } from './record-3a-blend-group.js';
-import { writeRecordBodyBlendGroupOptions } from './record-3b-blend-group-options.js';
-import { writeRecordBodyBlendPath } from './record-3d-blend-path.js';
-import { writeRecordBodyMarkerStart } from './record-3e-marker-start.js';
-import { writeRecordBodyMarkerEnd } from './record-3f-marker-end.js';
 
 function unsupportedErrorMessage(type: number): string {
   return `write: unsupported record body ${type.toString()}, (0x${type.toString(16)})`;

@@ -1,14 +1,15 @@
+import { check } from '@rbrown/check';
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
+import { readPalette, writePalette } from '../primitives/index.js';
+import { FILE_OFFSET_PALETTE_POSITION } from '../structures/index.js';
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ArtworksRecord,
   Palette,
   RecordBodyWorkArea,
 } from '../types/index.js';
-import { check } from '@rbrown/check';
 import { ZERO_BOUNDING_BOX } from './record-creation-helpers.js';
-import { FILE_OFFSET_PALETTE_POSITION } from '../structures/index.js';
-import { readPalette, writePalette } from '../primitives/index.js';
 
 export function readRecordBodyWorkArea(
   reader: BinaryReader,

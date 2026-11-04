@@ -1,17 +1,17 @@
 import {
   ArtworksFile,
-  ArtworksRecord,
-  createArtworks as createArtworksWithHeader,
-  createArtworksHeader,
   ArtworksLineCapStyle,
-  List,
   ArtworksMarkerStyle,
-  createRecordLineCapEnd,
+  ArtworksRecord,
+  createArtworksHeader,
+  createArtworks as createArtworksWithHeader,
   createCapEndTriangle,
-  createRecordLineCapStart,
   createCapStartTriangle,
-  createRecordMarkerStart,
+  createRecordLineCapEnd,
+  createRecordLineCapStart,
   createRecordMarkerEnd,
+  createRecordMarkerStart,
+  List,
 } from '@rbrown/computer-concepts-artworks';
 
 export {

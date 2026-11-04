@@ -22,6 +22,29 @@ Points to note:
  */
 
 import {
+  ARTWORKS_FILL_TYPE_TAG,
+  ARTWORKS_PATH_TAG_BIT_31,
+  ArtworksPath,
+  ArtworksPolyline,
+  ArtworksRecord,
+  List,
+  PathBuilder,
+  PolylineBuilder,
+} from '@rbrown/computer-concepts-artworks';
+
+import { AffineTransform } from '../affine-transform.js';
+import {
+  DEFAULT_PALETTE_INDEX_BLACK,
+  DEFAULT_PALETTE_INDEX_WHITE,
+} from '../default-palette.js';
+import {
+  createArtworks,
+  createList,
+  createRecordEllipse,
+  createRecordFillColourGradient,
+  createRecordPath,
+} from '../record-creators.js';
+import {
   FILL_FLAT_TRANSPARENT,
   STROKE_COLOUR_BLUE,
   STROKE_COLOUR_RED,
@@ -30,31 +53,6 @@ import {
   STROKE_WIDTH_1500,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import {
-  DEFAULT_PALETTE_INDEX_BLACK,
-  DEFAULT_PALETTE_INDEX_WHITE,
-} from '../default-palette.js';
-
-import {
-  createArtworks,
-  createList,
-  createRecordEllipse,
-  createRecordFillColourGradient,
-  createRecordPath,
-} from '../record-creators.js';
-
-import { AffineTransform } from '../affine-transform.js';
-import {
-  ARTWORKS_FILL_TYPE_TAG,
-  ArtworksPath,
-  ArtworksPolyline,
-  ArtworksRecord,
-  List,
-  PathBuilder,
-  PolylineBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
-} from '@rbrown/computer-concepts-artworks';
 
 const FILL_START_X = 332139;
 const FILL_START_Y = 218765;

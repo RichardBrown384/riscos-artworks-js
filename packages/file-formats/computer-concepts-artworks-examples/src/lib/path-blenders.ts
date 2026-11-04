@@ -11,14 +11,14 @@ and based on a straightforward implementation of the de Casteljau algorithm.
 
 */
 
+import { check } from '@rbrown/check';
 import {
   ARTWORKS_PATH_TAG,
+  ARTWORKS_PATH_TAG_BIT_31,
   ArtworksPath,
   PathBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
 } from '@rbrown/computer-concepts-artworks';
 import { Point } from '@rbrown/geometry';
-import { check } from '@rbrown/check';
 
 const BEZIER_WEIGHT = 1.0 / 3.0;
 

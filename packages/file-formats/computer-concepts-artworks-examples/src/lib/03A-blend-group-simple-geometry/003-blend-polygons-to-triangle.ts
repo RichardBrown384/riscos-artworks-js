@@ -7,6 +7,8 @@ To demonstrate what happens when you blend between shapes that have a different 
 
  */
 
+import { createClosedNSidedPolygon } from '../path-creators.js';
+import { createArtworks, createList } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,
@@ -18,11 +20,6 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
-import { createClosedNSidedPolygon } from '../path-creators.js';
-
 import { createSimplePathBlendGroup } from '../simple-blend-group.js';
 import {
   convertInsertsListToWeightsList,

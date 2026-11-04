@@ -1,7 +1,7 @@
 import {
+  ARTWORKS_PATH_TAG_BIT_31,
   ArtworksPath,
   PathBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
 } from '@rbrown/computer-concepts-artworks';
 
 export function createClosedEquilateralTriangle(

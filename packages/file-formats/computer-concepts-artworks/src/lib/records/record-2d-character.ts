@@ -1,4 +1,5 @@
 import { BinaryReader } from '@rbrown/io';
+
 import { RecordBodyCharacter } from '../types/index.js';
 
 export function readRecordBodyCharacter(

@@ -17,6 +17,8 @@ The end markers are only applied for the start and end states.
 
 The intermediate states draw a closed contour.
  */
+import { createOpenInvertedV } from '../path-creators.js';
+import { createArtworks, createList } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   END_MARKER_ARROW_HEAD_W4_H6,
@@ -31,11 +33,6 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
-import { createOpenInvertedV } from '../path-creators.js';
-
 import { createSimpleAttributeBlendGroup } from '../simple-blend-group.js';
 
 const GROUP_0 = createSimpleAttributeBlendGroup(

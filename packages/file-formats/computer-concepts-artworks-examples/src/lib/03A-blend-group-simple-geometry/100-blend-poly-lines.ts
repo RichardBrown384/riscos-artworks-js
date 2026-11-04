@@ -12,6 +12,12 @@ See the documentation on blends for the calculated values.
  */
 
 import {
+  ARTWORKS_PATH_TAG_BIT_31,
+  PathBuilder,
+} from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks, createList } from '../record-creators.js';
+import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,
   JOIN_BEVEL,
@@ -22,15 +28,8 @@ import {
   WINDING_RULE_EVEN_ODD,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
 import { createSimplePathBlendGroup } from '../simple-blend-group.js';
 import { createBlendedPathRecordsWithWeights } from '../simulated-blend-group.js';
-import {
-  PathBuilder,
-  ARTWORKS_PATH_TAG_BIT_31,
-} from '@rbrown/computer-concepts-artworks';
 
 const GROUP_0_START_PATH = new PathBuilder()
   .moveTo(100_000, 100_000, ARTWORKS_PATH_TAG_BIT_31)

@@ -1,5 +1,6 @@
-import { SpriteBitmapLayout } from '../../sprite-types.js';
 import { check } from '@rbrown/check';
+
+import { SpriteBitmapLayout } from '../../sprite-types.js';
 
 export class BitmapSampler {
   private readonly layout: SpriteBitmapLayout;

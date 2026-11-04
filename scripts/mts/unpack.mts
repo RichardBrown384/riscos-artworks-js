@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs';
+
 import { artworksFromArrayBuffer } from '@rbrown/computer-concepts-artworks';
 
 const fileIn = process.argv[2];

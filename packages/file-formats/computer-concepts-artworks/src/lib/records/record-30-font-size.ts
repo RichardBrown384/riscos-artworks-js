@@ -1,4 +1,5 @@
 import { BinaryReader } from '@rbrown/io';
+
 import { RecordBodyFontSize } from '../types/index.js';
 
 export function readRecordBodyFontSize(

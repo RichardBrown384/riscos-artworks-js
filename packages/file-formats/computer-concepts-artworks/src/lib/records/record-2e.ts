@@ -1,4 +1,5 @@
 import { BinaryReader } from '@rbrown/io';
+
 import { RecordBody2E } from '../types/index.js';
 
 export function readRecordBody2E(reader: BinaryReader): RecordBody2E {

@@ -6,7 +6,6 @@ To demonstrate the even-odd winding rule
  */
 
 import { createArtworks, createList } from '../record-creators.js';
-
 import {
   FILL_FLAT_RED,
   LAYER_FOREGROUND,

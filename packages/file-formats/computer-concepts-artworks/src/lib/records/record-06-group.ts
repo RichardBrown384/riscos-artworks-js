@@ -1,4 +1,6 @@
+import { BoundingBox } from '@rbrown/geometry';
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ARTWORKS_RECORD_UNKNOWN_4_BIT_1,
@@ -6,7 +8,6 @@ import {
   List,
   RecordBodyGroup,
 } from '../types/index.js';
-import { BoundingBox } from '@rbrown/geometry';
 
 export function readRecordBodyGroup(reader: BinaryReader): RecordBodyGroup {
   return {

@@ -1,6 +1,7 @@
 import { BinaryReader } from '@rbrown/io';
-import { RecordBodyText } from '../types/index.js';
+
 import { readPolyline } from '../primitives/index.js';
+import { RecordBodyText } from '../types/index.js';
 
 export function readRecordBodyText(reader: BinaryReader): RecordBodyText {
   return {

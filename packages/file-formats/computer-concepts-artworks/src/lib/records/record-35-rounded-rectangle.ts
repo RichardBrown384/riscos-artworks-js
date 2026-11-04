@@ -1,4 +1,12 @@
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
+
+import {
+  pathBoundingBox,
+  readPath,
+  readPolyline,
+  writePath,
+  writePolyline,
+} from '../primitives/index.js';
 import {
   ARTWORKS_RECORD_TYPE_TAG,
   ARTWORKS_RECORD_UNKNOWN_4_BIT_1,
@@ -7,13 +15,6 @@ import {
   ArtworksRecord,
   RecordBodyRoundedRectangle,
 } from '../types/index.js';
-import {
-  readPolyline,
-  writePolyline,
-  pathBoundingBox,
-  readPath,
-  writePath,
-} from '../primitives/index.js';
 import { createAttributeLists } from './record-creation-helpers.js';
 
 export function readRecordBodyRoundedRectangle(

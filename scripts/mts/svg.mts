@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+
 import { intermediateFromArrayBuffer } from '@rbrown/riscos-file-formats';
 import { svgFromIntermediate, svgToString } from '@rbrown/svg';
 

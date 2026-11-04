@@ -18,13 +18,11 @@ import {
   DEFAULT_PALETTE_INDEX_YELLOW,
   PALETTE_INDEX_TRANSPARENT,
 } from './default-palette.js';
-
 import {
   createClosedEquilateralTriangle,
   createClosedPentagram,
   createOpenInvertedV,
 } from './path-creators.js';
-
 import {
   createRecordDashPattern,
   createRecordDashPatternEmpty,

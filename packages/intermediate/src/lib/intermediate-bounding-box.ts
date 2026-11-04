@@ -3,13 +3,14 @@ import {
   bboxInflate,
   bboxTransform,
   bboxUnion,
-  type BoundingBox,
   EMPTY_BOUNDING_BOX,
   IDENTITY_TRANSFORM,
+  transformConcatenate,
+  type BoundingBox,
   type Point,
   type Transform,
-  transformConcatenate,
 } from '@rbrown/geometry';
+
 import type {
   IrGroupNode,
   IrImageNode,

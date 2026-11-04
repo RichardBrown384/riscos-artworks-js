@@ -19,17 +19,14 @@ Points to note:
 
  */
 
+import { AffineTransform } from '../affine-transform.js';
+import { createArtworks, createList } from '../record-creators.js';
 import {
   FILL_FLAT_TRANSPARENT,
   STROKE_COLOUR_RED,
   STROKE_WIDTH_1500,
   WORK_AREA,
 } from '../shared-objects.js';
-
-import { createArtworks, createList } from '../record-creators.js';
-
-import { AffineTransform } from '../affine-transform.js';
-
 import { createGeometry } from './shared/index.js';
 
 const GEOMETRY_0 = createGeometry(1000, 0, 0, new AffineTransform());

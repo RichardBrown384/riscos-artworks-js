@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {
-  type ArtworksFile,
-  artworksToArrayBuffer,
-} from '@rbrown/computer-concepts-artworks';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+
+import {
+  artworksToArrayBuffer,
+  type ArtworksFile,
+} from '@rbrown/computer-concepts-artworks';
 
 const ARTWORKS_FILE_EXTENSION = 'd94';
 

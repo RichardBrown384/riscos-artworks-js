@@ -1,5 +1,6 @@
-import { FilePointer } from '../types/index.js';
 import { check } from '@rbrown/check';
+
+import { FilePointer } from '../types/index.js';
 
 function checkWithPointer(
   condition: boolean,

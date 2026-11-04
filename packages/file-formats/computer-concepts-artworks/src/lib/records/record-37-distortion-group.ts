@@ -1,6 +1,7 @@
 import { BinaryReader } from '@rbrown/io';
-import { RecordBodyDistortionGroup } from '../types/index.js';
+
 import { readBoundingBox, readPath } from '../primitives/index.js';
+import { RecordBodyDistortionGroup } from '../types/index.js';
 
 export function readRecordBodyDistortionGroup(
   reader: BinaryReader,

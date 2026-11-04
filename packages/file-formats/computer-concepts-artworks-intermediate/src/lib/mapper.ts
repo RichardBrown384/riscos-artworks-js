@@ -4,10 +4,10 @@ import {
   ARTWORKS_LINE_CAP_STYLE_TAG,
   ARTWORKS_PATH_TAG,
   ARTWORKS_WINDING_RULE_TAG,
-  ArtworksPath,
-  ArtworksPathSegment,
   ArtworksColourIndex,
   ArtworksLineCapStyle,
+  ArtworksPath,
+  ArtworksPathSegment,
   Palette,
   RecordBodyFillColour,
   RecordBodyJoinStyle,
@@ -25,9 +25,10 @@ import {
   IrLineJoin,
   IrNode,
   IrPathNode,
-  type IrPathSegment,
   IrRootNode,
+  type IrPathSegment,
 } from '@rbrown/intermediate';
+
 import { RenderState } from './render-state.js';
 
 function mapPathSegments(segments: ArtworksPathSegment[]): IrPathSegment[] {

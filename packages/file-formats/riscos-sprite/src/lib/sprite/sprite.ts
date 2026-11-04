@@ -1,12 +1,13 @@
-import { BinaryReader } from '@rbrown/io';
 import { check } from '@rbrown/check';
+import { BinaryReader } from '@rbrown/io';
+
 import type {
   Sprite,
   SpriteControlBlock,
   SpritePaletteEntry,
 } from '../sprite-types.js';
-import { spriteLayoutFromControlBlockAndFormat } from './layout.js';
 import { spriteFormatFromControlBlock } from './format.js';
+import { spriteLayoutFromControlBlockAndFormat } from './layout.js';
 
 function readSpritePaletteArea(
   reader: BinaryReader,
