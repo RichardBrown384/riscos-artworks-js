@@ -13,6 +13,7 @@
     },
     "typecheck": {
       "executor": "nx:run-commands",
+      "dependsOn": ["^typecheck"],
       "options": {
         "command": "tsc -p scripts/tsconfig.json",
         "cwd": "."

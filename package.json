@@ -6,6 +6,7 @@
     "build": "npx nx build web",
     "dev": "npx nx serve web",
     "prettier": "prettier --write packages apps scripts",
+    "prettier:check": "prettier --check packages apps scripts",
     "typecheck": "npx nx run-many -t typecheck --no-tui",
     "lint": "npx nx run-many -t lint --no-tui",
     "examples:generate": "tsx scripts/mts/generate-examples.mts",
