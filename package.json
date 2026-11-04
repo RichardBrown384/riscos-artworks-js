@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "prepare": "lefthook install",
     "build": "npx nx build web",
     "dev": "npx nx serve web",
     "prettier": "prettier --write packages apps scripts",
@@ -42,6 +43,7 @@
     "globals": "^17.6.0",
     "jiti": "2.7.0",
     "jsdom": "~22.1.0",
+    "lefthook": "^2.2.2",
     "nx": "24.0.3",
     "prettier": "^3.8.1",
     "tslib": "^2.3.0",
