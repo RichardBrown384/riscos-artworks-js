@@ -71,6 +71,5 @@ export function artworksToArrayBuffer(
 ): Uint8Array<ArrayBuffer> {
   const writer = new BinaryWriter(limit);
   const artworksWriter = new ArtworksWriter(writer, artworks);
-  artworksWriter.write();
-  return writer.written();
+  return artworksWriter.write();
 }
