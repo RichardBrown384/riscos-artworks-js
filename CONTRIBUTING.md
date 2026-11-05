@@ -8,6 +8,11 @@ Before proceeding, it should be noted that
 Artworks 2 developed by [MW Software][mw-software] (not https!) is considered out of scope.
 2. The project has hitherto progressed without resorting to disassembly of the original binaries
 as a matter of principle, and we'd like to avoid resorting to such techniques.
+3. With regard to LLMs we prefer code written by human beings. This project was started 
+as an intellectual exercise to tax the brain. However, LLM contributions will be accepted provided:
+   1. They are declared as such
+   2. You can demonstrate that the contribution has not been derived from third-party copyrighted source code, or from
+      LLM-assisted disassembly or reverse-engineering of the original binaries.
 
 ### If you have ArtWorks files... 
 
@@ -41,15 +46,12 @@ but not **how**.
 about an unusual 1990s vector graphics file format. It wasn't developed 
 with end users in mind and there are definitely areas for improvement. E.g.,
 
-* Reworking the library's interface so that it's possible to integrate with other 
-JavaScript vector graphics libraries
-* Cleaning up the codebase to make the JavaScript idiomatic
-* Cleaning up the codebase to remove the research and development elements
-* Introducing a testing regime
-* Deploying to npm
+* Introducing tests to help validate behaviour
+* Using more idiomatic TypeScript
+* Adding other file formats from that era
 
 ---
-[viewer]: https://richardbrown384.github.io/riscos-file-viewer/
+[viewer]: https://richardbrown384.github.io/riscos-artworks-js/
 [mw-software]: http://www.mw-software.com
 [file-format-docs]: docs/file-format/README.md
 [blend-docs]: docs/blend-groups/README.md
