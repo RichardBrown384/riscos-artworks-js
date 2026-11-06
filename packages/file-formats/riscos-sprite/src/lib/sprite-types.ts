@@ -67,3 +67,12 @@ export interface SpriteFile {
   controlBlock: SpriteFileControlBlock;
   sprites: Sprite[];
 }
+
+export type SpriteAreaControlBlock = {
+  sizeInBytes: number;
+} & SpriteFileControlBlock;
+
+export interface SpriteArea {
+  controlBlock: SpriteAreaControlBlock;
+  sprites: Sprite[];
+}

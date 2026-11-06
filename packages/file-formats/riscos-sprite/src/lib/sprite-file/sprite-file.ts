@@ -1,7 +1,7 @@
 import { BinaryReader } from '@rbrown/io';
 
-import { Sprite, SpriteFile, SpriteFileControlBlock } from '../sprite-types.js';
-import { spriteFromArrayBuffer } from '../sprite/index.js';
+import { readSpriteArray } from '../sprite-array/index.js';
+import { SpriteFile, SpriteFileControlBlock } from '../sprite-types.js';
 
 function readSpriteFileControlBlock(
   reader: BinaryReader,
@@ -15,23 +15,12 @@ function readSpriteFileControlBlock(
 
 export function spriteFileFromArrayBuffer(buffer: ArrayBuffer): SpriteFile {
   const reader = new BinaryReader(buffer);
-
   const controlBlock = readSpriteFileControlBlock(reader);
-  const { spriteOffset, freeOffset } = controlBlock;
-
-  const sprites: Sprite[] = [];
-
-  let offset = spriteOffset - 4;
-  const end = freeOffset - 4;
-
-  while (offset < end) {
-    reader.seek(offset);
-    const sprite = spriteFromArrayBuffer(reader);
-    sprites.push(sprite);
-    offset += sprite.controlBlock.spriteOffset;
-  }
-
-  return { controlBlock, sprites };
+  const sprites = readSpriteArray(reader, controlBlock);
+  return {
+    controlBlock,
+    sprites,
+  };
 }
 
 /*
