@@ -11,5 +11,5 @@ We use `--buildable=false` because we never figured out how to get built librari
 ## Upgrading Nx
 
 ```bash
- npx nx migrate latest
+npx nx migrate latest
 ```
