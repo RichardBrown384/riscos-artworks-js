@@ -57,11 +57,20 @@ export interface Sprite {
   mask?: Uint8Array<ArrayBuffer>;
 }
 
-export interface SpriteAreaControlBlock {
+export interface SpriteFileControlBlock {
   spriteCount: number;
   spriteOffset: number;
   freeOffset: number;
 }
+
+export interface SpriteFile {
+  controlBlock: SpriteFileControlBlock;
+  sprites: Sprite[];
+}
+
+export type SpriteAreaControlBlock = {
+  sizeInBytes: number;
+} & SpriteFileControlBlock;
 
 export interface SpriteArea {
   controlBlock: SpriteAreaControlBlock;

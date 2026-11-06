@@ -1,7 +1,7 @@
 import { makeCheckEnumValue } from '@rbrown/check';
 import type { BoundingBox, Point } from '@rbrown/geometry';
 import { BinaryReader } from '@rbrown/io';
-import { spriteFromArrayBuffer } from '@rbrown/riscos-sprite';
+import { spriteFromBinaryReader } from '@rbrown/riscos-sprite';
 
 import {
   CAP_TAG,
@@ -202,7 +202,7 @@ function readSpriteObject(reader: BinaryReader): DrawSpriteObject {
   return {
     tag: OBJECT_TAG.SPRITE,
     boundingBox: readBoundingBox(reader),
-    sprite: spriteFromArrayBuffer(reader),
+    sprite: spriteFromBinaryReader(reader),
   };
 }
 
@@ -248,7 +248,7 @@ function readSpriteRotatedObject(
     tag: OBJECT_TAG.SPRITE_ROTATED,
     boundingBox: readBoundingBox(reader),
     transform: readTransformationMatrix(reader),
-    sprite: spriteFromArrayBuffer(reader),
+    sprite: spriteFromBinaryReader(reader),
   };
 }
 
