@@ -5,7 +5,7 @@ import {
   SpriteAreaControlBlock,
   SpriteFileControlBlock,
 } from '../sprite-types.js';
-import { spriteFromArrayBuffer } from '../sprite/index.js';
+import { spriteFromBinaryReader } from '../sprite/index.js';
 
 export function readSpriteArray(
   reader: BinaryReader,
@@ -19,7 +19,7 @@ export function readSpriteArray(
 
   while (offset < end) {
     reader.seek(offset);
-    const sprite = spriteFromArrayBuffer(reader);
+    const sprite = spriteFromBinaryReader(reader);
     sprites.push(sprite);
     offset += sprite.controlBlock.spriteOffset;
   }

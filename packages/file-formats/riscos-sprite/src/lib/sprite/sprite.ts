@@ -33,7 +33,7 @@ function readSpritePaletteArea(
   return palette;
 }
 
-export function spriteFromArrayBuffer(reader: BinaryReader): Sprite {
+export function spriteFromBinaryReader(reader: BinaryReader): Sprite {
   reader.aligned(4, 'misaligned sprite');
 
   // 1. Control block
