@@ -1,11 +1,11 @@
 import { BinaryReader } from '@rbrown/io';
 
-import { Sprite, SpriteArea, SpriteAreaControlBlock } from '../sprite-types.js';
+import { Sprite, SpriteFile, SpriteFileControlBlock } from '../sprite-types.js';
 import { spriteFromArrayBuffer } from '../sprite/index.js';
 
-function readSpriteAreaControlBlock(
+function readSpriteFileControlBlock(
   reader: BinaryReader,
-): SpriteAreaControlBlock {
+): SpriteFileControlBlock {
   return {
     spriteCount: reader.u32(),
     spriteOffset: reader.u32(),
@@ -13,10 +13,10 @@ function readSpriteAreaControlBlock(
   };
 }
 
-export function spriteAreaFromArrayBuffer(buffer: ArrayBuffer): SpriteArea {
+export function spriteFileFromArrayBuffer(buffer: ArrayBuffer): SpriteFile {
   const reader = new BinaryReader(buffer);
 
-  const controlBlock = readSpriteAreaControlBlock(reader);
+  const controlBlock = readSpriteFileControlBlock(reader);
   const { spriteOffset, freeOffset } = controlBlock;
 
   const sprites: Sprite[] = [];
@@ -39,10 +39,9 @@ export function spriteAreaFromArrayBuffer(buffer: ArrayBuffer): SpriteArea {
  * We try to deserialize the sprite area and if we can do that
  * then there's a good chance it contains sprite data
  */
-export function spriteAreaIsHeaderPresent(buffer: ArrayBuffer): boolean {
-  spriteAreaFromArrayBuffer(buffer);
+export function spriteFileIsHeaderPresent(buffer: ArrayBuffer): boolean {
   try {
-    spriteAreaFromArrayBuffer(buffer);
+    spriteFileFromArrayBuffer(buffer);
     return true;
   } catch {
     return false;

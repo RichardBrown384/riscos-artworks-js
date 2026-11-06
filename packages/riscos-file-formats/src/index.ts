@@ -12,8 +12,8 @@ import {
 } from '@rbrown/riscos-font-outlines';
 import { fontOutlinesMapToIntermediate } from '@rbrown/riscos-font-outlines-intermediate';
 import {
-  spriteAreaFromArrayBuffer,
-  spriteAreaIsHeaderPresent,
+  spriteFileFromArrayBuffer,
+  spriteFileIsHeaderPresent,
 } from '@rbrown/riscos-sprite';
 import { spriteAreaMapToIntermediate } from '@rbrown/riscos-sprite-intermediate';
 
@@ -37,8 +37,8 @@ export function intermediateFromArrayBuffer(
   if (fontOutlinesIsHeaderPresent(buffer)) {
     return fontOutlinesMapToIntermediate(fontOutlinesFromArrayBuffer(buffer));
   }
-  if (spriteAreaIsHeaderPresent(buffer)) {
-    return spriteAreaMapToIntermediate(spriteAreaFromArrayBuffer(buffer));
+  if (spriteFileIsHeaderPresent(buffer)) {
+    return spriteAreaMapToIntermediate(spriteFileFromArrayBuffer(buffer));
   }
   return undefined;
 }
