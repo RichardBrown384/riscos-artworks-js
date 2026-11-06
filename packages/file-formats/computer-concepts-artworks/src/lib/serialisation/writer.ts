@@ -30,7 +30,7 @@ export class ArtworksWriter {
     this.children = lists;
   }
 
-  write(): number {
+  write(): Uint8Array<ArrayBuffer> {
     const { bodyPosition } = this.header;
 
     this.writer.seek(0);
@@ -39,7 +39,7 @@ export class ArtworksWriter {
     this.writer.seek(bodyPosition);
     this.writeLists(this.children, bodyPosition);
 
-    return this.writer.tell();
+    return this.writer.written();
   }
 
   private writeLists(
