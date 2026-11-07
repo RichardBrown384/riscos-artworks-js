@@ -19,6 +19,9 @@ export class BinaryReader {
 
   // Internal
   private check(size: number): void {
+    if (size < 0) {
+      throw new RangeError('Invalid read size');
+    }
     if (this.pos + size > this.len) {
       throw new RangeError('Read past end of buffer');
     }
@@ -104,6 +107,14 @@ export class BinaryReader {
     return v;
   }
 
+  i32At(position: number): number {
+    const pos = this.tell();
+    this.seek(position);
+    const v = this.i32();
+    this.seek(pos);
+    return v;
+  }
+
   // Arrays
   u8a(length: number): Uint8Array<ArrayBuffer> {
     this.check(length);
@@ -136,15 +147,6 @@ export class BinaryReader {
   }
 
   // Legacy apis
-
-  // Used by artworks to read the artworks palette offset
-  readInt32At(position: number): number {
-    const pos = this.tell();
-    this.seek(position);
-    const v = this.i32();
-    this.seek(pos);
-    return v;
-  }
 
   // Used by artworks to read palette entries and header identifiers
   paddedCString(length: number): string {

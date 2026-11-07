@@ -14,7 +14,7 @@ import { ZERO_BOUNDING_BOX } from './record-creation-helpers.js';
 export function readRecordBodyWorkArea(
   reader: BinaryReader,
 ): RecordBodyWorkArea {
-  const paletteOffset = reader.readInt32At(FILE_OFFSET_PALETTE_POSITION);
+  const paletteOffset = reader.i32At(FILE_OFFSET_PALETTE_POSITION);
   if (paletteOffset < 0) {
     return {};
   }
@@ -32,7 +32,7 @@ export function writeRecordBodyWorkArea(
   { palette }: RecordBodyWorkArea,
 ): void {
   check(palette !== undefined, 'expected to write out a palette');
-  writer.writeInt32At(FILE_OFFSET_PALETTE_POSITION, writer.tell());
+  writer.i32At(FILE_OFFSET_PALETTE_POSITION, writer.tell());
   writePalette(writer, palette);
 }
 

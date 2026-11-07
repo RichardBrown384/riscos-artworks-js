@@ -21,6 +21,9 @@ export class BinaryWriter {
 
   // Internal
   private check(size: number): void {
+    if (size < 0) {
+      throw new RangeError('Invalid write size');
+    }
     if (this.pos + size > this.len) {
       throw new RangeError('Write past end of buffer');
     }
@@ -97,6 +100,13 @@ export class BinaryWriter {
     this.advance(4);
   }
 
+  i32At(position: number, value: number): void {
+    const pos = this.tell();
+    this.seek(position);
+    this.i32(value);
+    this.seek(pos);
+  }
+
   u8a(v: Uint8Array): void {
     this.check(v.byteLength);
     this.arrayView.set(v, this.pos);
@@ -117,14 +127,6 @@ export class BinaryWriter {
   }
 
   // Legacy apis
-
-  // Used by artworks to write the artworks the palette offset and pointers
-  writeInt32At(position: number, value: number): void {
-    const pos = this.tell();
-    this.seek(position);
-    this.i32(value);
-    this.seek(pos);
-  }
 
   // Used by artworks to write out the file identifiers and layer names
   // If possible, pad the space with zeroes
