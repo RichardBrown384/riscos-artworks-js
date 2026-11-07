@@ -21,6 +21,9 @@ export class BinaryWriter {
 
   // Internal
   private check(size: number): void {
+    if (size < 0) {
+      throw new RangeError('Invalid write size');
+    }
     if (this.pos + size > this.len) {
       throw new RangeError('Write past end of buffer');
     }

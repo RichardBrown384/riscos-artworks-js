@@ -19,6 +19,9 @@ export class BinaryReader {
 
   // Internal
   private check(size: number): void {
+    if (size < 0) {
+      throw new RangeError('Invalid read size');
+    }
     if (this.pos + size > this.len) {
       throw new RangeError('Read past end of buffer');
     }
