@@ -16,7 +16,7 @@ function readSpritePaletteArea(
   reader.aligned(4, 'misaligned sprite palette');
 
   check(
-    paletteAreaSize % 8 === 0,
+    paletteAreaSize >= 0 && paletteAreaSize % 8 === 0,
     'palette area size not divisible by 8 ' + paletteAreaSize.toString(),
   );
 
