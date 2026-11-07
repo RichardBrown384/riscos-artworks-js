@@ -15,8 +15,8 @@ export function readListsPointer(reader: BinaryReader): FilePointer {
 export function writeListsPointer(writer: BinaryWriter, pointer: FilePointer) {
   checkPointer(writer.length(), pointer);
   const { position, previous, next } = pointer;
-  writer.writeInt32At(position, previous);
-  writer.writeInt32At(position + 4, next);
+  writer.i32At(position, previous);
+  writer.i32At(position + 4, next);
 }
 
 export function createListsPointer(

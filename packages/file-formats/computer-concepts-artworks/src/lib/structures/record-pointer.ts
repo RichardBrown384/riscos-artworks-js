@@ -15,8 +15,8 @@ export function readRecordPointer(reader: BinaryReader) {
 export function writeRecordPointer(writer: BinaryWriter, pointer: FilePointer) {
   checkPointer(writer.length(), pointer);
   const { position, previous, next } = pointer;
-  writer.writeInt32At(position, next);
-  writer.writeInt32At(position + 4, previous);
+  writer.i32At(position, next);
+  writer.i32At(position + 4, previous);
 }
 
 export function createRecordPointer(

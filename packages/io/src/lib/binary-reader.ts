@@ -104,6 +104,14 @@ export class BinaryReader {
     return v;
   }
 
+  i32At(position: number): number {
+    const pos = this.tell();
+    this.seek(position);
+    const v = this.i32();
+    this.seek(pos);
+    return v;
+  }
+
   // Arrays
   u8a(length: number): Uint8Array<ArrayBuffer> {
     this.check(length);
@@ -136,15 +144,6 @@ export class BinaryReader {
   }
 
   // Legacy apis
-
-  // Used by artworks to read the artworks palette offset
-  readInt32At(position: number): number {
-    const pos = this.tell();
-    this.seek(position);
-    const v = this.i32();
-    this.seek(pos);
-    return v;
-  }
 
   // Used by artworks to read palette entries and header identifiers
   paddedCString(length: number): string {
