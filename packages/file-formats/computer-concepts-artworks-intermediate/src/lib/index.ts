@@ -13,6 +13,7 @@ import {
   Palette,
 } from '@rbrown/computer-concepts-artworks';
 import { IrRootNode } from '@rbrown/intermediate';
+import { SpriteArea } from '@rbrown/riscos-sprite';
 
 import { Mapper } from './mapper.js';
 import { denormalise } from './normalisation.js';
@@ -24,6 +25,16 @@ const EMPTY_PALETTE: Palette = {
   unknown4: 0,
   entries: [],
 } as const;
+
+const EMPTY_SPRITE_AREA: SpriteArea = {
+  controlBlock: {
+    sizeInBytes: 0,
+    spriteCount: 0,
+    spriteOffset: 0,
+    freeOffset: 0,
+  },
+  sprites: [],
+};
 
 const INITIAL_RENDER_STATE: RenderState = {
   stroke: createRecordStrokeColour(0x01000000),
@@ -37,8 +48,12 @@ const INITIAL_RENDER_STATE: RenderState = {
 } as const;
 
 export function artworksMapToIntermediate(artworks: ArtworksFile): IrRootNode {
-  const { lists, palette = EMPTY_PALETTE } = denormalise(artworks);
-  const mapper = new Mapper(palette);
+  const {
+    lists,
+    palette = EMPTY_PALETTE,
+    spriteArea = EMPTY_SPRITE_AREA,
+  } = denormalise(artworks);
+  const mapper = new Mapper(palette, spriteArea);
   artworksProcess({
     lists,
     mapper,

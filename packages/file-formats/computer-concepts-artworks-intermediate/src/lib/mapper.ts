@@ -28,6 +28,7 @@ import {
   IrRootNode,
   type IrPathSegment,
 } from '@rbrown/intermediate';
+import { SpriteArea } from '@rbrown/riscos-sprite';
 
 import { RenderState } from './render-state.js';
 
@@ -218,9 +219,12 @@ function mapLinecapTriangleLength(
 export class Mapper {
   private readonly children: IrNode[];
   private readonly palette: Palette;
-  constructor(palette: Palette) {
+  private readonly spriteArea: SpriteArea;
+  constructor(palette: Palette, spriteArea: SpriteArea) {
     this.children = [];
     this.palette = palette;
+    this.spriteArea = spriteArea;
+    (() => this.spriteArea)();
   }
 
   finish(): IrRootNode {
