@@ -13,10 +13,15 @@ node_modules
 .DS_Store
 Thumbs.db
 
-
+# Nx
 .nx/cache
 .nx/workspace-data
 .nx/polygraph
 .nx/self-healing
 .nx/migrate-runs
+
+# Vite
 vite.config.*.timestamp*
+
+# Corpus files
+corpus
