@@ -257,6 +257,10 @@ export type ArtworksRecordWithPath = ArtworksRecord & {
   };
 };
 
+export type ArtworksSpriteRecord = ArtworksRecordTyped<
+  typeof ARTWORKS_RECORD_TYPE_TAG.RECORD_05_SPRITE
+>;
+
 export type ArtworksRecordStrokeColour = ArtworksRecordTyped<
   typeof ARTWORKS_RECORD_TYPE_TAG.RECORD_24_STROKE_COLOUR
 >;
