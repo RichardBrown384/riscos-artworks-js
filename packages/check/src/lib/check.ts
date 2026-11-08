@@ -23,9 +23,6 @@ export function makeCheckEnumValue<
     value: unknown,
     message: string,
   ): asserts value is Value {
-    check(
-      values.has(value as Value),
-      `unsupported ${message}: ${String(value)}`,
-    );
+    check(values.has(value as Value), `${message}: ${String(value)}`);
   };
 }
