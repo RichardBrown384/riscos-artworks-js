@@ -133,37 +133,32 @@ export class BinaryReader {
   string(length: number): string {
     const bytes = this.u8a(length);
     const terminator = bytes.indexOf(0);
-    return BinaryReader.decoder.decode(
-      terminator === -1 ? bytes : bytes.subarray(0, terminator),
-    );
+    // No terminator found; the string is the entire array.
+    if (terminator === -1) {
+      return BinaryReader.decoder.decode(bytes);
+    }
+    // Terminator found, we need to truncate the result
+    const subarray = bytes.subarray(0, terminator);
+    return BinaryReader.decoder.decode(subarray);
   }
 
+  // Used in the following ArtWorks records
+  // 23 - Save Location
+  // 2f - Font Name
+  // 39 - File Info
+  // They're not really well understood, and we have open issues
+  // to investigate the actual layout
   cstring(): string {
-    const bytes: number[] = [];
-    for (;;) {
-      const byte = this.u8();
-      if (byte === 0) {
-        break;
-      }
-      bytes.push(byte);
+    const start = this.tell();
+    const bytes = this.u8a(this.remaining());
+    const terminator = bytes.indexOf(0);
+    // No terminator found; the string is the rest of the file.
+    if (terminator === -1) {
+      return BinaryReader.decoder.decode(bytes);
     }
-    return BinaryReader.decoder.decode(new Uint8Array(bytes));
-  }
-
-  // Legacy apis
-
-  // Used by artworks to read palette entries and header identifiers
-  // Used by artworks to read save location, font names, and file info
-  // How strings are represented in these records isn't really understood
-  boundedCString(maxLength = 2048) {
-    const bytes: number[] = [];
-    for (let i = 0; i < maxLength; i++) {
-      const byte = this.u8();
-      if (byte === 0) {
-        break;
-      }
-      bytes.push(byte);
-    }
-    return BinaryReader.decoder.decode(new Uint8Array(bytes));
+    // Terminator found, we need to seek to the end of the string and truncate the result
+    this.seek(start + terminator + 1);
+    const subarray = bytes.subarray(0, terminator);
+    return BinaryReader.decoder.decode(subarray);
   }
 }

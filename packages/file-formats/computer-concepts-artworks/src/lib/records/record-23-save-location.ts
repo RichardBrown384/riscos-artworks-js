@@ -7,6 +7,6 @@ export function readRecordBodySaveLocation(
 ): RecordBodySaveLocation {
   return {
     fileType: reader.u32(),
-    filePath: reader.boundedCString(),
+    filePath: reader.cstring(),
   };
 }

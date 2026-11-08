@@ -6,6 +6,6 @@ export function readRecordBodyFontName(
   reader: BinaryReader,
 ): RecordBodyFontName {
   return {
-    fontName: reader.boundedCString(),
+    fontName: reader.cstring(),
   };
 }

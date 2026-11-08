@@ -6,6 +6,6 @@ export function readRecordBodyFileInfo(
   reader: BinaryReader,
 ): RecordBodyFileInfo {
   return {
-    fileInfo: reader.boundedCString(),
+    fileInfo: reader.cstring(),
   };
 }
