@@ -1,4 +1,5 @@
 import { BoundingBox, Point } from '@rbrown/geometry';
+import { SpriteArea } from '@rbrown/riscos-sprite';
 
 export type ArtworksPolyline = Point[];
 
@@ -121,10 +122,14 @@ export interface FilePointer {
   next: number;
 }
 
+// Comment: the sprite area and palette live on the top
+// level because our handling of the work area record is
+// suboptimal
 export interface ArtworksFile {
   header: ArtworksHeader;
   lists: List[];
   palette?: Palette;
+  spriteArea?: SpriteArea;
 }
 
 export interface List {
@@ -252,6 +257,10 @@ export type ArtworksRecordWithPath = ArtworksRecord & {
   };
 };
 
+export type ArtworksSpriteRecord = ArtworksRecordTyped<
+  typeof ARTWORKS_RECORD_TYPE_TAG.RECORD_05_SPRITE
+>;
+
 export type ArtworksRecordStrokeColour = ArtworksRecordTyped<
   typeof ARTWORKS_RECORD_TYPE_TAG.RECORD_24_STROKE_COLOUR
 >;
@@ -358,6 +367,7 @@ export interface Palette {
 
 export interface RecordBodyWorkArea {
   palette?: Palette;
+  spriteArea?: SpriteArea;
 }
 
 export type RecordBody22 = RecordBodyEmpty;

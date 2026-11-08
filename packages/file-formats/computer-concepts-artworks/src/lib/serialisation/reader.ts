@@ -1,5 +1,6 @@
 import { check } from '@rbrown/check';
 import { BinaryReader } from '@rbrown/io';
+import { SpriteArea, spriteAreaFromBinaryReader } from '@rbrown/riscos-sprite';
 
 import { readPalette } from '../primitives/index.js';
 import { readRecordBody, readRecordHeader } from '../records/index.js';
@@ -23,16 +24,23 @@ export class ArtworksReader {
     this.reader.seek(0);
     const header = readArtworksHeader(this.reader);
 
-    const { bodyPosition, palettePosition } = header;
+    const { bodyPosition, palettePosition, spriteAreaPosition } = header;
 
     this.reader.seek(bodyPosition);
     const lists: List[] = this.readLists();
+
+    // TODO: mixed feelings about this
+    // We should provide a function to find the work area record
+    // And have the clients use that instead.
+    // We currently live with the objects twice in memory
     const palette = this.readPalette(palettePosition);
+    const spriteArea = this.readSpriteArea(spriteAreaPosition);
 
     return {
       header,
       lists,
       palette,
+      spriteArea,
     };
   }
 
@@ -93,5 +101,13 @@ export class ArtworksReader {
     }
     this.reader.seek(palettePosition);
     return readPalette(this.reader);
+  }
+
+  readSpriteArea(spriteAreaPosition: number): SpriteArea | undefined {
+    if (spriteAreaPosition === -1) {
+      return undefined;
+    }
+    this.reader.seek(spriteAreaPosition);
+    return spriteAreaFromBinaryReader(this.reader);
   }
 }

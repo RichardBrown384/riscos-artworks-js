@@ -3,6 +3,7 @@ import {
   ArtworksPath,
   ArtworksRecord,
   ArtworksRecordWithPath,
+  ArtworksSpriteRecord,
   List,
 } from '@rbrown/computer-concepts-artworks';
 
@@ -54,6 +55,9 @@ class ArtworksProcessor {
     switch (record.type) {
       case ARTWORKS_RECORD_TYPE_TAG.RECORD_02_PATH:
         this.processPath(record);
+        break;
+      case ARTWORKS_RECORD_TYPE_TAG.RECORD_05_SPRITE:
+        this.processSprite(record);
         break;
       case ARTWORKS_RECORD_TYPE_TAG.RECORD_24_STROKE_COLOUR:
         this.renderStateStack.setStroke(record);
@@ -112,7 +116,14 @@ class ArtworksProcessor {
       this.renderStateStack.setFill(RECORD_FILL_FLAT_TRANSPARENT);
     }
     const state = this.renderStateStack.peek();
-    this.mapper.path(path, state);
+    this.mapper.path(pathRecord, state);
+  }
+
+  processSprite(spriteRecord: ArtworksSpriteRecord): void {
+    if (!headerControlWordPathVisible(spriteRecord)) {
+      return;
+    }
+    this.mapper.sprite(spriteRecord);
   }
 }
 

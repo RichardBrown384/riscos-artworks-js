@@ -13,7 +13,7 @@ const COLOUR_MODEL = {
 function readPaletteEntry(reader: BinaryReader): PaletteEntry {
   reader.aligned(4, 'misaligned palette entry');
   return {
-    name: reader.paddedCString(24),
+    name: reader.string(24),
     colour: reader.u32(),
     component0: reader.u32(),
     component1: reader.u32(),
@@ -25,7 +25,7 @@ function readPaletteEntry(reader: BinaryReader): PaletteEntry {
 
 function writePaletteEntry(writer: BinaryWriter, entry: PaletteEntry): void {
   writer.aligned(4, 'misaligned palette entry');
-  writer.paddedCString(entry.name, 24);
+  writer.string(entry.name, 24);
   writer.u32(entry.colour);
   writer.u32(entry.component0);
   writer.u32(entry.component1);

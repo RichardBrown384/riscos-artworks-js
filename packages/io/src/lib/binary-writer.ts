@@ -122,18 +122,14 @@ export class BinaryWriter {
   }
 
   // Strings
-  string(v: string): void {
-    this.u8a(BinaryWriter.encoder.encode(v));
-  }
-
-  // Legacy apis
-
-  // Used by artworks to write out the file identifiers and layer names
-  // If possible, pad the space with zeroes
-  paddedCString(string: string, length: number): void {
-    this.aligned(4, 'misaligned string');
+  // This variant is used where a null terminated string is expected to reside
+  // within a fixed number of bytes inside a C struct e.g. a layer or group name.
+  // The string is truncated to the field length and padded with zeroes
+  string(v: string, length: number): void {
+    const encoded = BinaryWriter.encoder.encode(v);
+    const truncated = encoded.subarray(0, length);
     const array = new Uint8Array(length);
-    array.set(BinaryWriter.encoder.encode(string).subarray(0, length));
+    array.set(truncated);
     this.u8a(array);
   }
 }

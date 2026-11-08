@@ -6,8 +6,9 @@ import {
   ARTWORKS_WINDING_RULE_TAG,
   ArtworksColourIndex,
   ArtworksLineCapStyle,
-  ArtworksPath,
   ArtworksPathSegment,
+  ArtworksRecordWithPath,
+  ArtworksSpriteRecord,
   Palette,
   RecordBodyFillColour,
   RecordBodyJoinStyle,
@@ -17,6 +18,7 @@ import {
   RecordBodyStrokeWidth,
   RecordBodyWindingRule,
 } from '@rbrown/computer-concepts-artworks';
+import { bboxHeight, bboxWidth, transformTranslate } from '@rbrown/geometry';
 import {
   IrColour,
   IrFill,
@@ -26,8 +28,10 @@ import {
   IrNode,
   IrPathNode,
   IrRootNode,
+  type IrImageNode,
   type IrPathSegment,
 } from '@rbrown/intermediate';
+import { SpriteArea, spriteToImageSource } from '@rbrown/riscos-sprite';
 
 import { RenderState } from './render-state.js';
 
@@ -218,9 +222,11 @@ function mapLinecapTriangleLength(
 export class Mapper {
   private readonly children: IrNode[];
   private readonly palette: Palette;
-  constructor(palette: Palette) {
+  private readonly spriteArea: SpriteArea;
+  constructor(palette: Palette, spriteArea: SpriteArea) {
     this.children = [];
     this.palette = palette;
+    this.spriteArea = spriteArea;
   }
 
   finish(): IrRootNode {
@@ -229,11 +235,11 @@ export class Mapper {
     };
   }
 
-  path(path: ArtworksPath, renderState: RenderState): void {
+  path(record: ArtworksRecordWithPath, renderState: RenderState): void {
     const pathNode: IrPathNode = {
       tag: 'path',
       attributes: {
-        path: mapPathSegments(path),
+        path: mapPathSegments(record.body.path),
         fill: mapFill(this.palette, renderState.fill.body),
         fillRule: mapFillRule(renderState.windingRule.body),
         stroke: mapStroke(this.palette, renderState.stroke.body),
@@ -257,5 +263,33 @@ export class Mapper {
       },
     };
     this.children.push(pathNode);
+  }
+
+  sprite(record: ArtworksSpriteRecord): void {
+    const {
+      boundingBox,
+      body: { name },
+    } = record;
+    const worldWidth = bboxWidth(boundingBox);
+    const worldHeight = bboxHeight(boundingBox);
+    const sprite = this.spriteArea.sprites.find(
+      (sprite) => sprite.controlBlock.spriteName === name,
+    );
+    if (!sprite) {
+      return;
+    }
+    const spriteNode: IrImageNode = {
+      tag: 'image',
+      attributes: {
+        transform: transformTranslate(boundingBox.minX, boundingBox.minY),
+        worldWidth,
+        worldHeight,
+        image: {
+          tag: 'source',
+          source: spriteToImageSource(sprite),
+        },
+      },
+    };
+    this.children.push(spriteNode);
   }
 }

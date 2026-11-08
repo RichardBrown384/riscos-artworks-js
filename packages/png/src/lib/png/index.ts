@@ -63,7 +63,7 @@ export function pngCreateImage(image: ImageSource) {
 
   writer.u32(IHDR_LENGTH);
   const ihdrStart = writer.tell();
-  writer.string('IHDR');
+  writer.string('IHDR', 4);
   writer.u32(image.pixelWidth);
   writer.u32(image.pixelHeight);
   writer.u8(BIT_DEPTH_8);
@@ -76,7 +76,7 @@ export function pngCreateImage(image: ImageSource) {
 
   writer.u32(PHYS_LENGTH);
   const physStart = writer.tell();
-  writer.string('pHYs');
+  writer.string('pHYs', 4);
   writer.u32(image.xDpi);
   writer.u32(image.yDpi);
   writer.u8(PHYS_UNIT_UNKNOWN);
@@ -85,14 +85,14 @@ export function pngCreateImage(image: ImageSource) {
 
   writer.u32(idatLength);
   const idatStart = writer.tell();
-  writer.string('IDAT');
+  writer.string('IDAT', 4);
   writer.u8a(imageData);
   const idatEnd = writer.tell();
   writer.u32(crc(writer.raw().subarray(idatStart, idatEnd)));
 
   writer.u32(IEND_LENGTH);
   const iendStart = writer.tell();
-  writer.string('IEND');
+  writer.string('IEND', 4);
   const iendEnd = writer.tell();
   writer.u32(crc(writer.raw().subarray(iendStart, iendEnd)));
 

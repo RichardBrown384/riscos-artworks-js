@@ -11,6 +11,12 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../../geometry/tsconfig.lib.json"
+    },
+    {
+      "path": "../riscos-sprite/tsconfig.lib.json"
+    },
+    {
       "path": "../../intermediate/tsconfig.lib.json"
     },
     {
