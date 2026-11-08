@@ -49,6 +49,7 @@
         * [Type 0x3E - Start Marker](#type-0x3e-line-start-marker)
         * [Type 0x3F - End Marker](#type-0x3f-line-end-marker)
         * [Type 0x42 - Distortion Subgroup](#type-0x42-distortion-subgroup)
+        * [Type 0x65](#type-0x65-unknown)
     * [Coordinate system](#coordinate-system)
     * [Path data](#path-data)
     * [Palette](#palette)
@@ -916,6 +917,26 @@ It has no fields or data of its own and the records are always of length 32.
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 8      | [SubLists pointer](#sublists)   |
 
+#### Type 0x65: Unknown
+
+The purpose of this group is unknown it appears to always have a length of 72. The presence of 
+children indicates that this is not an attribute record. Potentially has geometry.
+
+| Offset | Length | Content                                                                     |
+|--------|--------|-----------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                             |
+| 24     | 4      | Unknown, potentially together with unknown28 the centre of the bounding box              |
+| 28     | 4      | Unknown, potentially together with unknown24 the centre of the bounding box                                                       |
+| 32     | 4      | Unknown                                          |
+| 36     | 4      | Unknown  |
+| 40     | 4      | Unknown  |
+| 44     | 4      | Unknown  |
+| 48     | 4      | Unknown  |
+| 52     | 4      | Unknown  |
+| 56     | 4      | Unknown  |
+| 60     | 4      | Unknown  |
+| 64     | 8      | [SubLists pointer](#sublists)   |
+
 ### Coordinate system
 
 The coordinate system places the origin at the bottom left of the page. All coordinates in the file
@@ -976,7 +997,7 @@ as sometimes bits 24 to 31 (inclusive) are set.
 
 For RGB and CMYK the colour components range between 0 (0.0) and 0x7FFFFFFF (1.0).
 
-For HSV, the S and V components range between 0 (0.0) and and 0x7FFFFFFF (1.0).
+For HSV, the S and V components range between 0 (0.0) and 0x7FFFFFFF (1.0).
 The H component varies between 0 (0.0) and 0x16800000 (360.0). A fixed point representation
 is used with the lower 20 bits for the fraction and the upper bits used for degrees. Setting
 the H component to a value greater than 0x16800000 will result in !AWViewer rendering
@@ -1106,7 +1127,7 @@ This kind of structure is very common within ArtWorks files.
 
 All this together with the first point implies that ArtWorks probably keeps a stack
 of path attributes while rendering. Both paths are dashed, but the sibling and descendant
-attributes of path A don't influence path B and vice-versa.
+attributes of path A don't influence path B and vice versa.
 
 ### Rendering traversal algorithm
 

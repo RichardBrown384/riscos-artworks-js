@@ -43,6 +43,7 @@ import { readRecordBodyDistortionGroup } from './record-37-distortion-group.js';
 import { readRecordBodyPerspectiveGroup } from './record-38-perspective-group.js';
 import { readRecordBodyFileInfo } from './record-39-file-info.js';
 import { readRecordBodyDistortionSubgroup } from './record-42-distortion-subgroup.js';
+import { readRecordBody65 } from './record-65.js';
 
 function unsupportedErrorMessage(type: number): string {
   return `read: unsupported record body ${type.toString()}, (0x${type.toString(16)})`;
@@ -170,6 +171,8 @@ export function readRecordBody(
     }
     case ARTWORKS_RECORD_TYPE_TAG.RECORD_42_DISTORTION_SUBGROUP:
       return { type, body: readRecordBodyDistortionSubgroup() };
+    case ARTWORKS_RECORD_TYPE_TAG.RECORD_65:
+      return { type, body: readRecordBody65(reader) };
     default:
       throw new Error(unsupportedErrorMessage(type));
   }
