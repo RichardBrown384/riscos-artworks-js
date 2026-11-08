@@ -174,6 +174,7 @@ export const ARTWORKS_RECORD_TYPE_TAG = {
   RECORD_3E_MARKER_START: 0x3e,
   RECORD_3F_MARKER_END: 0x3f,
   RECORD_42_DISTORTION_SUBGROUP: 0x42,
+  RECORD_65: 0x65,
 } as const;
 
 export type ArtworksRecordType =
@@ -216,6 +217,7 @@ export type RecordBodyTypeMap = {
   [ARTWORKS_RECORD_TYPE_TAG.RECORD_3E_MARKER_START]: RecordBodyMarkerStart;
   [ARTWORKS_RECORD_TYPE_TAG.RECORD_3F_MARKER_END]: RecordBodyMarkerEnd;
   [ARTWORKS_RECORD_TYPE_TAG.RECORD_42_DISTORTION_SUBGROUP]: RecordBodyDistortionSubgroup;
+  [ARTWORKS_RECORD_TYPE_TAG.RECORD_65]: RecordBody65;
 };
 
 export const ARTWORKS_RECORD_UNKNOWN_4_BIT_0 = 0x01;
@@ -586,3 +588,16 @@ export interface RecordBodyMarkerStart {
 export type RecordBodyMarkerEnd = RecordBodyMarkerStart;
 
 export type RecordBodyDistortionSubgroup = RecordBodyEmpty;
+
+export interface RecordBody65 {
+  unknown24: number;
+  unknown28: number;
+  unknown32: number;
+  unknown36: number;
+  unknown40: number;
+  unknown44: number;
+  unknown48: number;
+  unknown52: number;
+  unknown56: number;
+  unknown60: number;
+}
