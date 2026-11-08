@@ -29,19 +29,19 @@ export function readRecordBodyBlendGroup(
 
 export function writeRecordBodyBlendGroup(
   writer: BinaryWriter,
-  record: RecordBodyBlendGroup,
+  body: RecordBodyBlendGroup,
 ): void {
-  writer.i32(record.unknown24);
-  writer.i32(record.unknown28);
-  writer.i32(record.unknown32);
-  writer.i32(record.unknown36);
-  writer.i32(record.unknown40);
-  writer.i32(record.unknown44);
-  writer.i32(record.unknown48);
-  writer.i32(record.unknown52);
-  writer.i32(record.unknown56);
-  writer.i32(record.unknown60);
-  writer.i32(record.unknown64);
+  writer.i32(body.unknown24);
+  writer.i32(body.unknown28);
+  writer.i32(body.unknown32);
+  writer.i32(body.unknown36);
+  writer.i32(body.unknown40);
+  writer.i32(body.unknown44);
+  writer.i32(body.unknown48);
+  writer.i32(body.unknown52);
+  writer.i32(body.unknown56);
+  writer.i32(body.unknown60);
+  writer.i32(body.unknown64);
 }
 
 export function createRecordBlendGroup(

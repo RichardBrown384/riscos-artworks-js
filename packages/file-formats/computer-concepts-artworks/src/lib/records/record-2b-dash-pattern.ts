@@ -40,18 +40,17 @@ export function readRecordBodyDashPattern(
   reader: BinaryReader,
 ): RecordBodyDashPattern {
   const pattern = reader.i32();
-  const record: RecordBodyDashPattern = { pattern };
+  const body: RecordBodyDashPattern = { pattern };
   if (pattern !== 0) {
-    record.dashPattern = readDashPattern(reader);
+    body.dashPattern = readDashPattern(reader);
   }
-  return record satisfies RecordBodyDashPattern;
+  return body satisfies RecordBodyDashPattern;
 }
 
 export function writeRecordBodyDashPattern(
   writer: BinaryWriter,
-  record: RecordBodyDashPattern,
+  { pattern, dashPattern }: RecordBodyDashPattern,
 ): void {
-  const { pattern, dashPattern } = record;
   writer.i32(pattern);
   if (pattern === 0) {
     return;
