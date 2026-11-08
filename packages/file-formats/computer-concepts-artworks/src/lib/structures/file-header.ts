@@ -14,9 +14,9 @@ export const FILE_OFFSET_BODY = 0x80;
 export function readArtworksHeader(reader: BinaryReader): ArtworksHeader {
   reader.aligned(4, 'misaligned header');
   return {
-    identifier: reader.paddedCString(4),
+    identifier: reader.string(4),
     version: reader.u32(),
-    program: reader.paddedCString(8),
+    program: reader.string(8),
     unknown16: reader.u32(),
     bodyPosition: reader.u32(),
     europeanPaperWidth: reader.u32(),

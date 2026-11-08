@@ -13,7 +13,7 @@ import { ZERO_BOUNDING_BOX } from './record-creation-helpers.js';
 export function readRecordBodyLayer(reader: BinaryReader): RecordBodyLayer {
   return {
     unknown24: reader.u32(),
-    name: reader.paddedCString(32),
+    name: reader.string(32),
   };
 }
 

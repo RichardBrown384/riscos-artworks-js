@@ -128,9 +128,16 @@ export class BinaryReader {
   }
 
   // Strings
+
+  // This variant is used where a null terminated string is expected to reside
+  // within a fixed number of bytes inside a C struct e.g. a layer or group name.
   string(length: number): string {
+    this.aligned(4, 'misaligned string');
     const bytes = this.u8a(length);
-    return BinaryReader.decoder.decode(bytes);
+    const terminator = bytes.indexOf(0);
+    return BinaryReader.decoder.decode(
+      terminator === -1 ? bytes : bytes.subarray(0, terminator),
+    );
   }
 
   cstring(): string {
@@ -149,17 +156,6 @@ export class BinaryReader {
   // Legacy apis
 
   // Used by artworks to read palette entries and header identifiers
-  paddedCString(length: number): string {
-    this.aligned(4, 'misaligned string');
-
-    const bytes = this.u8a(length);
-    const terminator = bytes.indexOf(0);
-
-    return BinaryReader.decoder.decode(
-      terminator === -1 ? bytes : bytes.subarray(0, terminator),
-    );
-  }
-
   // Used by artworks to read save location, font names, and file info
   // How strings are represented in these records isn't really understood
   boundedCString(maxLength = 2048) {

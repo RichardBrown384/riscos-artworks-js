@@ -14,7 +14,7 @@ function readSpritePalette(reader: BinaryReader): SpritePalette {
 export function readRecordBodySprite(reader: BinaryReader): RecordBodySprite {
   return {
     unknown24: reader.u32(),
-    name: reader.paddedCString(12),
+    name: reader.string(12),
     unknown40: reader.u32(),
     unknown44: reader.u32(),
     unknown48: reader.i32(),
