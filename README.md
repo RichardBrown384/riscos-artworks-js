@@ -102,7 +102,7 @@ They are,
 1. Text objects - the reason is that these have a dependency on RISC OS fonts
 2. [Blend groups][blend-groups] - these require additional effort on trying to understand on how ArtWorks interpolates attributes and geometry
 3. Distortion and perspective groups - while they are trivial to render, it's not understood how ArtWorks applies the transforms
-4. Sprite objects - these could theoretically be supported but would require improvements in the supporting libraries
+4. Sprite objects - preliminary support, rotated sprites not understood.
 
 The library and documentation are offered  as works in progress and there isn't much emphasis
 on the software engineering fundamentals such as testing.
