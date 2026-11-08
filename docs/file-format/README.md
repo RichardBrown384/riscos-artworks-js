@@ -2,62 +2,62 @@
 
 ## Table of contents
 
-* [About](#about)
-* [General observations](#general-observations)
-* [Header](#header)
-* [Body](#body)
-    * [Body structure](#body-structure)
-        * [Lists](#lists)
-        * [List](#list)
-        * [SubLists](#sublists)
-        * [Traversal](#traversal)
-    * [Record header](#record-header)
-    * [Record types](#record-types)
-        * [Type 0x00](#type-0x00-unknown)
-        * [Type 0x01](#type-0x01-unknown-text)
-        * [Type 0x02 - Path](#type-0x02-path)
-        * [Type 0x05 - Sprite](#type-0x05-sprite)
-        * [Type 0x06 - Group](#type-0x06-group)
-        * [Type 0x0A - Layer](#type-0x0a-layer)
-        * [Type 0x21 - Work Area](#type-0x21-work-area)
-        * [Type 0x22](#type-0x22-unknown)
-        * [Type 0x23 - File Save Location](#type-0x23-file-save-location)
-        * [Type 0x24 - Stroke Colour](#type-0x24-stroke-colour)
-        * [Type 0x25 - Stroke Width](#type-0x25-stroke-width)
-        * [Type 0x26 - Fill](#type-0x26-fill)
-        * [Type 0x27 - Join Style](#type-0x27-join-style)
-        * [Type 0x28 - End Line Cap](#type-0x28-end-line-cap)
-        * [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
-        * [Type 0x2A - Winding Rule](#type-0x2a-winding-rule)
-        * [Type 0x2B - Dash Pattern](#type-0x2b-dash-pattern)
-        * [Type 0x2C - Rectangle](#type-0x2c-rectangle)
-        * [Type 0x2D](#type-0x2d-character)
-        * [Type 0x2E](#type-0x2e-unknown)
-        * [Type 0x2F](#type-0x2f-font-name)
-        * [Type 0x30](#type-0x30-font-size)
-        * [Type 0x31](#type-0x31-unknown)
-        * [Type 0x32](#type-0x32-unknown)
-        * [Type 0x33](#type-0x33-unknown)
-        * [Type 0x34 - Ellipse](#type-0x34-ellipse)
-        * [Type 0x35 - Rounded Rectangle](#type-0x35-rounded-rectangle)
-        * [Type 0x37 - Distortion Group](#type-0x37-distortion-group)
-        * [Type 0x38 - Perspective Group](#type-0x38-perspective-group)
-        * [Type 0x39](#type-0x39-file-information)
-        * [Type 0x3A - Blend Group](#type-0x3a-blend-group)
-        * [Type 0x3B - Blend Options](#type-0x3b-blend-options)
-        * [Type 0x3D - Blend Path](#type-0x3d-blend-path)
-        * [Type 0x3E - Start Marker](#type-0x3e-line-start-marker)
-        * [Type 0x3F - End Marker](#type-0x3f-line-end-marker)
-        * [Type 0x42 - Distortion Subgroup](#type-0x42-distortion-subgroup)
-        * [Type 0x65](#type-0x65-unknown)
-    * [Coordinate system](#coordinate-system)
-    * [Path data](#path-data)
-    * [Palette](#palette)
-    * [Colour indices](#colour-indices)
-    * [Sprite area](#sprite-area)
-    * [UBuf](#ubuf)
-* [Rendering](#rendering)
-* [References](#references)
+- [About](#about)
+- [General observations](#general-observations)
+- [Header](#header)
+- [Body](#body)
+  - [Body structure](#body-structure)
+    - [Lists](#lists)
+    - [List](#list)
+    - [SubLists](#sublists)
+    - [Traversal](#traversal)
+  - [Record header](#record-header)
+  - [Record types](#record-types)
+    - [Type 0x00](#type-0x00-unknown)
+    - [Type 0x01](#type-0x01-unknown-text)
+    - [Type 0x02 - Path](#type-0x02-path)
+    - [Type 0x05 - Sprite](#type-0x05-sprite)
+    - [Type 0x06 - Group](#type-0x06-group)
+    - [Type 0x0A - Layer](#type-0x0a-layer)
+    - [Type 0x21 - Work Area](#type-0x21-work-area)
+    - [Type 0x22](#type-0x22-unknown)
+    - [Type 0x23 - File Save Location](#type-0x23-file-save-location)
+    - [Type 0x24 - Stroke Colour](#type-0x24-stroke-colour)
+    - [Type 0x25 - Stroke Width](#type-0x25-stroke-width)
+    - [Type 0x26 - Fill](#type-0x26-fill)
+    - [Type 0x27 - Join Style](#type-0x27-join-style)
+    - [Type 0x28 - End Line Cap](#type-0x28-end-line-cap)
+    - [Type 0x29 - Start Line Cap](#type-0x29-start-line-cap)
+    - [Type 0x2A - Winding Rule](#type-0x2a-winding-rule)
+    - [Type 0x2B - Dash Pattern](#type-0x2b-dash-pattern)
+    - [Type 0x2C - Rectangle](#type-0x2c-rectangle)
+    - [Type 0x2D](#type-0x2d-character)
+    - [Type 0x2E](#type-0x2e-unknown)
+    - [Type 0x2F](#type-0x2f-font-name)
+    - [Type 0x30](#type-0x30-font-size)
+    - [Type 0x31](#type-0x31-unknown)
+    - [Type 0x32](#type-0x32-unknown)
+    - [Type 0x33](#type-0x33-unknown)
+    - [Type 0x34 - Ellipse](#type-0x34-ellipse)
+    - [Type 0x35 - Rounded Rectangle](#type-0x35-rounded-rectangle)
+    - [Type 0x37 - Distortion Group](#type-0x37-distortion-group)
+    - [Type 0x38 - Perspective Group](#type-0x38-perspective-group)
+    - [Type 0x39](#type-0x39-file-information)
+    - [Type 0x3A - Blend Group](#type-0x3a-blend-group)
+    - [Type 0x3B - Blend Options](#type-0x3b-blend-options)
+    - [Type 0x3D - Blend Path](#type-0x3d-blend-path)
+    - [Type 0x3E - Start Marker](#type-0x3e-line-start-marker)
+    - [Type 0x3F - End Marker](#type-0x3f-line-end-marker)
+    - [Type 0x42 - Distortion Subgroup](#type-0x42-distortion-subgroup)
+    - [Type 0x65](#type-0x65-unknown)
+  - [Coordinate system](#coordinate-system)
+  - [Path data](#path-data)
+  - [Palette](#palette)
+  - [Colour indices](#colour-indices)
+  - [Sprite area](#sprite-area)
+  - [UBuf](#ubuf)
+- [Rendering](#rendering)
+- [References](#references)
 
 ## About
 
@@ -92,7 +92,7 @@ There a general number of observations that can be made about the files
 The header has a 16 byte signature followed by more data whose purpose is largely unknown.
 
 | Offset | Length | Content                                                                     |
-|--------|--------|-----------------------------------------------------------------------------|
+| ------ | ------ | --------------------------------------------------------------------------- |
 | 0      | 4      | Top!                                                                        |
 | 4      | 4      | Unknown (version?) 9, 10                                                    |
 | 8      | 8      | TopDraw (null terminated)                                                   |
@@ -128,11 +128,11 @@ class ArtWorks {
 
 ArtWorksRecords, depending on the type of record, can themselves have their own list of lists of records.
 
-````java
+```java
 class ArtWorksRecord {
     private List<List<ArtWorksRecord>> subLists;
 }
-````
+```
 
 ### Body structure
 
@@ -141,7 +141,7 @@ class ArtWorksRecord {
 Starting at offset specified in the header there are a series of doubly-linked list nodes with the following structure
 
 | Offset | Length | Content                 |
-|--------|--------|-------------------------|
+| ------ | ------ | ----------------------- |
 | 0      | 4      | Offset to previous list |
 | 4      | 4      | Offset to next list     |
 | 8      | varies | [List](#list) data      |
@@ -154,7 +154,7 @@ An offset of zero means that there is no previous or next entry.
 Lists are doubly-linked list nodes and have the following structure
 
 | Offset | Length | Content                       |
-|--------|--------|-------------------------------|
+| ------ | ------ | ----------------------------- |
 | 0      | 4      | Offset to next record         |
 | 4      | 4      | Offset to previous record     |
 | 8      | varies | [Record data](#record-header) |
@@ -168,7 +168,7 @@ Records can also have SubLists. When a record has SubLists, there will be an
 extra 8 bytes at the end of the record containing a pointer to the start of the SubLists.
 
 | Offset | Length | Content                     |
-|--------|--------|-----------------------------|
+| ------ | ------ | --------------------------- |
 | n - 8  | 4      | Offset to previous SubLists |
 | n - 4  | 4      | Offset to next SubLists     |
 
@@ -208,39 +208,39 @@ The files can be traversed as follows
 
 ```javascript
 function readLists() {
-    while (true) {
-        const {position, next} = readListPointer();
-        readList();
-        if (next !== 0) {
-            setPosition(position + next);
-        } else {
-            break;
-        }
+  while (true) {
+    const { position, next } = readListPointer();
+    readList();
+    if (next !== 0) {
+      setPosition(position + next);
+    } else {
+      break;
     }
+  }
 }
 
 function readList() {
-    while (true) {
-        const {position, next} = readRecordPointer();
-        readRecord();
-        if (next !== 0) {
-            readSubLists(position + next - 8);
-        } else {
-            break;
-        }
-        setPosition(position + next);
+  while (true) {
+    const { position, next } = readRecordPointer();
+    readRecord();
+    if (next !== 0) {
+      readSubLists(position + next - 8);
+    } else {
+      break;
     }
+    setPosition(position + next);
+  }
 }
 
 function readSubLists(subListPointerPosition) {
-    const current = getPosition();
-    assert(current <= subListPointerPosition);
-    setPosition(subListPointerPosition);
-    const {position, next} = readSubListsPointer();
-    if (next !== 0) {
-        setPosition(position + next);
-        readLists();
-    }
+  const current = getPosition();
+  assert(current <= subListPointerPosition);
+  setPosition(subListPointerPosition);
+  const { position, next } = readSubListsPointer();
+  if (next !== 0) {
+    setPosition(position + next);
+    readLists();
+  }
 }
 ```
 
@@ -256,7 +256,7 @@ where
 The records, unless noted otherwise, all share a common header.
 
 | Offset | Length | Content                                             |
-|--------|--------|-----------------------------------------------------|
+| ------ | ------ | --------------------------------------------------- |
 | 0      | 4      | Record type (Bits 0-7 type, 8-31 are sometimes set) |
 | 4      | 4      | [Header control word](#header-control-word)         |
 | 8      | 4      | Bounding Box Min X                                  |
@@ -276,7 +276,7 @@ The function of the header control word is not very well understood.
 However, in simple cases, the following seems to apply.
 
 | Bit(s) | Content                                                                  |
-|--------|--------------------------------------------------------------------------|
+| ------ | ------------------------------------------------------------------------ |
 | 0      | If set then style records (fills and so on) are used, otherwise ignored. |
 | 1      | If set then path records are used, otherwise ignored.                    |
 | 2..3   | Unknown                                                                  |
@@ -295,7 +295,7 @@ might not be.
 This record appears to be always 124 bytes long and filled with zeros.
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 100    | Unknown (0)                     |
 
@@ -304,32 +304,32 @@ This record appears to be always 124 bytes long and filled with zeros.
 Notes: After the bounding rectangle there are a number of trailing zeros.
 The number of zeros can vary, and there can sometimes be string data present at offset 84 too.
 
-| Offset | Length | Content                            |
-|--------|--------|------------------------------------|
-| 0      | 24     | [Record header](#record-header)    |
-| 24     | 4      | Unknown                            |
-| 28     | 4      | Unknown                            |
-| 32     | 4      | Unknown                            |
-| 36     | 4      | Unknown                            |
-| 40     | 4      | Unknown                            |
-| 44     | 4      | Unknown                            |
-| 48     | 4      | Bounding Rectangle Bottom Left X   |
-| 52     | 4      | Bounding Rectangle Bottom Left Y   |
-| 56     | 4      | Bounding Rectangle Top Left X      |
-| 60     | 4      | Bounding Rectangle Top Left Y      |
-| 64     | 4      | Bounding Rectangle Top Right X     |
-| 68     | 4      | Bounding Rectangle Top Right Y     |
-| 72     | 4      | Bounding Rectangle Bottom Right X  |
-| 76     | 4      | Bounding Rectangle Bottom Right Y  |
-| 80     | Varies | Unknown                            |
-| n - 8  | 8      | [SubLists pointer](#sublists)      |
+| Offset | Length | Content                           |
+| ------ | ------ | --------------------------------- |
+| 0      | 24     | [Record header](#record-header)   |
+| 24     | 4      | Unknown                           |
+| 28     | 4      | Unknown                           |
+| 32     | 4      | Unknown                           |
+| 36     | 4      | Unknown                           |
+| 40     | 4      | Unknown                           |
+| 44     | 4      | Unknown                           |
+| 48     | 4      | Bounding Rectangle Bottom Left X  |
+| 52     | 4      | Bounding Rectangle Bottom Left Y  |
+| 56     | 4      | Bounding Rectangle Top Left X     |
+| 60     | 4      | Bounding Rectangle Top Left Y     |
+| 64     | 4      | Bounding Rectangle Top Right X    |
+| 68     | 4      | Bounding Rectangle Top Right Y    |
+| 72     | 4      | Bounding Rectangle Bottom Right X |
+| 76     | 4      | Bounding Rectangle Bottom Right Y |
+| 80     | Varies | Unknown                           |
+| n - 8  | 8      | [SubLists pointer](#sublists)     |
 
 #### Type 0x02: Path
 
 Note: In certain cases there's extra data after the path data.
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | varies | [Path data](#path-data)         |
 | varies | varies | Unknown, sometimes present      |
@@ -344,7 +344,7 @@ There appears to be a transformation matrix defined after the coordinates in 16.
 The palette defined in this record seems to take precedence over the one defined with the sprite.
 
 | Offset | Length | Content                                                    |
-|--------|--------|------------------------------------------------------------|
+| ------ | ------ | ---------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                            |
 | 24     | 4      | Unknown                                                    |
 | 28     | 12     | Sprite name                                                |
@@ -370,7 +370,7 @@ The palette defined in this record seems to take precedence over the one defined
 #### Sprite palette entry
 
 | Offset | Length | Content                              |
-|--------|--------|--------------------------------------|
+| ------ | ------ | ------------------------------------ |
 | 0      | 4      | Colour (BGR) usually with bit 29 set |
 
 #### Type 0x06: Group
@@ -384,7 +384,7 @@ The function of the unknowns in the record body aren't understood. Various value
 0x55555555 and 0xAAAAAAAA to no noticeable affect.
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 4      | Unknown                         |
 | 28     | 4      | Unknown                         |
@@ -394,13 +394,13 @@ The function of the unknowns in the record body aren't understood. Various value
 #### Type 0x0A: Layer
 
 | Offset | Length | Content                                                                                      |
-|--------|--------|----------------------------------------------------------------------------------------------|
+| ------ | ------ | -------------------------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                                              |
 | 24     | 4      | Unknown. Bit 3 is usually set and both bits 3 and 0 must be set for the layer to be visible. |
 | 28     | 32     | Layer name, null terminated. The length stated here is a guess.                              |
 | 60     | 8      | [SubLists pointer](#sublists)                                                                |
 
-In the corpus of files available the bounding box entries are all zero, in contrast to groups records. 
+In the corpus of files available the bounding box entries are all zero, in contrast to groups records.
 
 #### Type 0x21: Work Area
 
@@ -410,7 +410,7 @@ the file's [Palette](#palette) information, but may also contain other informati
 offsets specified in the file's [header](#header).
 
 | Offset | Length | Content                                      |
-|--------|--------|----------------------------------------------|
+| ------ | ------ | -------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)              |
 | varies | varies | [Ubuf record](#ubuf) (optional)              |
 | varies | varies | [Sprite Area][sprite-area-format] (optional) |
@@ -424,7 +424,7 @@ The text `1cm` seems to occur relatively often.
 The record is always 208 bytes long.
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 184    | Unknown                         |
 
@@ -433,7 +433,7 @@ The record is always 208 bytes long.
 This record can vary in size.
 
 | Offset | Length | Content                            |
-|--------|--------|------------------------------------|
+| ------ | ------ | ---------------------------------- |
 | 0      | 24     | [Record header](#record-header)    |
 | 24     | 4      | File type (0xd94)                  |
 | 28     | varies | File path, null terminated string. |
@@ -441,14 +441,14 @@ This record can vary in size.
 #### Type 0x24: Stroke Colour
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 4      | [Colour index](#colour-indices) |
 
 #### Type 0x25: Stroke Width
 
 | Offset | Length | Content                           |
-|--------|--------|-----------------------------------|
+| ------ | ------ | --------------------------------- |
 | 0      | 24     | [Record header](#record-header)   |
 | 24     | 4      | Stroke Width (-1 means no stroke) |
 
@@ -459,7 +459,7 @@ Like !Draw, a stroke width of zero means draw the thinnest possible line on the 
 When an ArtWorks file doesn't specify a fill then !AWViewer will crash with a data transfer abort.
 
 | Offset | Length | Content                                                                  |
-|--------|--------|--------------------------------------------------------------------------|
+| ------ | ------ | ------------------------------------------------------------------------ |
 | 0      | 24     | [Record header](#record-header)                                          |
 | 24     | 4      | Fill Type <ol start="0"><li>Flat</li><li>Linear</li><li>Radial</li></ol> |
 | 28     | 4      | Unknown (0x59b98)                                                        |
@@ -467,13 +467,13 @@ When an ArtWorks file doesn't specify a fill then !AWViewer will crash with a da
 If Fill Type is flat
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 32     | 4      | [Colour index](#colour-indices) |
 
 If Fill Type is linear or radial
 
 | Offset | Length | Content                               |
-|--------|--------|---------------------------------------|
+| ------ | ------ | ------------------------------------- |
 | 32     | 4      | Gradient Start X                      |
 | 36     | 4      | Gradient Start Y                      |
 | 40     | 4      | Gradient End X                        |
@@ -484,7 +484,7 @@ If Fill Type is linear or radial
 Note that it is possible for the start and end coordinates to be equal.
 
 In this case, radial fills behave as one would expect and paths are filled
-with the end colour. 
+with the end colour.
 
 Linear fills are however filled with the start colour. To make matters more
 interesting, when the gradient line is short, what !AWViewer draws is dependent
@@ -500,7 +500,7 @@ When an ArtWorks file doesn't specify a join style then !AWViewer defaults to be
 Setting the join style to a value not in the enumeration will result in !AWViewer not rendering paths.
 
 | Offset | Length | Content                                                                  |
-|--------|--------|--------------------------------------------------------------------------|
+| ------ | ------ | ------------------------------------------------------------------------ |
 | 0      | 24     | [Record header](#record-header)                                          |
 | 24     | 4      | Join Style <ol start="0"><li>Mitre</li><li>Round</li><li>Bevel</li></ol> |
 
@@ -513,7 +513,7 @@ When an ArtWorks file doesn't specify an end line cap then !AWViewer defaults to
 Setting the cap style to a value not in the enumeration will result in !AWViewer not rendering paths.
 
 | Offset | Length | Content                                                                                    |
-|--------|--------|--------------------------------------------------------------------------------------------|
+| ------ | ------ | ------------------------------------------------------------------------------------------ |
 | 0      | 24     | [Record header](#record-header)                                                            |
 | 24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol> |
 | 28     | 4      | [Triangle Cap Width and Length](#triangle-cap-width-and-length)                            |
@@ -522,10 +522,10 @@ Setting the cap style to a value not in the enumeration will result in !AWViewer
 
 This field is ignored for other cap types.
 
-| Bits    | Content                                              |
-|---------|------------------------------------------------------|
-| 0-15    | Triangle Cap Width (0x80 corresponds to line width)  |
-| 16-31   | Triangle Cap Height (0x80 corresponds to line width) |
+| Bits  | Content                                              |
+| ----- | ---------------------------------------------------- |
+| 0-15  | Triangle Cap Width (0x80 corresponds to line width)  |
+| 16-31 | Triangle Cap Height (0x80 corresponds to line width) |
 
 #### Type 0x29: Start line cap
 
@@ -536,7 +536,7 @@ When an ArtWorks file doesn't specify a start line cap then !AWViewer defaults t
 Setting the cap style to a value not in the enumeration will result in !AWViewer not rendering paths.
 
 | Offset | Length | Content                                                                                    |
-|--------|--------|--------------------------------------------------------------------------------------------|
+| ------ | ------ | ------------------------------------------------------------------------------------------ |
 | 0      | 24     | [Record header](#record-header)                                                            |
 | 24     | 4      | Cap Style <ol start="0"><li>Butt</li><li>Round</li><li>Square</li><li>Triangular</li></ol> |
 | 28     | 4      | [Triangle Cap Width and Length](#triangle-cap-width-and-length)                            |
@@ -552,7 +552,7 @@ Setting the winding rule to a value not in the enumeration will result in !AWVie
 [Blend Groups](#type-0x3a-blend-group) will not render correctly if no winding rule is specified.
 
 | Offset | Length | Content                                                            |
-|--------|--------|--------------------------------------------------------------------|
+| ------ | ------ | ------------------------------------------------------------------ |
 | 0      | 24     | [Record header](#record-header)                                    |
 | 24     | 4      | Winding Rule <ol start="0"><li>Non-zero</li><li>Even-odd</li></ol> |
 
@@ -566,7 +566,7 @@ However, [Blend Groups](#type-0x3a-blend-group) expect a dash pattern to be spec
 result in !AWViewer crashing.
 
 | Offset | Length | Content                                                                                                                     |
-|--------|--------|-----------------------------------------------------------------------------------------------------------------------------|
+| ------ | ------ | --------------------------------------------------------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                                                                             |
 | 24     | 4      | Dash Pattern Index <ul><li>-1 - Dash pattern follows</li><li>0 - No dash</li><li>Otherwise - Dash pattern follows</li></ul> |
 
@@ -580,7 +580,7 @@ the record.
 If Dash Pattern Index is non-zero
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 28     | 4      | Dash pattern offset             |
 | 32     | 4      | Number of dash elements         |
 | 36     | varies | [Dash Elements](#dash-elements) |
@@ -588,13 +588,13 @@ If Dash Pattern Index is non-zero
 ##### Dash Elements
 
 | Offset | Length | Content                        |
-|--------|--------|--------------------------------|
+| ------ | ------ | ------------------------------ |
 | 0      | 4      | Length of dash pattern element |
 
 #### Type 0x2C: Rectangle
 
 | Offset | Length | Content                                                      |
-|--------|--------|--------------------------------------------------------------|
+| ------ | ------ | ------------------------------------------------------------ |
 | 0      | 24     | [Record header](#record-header)                              |
 | 24     | 4      | Unknown, 0 in all available files                            |
 | 28     | 68     | [Path data](#path-data) (Move, 4 Lines, Close sub path, End) |
@@ -612,7 +612,7 @@ Note: These records seem to have the data for individual characters of a string.
 Please refer to the [RISC OS Character Set][risc-os-character-set] for details.
 
 | Offset | Length | Content                                 |
-|--------|--------|-----------------------------------------|
+| ------ | ------ | --------------------------------------- |
 | 0      | 24     | [Record header](#record-header)         |
 | 24     | 4      | Character code                          |
 | 28     | 4      | Unknown, X Coordinate (text base line?) |
@@ -627,7 +627,7 @@ The purpose of this record is unknown. Offsets 28 and 36 usually comprise two st
 Sometimes the strings offsets 8 and 36 are `selectio` and `n` respectively.
 
 | Offset | Length | Content                                                    |
-|--------|--------|------------------------------------------------------------|
+| ------ | ------ | ---------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                            |
 | 24     | 4      | Unknown (17)                                               |
 | 28     | 8      | String, null terminated ('group', 'selectio')              |
@@ -638,7 +638,7 @@ Sometimes the strings offsets 8 and 36 are `selectio` and `n` respectively.
 The font name seems to be null terminated, but the amount of data after the font name might be variable.
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | n      | Font name, null terminated.     |
 
@@ -647,7 +647,7 @@ The font name seems to be null terminated, but the amount of data after the font
 Going to assume the nominal font sizes are in (1/640) of a printer's point.
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 4      | Nominal X size of the font      |
 | 28     | 4      | Nominal Y size of the font      |
@@ -657,7 +657,7 @@ Going to assume the nominal font sizes are in (1/640) of a printer's point.
 This record seems to appear as a sibling to records of [Type 0x01](#type-0x01-unknown-text).
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 4      | Unknown (50)                    |
 | 28     | 4      | Unknown (0)                     |
@@ -667,7 +667,7 @@ This record seems to appear as a sibling to records of [Type 0x01](#type-0x01-un
 #### Type 0x32: Unknown
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 4      | Unknown (0xFFFFFF9C)            |
 
@@ -679,7 +679,7 @@ These rows (or columns) will then have a magnitude of one, and it's possible to 
 rotation matrix.
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 4      | Unknown                         |
 | 28     | 4      | Unknown                         |
@@ -690,7 +690,7 @@ rotation matrix.
 
 #### Type 0x34: Ellipse
 
-The 3 bounding 'triangle' points prior to the path data 
+The 3 bounding 'triangle' points prior to the path data
 define the height and width of the ellipse as well as its rotation.
 
 The points are specified in anti-clockwise fashion.
@@ -698,7 +698,7 @@ The points are specified in anti-clockwise fashion.
 !AWViewer ignores the 'triangle' points when rendering and instead relies on the path data.
 
 | Offset | Length | Content                                                           |
-|--------|--------|-------------------------------------------------------------------|
+| ------ | ------ | ----------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                   |
 | 24     | 4      | Bounding Triangle Bottom Left X                                   |
 | 28     | 4      | Bounding Triangle Bottom Left Y                                   |
@@ -721,7 +721,7 @@ The points are specified in anti-clockwise fashion.
 !AWViewer doesn't draw the rectangle when the corner radius is zero.
 
 | Offset | Length | Content                                                                  |
-|--------|--------|--------------------------------------------------------------------------|
+| ------ | ------ | ------------------------------------------------------------------------ |
 | 0      | 24     | [Record header](#record-header)                                          |
 | 24     | 4      | Corner radius                                                            |
 | 28     | 4      | Bounding Triangle Bottom Left X                                          |
@@ -739,18 +739,18 @@ This record appears to be a fixed 216 bytes in length, unless it appears at the 
 in which case, !AWViewer ignores it.
 
 | Offset | Length | Content                                                                       |
-|--------|--------|-------------------------------------------------------------------------------|
+| ------ | ------ | ----------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                               |
 | 24     | 132    | [Distortion envelope path](#path-data) (Move, 4 Beziers, Close sub path, End) |
-| 156    | 4      | Unknown, 0 in all available files                                             |                                 
-| 160    | 4      | Unknown, 0 or 1 in all available files                                        |                              
-| 164    | 4      | Unknown, 0 in all available files                                             |                                   
-| 168    | 4      | Unknown, 0 in all available files                                             |                                   
-| 172    | 4      | Unknown, 0 in all available files                                             |                                   
-| 176    | 4      | Unknown, 0 in all available files                                             |                                   
-| 180    | 4      | Unknown, 0 in all available files                                             |                                   
-| 184    | 4      | Unknown, 0 in all available files                                             |                                   
-| 188    | 4      | Unknown, 0 in all available files                                             |                                   
+| 156    | 4      | Unknown, 0 in all available files                                             |
+| 160    | 4      | Unknown, 0 or 1 in all available files                                        |
+| 164    | 4      | Unknown, 0 in all available files                                             |
+| 168    | 4      | Unknown, 0 in all available files                                             |
+| 172    | 4      | Unknown, 0 in all available files                                             |
+| 176    | 4      | Unknown, 0 in all available files                                             |
+| 180    | 4      | Unknown, 0 in all available files                                             |
+| 184    | 4      | Unknown, 0 in all available files                                             |
+| 188    | 4      | Unknown, 0 in all available files                                             |
 | 192    | 16     | Bounding box of reference objects                                             |
 | 208    | 8      | [SubLists pointer](#sublists)                                                 |
 
@@ -772,7 +772,7 @@ This record appears to be a fixed 168 bytes in length, unless it appears at the 
 in which case, !AWViewer ignores it.
 
 | Offset | Length | Content                                                                      |
-|--------|--------|------------------------------------------------------------------------------|
+| ------ | ------ | ---------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                              |
 | 24     | 68     | [Perspective envelope path](#path-data) (Move, 4 Lines, Close sub path, End) |
 | 92     | 4      | Unknown, 0 in all available files                                            |
@@ -800,7 +800,7 @@ descendants.
 It appears that a perspective group was an expensive thing to compute so ArtWorks
 stores the perspective paths beneath invisible copies of the original paths within the group.
 
-The bounding box at then end of the record appears to coincide with the bounds of 
+The bounding box at then end of the record appears to coincide with the bounds of
 all the invisible original objects.
 
 #### Type 0x39: File information
@@ -808,7 +808,7 @@ all the invisible original objects.
 This record can vary in size.
 
 | Offset | Length | Content                                                                           |
-|--------|--------|-----------------------------------------------------------------------------------|
+| ------ | ------ | --------------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                                   |
 | 24     | varies | Information about the file, creation date, serial number. Null terminated string. |
 
@@ -821,7 +821,7 @@ It normally has a [blend options](#type-0x3b-blend-options) record amongst its d
 one or more [path](#type-0x02-path) records defining the intermediate and end shapes.
 
 | Offset | Length | Content                                                                     |
-|--------|--------|-----------------------------------------------------------------------------|
+| ------ | ------ | --------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                             |
 | 24     | 4      | Unknown, 0 in all available files                                           |
 | 28     | 4      | Unknown, potentially an index, only a small number of distinct values found |
@@ -841,7 +841,7 @@ For the unknown value at offset 36, the least significant nibbles are nearly all
 #### Type 0x3B: Blend Options
 
 | Offset | Length | Content                                                                     |
-|--------|--------|-----------------------------------------------------------------------------|
+| ------ | ------ | --------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                             |
 | 24     | 4      | Unknown, only a small number of distinct positive values found              |
 | 28     | 4      | Number of blend steps                                                       |
@@ -868,7 +868,7 @@ The points are sometimes reordered in comparison to their parent paths, potentia
 identify pairs of vertices.
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | varies | [Path data](#path-data)         |
 
@@ -881,7 +881,7 @@ Setting the marker style to a value not in the enumeration will result in !AWVie
 Line start caps are still drawn when markers are in use.
 
 | Offset | Length | Content                                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------------------|
+| ------ | ------ | -------------------------------------------------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                                                                      |
 | 24     | 4      | Marker Style <ol start="-1"><li>None</li><li>Triangle</li><li>Arrow head</li><li>Circle</li><li>Arrow tail</li></ol> |
 | 28     | 4      | Marker Width (0x10000 corresponds to line width)                                                                     |
@@ -896,7 +896,7 @@ Setting the marker style to a value not in the enumeration will result in !AWVie
 Line end caps are still drawn when markers are in use.
 
 | Offset | Length | Content                                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------------------|
+| ------ | ------ | -------------------------------------------------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                                                                      |
 | 24     | 4      | Marker Style <ol start="-1"><li>None</li><li>Triangle</li><li>Arrow head</li><li>Circle</li><li>Arrow tail</li></ol> |
 | 28     | 4      | Marker Width (0x10000 corresponds to line width)                                                                     |
@@ -913,29 +913,29 @@ one of these subgroups resides immediately beneath a Distortion or Perspective g
 It has no fields or data of its own and the records are always of length 32.
 
 | Offset | Length | Content                         |
-|--------|--------|---------------------------------|
+| ------ | ------ | ------------------------------- |
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 8      | [SubLists pointer](#sublists)   |
 
 #### Type 0x65: Unknown
 
-The purpose of this group is unknown it appears to always have a length of 72. The presence of 
+The purpose of this group is unknown it appears to always have a length of 72. The presence of
 children indicates that this is not an attribute record. Potentially has geometry.
 
 | Offset | Length | Content                                                                     |
-|--------|--------|-----------------------------------------------------------------------------|
+| ------ | ------ | --------------------------------------------------------------------------- |
 | 0      | 24     | [Record header](#record-header)                                             |
-| 24     | 4      | Unknown, potentially together with unknown28 the centre of the bounding box              |
-| 28     | 4      | Unknown, potentially together with unknown24 the centre of the bounding box                                                       |
-| 32     | 4      | Unknown                                          |
-| 36     | 4      | Unknown  |
-| 40     | 4      | Unknown  |
-| 44     | 4      | Unknown  |
-| 48     | 4      | Unknown  |
-| 52     | 4      | Unknown  |
-| 56     | 4      | Unknown  |
-| 60     | 4      | Unknown  |
-| 64     | 8      | [SubLists pointer](#sublists)   |
+| 24     | 4      | Unknown, potentially together with unknown28 the centre of the bounding box |
+| 28     | 4      | Unknown, potentially together with unknown24 the centre of the bounding box |
+| 32     | 4      | Unknown                                                                     |
+| 36     | 4      | Unknown                                                                     |
+| 40     | 4      | Unknown                                                                     |
+| 44     | 4      | Unknown                                                                     |
+| 48     | 4      | Unknown                                                                     |
+| 52     | 4      | Unknown                                                                     |
+| 56     | 4      | Unknown                                                                     |
+| 60     | 4      | Unknown                                                                     |
+| 64     | 8      | [SubLists pointer](#sublists)                                               |
 
 ### Coordinate system
 
@@ -954,7 +954,7 @@ bits 8-31 contain flags that control rendering.
 A path then comprises one or more path elements.
 
 | Tag | Points | Meaning                  |
-|-----|--------|--------------------------|
+| --- | ------ | ------------------------ |
 | 0   | 0      | End path                 |
 | 2   | 1      | Move absolute            |
 | 4   | 0      | Unknown, End of sub path |
@@ -978,7 +978,7 @@ Therefore, the number of palette entries, should be masked with 0x00FFFFFF when 
 as sometimes bits 24 to 31 (inclusive) are set.
 
 | Offset | Length | Content                                                  |
-|--------|--------|----------------------------------------------------------|
+| ------ | ------ | -------------------------------------------------------- |
 | 0      | 4      | Number of palette entries                                |
 | 4      | 4      | Unknown, usually less than the number of palette entries |
 | 8      | varies | Sequential palette entries                               |
@@ -986,7 +986,7 @@ as sometimes bits 24 to 31 (inclusive) are set.
 #### Palette entry
 
 | Offset | Length | Content                                                                   |
-|--------|--------|---------------------------------------------------------------------------|
+| ------ | ------ | ------------------------------------------------------------------------- |
 | 0      | 24     | Name of colour, null terminated, then filled with what looks like garbage |
 | 24     | 4      | Colour (BGR) usually with bit 29 set                                      |
 | 28     | 4      | Colour Component 1 (R, C, or H)                                           |
@@ -1010,7 +1010,7 @@ to interpolate the colours.
 ##### Palette entry flags
 
 | Bits  | Content                                                                                                                                        |
-|-------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | 0-1   | Colour Model for the Colour Components <ol start="0"><li>RGB</li><li>CMYK</li><li>HSV</li><li>RGB, but the colours don't interpolate</li></ol> |
 | 2-3   | Unknown, usually 0, 1 or 2                                                                                                                     |
 | 4-5   | Unknown, usually 0, 2 or 3                                                                                                                     |
@@ -1025,7 +1025,7 @@ should be encoded somewhere. However, that information doesn't appear to be used
 
 ### Colour indices
 
-Colours in ArtWorks are referenced by index into a [palette](#palette) with 0xFFFFFFFFF or -1 
+Colours in ArtWorks are referenced by index into a [palette](#palette) with 0xFFFFFFFFF or -1
 meaning transparent.
 
 However, it appears that a palette can have a maximum size of 1,6777,216 entries.
@@ -1037,7 +1037,7 @@ Indices above this threshold are interpreted as BGR colours in their own right.
 To summarise,
 
 | Index value  | Interpretation                                        |
-|--------------|-------------------------------------------------------|
+| ------------ | ----------------------------------------------------- |
 | < 0x01000000 | An index into the file's [palette](#palette)          |
 | < 0xFFFFFFFF | The index itself is to be interpreted as a BGR colour |
 | = 0xFFFFFFFF | Transparent                                           |
@@ -1065,7 +1065,7 @@ In the one case where offset 12 seems to point to garbage, `AFFY,d94`, offset 16
 which is usually is).
 
 | Offset | Length | Content                                                                                        |
-|--------|--------|------------------------------------------------------------------------------------------------|
+| ------ | ------ | ---------------------------------------------------------------------------------------------- |
 | 0      | 4      | UBuf                                                                                           |
 | 4      | 4      | Unknown, (0 or rarely 8)                                                                       |
 | 8      | 4      | Unknown, offset to last [undo entry](#undo-entry)                                              |
@@ -1079,7 +1079,7 @@ which is usually is).
 #### Undo entry
 
 | Offset | Length | Content                                                     |
-|--------|--------|-------------------------------------------------------------|
+| ------ | ------ | ----------------------------------------------------------- |
 | 0      | 4      | Size of previous entry                                      |
 | 4      | 4      | Size of this entry                                          |
 | 8      | 4      | Unknown, some indications that this might be the entry type |
@@ -1089,7 +1089,7 @@ which is usually is).
 
 ## Rendering
 
-It's not entirely clear how ArtWorks renders a file. There are a couple of 
+It's not entirely clear how ArtWorks renders a file. There are a couple of
 informed guesses that allow us to speculate, but it's not known with 100% certainty
 if these guesses apply in all cases.
 
@@ -1101,7 +1101,7 @@ Consider the following image:
 
 Both paths are dashed and path A has a slightly thicker stroke width than path B.
 
-### File structure 
+### File structure
 
 The image's ArtWorks file representation will then look something like this:
 
@@ -1145,22 +1145,22 @@ In pseudocode:
 
 ```javascript
 class AttributeStack {
-    setAttribute(attribute) {
-        const top = this.stack.pop();
-        const newTop = { ...top, attribute };
-        this.stack.push(newTop);
-    }
+  setAttribute(attribute) {
+    const top = this.stack.pop();
+    const newTop = { ...top, attribute };
+    this.stack.push(newTop);
+  }
 }
 
 function processAttribute(attribute) {
-    attributeStack.setAttribute(attribute);
+  attributeStack.setAttribute(attribute);
 }
 
 function processPath(path) {
-    attributeStack.duplicate();
-    processSubLists(path.getSubLists());
-    const state = attributeStack.pop();
-    output.addPath(path, state);
+  attributeStack.duplicate();
+  processSubLists(path.getSubLists());
+  const state = attributeStack.pop();
+  output.addPath(path, state);
 }
 ```
 
@@ -1201,7 +1201,7 @@ The result is
 Rendering is now just a case of performing a depth first traversal.
 
 Also note, that this final structure could be flattened further.
-All the lists are now singletons so there's a redundant level of wrapping 
+All the lists are now singletons so there's a redundant level of wrapping
 in having a list of lists only contain one list each.
 
 ## References
@@ -1214,9 +1214,6 @@ in having a list of lists only contain one list each.
 ---
 
 [draw-file-format]: http://www.riscos.com/support/developers/prm/fileformats.html
-
 [sprite-area-format]: http://www.riscos.com/support/developers/prm/sprites.html
-
 [risc-os-character-set]: https://en.wikipedia.org/wiki/RISC_OS_character_set
-
 [iso-216]: https://en.wikipedia.org/wiki/ISO_216

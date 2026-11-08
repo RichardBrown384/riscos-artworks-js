@@ -4,32 +4,32 @@
 
 ## Table of contents
 
-* [Quirks](#quirks)
-* [Attributes](#attributes)
-  * [Colours](#colours) 
-  * [Stroke colour](#stroke-colour)
-  * [Stroke width](#stroke-width)
-  * [Fills](#fills)
-  * [Join style](#join-style)
-  * [Line caps](#line-caps)
-  * [Winding rule](#winding-rule)
-  * [Dash pattern ⚠️️](#dash-pattern)
-  * [Line markers](#line-markers)
-* [Geometry](#geometry)
-  * [Equal number of points](#equal-number-of-points)
-  * [Differing number of points](#differing-number-of-points)
-    * [Example 1](#example-1)
-    * [Example 2](#example-2)
-    * [Example 3](#example-3)
-    * [Example 4](#example-4)
-    * [Example 5](#example-5)
-    * [Example 6](#example-6)
-    * [Example 7](#example-7)
-    * [Example 8](#example-8)
-    * [Example 9](#example-9)
-    * [Example 10](#example-10)
-    * [Example 11](#example-11)
-* [Notes](#notes)
+- [Quirks](#quirks)
+- [Attributes](#attributes)
+  - [Colours](#colours)
+  - [Stroke colour](#stroke-colour)
+  - [Stroke width](#stroke-width)
+  - [Fills](#fills)
+  - [Join style](#join-style)
+  - [Line caps](#line-caps)
+  - [Winding rule](#winding-rule)
+  - [Dash pattern ⚠️️](#dash-pattern)
+  - [Line markers](#line-markers)
+- [Geometry](#geometry)
+  - [Equal number of points](#equal-number-of-points)
+  - [Differing number of points](#differing-number-of-points)
+    - [Example 1](#example-1)
+    - [Example 2](#example-2)
+    - [Example 3](#example-3)
+    - [Example 4](#example-4)
+    - [Example 5](#example-5)
+    - [Example 6](#example-6)
+    - [Example 7](#example-7)
+    - [Example 8](#example-8)
+    - [Example 9](#example-9)
+    - [Example 10](#example-10)
+    - [Example 11](#example-11)
+- [Notes](#notes)
 
 ## Quirks
 
@@ -77,10 +77,10 @@ Stroke width is interpolated linearly in a blend group.
 In tabular form
 
 | Fill   | Flat | Linear | Radial |
-|--------|------|--------|--------|
-| Flat   | ✅    | ✅      | ✅      |
-| Linear | ✅    | ✅      | ❌      |
-| Radial | ✅    | ❌      | ⚠️     |
+| ------ | ---- | ------ | ------ |
+| Flat   | ✅   | ✅     | ✅     |
+| Linear | ✅   | ✅     | ❌     |
+| Radial | ✅   | ❌     | ⚠️     |
 
 ### Join style
 
@@ -89,7 +89,7 @@ and the target join style is used for the second half.
 
 ### Line caps
 
-Line caps are not interpolated. The evidence appears to suggest that for the purpose of blending open paths 
+Line caps are not interpolated. The evidence appears to suggest that for the purpose of blending open paths
 are closed.
 
 ### Winding rule
@@ -101,7 +101,7 @@ and the target winding is used for the second half.
 
 Dash patterns exhibit strange behaviours.
 
-When there is no active join style the intermediate paths are unstroked and what is rendered is sensible if 
+When there is no active join style the intermediate paths are unstroked and what is rendered is sensible if
 not exactly what you might expect (either an interpolated dash pattern or a discrete switchover).
 
 When there is an active join style then an empty dash pattern is the only thing that gets rendered correctly.
@@ -135,22 +135,22 @@ the blending to work at all.
 The following discoveries were made by setting up test files programmatically. No attempt
 has been made to disassemble the !AWViewer or ArtWorks binaries.
 
-The test files contain one or more blend groups drawn in black on top of simulated 
+The test files contain one or more blend groups drawn in black on top of simulated
 blend groups drawn in red. For example,
 
 ![Methodology](./media/methodology.png)
 
-The simulated blend groups are generated with relatively simple linear interpolation routines which 
+The simulated blend groups are generated with relatively simple linear interpolation routines which
 appear, for the given set of test cases, to approximate what !AWViewer is doing reasonably well.
 In order to make our blending code simpler we convert line segments into Béziers prior to interpolation.
 
-When there is mismatch between the number of points there are routines that support the 
+When there is mismatch between the number of points there are routines that support the
 manual insertion of additional points into the source and target paths.
 
-With additional points placed in appropriate, but not necessarily correct, positions it seems that 
+With additional points placed in appropriate, but not necessarily correct, positions it seems that
 the simple linear interpolation approximates what !AWViewer is doing internally.
 
-#### Problems with the methodology 
+#### Problems with the methodology
 
 The process of working out how !AWViewer blends paths by only feeding it handwritten
 files can be problematic.
@@ -164,19 +164,19 @@ of cases but there will always exist the possibility that there is an unknown co
 paths that will make !AWViewer fall into an exception handling case.
 
 In order to reduce scope the current exploratory approach has hitherto focused on analysing
-cases that are well-behaved. There is probably some benefit in analysing cases 
-that are not well-behaved, for example by presenting !AWViewer with two paths 
+cases that are well-behaved. There is probably some benefit in analysing cases
+that are not well-behaved, for example by presenting !AWViewer with two paths
 defined in opposing winding directions, since these cases might lead us to make
 further deductions about the inner workings.
 
-#### Outstanding topics 
+#### Outstanding topics
 
 Self-intersecting and otherwise degenerate paths generally haven't been considered beyond a
 solitary self-intersecting Bézier segment.
 
 ### Equal number of points
 
-From the trivial cases examined this appears to work as one would expect. 
+From the trivial cases examined this appears to work as one would expect.
 That is, the path is linearly interpolated.
 
 Line segments paired with Béziers appear to be converted to Béziers with the control points
@@ -184,16 +184,16 @@ at a third and two-thirds of the way along the original line. Moving the control
 points away from these offsets results in the simulated blend paths being visibly wrong.
 
 !AWViewer appears to make some attempt to detect self-intersecting paths prior to blending. In the test
-cases examined to date a self-intersecting Bézier segment is sufficient for the blending to deviate from the 
+cases examined to date a self-intersecting Bézier segment is sufficient for the blending to deviate from the
 best case behaviour.
 
 ### Differing number of points
 
 When the paths are not degenerate !AWViewer appears to add points to **both** the source
-and target paths. The resulting paths then have an equal number points and can be 
+and target paths. The resulting paths then have an equal number points and can be
 linearly interpolated easily.
 
-How !AWViewer decides to do this isn't really understood. 
+How !AWViewer decides to do this isn't really understood.
 
 We can however make the following observations
 
@@ -201,8 +201,8 @@ We can however make the following observations
 2. There's probably a process that maps source points onto a target points and segments and vice versa
 3. Points that get mapped onto segments get inserted into the source or target paths
 4. Whatever algorithm is used appears to work independently of scale
-5. The algorithm doesn't appear to project the source and target points onto a circle and use 
-a simple sweeping comparison based on parametric distances to do the assignment
+5. The algorithm doesn't appear to project the source and target points onto a circle and use
+   a simple sweeping comparison based on parametric distances to do the assignment
 
 Evidence, but not proof for the above statements, is presented below in a series of examples.
 
@@ -214,7 +214,7 @@ and a target convex polygon with 5 points.
 ![Blend Group Polyline](./media/polyline.png)
 
 We label the points of the target polygon **A**, **B**, **C**, **D**, and **E**. It should be noted
-that the points are defined in this clockwise order in the file. The target's points are also defined 
+that the points are defined in this clockwise order in the file. The target's points are also defined
 in a clockwise order.
 
 How those points are mapped back onto the source polygon is shown in the figure below.
@@ -234,7 +234,7 @@ Two options come to mind as to how !AWViewer decides to place **X'**, **Y'** and
 1. Projection. For example by projecting the line segment **AX** onto the line between **AB**.
 2. By using the lengths of the 'discarded' line segments to work out a parametric distances for the new points.
 
-It's maybe reasonable to eliminate (1) since if projection were used then point **Z'** 
+It's maybe reasonable to eliminate (1) since if projection were used then point **Z'**
 should be between **D** and **E** and not **C** and **D**.
 
 Let `d(P, Q)` denote the distance between two points **P** and **Q**.
@@ -267,7 +267,7 @@ polygon with a cusp Bézier.
 
 ![Blend Group Polyline](./media/polyline-with-cusp-bezier.png)
 
-Sticking with the previous convention the mapping appears to be 
+Sticking with the previous convention the mapping appears to be
 
 ![Polyline With Cusp Bézier Blend](./media/polyline-with-cusp-bezier.svg)
 
@@ -304,8 +304,8 @@ The point **Z'** remains in the same position in relation to the previous exampl
 
 #### Example 3
 
-Motivated by the previous example and wishing to eliminate the introduction of a Bézier segment 
-as the reason for the change in the inserted point distribution we replace the first cusp Bézier 
+Motivated by the previous example and wishing to eliminate the introduction of a Bézier segment
+as the reason for the change in the inserted point distribution we replace the first cusp Bézier
 with a straight Bézier. Visually this identical to the first example.
 
 ![Blend Group Polyline](./media/polyline-with-straight-bezier.png)
@@ -336,16 +336,16 @@ The incorrect simulated blending is shown to help illustrate the problem.
 ![Blend Group Polyline](./media/polyline-convex-bezier-incorrect.png)
 ![Blend Group Polyline](./media/polyline-concave-bezier-incorrect.png)
 
-Consider the following diagram. 
+Consider the following diagram.
 
 ![Blend Group Polyline With Convex Bezier Parametric](./media/polyline-convex-bezier-parametric-distances.svg)
 
 The upper left path is the source path in the original point distribution regime and the lower left path
 is the source path in the alternate point distribution regime.
 
-Each point in each path is labelled with its parametric distance along its respective curve. We use parametric 
+Each point in each path is labelled with its parametric distance along its respective curve. We use parametric
 distances rather than absolute distances because we currently assume for the moment that the algorithm !AWViewer uses,
-up to given tolerances, is independent of scale. In either case, the arc length of the first source segment is greater 
+up to given tolerances, is independent of scale. In either case, the arc length of the first source segment is greater
 than the length of the first target segment.
 
 The first thing to note that the parametric distances on the source paths have not changed significantly.
@@ -361,10 +361,10 @@ of **B** we then might then move to comparing against **C** and inserting points
 This approach might work for the first two points in the original case it however fails in alternate case.
 
 It's also worth noting at this point that both the convex and concave Bézier curves change the point distribution behaviour
-when the arc length is greater than approximately 314.1592. However, the [cusp](#example-2) Bézier's point 
-distribution behaviour changes when the arc length exceeds approximately 314.2051. Although it's possible !AWViewer's 
-Bézier arc length calculation (if it has one) is approximate and the two values given here are within its tolerances 
-for changing the regime it seems unlikely that !AWViewer uses arc lengths alone to determine the point distributions. 
+when the arc length is greater than approximately 314.1592. However, the [cusp](#example-2) Bézier's point
+distribution behaviour changes when the arc length exceeds approximately 314.2051. Although it's possible !AWViewer's
+Bézier arc length calculation (if it has one) is approximate and the two values given here are within its tolerances
+for changing the regime it seems unlikely that !AWViewer uses arc lengths alone to determine the point distributions.
 
 #### Example 5
 
@@ -400,8 +400,8 @@ This implies that !AWViewer detects degenerate target paths and handles it appro
 
 #### Example 7
 
-This example is further motivated by the previous example. We investigate what happens when we scale 
-the source path. For a scale factor of 40% the result is follows 
+This example is further motivated by the previous example. We investigate what happens when we scale
+the source path. For a scale factor of 40% the result is follows
 
 ![Blend Group Polyline](./media/polyline-scale-source-0-40.png)
 
@@ -412,7 +412,7 @@ is when the source scale is set to zero
 
 ![Blend Group Polyline](./media/polyline-scale-source-0-00.png)
 
-Contrary to our expectations !AWViewer actually outputs something. The simulated blend group is using the same 
+Contrary to our expectations !AWViewer actually outputs something. The simulated blend group is using the same
 parametric split points but one would expect in this case they could be completely arbitrary and not make a
 difference.
 
@@ -423,7 +423,7 @@ there are circumstances when !AWViewer inserts points into the source path.
 
 We arrived at this example by deciding it might be an interesting idea to manipulate the target path
 in a similar fashion to those previous examples that moved the second vertex of the source path vertically.
-It was hoped that this would demonstrate that !AWViewer ignores the properties of the target path, but as 
+It was hoped that this would demonstrate that !AWViewer ignores the properties of the target path, but as
 we shall see this isn't the case.
 
 We begin by setting the y-coordinate of the second vertex to around 120.00 which results in the following output
@@ -439,7 +439,7 @@ B' = d(A, B) / (d(A,B) + d(B, C))
 The location of the points **X'**, **Y'**, **W'** and **Y'** are computed in the same fashion
 in previous examples.
 
-We can then move the **B** vertex upwards until its y-coordinate is 132.231 which places **B** slightly 
+We can then move the **B** vertex upwards until its y-coordinate is 132.231 which places **B** slightly
 below the line **AC** the point distribution changes
 
 ![Blend Group Polyline](./media/polyline-moving-second-target-vertex-2.svg)
@@ -469,7 +469,7 @@ first vertex of each path.
 
 #### Example 10
 
-In this example we rotate the original source path through 180 degrees. The point mappings 
+In this example we rotate the original source path through 180 degrees. The point mappings
 remain unchanged and the simulated interpolation appears to agree with !AWViewer
 even though the intermediate steps are less than aesthetically pleasing
 
@@ -502,25 +502,25 @@ are taken if one is found it's possible that the algorithm uses relative area (s
 the area of a path if it's not degenerate). Possibly something along the lines of which point mapping changes
 the relative area least. Failing that it could be due to angles.
 
-Might be worth investigating [Ramer-Douglas-Peucker][ramer-douglas-peucker] and 
+Might be worth investigating [Ramer-Douglas-Peucker][ramer-douglas-peucker] and
 [Visvalingam–Whyatt][visvalingam–whyatt]
 
 ### Papers
 
 1. **Morphing Using Curves and Shape Interpolation Techniques by Henry Johan, Yuichi Koiso, and Tomoyuki Nishita**
-is an interesting read that handles Béziers. It was published in 2000 which is a bit later 
-than the versions of !AWViewer we're using but does cite a number of papers from around 1990.
+   is an interesting read that handles Béziers. It was published in 2000 which is a bit later
+   than the versions of !AWViewer we're using but does cite a number of papers from around 1990.
 2. **A Physically Based Approach to 2–D Shape Blending by Thomas W. Sederberg and Eugene Greenwood**
-(cited in the above paper) was published in 1992 so is contemporaneous with !AWViewer,
-and it does discuss the idea of introducing points in the source and target paths. 
-Importantly it does mention that introducing arbitrary points is computationally expensive. However,
-it doesn't handle Béziers. Figure 25 and the surrounding discussion around optimising a cost
-function might be of use.
+   (cited in the above paper) was published in 1992 so is contemporaneous with !AWViewer,
+   and it does discuss the idea of introducing points in the source and target paths.
+   Importantly it does mention that introducing arbitrary points is computationally expensive. However,
+   it doesn't handle Béziers. Figure 25 and the surrounding discussion around optimising a cost
+   function might be of use.
 
-These papers both mentions that angles formed between the edges are important so that might be worth 
+These papers both mentions that angles formed between the edges are important so that might be worth
 investigating.
 
-***
+---
 
 [bezier-js]: https://github.com/Pomax/bezierjs
 [ramer-douglas-peucker]: https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm
