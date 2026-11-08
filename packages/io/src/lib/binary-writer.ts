@@ -131,7 +131,6 @@ export class BinaryWriter {
   // Used by artworks to write out the file identifiers and layer names
   // If possible, pad the space with zeroes
   paddedCString(string: string, length: number): void {
-    this.aligned(4, 'misaligned string');
     const array = new Uint8Array(length);
     array.set(BinaryWriter.encoder.encode(string).subarray(0, length));
     this.u8a(array);
