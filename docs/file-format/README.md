@@ -997,7 +997,7 @@ as sometimes bits 24 to 31 (inclusive) are set.
 
 For RGB and CMYK the colour components range between 0 (0.0) and 0x7FFFFFFF (1.0).
 
-For HSV, the S and V components range between 0 (0.0) and and 0x7FFFFFFF (1.0).
+For HSV, the S and V components range between 0 (0.0) and 0x7FFFFFFF (1.0).
 The H component varies between 0 (0.0) and 0x16800000 (360.0). A fixed point representation
 is used with the lower 20 bits for the fraction and the upper bits used for degrees. Setting
 the H component to a value greater than 0x16800000 will result in !AWViewer rendering
@@ -1127,7 +1127,7 @@ This kind of structure is very common within ArtWorks files.
 
 All this together with the first point implies that ArtWorks probably keeps a stack
 of path attributes while rendering. Both paths are dashed, but the sibling and descendant
-attributes of path A don't influence path B and vice-versa.
+attributes of path A don't influence path B and vice versa.
 
 ### Rendering traversal algorithm
 
