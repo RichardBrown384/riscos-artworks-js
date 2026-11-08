@@ -920,13 +920,13 @@ It has no fields or data of its own and the records are always of length 32.
 #### Type 0x65: Unknown
 
 The purpose of this group is unknown it appears to always have a length of 72. The presence of 
-children indicates that this is not an attribute record.
+children indicates that this is not an attribute record. Potentially has geometry.
 
 | Offset | Length | Content                                                                     |
 |--------|--------|-----------------------------------------------------------------------------|
 | 0      | 24     | [Record header](#record-header)                                             |
-| 24     | 4      | Unknown              |
-| 28     | 4      | Unknown                                                       |
+| 24     | 4      | Unknown, potentially together with unknown28 the centre of the bounding box              |
+| 28     | 4      | Unknown, potentially together with unknown24 the centre of the bounding box                                                       |
 | 32     | 4      | Unknown                                          |
 | 36     | 4      | Unknown  |
 | 40     | 4      | Unknown  |
