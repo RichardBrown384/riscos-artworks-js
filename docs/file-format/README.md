@@ -49,6 +49,7 @@
         * [Type 0x3E - Start Marker](#type-0x3e-line-start-marker)
         * [Type 0x3F - End Marker](#type-0x3f-line-end-marker)
         * [Type 0x42 - Distortion Subgroup](#type-0x42-distortion-subgroup)
+        * [Type 0x65](#type-0x65-unknown)
     * [Coordinate system](#coordinate-system)
     * [Path data](#path-data)
     * [Palette](#palette)
@@ -915,6 +916,26 @@ It has no fields or data of its own and the records are always of length 32.
 |--------|--------|---------------------------------|
 | 0      | 24     | [Record header](#record-header) |
 | 24     | 8      | [SubLists pointer](#sublists)   |
+
+#### Type 0x65: Unknown
+
+The purpose of this group is unknown it appears to always have a length of 72. The presence of 
+children indicates that this is not an attribute record.
+
+| Offset | Length | Content                                                                     |
+|--------|--------|-----------------------------------------------------------------------------|
+| 0      | 24     | [Record header](#record-header)                                             |
+| 24     | 4      | Unknown              |
+| 28     | 4      | Unknown                                                       |
+| 32     | 4      | Unknown                                          |
+| 36     | 4      | Unknown  |
+| 40     | 4      | Unknown  |
+| 44     | 4      | Unknown  |
+| 48     | 4      | Unknown  |
+| 52     | 4      | Unknown  |
+| 56     | 4      | Unknown  |
+| 60     | 4      | Unknown  |
+| 64     | 8      | [SubLists pointer](#sublists)   |
 
 ### Coordinate system
 
