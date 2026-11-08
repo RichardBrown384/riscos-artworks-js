@@ -44,9 +44,9 @@ export function writeArtworksHeader(
   header: ArtworksHeader,
 ): void {
   writer.aligned(4, 'misaligned header');
-  writer.paddedCString(header.identifier, 4);
+  writer.string(header.identifier, 4);
   writer.u32(header.version);
-  writer.paddedCString(header.program, 8);
+  writer.string(header.program, 8);
   writer.u32(header.unknown16);
   writer.u32(header.bodyPosition);
   writer.u32(header.europeanPaperWidth);

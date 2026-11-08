@@ -25,7 +25,7 @@ function readPaletteEntry(reader: BinaryReader): PaletteEntry {
 
 function writePaletteEntry(writer: BinaryWriter, entry: PaletteEntry): void {
   writer.aligned(4, 'misaligned palette entry');
-  writer.paddedCString(entry.name, 24);
+  writer.string(entry.name, 24);
   writer.u32(entry.colour);
   writer.u32(entry.component0);
   writer.u32(entry.component1);

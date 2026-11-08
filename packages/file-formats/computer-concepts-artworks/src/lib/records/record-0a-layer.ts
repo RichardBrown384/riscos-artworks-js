@@ -23,7 +23,7 @@ export function writeRecordBodyLayer(
 ): void {
   const { unknown24, name } = record;
   writer.u32(unknown24);
-  writer.paddedCString(name, 32);
+  writer.string(name, 32);
 }
 
 export function createRecordLayerFull(
