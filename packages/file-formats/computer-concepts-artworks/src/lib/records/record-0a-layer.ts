@@ -19,9 +19,8 @@ export function readRecordBodyLayer(reader: BinaryReader): RecordBodyLayer {
 
 export function writeRecordBodyLayer(
   writer: BinaryWriter,
-  record: RecordBodyLayer,
+  { unknown24, name }: RecordBodyLayer,
 ): void {
-  const { unknown24, name } = record;
   writer.u32(unknown24);
   writer.string(name, 32);
 }
