@@ -1,11 +1,11 @@
 # riscos-artworks-js
 
-A TypeScript project with file format [documentation][file-format] for Computer Concepts era 
+A TypeScript project with file format [documentation][file-format] for Computer Concepts era
 RISC OS [ArtWorks][artworks-wikipedia] files.
 
 Update 03.11.2026: The project was updated to TypeScript and also incorporated support for
 Draw, Sprite, and Font Outline files. The motivation for this was to consolidate the codebase
-and reduce the number of repositories I have to resolve Dependabot issues for. At the 
+and reduce the number of repositories I have to resolve Dependabot issues for. At the
 same time, in order to make it easier to deploy changes, the Web viewer was also incorporated.
 
 ## About
@@ -26,7 +26,7 @@ A work-in-progress online viewer is hosted [here][host].
 npm run dev
 ```
 
-### Linting, typechecking and prettier 
+### Linting, typechecking and prettier
 
 ```bash
 npm run lint
@@ -104,11 +104,11 @@ They are,
 3. Distortion and perspective groups - while they are trivial to render, it's not understood how ArtWorks applies the transforms
 4. Sprite objects - preliminary support, rotated sprites not understood.
 
-The library and documentation are offered  as works in progress and there isn't much emphasis
+The library and documentation are offered as works in progress and there isn't much emphasis
 on the software engineering fundamentals such as testing.
 
 Writing ArtWorks files is experimental and only a limited feature subset is supported. Typically, only features
-that are well understood are supported, such as fills and strokes. It should also be noted 
+that are well understood are supported, such as fills and strokes. It should also be noted
 that the main motivation for writing files was to further the deductive process in a way
 that lends itself to documentation (the provided examples).
 
@@ -117,6 +117,7 @@ that lends itself to documentation (the provided examples).
 If you would like contribute to the project then check out our [contribution guide][contributing].
 
 ---
+
 [artworks-wikipedia]: https://en.wikipedia.org/wiki/ArtWorks
 [host]: http://richardbrown384.github.io/riscos-artworks-js
 [file-format]: docs/file-format/README.md
