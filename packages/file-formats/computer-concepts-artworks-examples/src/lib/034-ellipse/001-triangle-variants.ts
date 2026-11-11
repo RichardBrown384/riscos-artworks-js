@@ -27,8 +27,13 @@ import {
   ArtworksPath,
   ArtworksPolyline,
   ArtworksRecord,
+  createPath,
   List,
-  PathBuilder,
+  pathBezierTo,
+  pathCloseSubPath,
+  pathEnd,
+  pathLineTo,
+  pathMoveTo,
   PolylineBuilder,
 } from '@rbrown/computer-concepts-artworks';
 
@@ -59,11 +64,11 @@ const FILL_START_Y = 218765;
 const FILL_END_X = 93424;
 const FILL_END_Y = 218765;
 
-const ORIGINAL_PATH_FILL_LINE: ArtworksPath = new PathBuilder()
-  .moveTo(FILL_START_X, FILL_START_Y, ARTWORKS_PATH_TAG_BIT_31)
-  .lineTo(FILL_END_X, FILL_END_Y)
-  .end()
-  .build();
+const ORIGINAL_PATH_FILL_LINE: ArtworksPath = createPath([
+  pathMoveTo(FILL_START_X, FILL_START_Y, ARTWORKS_PATH_TAG_BIT_31),
+  pathLineTo(FILL_END_X, FILL_END_Y),
+  pathEnd(),
+]);
 
 const TRIANGLE_X0 = 132655;
 const TRIANGLE_Y0 = 214776;
@@ -78,12 +83,12 @@ const ORIGINAL_POLYLINE_TRIANGLE: ArtworksPolyline = new PolylineBuilder()
   .push(TRIANGLE_X2, TRIANGLE_Y2)
   .build();
 
-const ORIGINAL_PATH_TRIANGLE: ArtworksPath = new PathBuilder()
-  .moveTo(TRIANGLE_X0, TRIANGLE_Y0, ARTWORKS_PATH_TAG_BIT_31)
-  .lineTo(TRIANGLE_X1, TRIANGLE_Y1)
-  .lineTo(TRIANGLE_X2, TRIANGLE_Y2)
-  .end()
-  .build();
+const ORIGINAL_PATH_TRIANGLE: ArtworksPath = createPath([
+  pathMoveTo(TRIANGLE_X0, TRIANGLE_Y0, ARTWORKS_PATH_TAG_BIT_31),
+  pathLineTo(TRIANGLE_X1, TRIANGLE_Y1),
+  pathLineTo(TRIANGLE_X2, TRIANGLE_Y2),
+  pathEnd(),
+]);
 
 const M0_X0 = 132655;
 const M0_Y0 = 220760;
@@ -116,15 +121,15 @@ const B3_Y1 = 217455;
 const B3_X2 = 132655;
 const B3_Y2 = 220760;
 
-const ORIGINAL_PATH_ELLIPSE: ArtworksPath = new PathBuilder()
-  .moveTo(M0_X0, M0_Y0, ARTWORKS_PATH_TAG_BIT_31)
-  .bezierTo(B0_X0, B0_Y0, B0_X1, B0_Y1, B0_X2, B0_Y2)
-  .bezierTo(B1_X0, B1_Y0, B1_X1, B1_Y1, B1_X2, B1_Y2)
-  .bezierTo(B2_X0, B2_Y0, B2_X1, B2_Y1, B2_X2, B2_Y2)
-  .bezierTo(B3_X0, B3_Y0, B3_X1, B3_Y1, B3_X2, B3_Y2)
-  .closeSubPath()
-  .end()
-  .build();
+const ORIGINAL_PATH_ELLIPSE: ArtworksPath = createPath([
+  pathMoveTo(M0_X0, M0_Y0, ARTWORKS_PATH_TAG_BIT_31),
+  pathBezierTo(B0_X0, B0_Y0, B0_X1, B0_Y1, B0_X2, B0_Y2),
+  pathBezierTo(B1_X0, B1_Y0, B1_X1, B1_Y1, B1_X2, B1_Y2),
+  pathBezierTo(B2_X0, B2_Y0, B2_X1, B2_Y1, B2_X2, B2_Y2),
+  pathBezierTo(B3_X0, B3_Y0, B3_X1, B3_Y1, B3_X2, B3_Y2),
+  pathCloseSubPath(),
+  pathEnd(),
+]);
 
 function createRecordFillColourGradientTransformed(
   transform: AffineTransform,

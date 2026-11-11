@@ -11,7 +11,12 @@ export * from './types/artworks-types.js';
 export {
   createPalette,
   createRgbPaletteEntry,
-  PathBuilder,
+  createPath,
+  pathMoveTo,
+  pathLineTo,
+  pathBezierTo,
+  pathCloseSubPath,
+  pathEnd,
   pathBoundingBox, // exported because of the example's simple blend groups
   PolylineBuilder,
 } from './primitives/index.js';

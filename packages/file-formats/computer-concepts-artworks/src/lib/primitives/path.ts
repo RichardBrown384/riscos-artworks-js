@@ -65,10 +65,6 @@ export function writePathSegment(
   }
 }
 
-export function createPath(segments: ArtworksPathSegment[]): ArtworksPath {
-  return segments;
-}
-
 export function readPath(reader: BinaryReader): ArtworksPath {
   reader.aligned(4, 'misaligned path');
   const segments: ArtworksPathSegment[] = [];
@@ -89,68 +85,64 @@ export function writePath(writer: BinaryWriter, path: ArtworksPath): void {
   }
 }
 
-export class PathBuilder {
-  private readonly segments: ArtworksPathSegment[];
-  constructor() {
-    this.segments = [];
-  }
+export function createPath(segments: ArtworksPathSegment[]): ArtworksPath {
+  return segments;
+}
 
-  moveTo(x: number, y: number, flags = 0): this {
-    this.segments.push({
-      tag: ARTWORKS_PATH_TAG.MOVE,
-      to: { x, y },
-      flags,
-    });
-    return this;
-  }
+export function pathMoveTo(
+  x: number,
+  y: number,
+  flags = 0,
+): ArtworksPathSegment {
+  return {
+    tag: ARTWORKS_PATH_TAG.MOVE,
+    to: { x, y },
+    flags,
+  };
+}
 
-  lineTo(x: number, y: number, flags = 0): this {
-    this.segments.push({
-      tag: ARTWORKS_PATH_TAG.LINE,
-      to: { x, y },
-      flags,
-    });
-    return this;
-  }
+export function pathLineTo(
+  x: number,
+  y: number,
+  flags = 0,
+): ArtworksPathSegment {
+  return {
+    tag: ARTWORKS_PATH_TAG.LINE,
+    to: { x, y },
+    flags,
+  };
+}
 
-  bezierTo(
-    x0: number,
-    y0: number,
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number,
-    flags = 0,
-  ): this {
-    this.segments.push({
-      tag: ARTWORKS_PATH_TAG.BEZIER,
-      cp1: { x: x0, y: y0 },
-      cp2: { x: x1, y: y1 },
-      to: { x: x2, y: y2 },
-      flags,
-    });
-    return this;
-  }
+export function pathBezierTo(
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  flags = 0,
+): ArtworksPathSegment {
+  return {
+    tag: ARTWORKS_PATH_TAG.BEZIER,
+    cp1: { x: x0, y: y0 },
+    cp2: { x: x1, y: y1 },
+    to: { x: x2, y: y2 },
+    flags,
+  };
+}
 
-  closeSubPath(flags = 0): this {
-    this.segments.push({
-      tag: ARTWORKS_PATH_TAG.CLOSE_SUB_PATH,
-      flags,
-    });
-    return this;
-  }
+export function pathCloseSubPath(flags = 0): ArtworksPathSegment {
+  return {
+    tag: ARTWORKS_PATH_TAG.CLOSE_SUB_PATH,
+    flags,
+  };
+}
 
-  end(flags = 0): this {
-    this.segments.push({
-      tag: ARTWORKS_PATH_TAG.END,
-      flags,
-    });
-    return this;
-  }
-
-  build(): ArtworksPath {
-    return this.segments;
-  }
+export function pathEnd(flags = 0): ArtworksPathSegment {
+  return {
+    tag: ARTWORKS_PATH_TAG.END,
+    flags,
+  };
 }
 
 export function pathBoundingBox(
