@@ -319,7 +319,15 @@ function readObjects(reader: BinaryReader) {
   return objects;
 }
 
-export function drawFromArrayBuffer(buffer: ArrayBuffer): DrawFile {
+function drawIsHeaderPresent(buffer: ArrayBuffer): boolean {
+  const reader = new BinaryReader(buffer);
+  return readHeader(reader).identifier === IDENTIFIER_DRAW;
+}
+
+export function drawFromArrayBuffer(buffer: ArrayBuffer): DrawFile | undefined {
+  if (!drawIsHeaderPresent(buffer)) {
+    return undefined;
+  }
   const reader = new BinaryReader(buffer);
   const header = readHeader(reader);
   const objects = readObjects(reader);
@@ -327,9 +335,4 @@ export function drawFromArrayBuffer(buffer: ArrayBuffer): DrawFile {
     header,
     objects,
   };
-}
-
-export function drawIsHeaderPresent(buffer: ArrayBuffer): boolean {
-  const reader = new BinaryReader(buffer);
-  return readHeader(reader).identifier === IDENTIFIER_DRAW;
 }

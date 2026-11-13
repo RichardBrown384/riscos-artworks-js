@@ -1,7 +1,6 @@
 import { artworksIntermediateFromArrayBuffer } from '@rbrown/computer-concepts-artworks-intermediate';
 import { IrRootNode } from '@rbrown/intermediate';
-import { drawFromArrayBuffer, drawIsHeaderPresent } from '@rbrown/riscos-draw';
-import { drawMapToIntermediate } from '@rbrown/riscos-draw-intermediate';
+import { drawIntermediateFromArrayBuffer } from '@rbrown/riscos-draw-intermediate';
 import {
   fontOutlinesFromArrayBuffer,
   fontOutlinesIsHeaderPresent,
@@ -17,6 +16,7 @@ type IntermediateMapper = (buffer: ArrayBuffer) => IrRootNode | undefined;
 
 const INTERMEDIATE_MAPPERS: IntermediateMapper[] = [
   artworksIntermediateFromArrayBuffer,
+  drawIntermediateFromArrayBuffer,
 ];
 
 export function intermediateFromArrayBufferNew(
@@ -48,9 +48,6 @@ export function intermediateFromArrayBuffer(
   }
   if (!buffer) {
     return undefined;
-  }
-  if (drawIsHeaderPresent(buffer)) {
-    return drawMapToIntermediate(drawFromArrayBuffer(buffer));
   }
   if (fontOutlinesIsHeaderPresent(buffer)) {
     return fontOutlinesMapToIntermediate(fontOutlinesFromArrayBuffer(buffer));
