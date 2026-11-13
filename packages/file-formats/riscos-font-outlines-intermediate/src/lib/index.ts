@@ -6,11 +6,11 @@ import type {
   IrRootNode,
 } from '@rbrown/intermediate';
 import {
+  fontOutlinesFromArrayBuffer,
   OUTLINE_SEGMENT_TAG,
   type Character,
   type Chunks,
   type FontPathSegment,
-  type Outlines,
 } from '@rbrown/riscos-font-outlines';
 
 function mapFillPathDefinition(fillPath: FontPathSegment[]): IrPathSegment[] {
@@ -131,11 +131,20 @@ function mapCharacters(
   return groups;
 }
 
-export function fontOutlinesMapToIntermediate({
-  header: { boundingBox },
-  chunkCount,
-  chunks,
-}: Outlines): IrRootNode {
+export function fontOutlinesIntermediateFromArrayBuffer(
+  buffer: ArrayBuffer,
+): IrRootNode | undefined {
+  const outlines = fontOutlinesFromArrayBuffer(buffer);
+  if (!outlines) {
+    return undefined;
+  }
+
+  const {
+    header: { boundingBox },
+    chunkCount,
+    chunks,
+  } = outlines;
+
   const characters = chunkCount * 32;
   const columns = 16;
   const rows = characters / columns;

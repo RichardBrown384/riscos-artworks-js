@@ -2,7 +2,7 @@ import { transformTranslate } from '@rbrown/geometry';
 import { IrImage, IrImageNode, IrRootNode } from '@rbrown/intermediate';
 import {
   Sprite,
-  SpriteFile,
+  spriteFileFromArrayBuffer,
   spriteOsUnitHeight,
   spriteOsUnitWidth,
   spriteToImageSource,
@@ -33,9 +33,13 @@ function mapSprites(sprites: Sprite[]): IrImageNode[] {
   return nodes;
 }
 
-export function spriteAreaMapToIntermediate(
-  spriteFile: SpriteFile,
-): IrRootNode {
+export function spriteIntermediateFromArrayBuffer(
+  buffer: ArrayBuffer,
+): IrRootNode | undefined {
+  const spriteFile = spriteFileFromArrayBuffer(buffer);
+  if (!spriteFile) {
+    return undefined;
+  }
   return {
     children: mapSprites(spriteFile.sprites),
   };

@@ -13,26 +13,23 @@ function readSpriteFileControlBlock(
   };
 }
 
-export function spriteFileFromArrayBuffer(buffer: ArrayBuffer): SpriteFile {
-  const reader = new BinaryReader(buffer);
-  const controlBlock = readSpriteFileControlBlock(reader);
-  const sprites = readSpriteArray(reader, controlBlock);
-  return {
-    controlBlock,
-    sprites,
-  };
-}
-
 /*
- * Sprite files don't have a header
+ * Sprite files don't have a sensible header
  * We try to deserialize the sprite area and if we can do that
  * then there's a good chance it contains sprite data
  */
-export function spriteFileIsHeaderPresent(buffer: ArrayBuffer): boolean {
+export function spriteFileFromArrayBuffer(
+  buffer: ArrayBuffer,
+): SpriteFile | undefined {
   try {
-    spriteFileFromArrayBuffer(buffer);
-    return true;
+    const reader = new BinaryReader(buffer);
+    const controlBlock = readSpriteFileControlBlock(reader);
+    const sprites = readSpriteArray(reader, controlBlock);
+    return {
+      controlBlock,
+      sprites,
+    };
   } catch {
-    return false;
+    return undefined;
   }
 }

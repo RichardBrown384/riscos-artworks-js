@@ -13,4 +13,6 @@ const buffer = readFileSync(fileIn);
 const arrayBuffer = Uint8Array.from(buffer).buffer;
 const artworks = artworksFromArrayBuffer(arrayBuffer);
 
-writeFileSync(fileOut, JSON.stringify(artworks, null, 2));
+if (artworks) {
+  writeFileSync(fileOut, JSON.stringify(artworks, null, 2));
+}

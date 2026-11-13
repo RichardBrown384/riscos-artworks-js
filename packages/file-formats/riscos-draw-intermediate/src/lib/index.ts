@@ -19,12 +19,12 @@ import type {
 } from '@rbrown/intermediate';
 import {
   CAP_TAG,
+  drawFromArrayBuffer,
   JOIN_TAG,
   OBJECT_TAG,
   PATH_TAG,
   WINDING_RULE_TAG,
   type CapTag,
-  type DrawFile,
   type DrawGroupObject,
   type DrawJpegObject,
   type DrawObject,
@@ -261,7 +261,13 @@ function mapObjects(objects: DrawObject[]): IrNode[] {
   return mappedObjects;
 }
 
-export function drawMapToIntermediate(drawFile: DrawFile): IrRootNode {
+export function drawIntermediateFromArrayBuffer(
+  buffer: ArrayBuffer,
+): IrRootNode | undefined {
+  const drawFile = drawFromArrayBuffer(buffer);
+  if (!drawFile) {
+    return undefined;
+  }
   return {
     children: mapObjects(drawFile.objects),
   };

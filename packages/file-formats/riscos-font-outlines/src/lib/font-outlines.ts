@@ -365,10 +365,20 @@ function readOutlinesHeader(
   };
 }
 
+function fontOutlinesIsHeaderPresent(
+  buffer: ArrayBuffer,
+  position: number = 0,
+): boolean {
+  return readOutlinesHeader(buffer, position).identifier === IDENTIFIER_FONT;
+}
+
 export function fontOutlinesFromArrayBuffer(
   buffer: ArrayBuffer,
   position: number = 0,
-): Outlines {
+): Outlines | undefined {
+  if (!fontOutlinesIsHeaderPresent(buffer, position)) {
+    return undefined;
+  }
   const header = readOutlinesHeader(buffer, position);
   const { headerSize, identifier, bpp, version } = header;
 
@@ -414,11 +424,4 @@ export function fontOutlinesFromArrayBuffer(
     chunkCount,
     chunks,
   };
-}
-
-export function fontOutlinesIsHeaderPresent(
-  buffer: ArrayBuffer,
-  position: number = 0,
-): boolean {
-  return readOutlinesHeader(buffer, position).identifier === IDENTIFIER_FONT;
 }
