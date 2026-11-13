@@ -14,22 +14,19 @@
       "path": "../file-formats/computer-concepts-artworks-intermediate/tsconfig.lib.json"
     },
     {
-      "path": "../file-formats/riscos-font-outlines-intermediate/tsconfig.lib.json"
-    },
-    {
       "path": "../file-formats/riscos-sprite-intermediate/tsconfig.lib.json"
-    },
-    {
-      "path": "../file-formats/riscos-draw-intermediate/tsconfig.lib.json"
-    },
-    {
-      "path": "../file-formats/computer-concepts-artworks/tsconfig.lib.json"
     },
     {
       "path": "../file-formats/riscos-sprite/tsconfig.lib.json"
     },
     {
+      "path": "../file-formats/riscos-font-outlines-intermediate/tsconfig.lib.json"
+    },
+    {
       "path": "../file-formats/riscos-font-outlines/tsconfig.lib.json"
+    },
+    {
+      "path": "../file-formats/riscos-draw-intermediate/tsconfig.lib.json"
     },
     {
       "path": "../file-formats/riscos-draw/tsconfig.lib.json"

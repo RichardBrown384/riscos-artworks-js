@@ -2,7 +2,7 @@ import {
   ARTWORKS_JOIN_STYLE_TAG,
   ARTWORKS_LINE_CAP_STYLE_TAG,
   ARTWORKS_WINDING_RULE_TAG,
-  ArtworksFile,
+  artworksFromArrayBuffer,
   createRecordDashPatternEmpty,
   createRecordJoinStyle,
   createRecordLineCapEnd,
@@ -47,7 +47,13 @@ const INITIAL_RENDER_STATE: RenderState = {
   dash: createRecordDashPatternEmpty(),
 } as const;
 
-export function artworksMapToIntermediate(artworks: ArtworksFile): IrRootNode {
+export function artworksIntermediateFromArrayBuffer(
+  buffer: ArrayBuffer,
+): IrRootNode | undefined {
+  const artworks = artworksFromArrayBuffer(buffer);
+  if (!artworks) {
+    return undefined;
+  }
   const {
     lists,
     palette = EMPTY_PALETTE,

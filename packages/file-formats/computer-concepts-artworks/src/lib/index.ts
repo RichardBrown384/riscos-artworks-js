@@ -57,13 +57,18 @@ export {
   createRecordMarkerEnd,
 } from './records/index.js';
 
-export function artworksIsHeaderPresent(buffer: ArrayBuffer): boolean {
+function artworksIsHeaderPresent(buffer: ArrayBuffer): boolean {
   const reader = new BinaryReader(buffer);
   const header = readArtworksHeader(reader);
   return isArtworksHeaderValid(header);
 }
 
-export function artworksFromArrayBuffer(buffer: ArrayBuffer): ArtworksFile {
+export function artworksFromArrayBuffer(
+  buffer: ArrayBuffer,
+): ArtworksFile | undefined {
+  if (!artworksIsHeaderPresent(buffer)) {
+    return undefined;
+  }
   const reader = new BinaryReader(buffer);
   const artworksReader = new ArtworksReader(reader);
   return artworksReader.read();
