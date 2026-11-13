@@ -13,7 +13,11 @@ See the documentation on blends for the calculated values.
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,
-  PathBuilder,
+  createPath,
+  pathCloseSubPath,
+  pathEnd,
+  pathLineTo,
+  pathMoveTo,
 } from '@rbrown/computer-concepts-artworks';
 
 import { createArtworks, createList } from '../record-creators.js';
@@ -31,27 +35,27 @@ import {
 import { createSimplePathBlendGroup } from '../simple-blend-group.js';
 import { createBlendedPathRecordsWithWeights } from '../simulated-blend-group.js';
 
-const GROUP_0_START_PATH = new PathBuilder()
-  .moveTo(100_000, 100_000, ARTWORKS_PATH_TAG_BIT_31)
-  .lineTo(100_000, 400_000)
-  .lineTo(120_000, 416_000)
-  .lineTo(150_000, 300_000)
-  .lineTo(200_000, 500_000)
-  .lineTo(150_000, 90_000)
-  .lineTo(130_000, 120_000)
-  .lineTo(120_000, 11_000)
-  .closeSubPath()
-  .end()
-  .build();
-const GROUP_0_END_PATH = new PathBuilder()
-  .moveTo(1_000_000, 100_000, ARTWORKS_PATH_TAG_BIT_31)
-  .lineTo(1_010_000, 370_000)
-  .lineTo(1_100_000, 450_000)
-  .lineTo(1_120_000, 80_000)
-  .lineTo(1_110_000, 70_000)
-  .closeSubPath()
-  .end()
-  .build();
+const GROUP_0_START_PATH = createPath([
+  pathMoveTo(100_000, 100_000, ARTWORKS_PATH_TAG_BIT_31),
+  pathLineTo(100_000, 400_000),
+  pathLineTo(120_000, 416_000),
+  pathLineTo(150_000, 300_000),
+  pathLineTo(200_000, 500_000),
+  pathLineTo(150_000, 90_000),
+  pathLineTo(130_000, 120_000),
+  pathLineTo(120_000, 11_000),
+  pathCloseSubPath(),
+  pathEnd(),
+]);
+const GROUP_0_END_PATH = createPath([
+  pathMoveTo(1_000_000, 100_000, ARTWORKS_PATH_TAG_BIT_31),
+  pathLineTo(1_010_000, 370_000),
+  pathLineTo(1_100_000, 450_000),
+  pathLineTo(1_120_000, 80_000),
+  pathLineTo(1_110_000, 70_000),
+  pathCloseSubPath(),
+  pathEnd(),
+]);
 
 export default createArtworks(
   createList(WINDING_RULE_EVEN_ODD),

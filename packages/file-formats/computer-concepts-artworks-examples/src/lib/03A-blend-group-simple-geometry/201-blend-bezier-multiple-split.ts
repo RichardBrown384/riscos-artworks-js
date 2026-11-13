@@ -17,7 +17,12 @@ These parametric distances can be computed by taking the ratios of the lengths o
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,
-  PathBuilder,
+  createPath,
+  pathBezierTo,
+  pathCloseSubPath,
+  pathEnd,
+  pathLineTo,
+  pathMoveTo,
 } from '@rbrown/computer-concepts-artworks';
 
 import { createArtworks, createList } from '../record-creators.js';
@@ -35,24 +40,24 @@ import {
 import { createSimplePathBlendGroup } from '../simple-blend-group.js';
 import { createBlendedPathRecordsWithWeights } from '../simulated-blend-group.js';
 
-const GROUP_0_START_PATH = new PathBuilder()
-  .moveTo(100_000, 100_000, ARTWORKS_PATH_TAG_BIT_31)
-  .lineTo(100_000, 200_000) // L1
-  .lineTo(130_000, 250_000) // L2
-  .lineTo(170_000, 250_000) // L3
-  .lineTo(200_000, 200_000) // L4
-  .lineTo(200_000, 100_000) // L5
-  .closeSubPath() // L6
-  .end()
-  .build();
-const GROUP_0_END_PATH = new PathBuilder()
-  .moveTo(1_000_000, 100_000, ARTWORKS_PATH_TAG_BIT_31)
-  .lineTo(1_000_000, 200_000)
-  .bezierTo(1_020_000, 230_000, 1_080_000, 230_000, 1_100_000, 200_000)
-  .lineTo(1_100_000, 100_000)
-  .closeSubPath()
-  .end()
-  .build();
+const GROUP_0_START_PATH = createPath([
+  pathMoveTo(100_000, 100_000, ARTWORKS_PATH_TAG_BIT_31),
+  pathLineTo(100_000, 200_000), // L1
+  pathLineTo(130_000, 250_000), // L2
+  pathLineTo(170_000, 250_000), // L3
+  pathLineTo(200_000, 200_000), // L4
+  pathLineTo(200_000, 100_000), // L5
+  pathCloseSubPath(), // L6
+  pathEnd(),
+]);
+const GROUP_0_END_PATH = createPath([
+  pathMoveTo(1_000_000, 100_000, ARTWORKS_PATH_TAG_BIT_31),
+  pathLineTo(1_000_000, 200_000),
+  pathBezierTo(1_020_000, 230_000, 1_080_000, 230_000, 1_100_000, 200_000),
+  pathLineTo(1_100_000, 100_000),
+  pathCloseSubPath(),
+  pathEnd(),
+]);
 
 export default createArtworks(
   createList(WINDING_RULE_EVEN_ODD),

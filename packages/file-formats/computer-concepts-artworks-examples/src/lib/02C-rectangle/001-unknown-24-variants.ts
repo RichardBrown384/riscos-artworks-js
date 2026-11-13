@@ -24,8 +24,12 @@ the path elements in the files.
 import {
   ARTWORKS_PATH_TAG_BIT_31,
   ArtworksPath,
+  createPath,
   List,
-  PathBuilder,
+  pathCloseSubPath,
+  pathEnd,
+  pathLineTo,
+  pathMoveTo,
 } from '@rbrown/computer-concepts-artworks';
 
 import { AffineTransform } from '../affine-transform.js';
@@ -41,14 +45,14 @@ import {
   WORK_AREA,
 } from '../shared-objects.js';
 
-const RECTANGLE_PATH: ArtworksPath = new PathBuilder()
-  .moveTo(10_000, 10_000, ARTWORKS_PATH_TAG_BIT_31)
-  .lineTo(10_000, 20_000)
-  .lineTo(20_000, 20_000)
-  .lineTo(20_000, 10_000)
-  .closeSubPath()
-  .end()
-  .build();
+const RECTANGLE_PATH: ArtworksPath = createPath([
+  pathMoveTo(10_000, 10_000, ARTWORKS_PATH_TAG_BIT_31),
+  pathLineTo(10_000, 20_000),
+  pathLineTo(20_000, 20_000),
+  pathLineTo(20_000, 10_000),
+  pathCloseSubPath(),
+  pathEnd(),
+]);
 
 function createRectangles(rows: number, columns: number): List[] {
   const lists = [];

@@ -16,7 +16,13 @@ import {
   ARTWORKS_PATH_TAG,
   ARTWORKS_PATH_TAG_BIT_31,
   ArtworksPath,
-  PathBuilder,
+  ArtworksPathSegment,
+  createPath,
+  pathBezierTo,
+  pathCloseSubPath,
+  pathEnd,
+  pathLineTo,
+  pathMoveTo,
 } from '@rbrown/computer-concepts-artworks';
 import { Point } from '@rbrown/geometry';
 
@@ -34,18 +40,18 @@ function interpolatePoints(a: Point, b: Point, weight: number): Point {
 }
 
 function convertLinesToBeziers(path: ArtworksPath): ArtworksPath {
-  const builder = new PathBuilder();
+  const segments: ArtworksPathSegment[] = [];
   const last: Point = { x: 0, y: 0 };
   for (let i = 0; i < path.length; i += 1) {
     const segment = path[i];
     const { flags } = segment;
     switch (segment.tag) {
       case ARTWORKS_PATH_TAG.END: {
-        builder.end(flags);
+        segments.push(pathEnd(flags));
         break;
       }
       case ARTWORKS_PATH_TAG.CLOSE_SUB_PATH: {
-        builder.closeSubPath(flags);
+        segments.push(pathCloseSubPath(flags));
         break;
       }
       case ARTWORKS_PATH_TAG.MOVE: {
@@ -53,14 +59,16 @@ function convertLinesToBeziers(path: ArtworksPath): ArtworksPath {
         // TODO
         // setting bit 31 here is to force the behaviour to be the same as the js code
         // as a temporary measure
-        builder.moveTo(to.x, to.y, flags | ARTWORKS_PATH_TAG_BIT_31);
+        segments.push(pathMoveTo(to.x, to.y, flags | ARTWORKS_PATH_TAG_BIT_31));
         last.x = to.x;
         last.y = to.y;
         break;
       }
       case ARTWORKS_PATH_TAG.BEZIER: {
         const { cp1, cp2, to } = segment;
-        builder.bezierTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y, flags);
+        segments.push(
+          pathBezierTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y, flags),
+        );
         last.x = to.x;
         last.y = to.y;
         break;
@@ -69,7 +77,9 @@ function convertLinesToBeziers(path: ArtworksPath): ArtworksPath {
         const { to } = segment;
         const cp1 = interpolatePoints(last, to, BEZIER_WEIGHT);
         const cp2 = interpolatePoints(last, to, 1.0 - BEZIER_WEIGHT);
-        builder.bezierTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y, flags);
+        segments.push(
+          pathBezierTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y, flags),
+        );
         last.x = to.x;
         last.y = to.y;
         break;
@@ -78,7 +88,7 @@ function convertLinesToBeziers(path: ArtworksPath): ArtworksPath {
         throw new Error(`Unsupported path segment: ${String(segment.tag)}`);
     }
   }
-  return builder.build();
+  return createPath(segments);
 }
 
 function blendBezierPaths(
@@ -90,7 +100,7 @@ function blendBezierPaths(
     startPath.length === endPath.length,
     'blend paths must have the same length',
   );
-  const builder = new PathBuilder();
+  const segments: ArtworksPathSegment[] = [];
   for (let i = 0; i < startPath.length; i += 1) {
     const startSegment = startPath[i];
     const endSegment = endPath[i];
@@ -101,11 +111,11 @@ function blendBezierPaths(
     const { flags } = startSegment;
     switch (startSegment.tag) {
       case ARTWORKS_PATH_TAG.END: {
-        builder.end(flags);
+        segments.push(pathEnd(flags));
         break;
       }
       case ARTWORKS_PATH_TAG.CLOSE_SUB_PATH: {
-        builder.closeSubPath(flags);
+        segments.push(pathCloseSubPath(flags));
         break;
       }
       case ARTWORKS_PATH_TAG.MOVE: {
@@ -114,7 +124,7 @@ function blendBezierPaths(
         // TODO
         // remove the flag, this is just to make sure the files are
         // binary identical
-        builder.moveTo(to.x, to.y, flags | ARTWORKS_PATH_TAG_BIT_31);
+        segments.push(pathMoveTo(to.x, to.y, flags | ARTWORKS_PATH_TAG_BIT_31));
         break;
       }
       case ARTWORKS_PATH_TAG.BEZIER: {
@@ -122,7 +132,9 @@ function blendBezierPaths(
         const cp1 = interpolatePoints(startSegment.cp1, endSegment.cp1, weight);
         const cp2 = interpolatePoints(startSegment.cp2, endSegment.cp2, weight);
         const to = interpolatePoints(startSegment.to, endSegment.to, weight);
-        builder.bezierTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y, flags);
+        segments.push(
+          pathBezierTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y, flags),
+        );
         break;
       }
       default:
@@ -131,20 +143,21 @@ function blendBezierPaths(
         );
     }
   }
-  return builder.build();
+  return createPath(segments);
 }
 
 function divideLineByWeights(
-  builder: PathBuilder,
   weights: number[],
   start: Point,
   end: Point,
-): void {
+): ArtworksPathSegment[] {
+  const segments: ArtworksPathSegment[] = [];
   for (let i = 0; i < weights.length; i += 1) {
     const weight = weights[i];
     const q = interpolatePoints(start, end, weight);
-    builder.lineTo(q.x, q.y);
+    segments.push(pathLineTo(q.x, q.y));
   }
+  return segments;
 }
 
 function divideBezier(weight: number, [b0, b1, b2, b3]: Point[]): Point[][] {
@@ -161,11 +174,11 @@ function divideBezier(weight: number, [b0, b1, b2, b3]: Point[]): Point[][] {
 }
 
 function divideBezierByWeights(
-  builder: PathBuilder,
   weights: number[],
   b0: Point,
   [b1, b2, b3]: Point[],
-): void {
+): ArtworksPathSegment[] {
+  const segments: ArtworksPathSegment[] = [];
   let bezier = [b0, b1, b2, b3];
   for (let i = 0, last = 0.0; i < weights.length; i += 1) {
     const weight = weights[i];
@@ -174,12 +187,13 @@ function divideBezierByWeights(
       bezier,
     );
     const [, p1, p2, p3] = first;
-    builder.bezierTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+    segments.push(pathBezierTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y));
     last = weight;
     bezier = second;
   }
   const [, p1, p2, p3] = bezier;
-  builder.bezierTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+  segments.push(pathBezierTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y));
+  return segments;
 }
 
 export function createPathWithAdditionalPoints(
@@ -190,7 +204,7 @@ export function createPathWithAdditionalPoints(
     path.length === weightsList.length,
     'path and weight list must have the same length',
   );
-  const builder = new PathBuilder();
+  const segments: ArtworksPathSegment[] = [];
   const start = { x: 0, y: 0 };
   const last = { x: 0, y: 0 };
   for (let i = 0; i < path.length; i += 1) {
@@ -199,19 +213,19 @@ export function createPathWithAdditionalPoints(
     const { flags } = segment;
     switch (segment.tag) {
       case ARTWORKS_PATH_TAG.END: {
-        builder.end(flags);
+        segments.push(pathEnd(flags));
         break;
       }
       case ARTWORKS_PATH_TAG.CLOSE_SUB_PATH: {
-        divideLineByWeights(builder, weights, last, start);
-        builder.closeSubPath(flags);
+        segments.push(...divideLineByWeights(weights, last, start));
+        segments.push(pathCloseSubPath(flags));
         break;
       }
       case ARTWORKS_PATH_TAG.MOVE: {
         const { to } = segment;
         // TODO
         // same story with the flags
-        builder.moveTo(to.x, to.y, flags | ARTWORKS_PATH_TAG_BIT_31);
+        segments.push(pathMoveTo(to.x, to.y, flags | ARTWORKS_PATH_TAG_BIT_31));
         start.x = to.x;
         start.y = to.y;
         last.x = to.x;
@@ -221,7 +235,7 @@ export function createPathWithAdditionalPoints(
 
       case ARTWORKS_PATH_TAG.BEZIER: {
         const { cp1, cp2, to } = segment;
-        divideBezierByWeights(builder, weights, last, [cp1, cp2, to]);
+        segments.push(...divideBezierByWeights(weights, last, [cp1, cp2, to]));
         last.x = to.x;
         last.y = to.y;
         break;
@@ -229,8 +243,8 @@ export function createPathWithAdditionalPoints(
 
       case ARTWORKS_PATH_TAG.LINE: {
         const { to } = segment;
-        divideLineByWeights(builder, weights, last, to);
-        builder.lineTo(to.x, to.y);
+        segments.push(...divideLineByWeights(weights, last, to));
+        segments.push(pathLineTo(to.x, to.y));
         last.x = to.x;
         last.y = to.y;
         break;
@@ -240,7 +254,7 @@ export function createPathWithAdditionalPoints(
         throw new Error(`Unsupported path segment: ${String(segment.tag)}`);
     }
   }
-  return builder.build();
+  return createPath(segments);
 }
 
 export function blendPaths(
