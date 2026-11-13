@@ -20,9 +20,6 @@
       "path": "../file-formats/riscos-font-outlines-intermediate/tsconfig.lib.json"
     },
     {
-      "path": "../file-formats/riscos-font-outlines/tsconfig.lib.json"
-    },
-    {
       "path": "../file-formats/riscos-draw-intermediate/tsconfig.lib.json"
     },
     {
