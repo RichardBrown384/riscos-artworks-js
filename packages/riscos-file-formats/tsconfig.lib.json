@@ -14,9 +14,6 @@
       "path": "../file-formats/riscos-sprite-intermediate/tsconfig.lib.json"
     },
     {
-      "path": "../file-formats/riscos-sprite/tsconfig.lib.json"
-    },
-    {
       "path": "../file-formats/riscos-font-outlines-intermediate/tsconfig.lib.json"
     },
     {
