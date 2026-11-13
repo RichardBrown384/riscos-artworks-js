@@ -9,7 +9,7 @@ export function readPolyline(
   n: number,
 ): ArtworksPolyline {
   reader.aligned(4, 'misaligned polyline');
-  const points = [];
+  const points: Point[] = [];
   for (let i = 0; i < n; i += 1) {
     points.push(readPoint(reader));
   }
@@ -26,16 +26,10 @@ export function writePolyline(
   }
 }
 
-export class PolylineBuilder {
-  private readonly points: Point[];
-  constructor() {
-    this.points = [];
-  }
-  push(x: number, y: number): this {
-    this.points.push({ x, y });
-    return this;
-  }
-  build(): ArtworksPolyline {
-    return this.points;
-  }
+export function createPolyline(points: Point[]): ArtworksPolyline {
+  return points;
+}
+
+export function polylinePoint(x: number, y: number): Point {
+  return { x, y };
 }
