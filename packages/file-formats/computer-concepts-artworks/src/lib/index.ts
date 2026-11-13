@@ -18,7 +18,8 @@ export {
   pathCloseSubPath,
   pathEnd,
   pathBoundingBox, // exported because of the example's simple blend groups
-  PolylineBuilder,
+  createPolyline,
+  polylinePoint,
 } from './primitives/index.js';
 export {
   createArtworksHeader,

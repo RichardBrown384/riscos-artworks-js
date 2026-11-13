@@ -28,13 +28,14 @@ import {
   ArtworksPolyline,
   ArtworksRecord,
   createPath,
+  createPolyline,
   List,
   pathBezierTo,
   pathCloseSubPath,
   pathEnd,
   pathLineTo,
   pathMoveTo,
-  PolylineBuilder,
+  polylinePoint,
 } from '@rbrown/computer-concepts-artworks';
 
 import { AffineTransform } from '../affine-transform.js';
@@ -77,11 +78,11 @@ const TRIANGLE_Y1 = 226745;
 const TRIANGLE_X2 = 326154;
 const TRIANGLE_Y2 = 226745;
 
-const ORIGINAL_POLYLINE_TRIANGLE: ArtworksPolyline = new PolylineBuilder()
-  .push(TRIANGLE_X0, TRIANGLE_Y0)
-  .push(TRIANGLE_X1, TRIANGLE_Y1)
-  .push(TRIANGLE_X2, TRIANGLE_Y2)
-  .build();
+const ORIGINAL_POLYLINE_TRIANGLE: ArtworksPolyline = createPolyline([
+  polylinePoint(TRIANGLE_X0, TRIANGLE_Y0),
+  polylinePoint(TRIANGLE_X1, TRIANGLE_Y1),
+  polylinePoint(TRIANGLE_X2, TRIANGLE_Y2),
+]);
 
 const ORIGINAL_PATH_TRIANGLE: ArtworksPath = createPath([
   pathMoveTo(TRIANGLE_X0, TRIANGLE_Y0, ARTWORKS_PATH_TAG_BIT_31),
