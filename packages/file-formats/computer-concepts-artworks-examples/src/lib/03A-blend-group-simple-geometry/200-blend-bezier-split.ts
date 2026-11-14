@@ -20,6 +20,7 @@ the sum of the lengths of the fourth and fifth source line segments.
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,
+  createList,
   createPath,
   pathBezierTo,
   pathCloseSubPath,
@@ -28,7 +29,7 @@ import {
   pathMoveTo,
 } from '@rbrown/computer-concepts-artworks';
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,

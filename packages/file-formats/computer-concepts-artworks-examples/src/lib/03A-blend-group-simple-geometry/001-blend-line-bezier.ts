@@ -16,6 +16,7 @@ interpolated using the normal code.
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,
+  createList,
   createPath,
   pathBezierTo,
   pathCloseSubPath,
@@ -25,7 +26,7 @@ import {
 } from '@rbrown/computer-concepts-artworks';
 
 import { createClosedSquare } from '../path-creators.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,

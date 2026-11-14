@@ -5,7 +5,9 @@ Purpose:
 To demonstrate setting the stroke colour.
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_BLACK_30,
   LAYER_FOREGROUND,

@@ -3,7 +3,7 @@ import {
   createRgbPaletteEntry,
 } from '@rbrown/computer-concepts-artworks';
 
-export const DEFAULT_PALETTE = createPalette(
+export const DEFAULT_PALETTE = createPalette([
   createRgbPaletteEntry('Black', 0x20000000),
   createRgbPaletteEntry('90% Black', 0x20191919),
   createRgbPaletteEntry('80% Black', 0x20333333),
@@ -21,7 +21,7 @@ export const DEFAULT_PALETTE = createPalette(
   createRgbPaletteEntry('Cyan', 0x20ffff00),
   createRgbPaletteEntry('Magenta', 0x20ff00ff),
   createRgbPaletteEntry('Yellow', 0x2000ffff),
-);
+]);
 
 export const PALETTE_INDEX_TRANSPARENT = -1;
 export const DEFAULT_PALETTE_INDEX_BLACK = 0;

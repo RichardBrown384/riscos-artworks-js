@@ -5,7 +5,9 @@ Purpose:
 Demonstrates the interaction between end line caps and end line markers.
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   END_CAP_TRIANGLE_W10_H10,
   END_MARKER_ARROW_TAIL_W4_H4,

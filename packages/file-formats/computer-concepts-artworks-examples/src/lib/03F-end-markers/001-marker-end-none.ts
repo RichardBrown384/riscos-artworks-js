@@ -5,7 +5,9 @@ Purpose:
 Demonstrates no end markers.
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   END_MARKER_NONE,
   FILL_FLAT_TRANSPARENT,

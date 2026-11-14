@@ -6,12 +6,13 @@ To demonstrate that if bit 0 of unknown4 is clear then the fill doesn't get appl
 and as there is no fill specified !AWViewer crashes when it tries to render geometry.
  */
 
-import { DEFAULT_PALETTE_INDEX_RED } from '../default-palette.js';
 import {
-  createArtworks,
   createList,
   createRecordFillColourFlatFull,
-} from '../record-creators.js';
+} from '@rbrown/computer-concepts-artworks';
+
+import { DEFAULT_PALETTE_INDEX_RED } from '../default-palette.js';
+import { createArtworks } from '../record-creators.js';
 import {
   LAYER_FOREGROUND,
   PATH_TRIANGLE,

@@ -79,7 +79,7 @@ export function writePalette(writer: BinaryWriter, palette: Palette): void {
   }
 }
 
-export function createPalette(...entries: PaletteEntry[]): Palette {
+export function createPalette(entries: PaletteEntry[]): Palette {
   return {
     count: entries.length,
     unknown4: entries.length,

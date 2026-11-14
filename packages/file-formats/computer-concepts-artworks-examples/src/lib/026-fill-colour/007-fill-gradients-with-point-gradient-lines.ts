@@ -37,7 +37,12 @@ with the start colour irrespective of the zoom level.
 
  */
 
-import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
+import {
+  ARTWORKS_FILL_TYPE_TAG,
+  createList,
+  createRecordFillColourGradient,
+  createRecordPath,
+} from '@rbrown/computer-concepts-artworks';
 
 import {
   DEFAULT_PALETTE_INDEX_BLACK,
@@ -45,12 +50,7 @@ import {
   DEFAULT_PALETTE_INDEX_YELLOW,
 } from '../default-palette.js';
 import { createClosedSquare } from '../path-creators.js';
-import {
-  createArtworks,
-  createList,
-  createRecordFillColourGradient,
-  createRecordPath,
-} from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_RED,
   STROKE_COLOUR_BLUE,

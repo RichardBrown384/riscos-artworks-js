@@ -11,16 +11,16 @@ be wrong.
 
  */
 
-import { ArtworksRecord } from '@rbrown/computer-concepts-artworks';
-import { BoundingBox } from '@rbrown/geometry';
-
-import { createClosedNSidedPolygon } from '../path-creators.js';
 import {
-  createArtworks,
+  ArtworksRecord,
   createList,
   createRecordGroupFull,
   createRecordPath,
-} from '../record-creators.js';
+} from '@rbrown/computer-concepts-artworks';
+import { BoundingBox } from '@rbrown/geometry';
+
+import { createClosedNSidedPolygon } from '../path-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_TRANSPARENT,
   LAYER_FOREGROUND,

@@ -16,8 +16,10 @@ The rule appears to be that before the halfway point use the start rule and
 beyond that the end rule.
  */
 
+import { createList } from '@rbrown/computer-concepts-artworks';
+
 import { createClosedPentagram } from '../path-creators.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   END_CAP_BUTT,

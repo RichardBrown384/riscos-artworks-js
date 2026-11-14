@@ -10,7 +10,9 @@ Therefore, !AWViewer should render a 30% black pentagram in the background
 and a red triangle on top.
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_BLACK_30,
   FILL_FLAT_RED,

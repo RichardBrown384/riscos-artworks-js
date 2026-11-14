@@ -6,10 +6,11 @@ To demonstrate that if you set both bits 0 and 3 of unknown 24 then the layer is
  */
 
 import {
-  createArtworks,
   createList,
   createRecordLayer,
-} from '../record-creators.js';
+} from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import { FILL_FLAT_RED, PATH_TRIANGLE, WORK_AREA } from '../shared-objects.js';
 
 const LAYER = createRecordLayer('Foreground');

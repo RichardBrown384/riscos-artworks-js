@@ -5,7 +5,9 @@ Purpose:
 To demonstrate that !AWViewer crashes when a file doesn't contain a fill record
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   LAYER_FOREGROUND,
   PATH_TRIANGLE,

@@ -17,8 +17,10 @@ The rule appears to be that before the halfway point use the start join and
 beyond that the end join.
  */
 
+import { createList } from '@rbrown/computer-concepts-artworks';
+
 import { createClosedSquare } from '../path-creators.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_BLACK_30,

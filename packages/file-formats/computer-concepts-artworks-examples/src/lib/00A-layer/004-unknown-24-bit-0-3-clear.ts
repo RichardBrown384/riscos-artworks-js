@@ -6,10 +6,11 @@ To demonstrate that both bits 0 and 3 of unknown 24 are clear then the layer isn
  */
 
 import {
-  createArtworks,
   createList,
   createRecordLayerFull,
-} from '../record-creators.js';
+} from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import { FILL_FLAT_RED, PATH_TRIANGLE, WORK_AREA } from '../shared-objects.js';
 
 const LAYER = createRecordLayerFull(0, 'Foreground');

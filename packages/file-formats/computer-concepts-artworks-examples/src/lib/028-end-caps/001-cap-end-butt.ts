@@ -10,7 +10,9 @@ the butt and square caps with the opposite end without the need of another refer
 It's then also possible to infer the default (butt caps)
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   END_CAP_BUTT,
   FILL_FLAT_TRANSPARENT,

@@ -27,8 +27,12 @@ import {
   ArtworksPath,
   ArtworksPolyline,
   ArtworksRecord,
+  createList,
   createPath,
   createPolyline,
+  createRecordEllipse,
+  createRecordFillColourGradient,
+  createRecordPath,
   List,
   pathBezierTo,
   pathCloseSubPath,
@@ -43,13 +47,7 @@ import {
   DEFAULT_PALETTE_INDEX_BLACK,
   DEFAULT_PALETTE_INDEX_WHITE,
 } from '../default-palette.js';
-import {
-  createArtworks,
-  createList,
-  createRecordEllipse,
-  createRecordFillColourGradient,
-  createRecordPath,
-} from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_TRANSPARENT,
   STROKE_COLOUR_BLUE,

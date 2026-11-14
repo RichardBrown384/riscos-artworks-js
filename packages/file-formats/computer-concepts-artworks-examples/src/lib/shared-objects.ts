@@ -4,6 +4,17 @@ import {
   ARTWORKS_LINE_CAP_STYLE_TAG,
   ARTWORKS_MARKER_STYLE_TAG,
   ARTWORKS_WINDING_RULE_TAG,
+  createRecordDashPattern,
+  createRecordDashPatternEmpty,
+  createRecordFillColourFlat,
+  createRecordFillColourGradient,
+  createRecordJoinStyle,
+  createRecordLayer,
+  createRecordPath,
+  createRecordStrokeColour,
+  createRecordStrokeWidth,
+  createRecordWindingRule,
+  createRecordWorkArea,
 } from '@rbrown/computer-concepts-artworks';
 
 import {
@@ -24,21 +35,10 @@ import {
   createOpenInvertedV,
 } from './path-creators.js';
 import {
-  createRecordDashPattern,
-  createRecordDashPatternEmpty,
-  createRecordFillColourFlat,
-  createRecordFillColourGradient,
-  createRecordJoinStyle,
-  createRecordLayer,
   createRecordLineCapEndRelativeToStrokeWidth,
   createRecordLineCapStartRelativeToStrokeWidth,
   createRecordMarkerEndRelativeToStrokeWidth,
   createRecordMarkerStartRelativeToStrokeWidth,
-  createRecordPath,
-  createRecordStrokeColour,
-  createRecordStrokeWidth,
-  createRecordWindingRule,
-  createRecordWorkArea,
 } from './record-creators.js';
 
 export const PATH_TRIANGLE = createRecordPath(

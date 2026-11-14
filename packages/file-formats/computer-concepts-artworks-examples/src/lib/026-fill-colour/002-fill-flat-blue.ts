@@ -5,7 +5,9 @@ Purpose:
 To demonstrate flat fills !AWViewer
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_BLUE,
   LAYER_FOREGROUND,

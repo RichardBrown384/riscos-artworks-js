@@ -9,7 +9,9 @@ using the second colour.
 !AWViewer should render a 30% black triangle, not red.
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_BLACK_30,
   FILL_FLAT_RED,

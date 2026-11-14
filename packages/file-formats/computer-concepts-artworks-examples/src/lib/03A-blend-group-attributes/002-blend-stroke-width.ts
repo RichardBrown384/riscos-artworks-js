@@ -20,8 +20,10 @@ If the join style is missing from the file then the interpolated shapes are not 
 If the join style is present then the attribute is interpolated as expected.
  */
 
+import { createList } from '@rbrown/computer-concepts-artworks';
+
 import { createClosedSquare } from '../path-creators.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_BLACK_30,

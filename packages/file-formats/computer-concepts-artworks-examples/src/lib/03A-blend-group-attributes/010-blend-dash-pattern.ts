@@ -23,8 +23,10 @@ except of course the intermediate shapes aren't stroked.
 Case 2 is the only case that render properly when on its own within the file.
  */
 
+import { createList } from '@rbrown/computer-concepts-artworks';
+
 import { createClosedSquare } from '../path-creators.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   DASH_PATTERN_OFFSET_0,
