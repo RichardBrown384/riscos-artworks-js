@@ -22,7 +22,7 @@ This file demonstrates a number of cases
 Cases 3, 4, and 5 demonstrate that ArtWorks doesn't appear to interpolate
 linear and radial fills properly. The rule appears to be that before
 the halfway mark use the linear fill and beyond that use the radial fill.
- */
+*/
 
 import {
   ARTWORKS_FILL_TYPE_TAG,

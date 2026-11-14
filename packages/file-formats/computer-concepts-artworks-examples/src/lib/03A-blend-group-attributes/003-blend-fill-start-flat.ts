@@ -24,7 +24,7 @@ Cases 3, 4, and 5 demonstrate that the fills are computed in world rather than o
 This is because case 5's later blend steps start taking on a shade of cyan whereas in cases 4 and 5
 the final blend steps remain decidedly pink (as they are outside the radius defined by the fill).
 
- */
+*/
 
 import {
   ARTWORKS_FILL_TYPE_TAG,

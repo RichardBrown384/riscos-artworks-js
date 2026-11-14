@@ -3,7 +3,7 @@ Example: 002-join-round
 
 Purpose:
 To demonstrate rounded joins
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

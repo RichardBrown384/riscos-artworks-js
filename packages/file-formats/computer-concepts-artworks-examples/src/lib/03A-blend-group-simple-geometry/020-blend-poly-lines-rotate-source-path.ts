@@ -9,7 +9,7 @@ This differs from 010-blend-poly-lines by rotating the source path through 180 d
 
 The vertex mapping appears to be unchanged.
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

@@ -9,7 +9,7 @@ correctly in !AWViewer.
 The first pentagon is partially visible but the file's bounding box appears to
 be wrong.
 
- */
+*/
 
 import {
   ArtworksRecord,

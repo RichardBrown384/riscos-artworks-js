@@ -3,7 +3,7 @@ Example: 001-smallest-file
 
 Purpose:
 To demonstrate the smallest file that will render something in !AWViewer
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

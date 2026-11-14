@@ -5,7 +5,7 @@ Purpose:
 
 To demonstrate what happens when you blend between shapes that have a different number of points
 
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

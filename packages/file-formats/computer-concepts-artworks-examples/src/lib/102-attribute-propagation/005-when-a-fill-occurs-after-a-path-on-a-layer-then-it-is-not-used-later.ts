@@ -8,7 +8,7 @@ the attribute is not applied to subsequent paths.
 
 Therefore, !AWViewer should render a 30% black pentagram in the background
 and a red triangle on top.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

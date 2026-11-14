@@ -28,7 +28,7 @@ the halfway mark use the radial fill and beyond that use the linear fill.
 
 Cases 6 and 7 demonstrate that if either the source or target is transparent
 then only then end colour is used.
- */
+*/
 
 import {
   ARTWORKS_FILL_TYPE_TAG,

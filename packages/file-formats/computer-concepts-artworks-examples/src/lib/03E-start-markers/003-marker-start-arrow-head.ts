@@ -3,7 +3,7 @@ Example: 003-marker-start-arrow-head
 
 Purpose:
 Demonstrates arrow head start markers
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

@@ -16,7 +16,7 @@ The file deals with five cases
 The start markers are only applied for the start and end states.
 
 The intermediate states draw a closed contour.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

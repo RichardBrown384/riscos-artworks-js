@@ -10,7 +10,7 @@ Some observations:
 1. The placement of layer objects within the tree doesn't cause immediate problems for the viewer
 2. When paths don't have style siblings their style children are applied.
 
- */
+*/
 
 import {
   ArtworksRecord,

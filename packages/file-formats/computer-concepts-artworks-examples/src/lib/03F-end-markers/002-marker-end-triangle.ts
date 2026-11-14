@@ -3,7 +3,7 @@ Example: 002-marker-end-triangle
 
 Purpose:
 Demonstrates triangle end markers
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

@@ -21,7 +21,7 @@ When a join type isn't specified everything renders as expected,
 except of course the intermediate shapes aren't stroked.
 
 Case 2 is the only case that render properly when on its own within the file.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

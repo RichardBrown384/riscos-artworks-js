@@ -3,7 +3,7 @@ Example: 005-fill-linear-yellow-red
 
 Purpose:
 To demonstrate the linear gradient fills !AWViewer
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

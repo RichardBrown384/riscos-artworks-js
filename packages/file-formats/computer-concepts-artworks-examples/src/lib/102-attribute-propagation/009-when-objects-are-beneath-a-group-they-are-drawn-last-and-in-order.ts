@@ -10,7 +10,7 @@ behind a radially-filled hexagon stroked blue.
 The purpose is to demonstrate that grouped objects are drawn
 after the group's siblings and that the group members
 are drawn in order.
- */
+*/
 
 import {
   ArtworksRecord,

@@ -5,7 +5,7 @@ Purpose:
 
 To demonstrate the smallest possible blend group.
 
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

@@ -3,7 +3,7 @@ Example: 003-fill-none
 
 Purpose:
 To demonstrate that !AWViewer crashes when a file doesn't contain a fill record
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

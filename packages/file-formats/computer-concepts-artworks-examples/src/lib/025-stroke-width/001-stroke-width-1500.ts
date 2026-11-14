@@ -3,7 +3,7 @@ Example: 001-stroke-width-1500
 
 Purpose:
 To demonstrate setting the stroke width.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

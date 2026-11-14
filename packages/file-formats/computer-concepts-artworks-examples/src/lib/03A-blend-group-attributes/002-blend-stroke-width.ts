@@ -18,7 +18,7 @@ Important point to note:
 If the join style is missing from the file then the interpolated shapes are not stroked.
 
 If the join style is present then the attribute is interpolated as expected.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

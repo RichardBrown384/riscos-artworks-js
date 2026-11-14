@@ -3,7 +3,7 @@ Example: 002-fill-flat-blue
 
 Purpose:
 To demonstrate flat fills !AWViewer
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

@@ -9,7 +9,7 @@ various angles to a triangle.
 What's surprising about this is that regardless of the degree of rotation !AWViewer decides to
 split the triangle at the same point (midway along the second edge).
 
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 import { degreesToRadians } from '@rbrown/geometry';

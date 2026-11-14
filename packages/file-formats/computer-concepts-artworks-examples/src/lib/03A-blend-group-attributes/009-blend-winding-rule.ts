@@ -14,7 +14,7 @@ The file deals with four cases
 
 The rule appears to be that before the halfway point use the start rule and
 beyond that the end rule.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

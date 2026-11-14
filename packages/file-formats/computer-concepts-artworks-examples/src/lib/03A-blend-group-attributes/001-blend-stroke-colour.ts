@@ -21,7 +21,7 @@ If the join style is present then the attribute is interpolated as expected.
 
 When interpolating to/from transparent the colours are mixed with white.
 
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

@@ -9,7 +9,7 @@ The weights were worked out by hand by using a tape measure placed up against th
 
 See the documentation on blends for the calculated values.
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

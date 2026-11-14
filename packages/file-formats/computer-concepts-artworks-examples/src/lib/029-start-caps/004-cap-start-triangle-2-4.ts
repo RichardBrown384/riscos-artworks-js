@@ -8,7 +8,7 @@ NB: We use an inverted V here so that it's possible to compare, in particular,
 the butt and square caps with the opposite end without the need of another reference contour.
 
 It's then also possible to infer the default (butt caps)
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

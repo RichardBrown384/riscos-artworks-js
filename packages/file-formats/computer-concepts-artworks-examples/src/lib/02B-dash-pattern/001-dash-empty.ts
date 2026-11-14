@@ -3,7 +3,7 @@ Example: 001-dash-empty
 
 Purpose:
 To demonstrate that an empty dash pattern does nothing
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

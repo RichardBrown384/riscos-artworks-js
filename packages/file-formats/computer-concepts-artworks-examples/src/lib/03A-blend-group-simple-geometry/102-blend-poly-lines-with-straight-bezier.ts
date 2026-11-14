@@ -7,7 +7,7 @@ To demonstrate what happens when you blend between shapes that have a different 
 
 This differs from 010-blend-poly-lines by introducing a solitary straight bezier segment
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

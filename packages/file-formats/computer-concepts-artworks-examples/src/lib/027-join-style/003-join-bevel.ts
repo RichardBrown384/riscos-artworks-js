@@ -3,7 +3,7 @@ Example: 003-join-bevel
 
 Purpose:
 To demonstrate bevelled joins
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

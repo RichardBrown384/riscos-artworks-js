@@ -3,7 +3,7 @@ Example: 001-join-mitre
 
 Purpose:
 To demonstrate mitred joins
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

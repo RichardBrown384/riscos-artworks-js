@@ -3,7 +3,7 @@ Example: 005-marker-start-arrow-tail
 
 Purpose:
 Demonstrates arrow tail start markers
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

@@ -3,7 +3,7 @@ Example: 003-winding-non-zero
 
 Purpose:
 To demonstrate the non-zero winding rule
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

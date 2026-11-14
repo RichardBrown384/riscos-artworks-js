@@ -3,7 +3,7 @@ Example: 002-stroke-magenta
 
 Purpose:
 To demonstrate setting the stroke colour.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

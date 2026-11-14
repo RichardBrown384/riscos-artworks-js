@@ -6,7 +6,7 @@ To demonstrate that if a style attribute appears after a path
 then that overrides the preceding attribute.
 
 !AWViewer renders a 30% black triangle, not red.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

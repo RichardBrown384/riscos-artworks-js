@@ -3,7 +3,7 @@ Example: 001-marker-start-none
 
 Purpose:
 Demonstrates no start markers.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

@@ -3,7 +3,7 @@ Example: 006-marker-start-arrow-tail-cap-start-triangle
 
 Purpose:
 Demonstrates the interaction between start line caps and start line markers.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

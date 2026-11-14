@@ -3,7 +3,7 @@ Example: 003-marker-end-arrow-head
 
 Purpose:
 Demonstrates arrow head end markers
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

@@ -16,7 +16,7 @@ the sum of the lengths of the fourth and fifth source line segments.
 0.3206 = L2 / (L2 + L3)
 0.3586 = L4 / (L4 + L5)
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,
