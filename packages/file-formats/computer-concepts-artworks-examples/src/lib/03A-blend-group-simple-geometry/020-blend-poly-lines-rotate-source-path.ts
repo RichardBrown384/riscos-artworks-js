@@ -13,6 +13,7 @@ The vertex mapping appears to be unchanged.
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,
+  createList,
   createPath,
   pathCloseSubPath,
   pathEnd,
@@ -21,7 +22,7 @@ import {
 } from '@rbrown/computer-concepts-artworks';
 
 import { AffineTransform } from '../affine-transform.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,

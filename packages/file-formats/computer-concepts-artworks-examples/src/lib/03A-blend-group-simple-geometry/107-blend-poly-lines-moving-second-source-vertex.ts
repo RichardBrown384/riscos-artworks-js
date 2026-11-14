@@ -39,6 +39,7 @@ Second regime means point distribution is A X' B Y' C
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,
+  createList,
   createPath,
   pathCloseSubPath,
   pathEnd,
@@ -46,7 +47,7 @@ import {
   pathMoveTo,
 } from '@rbrown/computer-concepts-artworks';
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,

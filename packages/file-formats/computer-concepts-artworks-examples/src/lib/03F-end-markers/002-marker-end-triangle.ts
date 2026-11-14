@@ -5,7 +5,9 @@ Purpose:
 Demonstrates triangle end markers
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   END_MARKER_TRIANGLE_W4_H4,
   FILL_FLAT_TRANSPARENT,

@@ -11,10 +11,11 @@ split the triangle at the same point (midway along the second edge).
 
  */
 
+import { createList } from '@rbrown/computer-concepts-artworks';
 import { degreesToRadians } from '@rbrown/geometry';
 
 import { createClosedNSidedPolygon } from '../path-creators.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_TRANSPARENT,

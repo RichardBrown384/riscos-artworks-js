@@ -1,7 +1,11 @@
-import { ArtworksPath, List } from '@rbrown/computer-concepts-artworks';
+import {
+  ArtworksPath,
+  createList,
+  createRecordPath,
+  List,
+} from '@rbrown/computer-concepts-artworks';
 
 import { blendPaths, createPathWithAdditionalPoints } from './path-blenders.js';
-import { createList, createRecordPath } from './record-creators.js';
 
 function createBlendedPathRecords(
   startPath: ArtworksPath,

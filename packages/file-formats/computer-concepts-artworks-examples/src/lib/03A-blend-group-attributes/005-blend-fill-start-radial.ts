@@ -30,7 +30,12 @@ Cases 6 and 7 demonstrate that if either the source or target is transparent
 then only then end colour is used.
  */
 
-import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
+import {
+  ARTWORKS_FILL_TYPE_TAG,
+  createList,
+  createRecordFillColourGradient,
+  createRecordPath,
+} from '@rbrown/computer-concepts-artworks';
 
 import {
   DEFAULT_PALETTE_INDEX_CYAN,
@@ -39,12 +44,7 @@ import {
   DEFAULT_PALETTE_INDEX_YELLOW,
 } from '../default-palette.js';
 import { createClosedRectangle, createClosedSquare } from '../path-creators.js';
-import {
-  createArtworks,
-  createList,
-  createRecordFillColourGradient,
-  createRecordPath,
-} from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_BLUE,

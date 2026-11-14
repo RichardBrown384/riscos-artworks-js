@@ -7,14 +7,14 @@ To demonstrate that if bit 31 of the initial move is set then the path is filled
 Example 005 tests this example more fully.
  */
 
-import { ARTWORKS_PATH_TAG_BIT_31 } from '@rbrown/computer-concepts-artworks';
-
-import { createClosedEquilateralTriangle } from '../path-creators.js';
 import {
-  createArtworks,
+  ARTWORKS_PATH_TAG_BIT_31,
   createList,
   createRecordPath,
-} from '../record-creators.js';
+} from '@rbrown/computer-concepts-artworks';
+
+import { createClosedEquilateralTriangle } from '../path-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_RED,
   LAYER_FOREGROUND,

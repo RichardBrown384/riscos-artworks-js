@@ -5,7 +5,9 @@ Purpose:
 To demonstrate the smallest file that will render something in !AWViewer
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import { FILL_FLAT_RED, PATH_TRIANGLE, WORK_AREA } from '../shared-objects.js';
 
 export default createArtworks(

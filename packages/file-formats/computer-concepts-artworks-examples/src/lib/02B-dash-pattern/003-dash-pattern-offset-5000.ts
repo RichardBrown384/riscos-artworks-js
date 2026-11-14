@@ -5,7 +5,9 @@ Purpose:
 To demonstrate dash patterns with non-zero offset.
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_OFFSET_5000,
   FILL_FLAT_TRANSPARENT,

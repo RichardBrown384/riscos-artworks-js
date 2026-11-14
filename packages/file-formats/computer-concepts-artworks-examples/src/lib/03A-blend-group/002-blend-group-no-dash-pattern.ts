@@ -8,8 +8,10 @@ To demonstrate the smallest possible blend group without a dash pattern crashes
 
  */
 
+import { createList } from '@rbrown/computer-concepts-artworks';
+
 import { createClosedSquare } from '../path-creators.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_BLUE,
   FILL_FLAT_RED,

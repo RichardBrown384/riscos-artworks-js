@@ -14,13 +14,14 @@ Note: it appears that once !AWViewer encounters and invalid index it stops rende
 The fourth square in this example is sometimes partially drawn or not at all.
  */
 
-import { createClosedSquare } from '../path-creators.js';
 import {
-  createArtworks,
   createList,
   createRecordFillColourFlat,
   createRecordPath,
-} from '../record-creators.js';
+} from '@rbrown/computer-concepts-artworks';
+
+import { createClosedSquare } from '../path-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_RED,
   STROKE_COLOUR_BLUE,

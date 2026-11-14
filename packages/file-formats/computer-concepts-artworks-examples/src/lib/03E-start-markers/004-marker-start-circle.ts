@@ -5,7 +5,9 @@ Purpose:
 Demonstrates circle start markers
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_TRANSPARENT,
   LAYER_FOREGROUND,

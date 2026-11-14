@@ -18,8 +18,10 @@ The start caps are only applied for the start and end states.
 The intermediate states draw a closed contour.
  */
 
+import { createList } from '@rbrown/computer-concepts-artworks';
+
 import { createOpenInvertedV } from '../path-creators.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   END_CAP_BUTT,

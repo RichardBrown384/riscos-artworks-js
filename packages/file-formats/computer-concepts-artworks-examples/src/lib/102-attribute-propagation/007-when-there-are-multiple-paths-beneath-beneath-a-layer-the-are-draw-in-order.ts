@@ -12,15 +12,16 @@ To demonstrate the order in which objects beneath a layer are rendered.
  */
 
 import {
-  createClosedNSidedPolygon,
-  createClosedPentagram,
-} from '../path-creators.js';
-import {
-  createArtworks,
   createList,
   createRecordLayer,
   createRecordPath,
-} from '../record-creators.js';
+} from '@rbrown/computer-concepts-artworks';
+
+import {
+  createClosedNSidedPolygon,
+  createClosedPentagram,
+} from '../path-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_BLACK_30,
   FILL_FLAT_RED,

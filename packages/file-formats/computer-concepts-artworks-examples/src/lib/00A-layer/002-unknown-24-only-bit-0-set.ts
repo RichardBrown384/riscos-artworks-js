@@ -5,13 +5,13 @@ Purpose:
 To demonstrate that if only set bit 0 of unknown 24 then the layer isn't drawn.
  */
 
-import { ARTWORKS_RECORD_BODY_LAYER_UNKNOWN_24_BIT_0 } from '@rbrown/computer-concepts-artworks';
-
 import {
-  createArtworks,
+  ARTWORKS_RECORD_BODY_LAYER_UNKNOWN_24_BIT_0,
   createList,
   createRecordLayerFull,
-} from '../record-creators.js';
+} from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import { FILL_FLAT_RED, PATH_TRIANGLE, WORK_AREA } from '../shared-objects.js';
 
 const LAYER = createRecordLayerFull(

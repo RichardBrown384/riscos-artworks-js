@@ -8,7 +8,9 @@ then it is not used on subsequent paths on following layers.
 !AWViewer renders a red triangle, not 30% black.
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_BLACK_30,
   FILL_FLAT_RED,

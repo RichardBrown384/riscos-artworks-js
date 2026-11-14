@@ -5,7 +5,9 @@ Purpose:
 Demonstrates arrow head end markers
  */
 
-import { createArtworks, createList } from '../record-creators.js';
+import { createList } from '@rbrown/computer-concepts-artworks';
+
+import { createArtworks } from '../record-creators.js';
 import {
   END_MARKER_ARROW_HEAD_W4_H6,
   FILL_FLAT_TRANSPARENT,

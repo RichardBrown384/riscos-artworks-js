@@ -26,19 +26,19 @@ the final blend steps remain decidedly pink (as they are outside the radius defi
 
  */
 
-import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
+import {
+  ARTWORKS_FILL_TYPE_TAG,
+  createList,
+  createRecordFillColourGradient,
+  createRecordPath,
+} from '@rbrown/computer-concepts-artworks';
 
 import {
   DEFAULT_PALETTE_INDEX_CYAN,
   DEFAULT_PALETTE_INDEX_WHITE,
 } from '../default-palette.js';
 import { createClosedRectangle, createClosedSquare } from '../path-creators.js';
-import {
-  createArtworks,
-  createList,
-  createRecordFillColourGradient,
-  createRecordPath,
-} from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_CYAN,

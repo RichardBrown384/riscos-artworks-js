@@ -23,18 +23,16 @@ For two sub paths we try setting bit 31 for the first and second move respective
 import {
   ARTWORKS_PATH_TAG_BIT_31,
   ArtworksPath,
+  createList,
   createPath,
+  createRecordPath,
   pathCloseSubPath,
   pathEnd,
   pathLineTo,
   pathMoveTo,
 } from '@rbrown/computer-concepts-artworks';
 
-import {
-  createArtworks,
-  createList,
-  createRecordPath,
-} from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_RED,
   STROKE_COLOUR_BLUE,

@@ -24,7 +24,12 @@ linear and radial fills properly. The rule appears to be that before
 the halfway mark use the linear fill and beyond that use the radial fill.
  */
 
-import { ARTWORKS_FILL_TYPE_TAG } from '@rbrown/computer-concepts-artworks';
+import {
+  ARTWORKS_FILL_TYPE_TAG,
+  createList,
+  createRecordFillColourGradient,
+  createRecordPath,
+} from '@rbrown/computer-concepts-artworks';
 
 import {
   DEFAULT_PALETTE_INDEX_CYAN,
@@ -33,12 +38,7 @@ import {
   DEFAULT_PALETTE_INDEX_YELLOW,
 } from '../default-palette.js';
 import { createClosedRectangle, createClosedSquare } from '../path-creators.js';
-import {
-  createArtworks,
-  createList,
-  createRecordFillColourGradient,
-  createRecordPath,
-} from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_BLUE,

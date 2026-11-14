@@ -24,7 +24,9 @@ the path elements in the files.
 import {
   ARTWORKS_PATH_TAG_BIT_31,
   ArtworksPath,
+  createList,
   createPath,
+  createRecordRectangle,
   List,
   pathCloseSubPath,
   pathEnd,
@@ -33,11 +35,7 @@ import {
 } from '@rbrown/computer-concepts-artworks';
 
 import { AffineTransform } from '../affine-transform.js';
-import {
-  createArtworks,
-  createList,
-  createRecordRectangle,
-} from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_TRANSPARENT,
   STROKE_COLOUR_RED,

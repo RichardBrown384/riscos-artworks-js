@@ -10,11 +10,13 @@ the start and end paths.
 
  */
 
+import { createList } from '@rbrown/computer-concepts-artworks';
+
 import {
   createClosedEquilateralTriangle,
   createClosedSquare,
 } from '../path-creators.js';
-import { createArtworks, createList } from '../record-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   DASH_PATTERN_EMPTY,
   FILL_FLAT_BLUE,

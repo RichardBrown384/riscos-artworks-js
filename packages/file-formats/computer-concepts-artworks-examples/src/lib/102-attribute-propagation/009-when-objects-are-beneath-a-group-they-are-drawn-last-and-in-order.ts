@@ -12,16 +12,16 @@ after the group's siblings and that the group members
 are drawn in order.
  */
 
-import { ArtworksRecord } from '@rbrown/computer-concepts-artworks';
-import { BoundingBox } from '@rbrown/geometry';
-
-import { createClosedNSidedPolygon } from '../path-creators.js';
 import {
-  createArtworks,
+  ArtworksRecord,
   createList,
   createRecordGroup,
   createRecordPath,
-} from '../record-creators.js';
+} from '@rbrown/computer-concepts-artworks';
+import { BoundingBox } from '@rbrown/geometry';
+
+import { createClosedNSidedPolygon } from '../path-creators.js';
+import { createArtworks } from '../record-creators.js';
 import {
   FILL_FLAT_BLACK_30,
   FILL_FLAT_RED,
