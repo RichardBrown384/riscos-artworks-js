@@ -6,7 +6,9 @@ import {
   ARTWORKS_WINDING_RULE_TAG,
   ArtworksColourIndex,
   ArtworksLineCapStyle,
+  ArtworksPath,
   ArtworksPathSegment,
+  ArtworksRecord,
   ArtworksRecordWithPath,
   ArtworksSpriteRecord,
   Palette,
@@ -33,7 +35,19 @@ import {
 } from '@rbrown/intermediate';
 import { SpriteArea, spriteToImageSource } from '@rbrown/riscos-sprite';
 
-import { RenderState } from './render-state.js';
+import { RECORD_FILL_FLAT_TRANSPARENT, RenderState } from './render-state.js';
+
+function isBitSet(v: number, n: number): boolean {
+  return ((v >>> n) & 1) !== 0;
+}
+
+function headerControlWordVisible({ unknown4 }: ArtworksRecord): boolean {
+  return isBitSet(unknown4, 1);
+}
+
+function isPathFilled(path: ArtworksPath): boolean {
+  return isBitSet(path[0].flags, 31);
+}
 
 function mapPathSegments(segments: ArtworksPathSegment[]): IrPathSegment[] {
   const mappedSegments: IrPathSegment[] = [];
@@ -236,10 +250,17 @@ export class Mapper {
   }
 
   path(record: ArtworksRecordWithPath, renderState: RenderState): void {
+    if (!headerControlWordVisible(record)) {
+      return;
+    }
+    const path = record.body.path;
+    if (!isPathFilled(path)) {
+      renderState.fill = RECORD_FILL_FLAT_TRANSPARENT;
+    }
     const pathNode: IrPathNode = {
       tag: 'path',
       attributes: {
-        path: mapPathSegments(record.body.path),
+        path: mapPathSegments(path),
         fill: mapFill(this.palette, renderState.fill.body),
         fillRule: mapFillRule(renderState.windingRule.body),
         stroke: mapStroke(this.palette, renderState.stroke.body),
@@ -266,6 +287,9 @@ export class Mapper {
   }
 
   sprite(record: ArtworksSpriteRecord): void {
+    if (!headerControlWordVisible(record)) {
+      return;
+    }
     const {
       boundingBox,
       body: { name },
