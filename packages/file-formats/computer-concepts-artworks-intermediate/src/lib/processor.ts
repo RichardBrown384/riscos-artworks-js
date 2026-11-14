@@ -1,6 +1,5 @@
 import {
   ARTWORKS_RECORD_TYPE_TAG,
-  ArtworksPath,
   ArtworksRecord,
   ArtworksRecordWithPath,
   ArtworksSpriteRecord,
@@ -9,19 +8,7 @@ import {
 
 import { Mapper } from './mapper.js';
 import { RenderStateStack } from './render-state-stack.js';
-import { RECORD_FILL_FLAT_TRANSPARENT, RenderState } from './render-state.js';
-
-function isBitSet(v: number, n: number): boolean {
-  return ((v >>> n) & 1) !== 0;
-}
-
-function headerControlWordPathVisible({ unknown4 }: ArtworksRecord): boolean {
-  return isBitSet(unknown4, 1);
-}
-
-function isPathFilled(path: ArtworksPath): boolean {
-  return isBitSet(path[0].flags, 31);
-}
+import { RenderState } from './render-state.js';
 
 class ArtworksProcessor {
   private readonly mapper: Mapper;
@@ -103,26 +90,12 @@ class ArtworksProcessor {
   processPath(pathRecord: ArtworksRecordWithPath): void {
     this.renderStateStack.duplicate();
     this.processLists(pathRecord.lists);
-    this.processPathInner(pathRecord);
+    const state = this.renderStateStack.peek();
+    this.mapper.path(pathRecord, state);
     this.renderStateStack.pop();
   }
 
-  processPathInner(pathRecord: ArtworksRecordWithPath): void {
-    if (!headerControlWordPathVisible(pathRecord)) {
-      return;
-    }
-    const path = pathRecord.body.path;
-    if (!isPathFilled(path)) {
-      this.renderStateStack.setFill(RECORD_FILL_FLAT_TRANSPARENT);
-    }
-    const state = this.renderStateStack.peek();
-    this.mapper.path(pathRecord, state);
-  }
-
   processSprite(spriteRecord: ArtworksSpriteRecord): void {
-    if (!headerControlWordPathVisible(spriteRecord)) {
-      return;
-    }
     this.mapper.sprite(spriteRecord);
   }
 }
