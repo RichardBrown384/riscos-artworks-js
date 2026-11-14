@@ -7,7 +7,10 @@ import {
 } from './structures/index.js';
 import { ArtworksFile } from './types/index.js';
 
-export * from './types/artworks-types.js';
+// Normalisation
+export { denormalise, normalise } from './normalisation/index.js';
+
+// Primitives
 export {
   createPalette,
   createRgbPaletteEntry,
@@ -21,11 +24,8 @@ export {
   createPolyline,
   polylinePoint,
 } from './primitives/index.js';
-export {
-  createArtworksHeader,
-  createArtworks,
-  createList,
-} from './structures/index.js';
+
+// Records
 export {
   createRecordPath,
   createRecordPathFull,
@@ -56,6 +56,16 @@ export {
   createRecordMarkerStart,
   createRecordMarkerEnd,
 } from './records/index.js';
+
+// Structures
+export {
+  createArtworksHeader,
+  createArtworks,
+  createList,
+} from './structures/index.js';
+
+// Types
+export * from './types/artworks-types.js';
 
 function artworksIsHeaderPresent(buffer: ArrayBuffer): boolean {
   const reader = new BinaryReader(buffer);
