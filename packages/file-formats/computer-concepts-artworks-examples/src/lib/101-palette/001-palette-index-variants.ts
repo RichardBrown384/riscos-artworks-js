@@ -12,7 +12,7 @@ To demonstrate what happens when
 Note: it appears that once !AWViewer encounters and invalid index it stops rendering properly.
 
 The fourth square in this example is sometimes partially drawn or not at all.
- */
+*/
 
 import {
   createList,

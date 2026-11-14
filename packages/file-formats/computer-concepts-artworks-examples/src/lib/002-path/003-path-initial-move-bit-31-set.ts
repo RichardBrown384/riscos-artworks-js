@@ -5,7 +5,7 @@ Purpose:
 To demonstrate that if bit 31 of the initial move is set then the path is filled.
 
 Example 005 tests this example more fully.
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

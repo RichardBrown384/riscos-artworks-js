@@ -5,7 +5,7 @@ Purpose:
 To demonstrate that if bit 31 of the initial move is clear then the path isn't filled.
 
 Example 005 tests this example more fully.
- */
+*/
 
 import {
   createList,

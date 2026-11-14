@@ -3,7 +3,7 @@ Example: 001-marker-end-none
 
 Purpose:
 Demonstrates no end markers.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

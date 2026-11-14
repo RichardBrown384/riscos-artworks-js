@@ -15,7 +15,7 @@ displacement to arc length
 47.711 = 314.2051
 47.712 = 314.2056
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

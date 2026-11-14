@@ -10,7 +10,7 @@ Note a couple of issues:
 1. If you change first blend steps value to be zero (not one) only one solitary rectangle is drawn
 2. The intermediate steps are stroked white in the simple view. Not sure why this is the case.
 
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

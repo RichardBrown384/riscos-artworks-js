@@ -7,7 +7,7 @@ To demonstrate that when two fills occur before a path then the path is shaded
 using the second colour.
 
 !AWViewer should render a 30% black triangle, not red.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

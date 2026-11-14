@@ -35,7 +35,7 @@ but as you zoom out the path is filled with the start colour.
 With a linear gradient length of zero that path is always filled
 with the start colour irrespective of the zoom level.
 
- */
+*/
 
 import {
   ARTWORKS_FILL_TYPE_TAG,

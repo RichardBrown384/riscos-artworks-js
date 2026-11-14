@@ -8,7 +8,7 @@ the start and end paths.
 
 !AWViewer draws start and end rectangles and intermediate triangles.
 
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

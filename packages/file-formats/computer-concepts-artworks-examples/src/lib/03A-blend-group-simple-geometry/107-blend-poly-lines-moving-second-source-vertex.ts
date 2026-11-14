@@ -35,7 +35,7 @@ Second regime means point distribution is A X' B Y' C
 419_688 second regime
 420_000 second regime
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

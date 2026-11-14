@@ -31,7 +31,7 @@ of the bezier segment (similarly divided by 1000).
 When the x coordinate is greater than or equal to 154318 point distribution regime
 changes in the interpolated shape.
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

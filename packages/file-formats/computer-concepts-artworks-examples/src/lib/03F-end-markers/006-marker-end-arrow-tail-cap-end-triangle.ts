@@ -3,7 +3,7 @@ Example: 006-marker-end-arrow-tail-cap-end-triangle
 
 Purpose:
 Demonstrates the interaction between end line caps and end line markers.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

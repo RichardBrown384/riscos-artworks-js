@@ -15,7 +15,7 @@ The file deals with five cases
 
 The rule appears to be that before the halfway point use the start join and
 beyond that the end join.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

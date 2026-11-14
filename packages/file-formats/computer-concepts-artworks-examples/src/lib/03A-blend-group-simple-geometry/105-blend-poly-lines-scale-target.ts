@@ -9,7 +9,7 @@ This differs from 010-blend-poly-lines by allowing the target geometry to be sca
 
 Between scales 0.0 and 25.0 it appears the point distribution is unchanged.
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

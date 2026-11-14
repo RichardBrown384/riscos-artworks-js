@@ -3,7 +3,7 @@ Example: 003-dash-pattern-offset-5000
 
 Purpose:
 To demonstrate dash patterns with non-zero offset.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

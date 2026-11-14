@@ -3,7 +3,7 @@ Example: 002-unknown-24-only-bit-0-set
 
 Purpose:
 To demonstrate that if only set bit 0 of unknown 24 then the layer isn't drawn.
- */
+*/
 
 import {
   ARTWORKS_RECORD_BODY_LAYER_UNKNOWN_24_BIT_0,

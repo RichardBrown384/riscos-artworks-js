@@ -13,7 +13,7 @@ These parametric distances can be computed by taking the ratios of the lengths o
 
 0.3723 = L2 / (L2 + L3 + L4)
 0.6277 = (L2 + L3) / (L2 + L3 + L4)
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

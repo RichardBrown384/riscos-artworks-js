@@ -3,7 +3,7 @@ Example: 001-path
 
 Purpose:
 To demonstrate paths !AWViewer
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

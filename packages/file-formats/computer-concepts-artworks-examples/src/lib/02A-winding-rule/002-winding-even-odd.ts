@@ -3,7 +3,7 @@ Example: 002-winding-even-odd
 
 Purpose:
 To demonstrate the even-odd winding rule
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

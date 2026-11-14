@@ -3,7 +3,7 @@ Example: 005-fill-radial-red-yellow
 
 Purpose:
 To demonstrate the radial gradient fills !AWViewer
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

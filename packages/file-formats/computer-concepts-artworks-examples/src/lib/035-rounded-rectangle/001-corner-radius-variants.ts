@@ -17,7 +17,7 @@ Points to note:
 
 1. When the corner radius is zero, the rectangle isn't rendered.
 
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

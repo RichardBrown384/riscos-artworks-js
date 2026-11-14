@@ -9,7 +9,7 @@ behind a red-yellow radially-filled pentagon stroked magenta.
 
 To demonstrate the order in which objects beneath a layer are rendered.
 
- */
+*/
 
 import {
   createList,

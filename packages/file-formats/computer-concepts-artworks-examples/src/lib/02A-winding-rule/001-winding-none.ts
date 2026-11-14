@@ -3,7 +3,7 @@ Example: 001-winding-none
 
 Purpose:
 To demonstrate that the default winding rule is even-odd
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

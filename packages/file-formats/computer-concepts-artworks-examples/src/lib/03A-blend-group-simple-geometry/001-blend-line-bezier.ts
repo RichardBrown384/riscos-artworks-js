@@ -12,7 +12,7 @@ then another form of interpolation is used.
 In this case it looks as if the contour is split into 5 segments and then
 interpolated using the normal code.
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

@@ -3,7 +3,7 @@ Example: 002-path-unknown-4-bit-1-clear
 
 Purpose:
 To demonstrate that if bit 1 of unknown4 is clear then the path doesn't get drawn
- */
+*/
 
 import {
   createList,

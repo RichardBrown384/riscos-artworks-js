@@ -3,7 +3,7 @@ Example: 002-marker-start-triangle
 
 Purpose:
 Demonstrates triangle start markers
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

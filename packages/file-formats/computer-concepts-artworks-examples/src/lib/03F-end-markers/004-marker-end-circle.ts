@@ -3,7 +3,7 @@ Example: 004-marker-end-circle
 
 Purpose:
 Demonstrates circle end markers
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

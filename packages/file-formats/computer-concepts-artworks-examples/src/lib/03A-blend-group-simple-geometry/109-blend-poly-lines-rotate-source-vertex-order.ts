@@ -13,7 +13,7 @@ to the first vertex of the target path.
 
 The weights were computed by line length ratios.
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

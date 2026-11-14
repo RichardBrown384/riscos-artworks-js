@@ -6,7 +6,7 @@ To demonstrate that if a style attribute appears after a layer with no paths
 then it is not used on subsequent paths on following layers.
 
 !AWViewer renders a red triangle, not 30% black.
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

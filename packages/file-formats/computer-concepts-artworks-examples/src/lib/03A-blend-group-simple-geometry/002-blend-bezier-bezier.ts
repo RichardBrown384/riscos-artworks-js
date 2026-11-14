@@ -11,7 +11,7 @@ Note: There appears to be some sort of problem with the file structure.
 Putting the four interpolated curves behind the four blend groups crashes !AWViewer.
 Interleaving the last set seems to resolve the issue.
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

@@ -16,7 +16,7 @@ At the point the second vertex is slightly below the line defined by the 2nd and
 
 The point distribution changes again when SECOND_VERTEX_Y is greater than or equal to 310_182.
 
- */
+*/
 
 import {
   ARTWORKS_PATH_TAG_BIT_31,

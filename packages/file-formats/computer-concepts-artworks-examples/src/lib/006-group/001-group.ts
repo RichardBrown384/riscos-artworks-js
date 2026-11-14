@@ -5,7 +5,7 @@ Purpose:
 
 To demonstrate groups in !AWViewer
 
- */
+*/
 
 import {
   ArtworksRecord,

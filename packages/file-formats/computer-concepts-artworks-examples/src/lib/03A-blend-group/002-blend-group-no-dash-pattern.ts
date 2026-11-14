@@ -6,7 +6,7 @@ Purpose:
 To demonstrate the smallest possible blend group without a dash pattern crashes
 !AWViewer
 
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

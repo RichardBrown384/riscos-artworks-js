@@ -19,7 +19,7 @@ Points to note:
 2. The position and the orientation of the triangle do not impact the
    radial fill (as was originally thought to be the case)
 
- */
+*/
 
 import { createList } from '@rbrown/computer-concepts-artworks';
 

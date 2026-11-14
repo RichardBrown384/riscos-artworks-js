@@ -21,7 +21,7 @@ The rules appear to be
 2. Attribute changes that happen at the same level as the layer don't propagate down.
 (Otherwise in this case the pentagram would be stroked red).
 
- */
+*/
 
 import {
   createList,
