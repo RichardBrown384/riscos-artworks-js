@@ -48,8 +48,7 @@ export class ArtworksWriter {
     recordPointerPosition?: number,
   ) {
     let previous = listsPointerPosition - this.writer.tell();
-    for (let i = 0; i < lists.length; i += 1) {
-      const list = lists[i];
+    for (const [i, list] of lists.entries()) {
       const start = this.writer.tell();
       this.reservePointerSpace();
       const listStart = this.writer.tell();
@@ -67,8 +66,7 @@ export class ArtworksWriter {
   ): void {
     let previous = recordPointerPosition - this.writer.tell();
     const subLists = new SubLists();
-    for (let i = 0; i < list.length; i += 1) {
-      const record = list[i];
+    for (const [i, record] of list.entries()) {
       const start = this.writer.tell();
       this.reservePointerSpace();
       writeRecordHeader(this.writer, record);
@@ -88,9 +86,8 @@ export class ArtworksWriter {
   }
 
   private writeSubLists(subLists: SubListsElement[]): void {
-    for (let i = 0; i < subLists.length; i += 1) {
-      const { recordPointerPosition, listsPointerPosition, lists } =
-        subLists[i];
+    for (const subList of subLists) {
+      const { recordPointerPosition, listsPointerPosition, lists } = subList;
       const position = this.writer.tell();
       const next = position - listsPointerPosition;
       this.writeListsPointer(listsPointerPosition, 0, next);
