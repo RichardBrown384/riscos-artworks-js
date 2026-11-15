@@ -31,8 +31,8 @@ function writeDashPattern(
   );
   writer.u32(offset);
   writer.u32(count);
-  for (let i = 0; i < count; i += 1) {
-    writer.u32(elements[i]);
+  for (const element of elements) {
+    writer.u32(element);
   }
 }
 
