@@ -10,6 +10,8 @@ on:
       - 'docs/**'
       - 'media/**'
       - 'scripts/**'
+      - '**/*.test.ts'
+      - '**/*.fixtures.ts'
       - 'LICENSE'
 
   # Allows you to run this workflow manually from the Actions tab
