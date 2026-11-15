@@ -1,3 +1,4 @@
+import { check } from '@rbrown/check';
 import {
   ARTWORKS_FILL_TYPE_TAG,
   ARTWORKS_JOIN_STYLE_TAG,
@@ -46,7 +47,7 @@ function headerControlWordVisible({ unknown4 }: ArtworksRecord): boolean {
 }
 
 function isPathFilled(path: ArtworksPath): boolean {
-  return isBitSet(path[0].flags, 31);
+  return isBitSet(path[0]?.flags ?? 0, 31);
 }
 
 function mapPathSegments(segments: ArtworksPathSegment[]): IrPathSegment[] {
@@ -128,10 +129,15 @@ function mapFill(palette: Palette, fill: RecordBodyFillColour): IrFill {
     }
     case ARTWORKS_FILL_TYPE_TAG.LINEAR: {
       const gradient = fill.gradient;
+      const [start, end] = gradient.gradientLine;
+      check(
+        start !== undefined && end !== undefined,
+        'Gradient line must be properly defined',
+      );
       return {
         tag: 'linear',
-        start: gradient.gradientLine[0],
-        end: gradient.gradientLine[1],
+        start,
+        end,
         stops: [
           {
             offset: 0.0,
@@ -146,10 +152,15 @@ function mapFill(palette: Palette, fill: RecordBodyFillColour): IrFill {
     }
     case ARTWORKS_FILL_TYPE_TAG.RADIAL: {
       const gradient = fill.gradient;
+      const [start, end] = gradient.gradientLine;
+      check(
+        start !== undefined && end !== undefined,
+        'Gradient line must be properly defined',
+      );
       return {
         tag: 'radial',
-        start: gradient.gradientLine[0],
-        end: gradient.gradientLine[1],
+        start,
+        end,
         stops: [
           {
             offset: 0.0,
