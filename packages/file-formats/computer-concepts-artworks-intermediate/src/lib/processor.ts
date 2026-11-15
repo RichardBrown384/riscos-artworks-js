@@ -26,14 +26,13 @@ class ArtworksProcessor {
   }
 
   processLists(lists: List[] = []): void {
-    for (let i = 0; i < lists.length; i += 1) {
-      this.processRecords(lists[i].records);
+    for (const list of lists) {
+      this.processRecords(list.records);
     }
   }
 
   processRecords(list: ArtworksRecord[] = []) {
-    for (let i = 0; i < list.length; i += 1) {
-      const record = list[i];
+    for (const record of list) {
       this.processRecord(record);
     }
   }
