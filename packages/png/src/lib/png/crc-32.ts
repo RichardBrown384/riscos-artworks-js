@@ -20,6 +20,7 @@ function makeCrcTable(): Uint32Array<ArrayBuffer> {
 function updateCrc(crc: number, buf: Uint8Array): number {
   let c = crc >>> 0;
   for (let n = 0; n < buf.byteLength; n++) {
+    // @ts-expect-error -- both indices are guaranteed to be in bounds
     c = CRC_TABLE[(c ^ buf[n]) & 0xff] ^ (c >>> 8);
   }
   return c >>> 0;
