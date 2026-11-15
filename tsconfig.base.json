@@ -24,7 +24,5 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noUncheckedIndexedAccess": true,
-
-    "customConditions": ["@rbrown/riscos-file-viewer"]
   }
 }
