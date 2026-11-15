@@ -1,3 +1,4 @@
+import { check } from '@rbrown/check';
 import { packRGBA32 } from '@rbrown/imaging';
 
 import { Sprite, SpritePaletteFormat } from '../sprite-types.js';
@@ -16,7 +17,8 @@ function createPaletteCodec(format: SpritePaletteFormat): ColourCodec {
 
   return {
     decode(value: number, mask: 0 | 1): number {
-      const raw = palette[value & bitMask].first;
+      const raw = palette[value & bitMask]?.first;
+      check(raw !== undefined, 'undefined raw palette value');
       const r = (raw >>> 8) & 0xff;
       const g = (raw >>> 16) & 0xff;
       const b = (raw >>> 24) & 0xff;
