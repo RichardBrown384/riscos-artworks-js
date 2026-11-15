@@ -61,8 +61,8 @@ export function convertInsertsListToWeightsList(
   insertsList: number[],
 ): number[][] {
   const weightsList: number[][] = [];
-  for (let i = 0; i < insertsList.length; i += 1) {
-    weightsList.push(convertInsertsToWeights(insertsList[i]));
+  for (const insert of insertsList) {
+    weightsList.push(convertInsertsToWeights(insert));
   }
   return weightsList;
 }
