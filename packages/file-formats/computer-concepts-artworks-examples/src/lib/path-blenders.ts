@@ -28,6 +28,8 @@ import { Point } from '@rbrown/geometry';
 
 const BEZIER_WEIGHT = 1.0 / 3.0;
 
+type Bezier = [Point, Point, Point, Point];
+
 function interpolateValue(a: number, b: number, weight: number): number {
   return Math.trunc(a + weight * (b - a));
 }
@@ -42,8 +44,7 @@ function interpolatePoints(a: Point, b: Point, weight: number): Point {
 function convertLinesToBeziers(path: ArtworksPath): ArtworksPath {
   const segments: ArtworksPathSegment[] = [];
   const last: Point = { x: 0, y: 0 };
-  for (let i = 0; i < path.length; i += 1) {
-    const segment = path[i];
+  for (const segment of path) {
     const { flags } = segment;
     switch (segment.tag) {
       case ARTWORKS_PATH_TAG.END: {
@@ -105,7 +106,9 @@ function blendBezierPaths(
     const startSegment = startPath[i];
     const endSegment = endPath[i];
     check(
-      startSegment.tag === endSegment.tag,
+      startSegment !== undefined &&
+        endSegment !== undefined &&
+        startSegment.tag === endSegment.tag,
       'blend paths must have like for like elements',
     );
     const { flags } = startSegment;
@@ -152,15 +155,17 @@ function divideLineByWeights(
   end: Point,
 ): ArtworksPathSegment[] {
   const segments: ArtworksPathSegment[] = [];
-  for (let i = 0; i < weights.length; i += 1) {
-    const weight = weights[i];
+  for (const weight of weights) {
     const q = interpolatePoints(start, end, weight);
     segments.push(pathLineTo(q.x, q.y));
   }
   return segments;
 }
 
-function divideBezier(weight: number, [b0, b1, b2, b3]: Point[]): Point[][] {
+function divideBezier(
+  weight: number,
+  [b0, b1, b2, b3]: Bezier,
+): [Bezier, Bezier] {
   const c0 = interpolatePoints(b0, b1, weight);
   const c1 = interpolatePoints(b1, b2, weight);
   const c2 = interpolatePoints(b2, b3, weight);
@@ -175,13 +180,11 @@ function divideBezier(weight: number, [b0, b1, b2, b3]: Point[]): Point[][] {
 
 function divideBezierByWeights(
   weights: number[],
-  b0: Point,
-  [b1, b2, b3]: Point[],
+  bezier: Bezier,
 ): ArtworksPathSegment[] {
   const segments: ArtworksPathSegment[] = [];
-  let bezier = [b0, b1, b2, b3];
-  for (let i = 0, last = 0.0; i < weights.length; i += 1) {
-    const weight = weights[i];
+  let last = 0.0;
+  for (const weight of weights) {
     const [first, second] = divideBezier(
       (weight - last) / (1.0 - last),
       bezier,
@@ -210,6 +213,10 @@ export function createPathWithAdditionalPoints(
   for (let i = 0; i < path.length; i += 1) {
     const weights = weightsList[i];
     const segment = path[i];
+    check(
+      weights !== undefined && segment != undefined,
+      'weight and segment must exist',
+    );
     const { flags } = segment;
     switch (segment.tag) {
       case ARTWORKS_PATH_TAG.END: {
@@ -235,7 +242,7 @@ export function createPathWithAdditionalPoints(
 
       case ARTWORKS_PATH_TAG.BEZIER: {
         const { cp1, cp2, to } = segment;
-        segments.push(...divideBezierByWeights(weights, last, [cp1, cp2, to]));
+        segments.push(...divideBezierByWeights(weights, [last, cp1, cp2, to]));
         last.x = to.x;
         last.y = to.y;
         break;

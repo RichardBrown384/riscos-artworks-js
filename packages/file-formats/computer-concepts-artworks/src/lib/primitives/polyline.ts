@@ -21,8 +21,8 @@ export function writePolyline(
   polyline: ArtworksPolyline,
 ): void {
   writer.aligned(4, 'misaligned polyline');
-  for (let i = 0; i < polyline.length; i += 1) {
-    writePoint(writer, polyline[i]);
+  for (const point of polyline) {
+    writePoint(writer, point);
   }
 }
 

@@ -204,9 +204,10 @@ function readChunk(
 
   const characters: Characters = {};
   for (let i = 0; i < 32; i += 1) {
-    if (charOffsets[i] !== 0) {
-      const charOffset = characterOffsetStart + charOffsets[i];
-      characters[i] = readCharacter(buffer, charOffset);
+    const charOffset = charOffsets[i];
+    check(charOffset !== undefined, 'undefined charOffset');
+    if (charOffset !== 0) {
+      characters[i] = readCharacter(buffer, characterOffsetStart + charOffset);
     }
   }
 
@@ -235,13 +236,14 @@ function readChunks(
   const dependencyByteCount = Math.trunc((chunkCount + 7) / 8);
   const chunks: Chunks = {};
   for (let i = 0; i < chunkCount; i += 1) {
-    if (chunkOffsets[i] !== chunkOffsets[i + 1]) {
-      chunks[i] = readChunk(
-        buffer,
-        chunkOffsets[i],
-        version,
-        dependencyByteCount,
-      );
+    const chunkOffset = chunkOffsets[i];
+    const nextOffset = chunkOffsets[i + 1];
+    check(
+      chunkOffset !== undefined && nextOffset !== undefined,
+      'expected both chunk offsets to exist',
+    );
+    if (chunkOffset !== nextOffset) {
+      chunks[i] = readChunk(buffer, chunkOffset, version, dependencyByteCount);
     }
   }
 
@@ -315,6 +317,7 @@ function readScaffold(
   const data: Scaffolds = {};
   for (let i = 0; i < offsets.length; i += 1) {
     const offset = offsets[i];
+    check(offset != undefined, 'undefined offset');
     if (offset !== 0) {
       if (all16BitCharacterCodes) {
         data[i] = readScaffoldData(buffer, position + offset);

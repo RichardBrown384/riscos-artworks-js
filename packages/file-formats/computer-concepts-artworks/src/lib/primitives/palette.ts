@@ -1,3 +1,4 @@
+import { check } from '@rbrown/check';
 import { BinaryReader, BinaryWriter } from '@rbrown/io';
 
 import { Palette, PaletteEntry } from '../types/index.js';
@@ -70,12 +71,16 @@ export function readPalette(reader: BinaryReader): Palette {
 }
 
 export function writePalette(writer: BinaryWriter, palette: Palette): void {
-  writer.aligned(4, 'misaligned palette');
   const { count, unknown4, entries } = palette;
+  check(
+    count === entries.length,
+    "length of the palette doesn't agree with the count",
+  );
+  writer.aligned(4, 'misaligned palette');
   writer.u32(count);
   writer.u32(unknown4);
-  for (let i = 0; i < entries.length; i += 1) {
-    writePaletteEntry(writer, entries[i]);
+  for (const entry of entries) {
+    writePaletteEntry(writer, entry);
   }
 }
 

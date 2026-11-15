@@ -47,7 +47,7 @@ function mapFillPathDefinition(fillPath: FontPathSegment[]): IrPathSegment[] {
 }
 
 function isTerminatorOnly(path: FontPathSegment[]): boolean {
-  return path.length === 1 && path[0].type === OUTLINE_SEGMENT_TAG.TERMINATOR;
+  return path.length === 1 && path[0]?.type === OUTLINE_SEGMENT_TAG.TERMINATOR;
 }
 
 function isEmptyFillPath(path: FontPathSegment[]): boolean {
@@ -95,8 +95,8 @@ function mapCharacterFillPaths(charCode: number, chunks: Chunks): IrPathNode[] {
   if (character) {
     mapNonEmptyFillPath(character, undefined);
     const { composites } = character;
-    for (let i = 0; i < composites.length; i += 1) {
-      const { code, offset } = composites[i];
+    for (const composite of composites) {
+      const { code, offset } = composite;
       const compositeCharacter = getCharacter(code);
       if (compositeCharacter) {
         const compositeTransform = transformTranslate(offset.x, offset.y);

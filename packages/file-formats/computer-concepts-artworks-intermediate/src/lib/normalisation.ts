@@ -1,3 +1,4 @@
+import { check } from '@rbrown/check';
 import {
   ArtworksFile,
   ArtworksRecord,
@@ -13,6 +14,7 @@ function makeSingletonLists(record: ArtworksRecord): List {
 }
 
 function unmakeSingletonLists(singletonLists: List): ArtworksRecord {
+  check(singletonLists.records[0] !== undefined, 'Expected an artworks record');
   return singletonLists.records[0];
 }
 
@@ -21,9 +23,10 @@ function makeSingletonList(records: ArtworksRecord[]): ArtworksRecord[] {
   while (result.length > 1) {
     const last = result.pop();
     const penultimate = result.pop();
-    if (last === undefined || penultimate === undefined) {
-      throw new Error('Expected at least two records');
-    }
+    check(
+      last !== undefined && penultimate !== undefined,
+      'Expected at least two records',
+    );
     const { lists, ...data } = penultimate;
     result.push({
       ...data,
@@ -37,17 +40,14 @@ function unmakeSingletonList(records: ArtworksRecord[]): ArtworksRecord[] {
   const result = [...records];
   for (;;) {
     const last = result.pop();
-    if (last === undefined) {
-      throw new Error('Expected at least one record');
-    }
+    check(last !== undefined, 'Expected at least one record');
     const { lists, ...data } = last;
     const [first, ...siblings] = lists;
     result.push({
       ...data,
       lists: siblings,
     });
-    // Weird, ts things that first is never falsy which is false
-    if (lists.length === 0) {
+    if (first === undefined) {
       break;
     }
     result.push(unmakeSingletonLists(first));
@@ -70,8 +70,8 @@ class ArtworksListTransformer {
 
   transformLists(lists: List[] = []): List[] {
     const result: List[] = [];
-    for (let i = 0; i < lists.length; i += 1) {
-      const { records, ...data } = lists[i];
+    for (const list of lists) {
+      const { records, ...data } = list;
       result.push({
         ...data,
         records: this.transformRecords(records),
@@ -89,8 +89,8 @@ class ArtworksListTransformer {
 
   transformSubLists(list: ArtworksRecord[]): ArtworksRecord[] {
     const result: ArtworksRecord[] = [];
-    for (let i = 0; i < list.length; i += 1) {
-      const { lists, ...data } = list[i];
+    for (const record of list) {
+      const { lists, ...data } = record;
       result.push({
         ...data,
         lists: this.transformLists(lists),
